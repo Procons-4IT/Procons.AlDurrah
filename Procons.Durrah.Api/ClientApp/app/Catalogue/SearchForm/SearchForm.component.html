@@ -1,0 +1,40 @@
+﻿<div role="tabpanel" class="tab-pane fade" id="tabSearchForm" #tabSearchForm>
+    <div class="row">
+        <div class="col-sm-6 col-sm-offset-2">
+            <h3><span class="fa fa-search fa-fw fa-2x"></span> Advanced search</h3>
+            <form action="#" method="post" id="searchForm">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="age" name="age" placeholder="Age" />
+                </div>
+                <div class="form-group">
+                    <select class="form-control">
+                        <option>Nationality</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select class="form-control">
+                        <option>Gender</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select class="form-control">
+                        <option>Marital Status</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select class="form-control">
+                        <option>Language</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select class="form-control">
+                        <option>Type</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="submit" (click)="GotoResults()" value="Search" class="btn btn-default" id="submitSearchForm" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

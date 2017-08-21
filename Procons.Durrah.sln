@@ -1,0 +1,76 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procons.Durrah.Api", "Procons.Durrah.Api\Procons.Durrah.Api.csproj", "{FE46F959-09B9-4182-9AEC-E66364EFC1AC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procons.Durrah.Auth", "Procons.Durrah.Auth\Procons.Durrah.Auth.csproj", "{74396834-4CA4-4DC7-8253-53B44EAE9F15}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procons.Durrah.Common", "Procons.Durrah.Common\Procons.Durrah.Common.csproj", "{024FBFDE-B684-43C6-B5FC-5ADEB4C86810}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procons.Durrah.Facade", "Procons.Durrah.Facade\Procons.Durrah.Facade.csproj", "{D0E6C718-FE04-4DFC-BC61-2982DAA3E50B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procons.Durrah.Main", "Procons.Durrah.Main\Procons.Durrah.Main.csproj", "{F5FF6EF2-FC19-4E50-8FD2-0BD5CCA81CC7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procons.DatabaseHelper", "Procons.DatabaseHelper\Procons.DatabaseHelper.csproj", "{7E779548-DEF2-43A7-ACB7-F916C3285ED9}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 7
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://192.168.1.210:8080/tfs/defaultcollection
+		SccProjectUniqueName0 = Procons.Durrah.Api\\Procons.Durrah.Api.csproj
+		SccProjectName0 = Procons.Durrah.Api
+		SccLocalPath0 = Procons.Durrah.Api
+		SccProjectUniqueName1 = Procons.Durrah.Auth\\Procons.Durrah.Auth.csproj
+		SccProjectName1 = Procons.Durrah.Auth
+		SccLocalPath1 = Procons.Durrah.Auth
+		SccProjectUniqueName2 = Procons.Durrah.Common\\Procons.Durrah.Common.csproj
+		SccProjectName2 = Procons.Durrah.Common
+		SccLocalPath2 = Procons.Durrah.Common
+		SccProjectUniqueName3 = Procons.Durrah.Facade\\Procons.Durrah.Facade.csproj
+		SccProjectName3 = Procons.Durrah.Facade
+		SccLocalPath3 = Procons.Durrah.Facade
+		SccProjectUniqueName4 = Procons.Durrah.Main\\Procons.Durrah.Main.csproj
+		SccProjectName4 = Procons.Durrah.Main
+		SccLocalPath4 = Procons.Durrah.Main
+		SccLocalPath5 = .
+		SccProjectUniqueName6 = Procons.DatabaseHelper\\Procons.DatabaseHelper.csproj
+		SccProjectName6 = Procons.DatabaseHelper
+		SccLocalPath6 = Procons.DatabaseHelper
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FE46F959-09B9-4182-9AEC-E66364EFC1AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE46F959-09B9-4182-9AEC-E66364EFC1AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE46F959-09B9-4182-9AEC-E66364EFC1AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE46F959-09B9-4182-9AEC-E66364EFC1AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74396834-4CA4-4DC7-8253-53B44EAE9F15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74396834-4CA4-4DC7-8253-53B44EAE9F15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74396834-4CA4-4DC7-8253-53B44EAE9F15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74396834-4CA4-4DC7-8253-53B44EAE9F15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{024FBFDE-B684-43C6-B5FC-5ADEB4C86810}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{024FBFDE-B684-43C6-B5FC-5ADEB4C86810}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{024FBFDE-B684-43C6-B5FC-5ADEB4C86810}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{024FBFDE-B684-43C6-B5FC-5ADEB4C86810}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0E6C718-FE04-4DFC-BC61-2982DAA3E50B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0E6C718-FE04-4DFC-BC61-2982DAA3E50B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0E6C718-FE04-4DFC-BC61-2982DAA3E50B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0E6C718-FE04-4DFC-BC61-2982DAA3E50B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5FF6EF2-FC19-4E50-8FD2-0BD5CCA81CC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5FF6EF2-FC19-4E50-8FD2-0BD5CCA81CC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5FF6EF2-FC19-4E50-8FD2-0BD5CCA81CC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5FF6EF2-FC19-4E50-8FD2-0BD5CCA81CC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E779548-DEF2-43A7-ACB7-F916C3285ED9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E779548-DEF2-43A7-ACB7-F916C3285ED9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E779548-DEF2-43A7-ACB7-F916C3285ED9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E779548-DEF2-43A7-ACB7-F916C3285ED9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
