@@ -8,7 +8,7 @@
         private string _dataFieldName;
         private object _nullValue;
 
-        public DataMappingAttribute()
+        public DataMappingAttribute() 
         {
         }
         public DataMappingAttribute(object nullValue) : this(string.Empty, nullValue)
