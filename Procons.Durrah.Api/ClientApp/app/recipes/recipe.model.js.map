@@ -1,0 +1,1 @@
+{"version":3,"file":"recipe.model.js","sourceRoot":"","sources":["recipe.model.ts"],"names":[],"mappings":";;AAAA;IAKE,gBAAY,IAAY,EAAE,IAAY,EAAE,SAAiB;QACvD,IAAI,CAAC,IAAI,GAAG,IAAI,CAAC;QACjB,IAAI,CAAC,WAAW,GAAG,IAAI,CAAC;QACxB,IAAI,CAAC,SAAS,GAAG,SAAS,CAAC;IAC7B,CAAC;IACH,aAAC;AAAD,CAAC,AAVD,IAUC;AAVY,wBAAM"}

@@ -17,17 +17,17 @@
         {
             _oCompany = new Company();
             int checkConnected = -1;
-            string sapServer = "SapServer";
-            string companyDB = "SBODEMOUS";
-            string dbUsername = "sa";
-            string dbPassword = "p@ssw0rd";
+            string sapServer = "saphana:30015";
+            string companyDB = "SBO_DEMOGB";
+            string dbUsername = "SYSTEM";
+            string dbPassword = "Pr0c0ns41t";
             string sapUsername = "manager";
-            string sapPassword = "p@ssw0rd";
-            string dbServerType = "2014";
-            string sapLicense = "SapServer:30000";
+            string sapPassword = "1234";
+            string dbServerType = "Hana";
+            string sapLicense = "saphana:40000";
 
             _oCompany.Server = sapServer;
-            _oCompany.LicenseServer = sapLicense;
+            _oCompany.SLDServer = sapLicense;
 
             switch (dbServerType)
             {
@@ -249,7 +249,7 @@
             try
             {
                 StringBuilder query = new StringBuilder("SELECT COUNT(\"AliasID\") AS \"Count\" ");
-                query.Append(string.Format("FROM \"CUFD\" ",B1Company.CompanyDB));
+                query.Append(string.Format("FROM \"{0}\".\"CUFD\" ", B1Company.CompanyDB));
                 query.Append("WHERE \"AliasID\" ='{0}' AND \"TableID\" = '{1}'");
 
 
