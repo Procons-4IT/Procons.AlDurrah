@@ -46,6 +46,7 @@
         [HttpPost]
         public HttpResponseMessage CallKnetGateway([FromBody]Transaction transaction)
         {
+            transaction.TrackID = (new Random().Next(10000000) + 1).ToString();
             e24PaymentPipeCtlClass payment = new e24PaymentPipeCtlClass();
             payment.Action = "1";            // Purchase Transaction
             payment.Amt = transaction.Amount;          // The amount of purchase
@@ -53,7 +54,7 @@
             payment.Language = "USA";         // Payment Page Language
             payment.ResponseUrl = "http://localhost:59822/Response.aspx"; // Your response URL where you will be notified with of transaction response
             payment.ErrorUrl = "http://localhost:59822/Error.aspx"; //
-            payment.TrackId = (new Random().Next(10000000) + 1).ToString(); // You should create a new unique track ID for each transaction
+            payment.TrackId = transaction.TrackID; // You should create a new unique track ID for each transaction
             payment.ResourcePath = @"C:\Workspace\Resource\"; // Directory to your resource.cgn ending with \
             payment.Alias = "durra"; // Alias of the plug-in
             payment.Udf1 = "User Defined Field 1";
@@ -72,40 +73,50 @@
             varPaymentID = payment.PaymentId;
             varPaymentPage = payment.PaymentPage;
             varErrorMsg = payment.ErrorMsg;
+            transaction.PaymentID = varPaymentPage;
+            
             var response = Request.CreateResponse(HttpStatusCode.Moved);
             if (TransVal != 0)
             {
 
-              return  Request.CreateErrorResponse(HttpStatusCode.InternalServerError,"/Error");
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "/Error");
             }
             else
             {
-              return Request.CreateErrorResponse(HttpStatusCode.OK, varPaymentPage + "?PaymentID=" + varPaymentID);
+                workersFacade.CreateSalesOrder(transaction);
+                return Request.CreateResponse(HttpStatusCode.OK, varPaymentPage + "?PaymentID=" + varPaymentID);
             }
             
         }
 
         [HttpPost]
-        public HttpResponseMessage SubmitTransaction([FromBody]Transaction payment)
+        public HttpResponseMessage CreatePayment([FromBody]Transaction payment)
         {
             if (false)
             {
-
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error");
+                return null;
             }
             else
             {
+                workersFacade.SavePaymentDetails(payment);
                 return Request.CreateErrorResponse(HttpStatusCode.OK, "Transaction created successfully!!!");
             }
         }
 
         [HttpPost]
-        public IHttpActionResult GetWorkers([FromBody]Worker worker)
+        public IHttpActionResult GetAgentWorkers([FromBody]Worker worker)
         {
             var claims = ((ClaimsIdentity)User.Identity).Claims;
             var cardCode = claims.Where(x => x.Type == worker.Agent).FirstOrDefault().Value;
-            workersFacade.GetWorkers(cardCode);
+            workersFacade.GetAgentWorkers(cardCode);
             return Ok();
+        }
+
+        [HttpPost]
+        public IHttpActionResult GetWorkers([FromBody]Worker worker)
+        {
+            var workers = workersFacade.GetWorkers();
+            return Ok(workers);
         }
 
         [HttpPost]

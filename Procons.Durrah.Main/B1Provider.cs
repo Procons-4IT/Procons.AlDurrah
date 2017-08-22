@@ -10,6 +10,7 @@ namespace Procons.Durrah.Main
                 base.B1Company.StartTransaction();
          
                 base.AddTable("Workers", "Workers", SAPbobsCOM.BoUTBTableType.bott_MasterData);
+                base.AddField("ItemCode", "ItemCode", "Workers", SAPbobsCOM.BoFieldTypes.db_Alpha, 100, SAPbobsCOM.BoYesNoEnum.tNO, true);
                 base.AddField("Serial", "Serial", "Workers", SAPbobsCOM.BoFieldTypes.db_Alpha, 100, SAPbobsCOM.BoYesNoEnum.tNO, true);
                 base.AddField("Agent", "Agent", "Workers", SAPbobsCOM.BoFieldTypes.db_Alpha, 100, SAPbobsCOM.BoYesNoEnum.tNO, true);
                 base.AddField("BirthDate", "BirthDate", "Workers", SAPbobsCOM.BoFieldTypes.db_Date, SAPbobsCOM.BoYesNoEnum.tNO, true);

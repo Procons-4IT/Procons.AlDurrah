@@ -19,26 +19,28 @@
             return provider.DeleteWorker(id);
         }
 
-        public List<Worker> GetWorkers(string agent)
+        public List<Worker> GetAgentWorkers(string agent)
         {
             var dr = provider.GetWorkers(agent);
             var workersList = MappingHelper.FillCollection<Worker>(dr);
             return workersList;
         }
 
-         public void CreateArInvoice(Transaction trans)
+        public List<Worker> GetWorkers()
         {
-            provider.CreateArInvoice(trans);
+            var dr = provider.GetWorkers();
+            var workersList = MappingHelper.FillCollection<Worker>(dr);
+            return workersList;
         }
 
-        public void SubmitSalesOrder(string paymentId)
+        public double CreateSalesOrder(Transaction transaction)
         {
-            provider.CreateIncomingPayment(paymentId);
+            return provider.CreateSalesOrder(transaction);
         }
 
         public void SavePaymentDetails(Transaction trans)
         {
-            provider.CreateArInvoice(trans);
+            provider.CreateIncomingPayment(trans);
         }
     }
 }
