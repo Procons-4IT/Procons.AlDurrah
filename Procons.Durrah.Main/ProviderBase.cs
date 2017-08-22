@@ -18,7 +18,7 @@
             _oCompany = new Company();
             int checkConnected = -1;
             string sapServer = "saphana:30015";
-            string companyDB = "SBO_DEMOGB";
+            string companyDB = "ADSC_LIVE";
             string dbUsername = "SYSTEM";
             string dbPassword = "Pr0c0ns41t";
             string sapUsername = "manager";
@@ -253,7 +253,7 @@
                 query.Append("WHERE \"AliasID\" ='{0}' AND \"TableID\" = '{1}'");
 
 
-                recordsSet.DoQuery(string.Format(query.ToString(), fieldName, tableName));
+                recordsSet.DoQuery(string.Format(query.ToString(), fieldName, tableName.ToUpper()));
                 recordsSet.MoveFirst();
                 if (Convert.ToInt32(recordsSet.Fields.Item("Count").Value) > 0)
                     return true;

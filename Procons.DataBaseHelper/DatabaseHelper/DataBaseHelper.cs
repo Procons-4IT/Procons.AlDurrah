@@ -32,22 +32,31 @@
         }
         public DbDataReader ExecuteQuery(string query, Parameters parameters)
         {
-            var command = Connection.CreateCommand();
-            command.CommandText = query;
-            if (parameters != null)
+            try
             {
-                object param;
-                command.CommandType = CommandType.StoredProcedure;
-                foreach (KeyValuePair<string, object> kvp in parameters.paramsList)
+                var command = Connection.CreateCommand();
+                command.CommandText = query;
+                if (parameters != null)
                 {
-                    if (typeof(T).Equals(typeof(HanaConnection)))
-                        param = new HanaParameter(kvp.Key, kvp.Value);
-                    else
-                        param = new SqlParameter(kvp.Key, kvp.Value);
-                    command.Parameters.Add(param);
+                    object param;
+                    command.CommandType = CommandType.StoredProcedure;
+                    foreach (KeyValuePair<string, object> kvp in parameters.paramsList)
+                    {
+                        if (typeof(T).Equals(typeof(HanaConnection)))
+                            param = new HanaParameter(kvp.Key, kvp.Value);
+                        else
+                            param = new SqlParameter(kvp.Key, kvp.Value);
+                        command.Parameters.Add(param);
+                    }
                 }
+                return command.ExecuteReader();
             }
-            return command.ExecuteReader();
+            catch(Exception ex)
+            {
+                Connection.Close();
+                return null;
+            }
+
         }
         public DbDataReader ExecuteQuery(string query)
         {

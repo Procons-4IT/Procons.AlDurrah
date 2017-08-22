@@ -5,6 +5,10 @@ using Microsoft.Owin.Security.Jwt;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
 using Owin;
+using Procons.Durrah.Auth;
+using Procons.Durrah.Common;
+using Procons.Durrah.Facade;
+using Procons.Durrah.Providers;
 using System;
 using System.Configuration;
 using System.Linq;
@@ -12,10 +16,6 @@ using System.Net.Http.Formatting;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
-using Procons.Durrah.Auth;
-using Procons.Durrah.Common;
-using Procons.Durrah.Facade;
-using Procons.Durrah.Providers;
 
 [assembly: OwinStartup(typeof(Procons.Durrah.Startup))]
 namespace Procons.Durrah
@@ -25,8 +25,8 @@ namespace Procons.Durrah
         public void Configuration(IAppBuilder app)
         {
 
-            //B1Facade b1Facade = Factory.DeclareClass<B1Facade>();
-            //b1Facade.InitializeTables();
+            B1Facade b1Facade = Factory.DeclareClass<B1Facade>();
+            b1Facade.InitializeTables();
             HttpConfiguration httpConfig = new HttpConfiguration();
             RouteCollection routes = new RouteCollection();
             ConfigureRoutes(RouteTable.Routes);

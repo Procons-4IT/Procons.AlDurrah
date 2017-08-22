@@ -1,21 +1,17 @@
 ﻿namespace Procons.Durrah.Auth
 {
     using Common;
-    using Sap.Data.Hana;
-    using Main;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using Microsoft.AspNet.Identity.Owin;
     using Microsoft.Owin;
-    using System;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using System.Data.SqlClient;
-    using System.Data.Common;
-    using System.Data;
-    using System.Security.Claims;
     using Procons.DataBaseHelper;
+    using Sap.Data.Hana;
+    using System;
     using System.Configuration;
+    using System.Data.SqlClient;
+    using System.Security.Claims;
+    using System.Threading.Tasks;
 
     public class ApplicationUserManager : UserManager<ApplicationUser>
     {
@@ -64,11 +60,9 @@
 
         public override Task<ApplicationUser> FindAsync(string userName, string password)
         {
-            var dbHelper = Factory.DeclareClass<DatabaseHelper<SqlConnection>>();
+            var dbHelper = Factory.DeclareClass<DatabaseHelper<HanaConnection>>();
             dbHelper.ConnectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ToString();
-            //var result = new DataTable();
-            //result.Load(dbHelper.ExecuteQuery(string.Format("SELECT * FROM \"TAQNIA_010817\".\"OCRD\" WHERE \"empID\"={0}", userName)));
-            SqlDataReader result = dbHelper.ExecuteQuery(string.Format("SELECT * FROM OCRD WHERE CardCode='{0}'", userName)) as SqlDataReader;
+            var result = dbHelper.ExecuteQuery(string.Format("SELECT * FROM \"{0}\".\"OCRD\" WHERE \"CardCode\"='{1}'", ConfigurationManager.AppSettings["DatabaseName"], userName));
             ApplicationUser user = null;
             while (result.Read())
             {

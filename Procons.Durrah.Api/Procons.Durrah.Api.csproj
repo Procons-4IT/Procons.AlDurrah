@@ -259,6 +259,11 @@
     <Content Include="ClientApp\app\SharedComponents\gv-control\gv-control.component.html" />
     <Content Include="ClientApp\app\shared\ingredient.model.js" />
     <Content Include="ClientApp\favicon.ico" />
+    <Content Include="dist\fontawesome-webfont.svg" />
+    <Content Include="dist\glyphicons-halflings-regular.svg" />
+    <Content Include="dist\MainClient.js" />
+    <Content Include="dist\vendor.css" />
+    <Content Include="dist\vendor.js" />
     <Content Include="helpers.js" />
     <Content Include="packages.config" />
     <Content Include="package.json" />
@@ -308,6 +313,11 @@
     <Content Include="Assets\src\app\libraries\font-awesome\scss\_screen-reader.scss" />
     <Content Include="Assets\src\app\libraries\font-awesome\scss\_stacked.scss" />
     <Content Include="Assets\src\app\libraries\font-awesome\scss\_variables.scss" />
+    <Content Include="dist\fontawesome-webfont.eot" />
+    <Content Include="dist\fontawesome-webfont.ttf" />
+    <Content Include="dist\MainClient.js.map" />
+    <Content Include="dist\vendor.css.map" />
+    <Content Include="dist\vendor.js.map" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Views\Main\Index.cshtml" />
     <Content Include="tsconfig.json" />
@@ -359,7 +369,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="dist\" />
     <Folder Include="Views\Workers\" />
   </ItemGroup>
   <ItemGroup>
