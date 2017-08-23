@@ -13,9 +13,11 @@ using System;
 using System.Configuration;
 using System.Linq;
 using System.Net.Http.Formatting;
+using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
+using System.Web.SessionState;
 
 [assembly: OwinStartup(typeof(Procons.Durrah.Startup))]
 namespace Procons.Durrah
@@ -24,9 +26,11 @@ namespace Procons.Durrah
     {
         public void Configuration(IAppBuilder app)
         {
+            HttpContext.Current.SetSessionStateBehavior(SessionStateBehavior.Required);//USED TO ENABLE SESSION
 
             B1Facade b1Facade = Factory.DeclareClass<B1Facade>();
             b1Facade.InitializeTables();
+
             HttpConfiguration httpConfig = new HttpConfiguration();
             RouteCollection routes = new RouteCollection();
             ConfigureRoutes(RouteTable.Routes);

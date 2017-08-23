@@ -2,19 +2,24 @@
 {
     using Common;
     using DataBaseHelper;
+    using Procons.Durrah.Main.B1ServiceLayer.SAPB1;
+    using Sap.Data.Hana;
     using SAPbobsCOM;
     using System;
+    using System.Collections.Generic;
     using System.Data.Common;
+    using System.Data.Services.Client;
     using System.Data.SqlClient;
+    using System.Linq;
     using System.Runtime.InteropServices;
 
     public class WorkersProvider : ProviderBase
     {
-        DatabaseHelper<SqlConnection> dbHelper = Factory.DeclareClass<DatabaseHelper<SqlConnection>>();
+        DatabaseHelper<HanaConnection> dbHelper = Factory.DeclareClass<DatabaseHelper<HanaConnection>>();
         public bool CreateWorker(Worker worker)
         {
-            var conn = Factory.DeclareClass<DatabaseHelper<SqlConnection>>();
-            SqlTransaction transaction = null;
+            var conn = Factory.DeclareClass<DatabaseHelper<HanaConnection>>();
+            HanaTransaction transaction = null;
             var created = false;
             try
             {
@@ -51,90 +56,113 @@
             return created;
         }
 
-        public DbDataReader GetWorkers([Optional]string agent)
+        public List<Worker> GetWorkers([Optional]string agent)
         {
-            DbDataReader result = null;
-            var query = string.Empty;// "SELECT * FROM [@Workers] WHERE \"U_Agent\"='{0}'";
-            if (agent != null)
-                query = "SELECT * FROM [@Workers] WHERE \"U_Agent\"='{0}'";
-            else
-                query = "SELECT * FROM [@Workers]";
+            var ServiceInstance = ServiceLayerProvider.GetInstance();
+            var workers = ServiceInstance.GetWorkers();
+            List<Worker> workersList = new List<Worker>();
+            foreach (var w in workers)
+            {
+                workersList.Add(
+                    new Worker()
+                    {
+                        Agent = w.U_Agent,
+                        BirthDate = w.U_BirthDate.ToString(),
+                        CivilId = w.U_CivilId,
+                        Code = w.Code,
+                        Education = w.U_Education,
+                        Gender = w.U_Gender,
+                        Height = w.U_Height,
+                        Language = w.U_Language,
+                        MaritalStatus = w.U_MaritalStatus,
+                        Nationality = w.U_Nationality,
+                        Passport = w.U_Passport,
+                        PassportExpDate = w.U_PassportExpDate,
+                        PassportIssDate = w.U_PassportPoIssue,
+                        PassportNumber = w.U_PassportNumber,
+                        PassportPoIssue = w.U_PassportPoIssue,
+                        Photo = w.U_Photo,
+                        Religion = w.U_Religion,
+                        SerialNumber = w.U_Serial,
+                        Status = w.U_Status,
+                        Video = w.U_Video,
+                        Weight = w.U_Weight.ToString()
+                    }
+                    );
+            }
+            return workersList;
+        }
+
+        public double? CreateSalesOrder(Transaction trans)
+        {
+            ServiceLayerProvider instance = ServiceLayerProvider.GetInstance();
+            Document salesOrder = new Document();
+            DocumentLine salesOrderLine = new DocumentLine();
+            SerialNumber dserialNum = new SerialNumber();
+
+            double? returnResult = 0;
             try
             {
-                result = dbHelper.ExecuteQuery(query);
+                var serialDetails = instance.CurrentServicelayerInstance.SerialNumberDetails.Where(x => x.SerialNumber == trans.SerialNumber && x.ItemCode == trans.Code).FirstOrDefault();
+                salesOrder.CardCode = trans.CardCode;
+                salesOrder.U_PaymentID = trans.PaymentID;
+                salesOrder.U_Auth = trans.Auth;
+                salesOrder.U_TrackID = trans.TrackID;
+                salesOrder.U_Ref = trans.Ref;
+                salesOrder.DocDueDate = DateTime.Now;
+
+                salesOrderLine.ItemCode = trans.Code;
+                dserialNum.SystemSerialNumber = serialDetails.SystemNumber;
+                salesOrderLine.SerialNumbers.Add(dserialNum);
+                salesOrder.DocumentLines.Add(salesOrderLine);
+
+                instance.CurrentServicelayerInstance.AddToOrders(salesOrder);
+                var resultOrder = instance.CurrentServicelayerInstance.SaveChanges();
+
+                if (null != resultOrder)
+                {
+                    ChangeOperationResponse opRes = (ChangeOperationResponse)resultOrder.SingleOrDefault();
+                    object retDoc = ((System.Data.Services.Client.EntityDescriptor)(opRes.Descriptor)).Entity;
+                    if (null != retDoc)
+                    {
+                        returnResult = ((Document)retDoc).DocTotal;
+                    }
+                    else
+                        returnResult = 0;
+                }
             }
             catch (Exception ex)
             {
-                return null;
+                instance.CurrentServicelayerInstance.Detach(salesOrder);
             }
-            return result;
-        }
 
-        public double CreateSalesOrder(Transaction trans)
-        {
-            base.B1Company.StartTransaction();
-              
-            var oSales = base.B1Company.GetBusinessObject(BoObjectTypes.oOrders) as Documents;
-            oSales.CardCode = trans.CardCode;
-            oSales.UserFields.Fields.Item("U_PaymentID").Value = trans.PaymentID;
-            oSales.DocObjectCode = BoObjectTypes.oOrders;
-            oSales.Lines.ItemCode = trans.Code;
-            oSales.Lines.SerialNumbers.InternalSerialNumber = trans.SerialNumber;
-            oSales.Lines.SerialNumbers.ManufacturerSerialNumber = trans.SerialNumber;
-            int result = oSales.Add();
-            if (result == 0)
-            {
-                return oSales.DocTotal;
-            }
-            else
-            {
-                var err = base.B1Company.GetLastErrorDescription();
-                return 0;
-            }
+            return returnResult;
         }
 
         public void CreateIncomingPayment(Transaction trans)
         {
             try
             {
-                if (base.B1Company.InTransaction)
-                {
-                }
+                //ServiceLayerProvider instance = ServiceLayerProvider.GetInstance();
 
-                else
-                    base.B1Company.StartTransaction();
+
+                base.B1Company.StartTransaction();
                 var salesOrder = GetSalesOrder(trans.PaymentID);
-
-                Documents oDoc = base.B1Company.GetBusinessObject(BoObjectTypes.oInvoices) as Documents;
-                oDoc.CardCode = salesOrder.CardCode;
-                oDoc.Lines.BaseEntry = salesOrder.Lines.DocEntry;
-                oDoc.Lines.BaseLine = salesOrder.Lines.LineNum;          
-                oDoc.Lines.BaseType = 17;
-                oDoc.Lines.Quantity = 1;
-                oDoc.Lines.UnitPrice = salesOrder.Lines.UnitPrice;
-                oDoc.Lines.SerialNumbers.InternalSerialNumber=  salesOrder.Lines.SerialNumbers.InternalSerialNumber;
-                oDoc.Lines.SerialNumbers.ManufacturerSerialNumber = salesOrder.Lines.SerialNumbers.ManufacturerSerialNumber;
-                oDoc.Lines.SerialNumbers.SystemSerialNumber = salesOrder.Lines.SerialNumbers.SystemSerialNumber;
-
-                int RetCode = oDoc.Add();
-                if (RetCode != 0)
+                if (salesOrder != null)
                 {
-                    if (base.B1Company.InTransaction)
-                        base.B1Company.EndTransaction(BoWfTransOpt.wf_RollBack);
-                    var err = base.B1Company.GetLastErrorDescription();
-                }
-                else
-                {
-                    var InvoiceNo = base.B1Company.GetNewObjectKey();
-                    var oPay = base.B1Company.GetBusinessObject(BoObjectTypes.oIncomingPayments) as Payments;
-                    oPay.CardCode = salesOrder.CardCode;
-                    oPay.Invoices.DocEntry = Convert.ToInt32(InvoiceNo);
-                    //if (trans.Amount != null)
-                    //    oPay.CashSum = oDoc.DocTotal;
-                    var test = oDoc.DocTotal;
-                    oPay.CashSum = oDoc.Lines.UnitPrice * oDoc.Lines.Quantity;
-                    int RetCode1 = oPay.Add();
-                    if (RetCode1 != 0)
+                    Documents oDoc = base.B1Company.GetBusinessObject(BoObjectTypes.oInvoices) as Documents;
+                    oDoc.CardCode = salesOrder.CardCode;
+                    oDoc.Lines.BaseEntry = salesOrder.Lines.DocEntry;
+                    oDoc.Lines.BaseLine = salesOrder.Lines.LineNum;
+                    oDoc.Lines.BaseType = 17;
+                    oDoc.Lines.Quantity = 1;
+                    oDoc.Lines.UnitPrice = salesOrder.Lines.UnitPrice;
+                    oDoc.Lines.SerialNumbers.InternalSerialNumber = salesOrder.Lines.SerialNumbers.InternalSerialNumber;
+                    oDoc.Lines.SerialNumbers.ManufacturerSerialNumber = salesOrder.Lines.SerialNumbers.ManufacturerSerialNumber;
+                    oDoc.Lines.SerialNumbers.SystemSerialNumber = salesOrder.Lines.SerialNumbers.SystemSerialNumber;
+
+                    int RetCode = oDoc.Add();
+                    if (RetCode != 0)
                     {
                         if (base.B1Company.InTransaction)
                             base.B1Company.EndTransaction(BoWfTransOpt.wf_RollBack);
@@ -142,10 +170,28 @@
                     }
                     else
                     {
-                        if (base.B1Company.InTransaction)
-                            base.B1Company.EndTransaction(BoWfTransOpt.wf_Commit);
+                        var InvoiceNo = base.B1Company.GetNewObjectKey();
+                        var oPay = base.B1Company.GetBusinessObject(BoObjectTypes.oIncomingPayments) as Payments;
+                        oPay.CardCode = salesOrder.CardCode;
+                        oPay.Invoices.DocEntry = Convert.ToInt32(InvoiceNo);
+
+                        var test = oDoc.DocTotal;
+                        oPay.CashSum = oDoc.Lines.UnitPrice * oDoc.Lines.Quantity;
+                        int RetCode1 = oPay.Add();
+                        if (RetCode1 != 0)
+                        {
+                            if (base.B1Company.InTransaction)
+                                base.B1Company.EndTransaction(BoWfTransOpt.wf_RollBack);
+                            var err = base.B1Company.GetLastErrorDescription();
+                        }
+                        else
+                        {
+                            if (base.B1Company.InTransaction)
+                                base.B1Company.EndTransaction(BoWfTransOpt.wf_Commit);
+                        }
                     }
                 }
+
             }
             catch (Exception ex)
             {

@@ -73,7 +73,7 @@
             varPaymentID = payment.PaymentId;
             varPaymentPage = payment.PaymentPage;
             varErrorMsg = payment.ErrorMsg;
-            transaction.PaymentID = varPaymentPage;
+            transaction.PaymentID = varPaymentID;
             
             var response = Request.CreateResponse(HttpStatusCode.Moved);
             if (TransVal != 0)

@@ -15,8 +15,11 @@
         {
             get
             {
-                _connection = _connection == null ? (T)Activator.CreateInstance(typeof(T), ConnectionString) : _connection;
-                _connection.Open();
+                if (_connection == null)
+                {
+                    _connection = (T)Activator.CreateInstance(typeof(T), ConnectionString);
+                    _connection.Open();
+                }
                 return _connection;
             }
         }

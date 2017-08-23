@@ -38,6 +38,7 @@ namespace Procons.Durrah.Main
                 base.AddField("Auth", "Payment Auth", "ORDR", SAPbobsCOM.BoFieldTypes.db_Alpha, 20, SAPbobsCOM.BoYesNoEnum.tNO, false);
                 base.AddField("Ref", "Payment Ref", "ORDR", SAPbobsCOM.BoFieldTypes.db_Alpha, 20, SAPbobsCOM.BoYesNoEnum.tNO, false);
                 base.AddField("TrackID", "Payment TrackID", "ORDR", SAPbobsCOM.BoFieldTypes.db_Alpha, 20, SAPbobsCOM.BoYesNoEnum.tNO, false);
+                base.AddField("Status", "Payment Status", "ORDR", SAPbobsCOM.BoFieldTypes.db_Alpha, 20, SAPbobsCOM.BoYesNoEnum.tNO, false);
 
                 base.B1Company.EndTransaction(SAPbobsCOM.BoWfTransOpt.wf_Commit);
             }

@@ -21,19 +21,19 @@
 
         public List<Worker> GetAgentWorkers(string agent)
         {
-            var dr = provider.GetWorkers(agent);
-            var workersList = MappingHelper.FillCollection<Worker>(dr);
+            var workersList = provider.GetWorkers(agent);
+            //var workersList = MappingHelper.FillCollection<Worker>(dr);
             return workersList;
         }
 
         public List<Worker> GetWorkers()
         {
-            var dr = provider.GetWorkers();
-            var workersList = MappingHelper.FillCollection<Worker>(dr);
+            var workersList = provider.GetWorkers();
+            //var workersList = MappingHelper.FillCollection<Worker>(dr);
             return workersList;
         }
 
-        public double CreateSalesOrder(Transaction transaction)
+        public double? CreateSalesOrder(Transaction transaction)
         {
             return provider.CreateSalesOrder(transaction);
         }
