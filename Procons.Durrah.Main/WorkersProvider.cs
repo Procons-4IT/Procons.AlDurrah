@@ -58,6 +58,7 @@
 
         public List<Worker> GetWorkers([Optional]string agent)
         {
+
             var ServiceInstance = ServiceLayerProvider.GetInstance();
             var workers = ServiceInstance.GetWorkers();
             List<Worker> workersList = new List<Worker>();
@@ -95,7 +96,7 @@
 
         public double? CreateSalesOrder(Transaction trans)
         {
-            ServiceLayerProvider instance = ServiceLayerProvider.GetInstance();
+            ServiceLayerProvider instance =  ServiceLayerProvider.GetInstance();
             Document salesOrder = new Document();
             DocumentLine salesOrderLine = new DocumentLine();
             SerialNumber dserialNum = new SerialNumber();
@@ -139,8 +140,9 @@
             return returnResult;
         }
 
-        public void CreateIncomingPayment(Transaction trans)
+        public bool CreateIncomingPayment(Transaction trans)
         {
+            bool creationResult = false;
             try
             {
                 //ServiceLayerProvider instance = ServiceLayerProvider.GetInstance();
@@ -167,6 +169,7 @@
                         if (base.B1Company.InTransaction)
                             base.B1Company.EndTransaction(BoWfTransOpt.wf_RollBack);
                         var err = base.B1Company.GetLastErrorDescription();
+
                     }
                     else
                     {
@@ -188,10 +191,11 @@
                         {
                             if (base.B1Company.InTransaction)
                                 base.B1Company.EndTransaction(BoWfTransOpt.wf_Commit);
+                            creationResult = true;
                         }
                     }
                 }
-
+                return creationResult;
             }
             catch (Exception ex)
             {

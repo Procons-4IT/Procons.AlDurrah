@@ -38,9 +38,9 @@
             return provider.CreateSalesOrder(transaction);
         }
 
-        public void SavePaymentDetails(Transaction trans)
+        public bool SavePaymentDetails(Transaction trans)
         {
-            provider.CreateIncomingPayment(trans);
+           return provider.CreateIncomingPayment(trans);
         }
     }
 }

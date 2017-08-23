@@ -10,6 +10,7 @@
     using System.Web.Http;
     using System.Linq;
     using Facade;
+    using System.Web;
 
     public class LookupItem
     {
@@ -92,15 +93,12 @@
         [HttpPost]
         public HttpResponseMessage CreatePayment([FromBody]Transaction payment)
         {
-            if (false)
-            {
-                return null;
-            }
+
+            var result = workersFacade.SavePaymentDetails(payment);
+            if (result)
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Transaction failed!!!");
             else
-            {
-                workersFacade.SavePaymentDetails(payment);
-                return Request.CreateErrorResponse(HttpStatusCode.OK, "Transaction created successfully!!!");
-            }
+                return Request.CreateResponse(HttpStatusCode.OK, "Transaction created successfully!!!");
         }
 
         [HttpPost]
@@ -114,7 +112,7 @@
 
         [HttpPost]
         public IHttpActionResult GetWorkers([FromBody]Worker worker)
-        {
+        { 
             var workers = workersFacade.GetWorkers();
             return Ok(workers);
         }

@@ -13,6 +13,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using Procons.Durrah.Common;
 using Procons.Durrah.Main.B1ServiceLayer.SAPB1;
+using System.Web;
 
 namespace Procons.Durrah.Main
 {
@@ -87,17 +88,43 @@ namespace Procons.Durrah.Main
         //Singleton
         public static ServiceLayerProvider GetInstance()
         {
-            if (null == s_Instance)
-            {
-                var creds = new SboCred(Utilities.GetConfigurationValue("UserName"),
-                    Utilities.GetConfigurationValue("Password"),
-                    Utilities.GetConfigurationValue("DatabaseName"));
-                s_Instance = new ServiceLayerProvider();
-                s_Instance.InitServiceContainer(Utilities.GetConfigurationValue("ServiceLayer"));
-                s_Instance.LoginServer(creds);
-            }
+            ServiceLayerProvider instance = null;
+                if (HttpContext.Current.Session["ServiceLayer"] != null)
+                {
+                instance = (ServiceLayerProvider)HttpContext.Current.Session["ServiceLayer"];
+                }
+                else
+                {
+                    var creds = new SboCred(Utilities.GetConfigurationValue("UserName"),
+                                            Utilities.GetConfigurationValue("Password"),
+                                            Utilities.GetConfigurationValue("DatabaseName"));
+                instance = new ServiceLayerProvider();
+                instance.InitServiceContainer(Utilities.GetConfigurationValue("ServiceLayer"));
+                instance.LoginServer(creds);
+                    HttpContext.Current.Session["ServiceLayer"] = instance;
+                }
 
-            return s_Instance;
+            return instance;
+            //if (s_Instance == null)
+            //{
+            //    if (HttpContext.Current.Session["ServiceLayer"] != null)
+            //    {
+            //        s_Instance = (ServiceLayerProvider)HttpContext.Current.Session["ServiceLayer"];
+            //    }
+            //    else
+            //    {
+            //        var creds = new SboCred(Utilities.GetConfigurationValue("UserName"),
+            //                                Utilities.GetConfigurationValue("Password"),
+            //                                Utilities.GetConfigurationValue("DatabaseName"));
+            //        s_Instance = new ServiceLayerProvider();
+            //        s_Instance.InitServiceContainer(Utilities.GetConfigurationValue("ServiceLayer"));
+            //        s_Instance.LoginServer(creds);
+            //        HttpContext.Current.Session["ServiceLayer"] = s_Instance;
+            //    }
+
+            //}
+
+            //return s_Instance;
         }
 
         public ServiceLayer CurrentServicelayerInstance
@@ -108,14 +135,14 @@ namespace Procons.Durrah.Main
             }
         }
 
-        private ServiceLayerProvider()
+        public ServiceLayerProvider()
         {
-
+ 
         }
 
         public string B1Session { get { return strCurrentSessionGUID; } }
 
-        private static ServiceLayerProvider s_Instance = null;                       //Singleton
+        private ServiceLayerProvider s_Instance = null;                       //Singleton
         private string strCurrentServerURL = string.Empty;                          //Hold the service URL
         private string strCurrentSessionGUID = string.Empty;                        //Hold the session ID
         private string strCurrentRouteIDString = string.Empty;
