@@ -56,6 +56,7 @@
             return created;
         }
 
+
         public List<Worker> GetWorkers([Optional]string agent)
         {
 
@@ -96,7 +97,7 @@
 
         public double? CreateSalesOrder(Transaction trans)
         {
-            ServiceLayerProvider instance =  ServiceLayerProvider.GetInstance();
+            var instance =  ServiceLayerProvider.GetInstance();
             Document salesOrder = new Document();
             DocumentLine salesOrderLine = new DocumentLine();
             SerialNumber dserialNum = new SerialNumber();

@@ -28,11 +28,9 @@ namespace Procons.Durrah
         {
             HttpContext.Current.SetSessionStateBehavior(SessionStateBehavior.Required);//USED TO ENABLE SESSION
 
-            B1Facade b1Facade = Factory.DeclareClass<B1Facade>();
-            b1Facade.InitializeTables();
-
             HttpConfiguration httpConfig = new HttpConfiguration();
             RouteCollection routes = new RouteCollection();
+
             ConfigureRoutes(RouteTable.Routes);
             ConfigureOAuthTokenGeneration(app);
             ConfigureOAuthTokenConsumption(app);
@@ -40,8 +38,6 @@ namespace Procons.Durrah
             ConfigureWebApi(httpConfig);
             app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
             app.UseWebApi(httpConfig);
-            
-
         }
 
         private void ConfigureOAuthTokenGeneration(IAppBuilder app)

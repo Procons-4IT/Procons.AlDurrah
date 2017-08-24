@@ -1,22 +1,21 @@
-﻿using Microsoft.Data.OData;
-//NewtonSoft, Json.Net
-using Newtonsoft.Json;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Services.Client;
-using System.Linq;
-using System.Net;
-using System.Net.Security;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using Procons.Durrah.Common;
-using Procons.Durrah.Main.B1ServiceLayer.SAPB1;
-using System.Web;
-
-namespace Procons.Durrah.Main
+﻿namespace Procons.Durrah.Main
 {
+    using Microsoft.Data.OData;
+    using Newtonsoft.Json;
+    using Procons.Durrah.Common;
+    using Procons.Durrah.Main.B1ServiceLayer.SAPB1;
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Data.Services.Client;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Security;
+    using System.Security.Cryptography.X509Certificates;
+    using System.Text;
+    using System.Web;
+
     //Object used by Json.Net to format json string, as content in POST/Login action.
     class SboCred
     {

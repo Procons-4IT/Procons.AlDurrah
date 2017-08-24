@@ -1,51 +1,46 @@
-﻿using System;
-namespace Procons.Durrah.Main
+﻿namespace Procons.Durrah.Main
 {
+    using System;
+    using System.Data.Services.Client;
+
     public class B1Provider : ProviderBase
     {
         public void InitializeTables()
         {
             try
             {
-                base.B1Company.StartTransaction();
-         
-                base.AddTable("Workers", "Workers", SAPbobsCOM.BoUTBTableType.bott_MasterData);
-                base.AddField("ItemCode", "ItemCode", "Workers", SAPbobsCOM.BoFieldTypes.db_Alpha, 100, SAPbobsCOM.BoYesNoEnum.tNO, true);
-                base.AddField("Serial", "Serial", "Workers", SAPbobsCOM.BoFieldTypes.db_Alpha, 100, SAPbobsCOM.BoYesNoEnum.tNO, true);
-                base.AddField("Agent", "Agent", "Workers", SAPbobsCOM.BoFieldTypes.db_Alpha, 100, SAPbobsCOM.BoYesNoEnum.tNO, true);
-                base.AddField("BirthDate", "BirthDate", "Workers", SAPbobsCOM.BoFieldTypes.db_Date, SAPbobsCOM.BoYesNoEnum.tNO, true);
-                base.AddField("Gender", "Gender", "Workers", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoYesNoEnum.tNO, true);
-                base.AddField("Nationality", "Nationality", "Workers", SAPbobsCOM.BoFieldTypes.db_Alpha, 100, SAPbobsCOM.BoYesNoEnum.tNO, true);
-                base.AddField("Religion", "Religion", "Workers", SAPbobsCOM.BoFieldTypes.db_Alpha, 100, SAPbobsCOM.BoYesNoEnum.tNO, true);
-                base.AddField("MaritalStatus", "MaritalStatus", "Workers", SAPbobsCOM.BoFieldTypes.db_Alpha, 100, SAPbobsCOM.BoYesNoEnum.tNO, true);
-                base.AddField("Language", "Language", "Workers", SAPbobsCOM.BoFieldTypes.db_Alpha, 100, SAPbobsCOM.BoYesNoEnum.tNO, true);
-                base.AddField("Photo", "Photo", "Workers", SAPbobsCOM.BoFieldTypes.db_Alpha, 200, SAPbobsCOM.BoYesNoEnum.tNO, true);
-                base.AddField("Weight", "Weight", "Workers", SAPbobsCOM.BoFieldTypes.db_Numeric, SAPbobsCOM.BoYesNoEnum.tNO, true);
-                base.AddField("Height", "Height", "Workers", SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoYesNoEnum.tNO, true);
-                base.AddField("Education", "Education", "Workers", SAPbobsCOM.BoFieldTypes.db_Alpha, 100, SAPbobsCOM.BoYesNoEnum.tNO, true);
-                base.AddField("Passport", "Passport", "Workers", SAPbobsCOM.BoFieldTypes.db_Alpha, 200, SAPbobsCOM.BoYesNoEnum.tNO, true);
-                base.AddField("Video", "Video", "Workers", SAPbobsCOM.BoFieldTypes.db_Alpha, 250, SAPbobsCOM.BoYesNoEnum.tNO, true);
-                base.AddField("PassportNumber", "PassportNumber", "Workers", SAPbobsCOM.BoFieldTypes.db_Alpha, 100, SAPbobsCOM.BoYesNoEnum.tNO, true);
-                base.AddField("PassportIssDate", "PassportIssDate", "Workers", SAPbobsCOM.BoFieldTypes.db_Date, SAPbobsCOM.BoYesNoEnum.tNO, true);
-                base.AddField("PassportExpDate", "PassportExpDate", "Workers", SAPbobsCOM.BoFieldTypes.db_Alpha, 100, SAPbobsCOM.BoYesNoEnum.tNO, true);
-                base.AddField("PassportPoIssue", "PassportPoIssue", "Workers", SAPbobsCOM.BoFieldTypes.db_Alpha, 100, SAPbobsCOM.BoYesNoEnum.tNO, true);
-                base.AddField("CivilId", "CivilId", "Workers", SAPbobsCOM.BoFieldTypes.db_Alpha, 100, SAPbobsCOM.BoYesNoEnum.tNO, true);
-                base.AddField("Status", "Status", "Workers", SAPbobsCOM.BoFieldTypes.db_Alpha, 100, SAPbobsCOM.BoYesNoEnum.tNO, true);
-
-                base.AddField("PaymentID", "Payment Id", "ORDR", SAPbobsCOM.BoFieldTypes.db_Alpha, 100, SAPbobsCOM.BoYesNoEnum.tNO, false);
-                base.AddField("Result", "Payment Result", "ORDR", SAPbobsCOM.BoFieldTypes.db_Alpha, 20, SAPbobsCOM.BoYesNoEnum.tNO, false);
-                base.AddField("TranID", "Payment TranID", "ORDR", SAPbobsCOM.BoFieldTypes.db_Alpha, 20, SAPbobsCOM.BoYesNoEnum.tNO, false);
-                base.AddField("Auth", "Payment Auth", "ORDR", SAPbobsCOM.BoFieldTypes.db_Alpha, 20, SAPbobsCOM.BoYesNoEnum.tNO, false);
-                base.AddField("Ref", "Payment Ref", "ORDR", SAPbobsCOM.BoFieldTypes.db_Alpha, 20, SAPbobsCOM.BoYesNoEnum.tNO, false);
-                base.AddField("TrackID", "Payment TrackID", "ORDR", SAPbobsCOM.BoFieldTypes.db_Alpha, 20, SAPbobsCOM.BoYesNoEnum.tNO, false);
-                base.AddField("Status", "Payment Status", "ORDR", SAPbobsCOM.BoFieldTypes.db_Alpha, 20, SAPbobsCOM.BoYesNoEnum.tNO, false);
-
-                base.B1Company.EndTransaction(SAPbobsCOM.BoWfTransOpt.wf_Commit);
+                var instance = ServiceLayerProvider.GetInstance();
+                base.AddTableSL("WORKERS", "WORKERS", SAPbobsCOM.BoUTBTableType.bott_MasterData);
+                base.AddFieldSL("ItemCode", "ItemCode", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
+                base.AddFieldSL("Serial", "Serial", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
+                base.AddFieldSL("Agent", "Agent", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
+                base.AddFieldSL("BirthDate", "BirthDate", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Date.ToString(), SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
+                base.AddFieldSL("Gender", "Gender", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
+                base.AddFieldSL("Nationality", "Nationality", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
+                base.AddFieldSL("Religion", "Religion", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
+                base.AddFieldSL("MaritalStatus", "MaritalStatus", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
+                base.AddFieldSL("Language", "Language", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
+                base.AddFieldSL("Photo", "Photo", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 200, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
+                base.AddFieldSL("Weight", "Weight", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Numeric.ToString(), SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
+                base.AddFieldSL("Height", "Height", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
+                base.AddFieldSL("Education", "Education", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
+                base.AddFieldSL("Passport", "Passport", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 200, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
+                base.AddFieldSL("Video", "Video", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 250, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
+                base.AddFieldSL("PassportNumber", "PassportNumber", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
+                base.AddFieldSL("PassportIssDate", "PassportIssDate", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Date.ToString(), SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
+                base.AddFieldSL("PassportExpDate", "PassportExpDate", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
+                base.AddFieldSL("PassportPoIssue", "PassportPoIssue", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
+                base.AddFieldSL("CivilId", "CivilId", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
+                base.AddFieldSL("Status", "Status", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
+                DataServiceResponse response = ServiceLayerProvider.GetInstance().CurrentServicelayerInstance.SaveChanges();
             }
             catch (Exception ex)
             {
                 base.B1Company.EndTransaction(SAPbobsCOM.BoWfTransOpt.wf_RollBack);
             }
+
+            
         }
+
     }
 }

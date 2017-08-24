@@ -13,6 +13,8 @@ namespace Procons.Durrah.Api.Controllers
         // GET: Main
         public ActionResult Index()
         {
+            B1Facade b1Facade = Factory.DeclareClass<B1Facade>();
+            b1Facade.InitializeTables();
             return View();
         }
     }

@@ -110,7 +110,7 @@
             return Ok();
         }
 
-        [HttpPost]
+        [HttpGet]
         public IHttpActionResult GetWorkers([FromBody]Worker worker)
         { 
             var workers = workersFacade.GetWorkers();
