@@ -10,13 +10,14 @@
     using Procons.Durrah.Auth;
     using Procons.Durrah.Common;
     using Procons.Durrah.Models;
+    using Procons.Durrah.Facade;
 
     [ApplicationExceptionFilter]
     [RoutePrefix("api/accounts")]
     public class AccountsController : BaseApiController
     {
 
-        [Authorize(Roles="Admin")]
+        [Authorize(Roles = "Admin")]
         [Route("users")]
         public IHttpActionResult GetUsers()
         {
@@ -160,10 +161,10 @@
             }
 
             return NotFound();
-          
+
         }
 
-        [Authorize(Roles="Admin")]
+        [Authorize(Roles = "Admin")]
         [Route("user/{id:guid}/roles")]
         [HttpPut]
         public async Task<IHttpActionResult> AssignRolesToUser([FromUri] string id, [FromBody] string[] rolesToAssign)
@@ -175,12 +176,13 @@
             {
                 return NotFound();
             }
-            
+
             var currentRoles = await this.AppUserManager.GetRolesAsync(appUser.Id);
 
             var rolesNotExists = rolesToAssign.Except(this.AppRoleManager.Roles.Select(x => x.Name)).ToArray();
 
-            if (rolesNotExists.Count() > 0) {
+            if (rolesNotExists.Count() > 0)
+            {
 
                 ModelState.AddModelError("", string.Format("Roles '{0}' does not exixts in the system", string.Join(",", rolesNotExists)));
                 return BadRequest(ModelState);
@@ -265,13 +267,5 @@
 
             return Ok();
         }
-
-
-        [HttpGet]
-        public IHttpActionResult Test()
-        {
-            throw new Exception("done");
-        }
-
     }
 }

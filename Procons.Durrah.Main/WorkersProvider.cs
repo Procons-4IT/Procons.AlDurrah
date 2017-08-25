@@ -18,20 +18,42 @@
         DatabaseHelper<HanaConnection> dbHelper = Factory.DeclareClass<DatabaseHelper<HanaConnection>>();
         public bool CreateWorker(Worker worker)
         {
-            var conn = Factory.DeclareClass<DatabaseHelper<HanaConnection>>();
-            HanaTransaction transaction = null;
             var created = false;
+            var _serviceInstance = ServiceLayerProvider.GetInstance();
+            var _worker = new WORKERS();
+            _worker.Code = Guid.NewGuid().ToString();
+            _worker.U_Agent = worker.Agent;
+            _worker.U_BirthDate = Convert.ToDateTime(worker.BirthDate);
+            _worker.U_CivilId = worker.CivilId;
+            _worker.U_ItemCode = worker.Code;
+            _worker.U_Education = worker.Education;
+            _worker.U_Gender = worker.Gender;
+            _worker.U_Height = worker.Height;
+            _worker.U_Language = worker.Language;
+            _worker.U_MaritalStatus = worker.MaritalStatus;
+            _worker.U_Nationality = worker.Nationality;
+            _worker.U_Passport = worker.Passport;
+            _worker.U_PassportExpDate = worker.PassportExpDate;
+            _worker.U_PassportPoIssue = worker.PassportIssDate;
+            _worker.U_PassportNumber = worker.PassportNumber;
+            _worker.U_PassportPoIssue = worker.PassportPoIssue;
+            _worker.U_Photo = worker.Photo;
+            _worker.U_Religion = worker.Religion;
+            _worker.U_Serial = worker.SerialNumber;
+            _worker.U_Status = worker.Status;
+            _worker.U_Video = worker.Video;
+            _worker.U_Weight = Convert.ToInt32(worker.Weight);
+
             try
             {
-                transaction = conn.Connection.BeginTransaction();
-
-                //TODO: Create worker then create Goods Reciept PO, Check is worker available and update
-                transaction.Commit();
-                created = true;
+                _serviceInstance.CurrentServicelayerInstance.AddToWorkers(_worker);
+                DataServiceResponse response = _serviceInstance.CurrentServicelayerInstance.SaveChanges();
+                if (response != null)
+                    created = true;
             }
             catch (Exception ex)
             {
-                transaction.Rollback();
+
             }
             return created;
         }
@@ -71,7 +93,7 @@
                         Agent = w.U_Agent,
                         BirthDate = w.U_BirthDate.ToString(),
                         CivilId = w.U_CivilId,
-                        Code = w.Code,
+                        Code = w.U_ItemCode,
                         Education = w.U_Education,
                         Gender = w.U_Gender,
                         Height = w.U_Height,

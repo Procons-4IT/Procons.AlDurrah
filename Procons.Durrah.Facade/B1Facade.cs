@@ -6,9 +6,9 @@ namespace Procons.Durrah.Facade
     public class B1Facade
     {
         B1Provider provider { get { return Factory.DeclareClass<B1Provider>(); } }
-        public void InitializeTables()
+        public string InitializeTables()
         {
-            provider.InitializeTables();
+          return  provider.InitializeTables();
         }
     }
 }

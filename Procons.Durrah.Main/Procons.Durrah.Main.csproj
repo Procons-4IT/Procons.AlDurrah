@@ -119,6 +119,7 @@
       <DependentUpon>Reference.datasvcmap</DependentUpon>
     </Compile>
     <Compile Include="ExtentionMethods.cs" />
+    <Compile Include="LoginProvider.cs" />
     <Compile Include="ProviderBase.cs" />
     <Compile Include="Repository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

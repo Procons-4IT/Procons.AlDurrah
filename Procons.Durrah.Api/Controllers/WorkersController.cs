@@ -120,7 +120,8 @@
         [HttpPost]
         public IHttpActionResult AddWorker([FromBody]Worker worker)
         {
-            return Ok();
+            var result = workersFacade.CreateWorker(worker);
+            return Ok(result);
         }
 
         [HttpPost]

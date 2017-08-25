@@ -6,6 +6,7 @@
     using Microsoft.AspNet.Identity.Owin;
     using Microsoft.Owin;
     using Procons.DataBaseHelper;
+    using Procons.Durrah.Facade;
     using Sap.Data.Hana;
     using System;
     using System.Configuration;
@@ -16,6 +17,7 @@
     public class ApplicationUserManager : UserManager<ApplicationUser>
     {
         IUserStore<ApplicationUser> _store;
+        LoginFacade loginFacade = Factory.DeclareClass<LoginFacade>();
         public ApplicationUserManager(IUserStore<ApplicationUser> store)
             : base(store)
         {
@@ -24,17 +26,13 @@
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
-            //var appDbContext = context.Get<ApplicationDbContext>();
             var appUserManager = new ApplicationUserManager(new UserStore<ApplicationUser>());
-
-            // Configure validation logic for usernames
             appUserManager.UserValidator = new UserValidator<ApplicationUser>(appUserManager)
             {
                 AllowOnlyAlphanumericUserNames = true,
                 RequireUniqueEmail = true
             };
 
-            // Configure validation logic for passwords
             appUserManager.PasswordValidator = new PasswordValidator
             {
                 RequiredLength = 6,
@@ -58,23 +56,14 @@
             return appUserManager;
         }
 
+        public static Func<string> testc(string v)
+        {
+            throw new NotImplementedException();
+        }
+
         public override Task<ApplicationUser> FindAsync(string userName, string password)
         {
-            var dbHelper = Factory.DeclareClass<DatabaseHelper<HanaConnection>>();
-            dbHelper.ConnectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ToString();
-            var result = dbHelper.ExecuteQuery(string.Format("SELECT * FROM \"{0}\".\"OCRD\" WHERE \"CardCode\"='{1}'", ConfigurationManager.AppSettings["DatabaseName"], userName));
-            ApplicationUser user = null;
-            while (result.Read())
-            {
-                user = new ApplicationUser()
-                {
-                    UserName = result["CardCode"].ToString(),
-                    EmailConfirmed = true,
-                    FirstName = result["CardName"].ToString(),
-                    LastName = result["CardName"].ToString(),
-                    UserType = result["CardType"].ToString()
-                };
-            }
+            var user = loginFacade.FindUser(userName, password);
             return Task.FromResult(user);
         }
 

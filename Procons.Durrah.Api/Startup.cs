@@ -1,5 +1,7 @@
-﻿using Microsoft.Owin;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.Owin;
 using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.DataHandler.Encoder;
 using Microsoft.Owin.Security.Jwt;
 using Microsoft.Owin.Security.OAuth;
@@ -15,6 +17,7 @@ using System.Linq;
 using System.Net.Http.Formatting;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.WebHost;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.SessionState;
@@ -22,6 +25,27 @@ using System.Web.SessionState;
 [assembly: OwinStartup(typeof(Procons.Durrah.Startup))]
 namespace Procons.Durrah
 {
+    public class ISessionHandler
+    {
+
+    }
+    public class SessionHandler :ISessionHandler, IDisposable
+    {
+       public string SessionId { get; set; }
+
+        public SessionHandler()
+        {
+
+        }
+        public SessionHandler(string ses)
+        {
+            SessionId = ses;
+        }
+        public void Dispose()
+        {
+           
+        }
+    }
     public class Startup
     {
         public void Configuration(IAppBuilder app)
@@ -34,16 +58,20 @@ namespace Procons.Durrah
             ConfigureRoutes(RouteTable.Routes);
             ConfigureOAuthTokenGeneration(app);
             ConfigureOAuthTokenConsumption(app);
-          
+
             ConfigureWebApi(httpConfig);
             app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
             app.UseWebApi(httpConfig);
+
+            B1Facade b1Facade = Factory.DeclareClass<B1Facade>();
+            var sessionId = b1Facade.InitializeTables();
+
+            //Func<SessionHandler> passParams = () => { return new SessionHandler(sessionId); };
+            //app.CreatePerOwinContext<SessionHandler>(passParams);
         }
 
         private void ConfigureOAuthTokenGeneration(IAppBuilder app)
         {
-            //var AuthFacade = Factory.DeclareClass<AuthenticationManagementFacade>();
-            //AuthFacade.CreatePerOwinContext(app);
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
             app.CreatePerOwinContext<ApplicationRoleManager>(ApplicationRoleManager.Create);
 
@@ -93,12 +121,11 @@ namespace Procons.Durrah
         private void ConfigureRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
             routes.MapRoute(
-                name: "Default",
-                url: "{*anything}",
-                defaults: new { controller = "Main", action = "Index", id = UrlParameter.Optional }
-            );
+                    name: "Default",
+                    url: "{*anything}",
+                    defaults: new { controller = "Main", action = "Index", id = UrlParameter.Optional }
+                );
         }
     }
 }

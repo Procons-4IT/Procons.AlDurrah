@@ -5,10 +5,10 @@
 
     public class B1Provider : ProviderBase
     {
-        public void InitializeTables()
+        public string InitializeTables()
         {
             try
-            {
+            {      
                 var instance = ServiceLayerProvider.GetInstance();
                 base.AddTableSL("WORKERS", "WORKERS", SAPbobsCOM.BoUTBTableType.bott_MasterData);
                 base.AddFieldSL("ItemCode", "ItemCode", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
@@ -33,10 +33,11 @@
                 base.AddFieldSL("CivilId", "CivilId", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
                 base.AddFieldSL("Status", "Status", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
                 DataServiceResponse response = ServiceLayerProvider.GetInstance().CurrentServicelayerInstance.SaveChanges();
+                return instance.B1SessionId;
             }
             catch (Exception ex)
             {
-                base.B1Company.EndTransaction(SAPbobsCOM.BoWfTransOpt.wf_RollBack);
+                return string.Empty;
             }
 
             

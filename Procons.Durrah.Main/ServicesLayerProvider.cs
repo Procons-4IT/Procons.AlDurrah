@@ -15,6 +15,7 @@
     using System.Security.Cryptography.X509Certificates;
     using System.Text;
     using System.Web;
+    using System.Linq;
 
     //Object used by Json.Net to format json string, as content in POST/Login action.
     class SboCred
@@ -84,46 +85,43 @@
 
     class ServiceLayerProvider
     {
+        private const string CookieName= "HanaSessionId";
         //Singleton
         public static ServiceLayerProvider GetInstance()
         {
-            ServiceLayerProvider instance = null;
-                if (HttpContext.Current.Session["ServiceLayer"] != null)
-                {
-                instance = (ServiceLayerProvider)HttpContext.Current.Session["ServiceLayer"];
-                }
-                else
-                {
-                    var creds = new SboCred(Utilities.GetConfigurationValue("UserName"),
-                                            Utilities.GetConfigurationValue("Password"),
-                                            Utilities.GetConfigurationValue("DatabaseName"));
-                instance = new ServiceLayerProvider();
+            ServiceLayerProvider instance = new ServiceLayerProvider(); ;
+            var sessionCookie = HttpContext.Current != null ? HttpContext.Current.Request.Cookies.Get(CookieName) : null;
+            if (sessionCookie != null && sessionCookie.Value != string.Empty && sessionCookie.Value != null)
+            {
+                instance.InitServiceContainer(Utilities.GetConfigurationValue("ServiceLayer"));
+                instance.B1SessionId = sessionCookie.Value;
+            }
+            else
+            {
+                var creds = new SboCred(Utilities.GetConfigurationValue("UserName"),
+                                        Utilities.GetConfigurationValue("Password"),
+                                        Utilities.GetConfigurationValue("DatabaseName"));
                 instance.InitServiceContainer(Utilities.GetConfigurationValue("ServiceLayer"));
                 instance.LoginServer(creds);
-                    HttpContext.Current.Session["ServiceLayer"] = instance;
+                sessionCookie = new HttpCookie(CookieName, instance.strCurrentSessionGUID);
+
+                if (HttpContext.Current != null)
+                {
+                    var requestCookies = HttpContext.Current.Request.Cookies;
+                    var responseCookies = HttpContext.Current.Response.Cookies;
+                    if (HttpContext.Current.Request.Cookies.AllKeys.Where(x=>x== sessionCookie.Name).Count()>0)
+                    {
+                        requestCookies.Set(sessionCookie);
+                        responseCookies.Set(sessionCookie);
+                    }
+                    else
+                    {
+                        requestCookies.Add(sessionCookie);
+                        responseCookies.Add(sessionCookie);
+                    }
                 }
-
+            }
             return instance;
-            //if (s_Instance == null)
-            //{
-            //    if (HttpContext.Current.Session["ServiceLayer"] != null)
-            //    {
-            //        s_Instance = (ServiceLayerProvider)HttpContext.Current.Session["ServiceLayer"];
-            //    }
-            //    else
-            //    {
-            //        var creds = new SboCred(Utilities.GetConfigurationValue("UserName"),
-            //                                Utilities.GetConfigurationValue("Password"),
-            //                                Utilities.GetConfigurationValue("DatabaseName"));
-            //        s_Instance = new ServiceLayerProvider();
-            //        s_Instance.InitServiceContainer(Utilities.GetConfigurationValue("ServiceLayer"));
-            //        s_Instance.LoginServer(creds);
-            //        HttpContext.Current.Session["ServiceLayer"] = s_Instance;
-            //    }
-
-            //}
-
-            //return s_Instance;
         }
 
         public ServiceLayer CurrentServicelayerInstance
@@ -139,9 +137,12 @@
  
         }
 
-        public string B1Session { get { return strCurrentSessionGUID; } }
+        public string B1SessionId
+        {
+            get { return strCurrentSessionGUID; }
+            set { strCurrentSessionGUID = value; }
+        }
 
-        private ServiceLayerProvider s_Instance = null;                       //Singleton
         private string strCurrentServerURL = string.Empty;                          //Hold the service URL
         private string strCurrentSessionGUID = string.Empty;                        //Hold the session ID
         private string strCurrentRouteIDString = string.Empty;
@@ -170,12 +171,6 @@ private int currentDefaultPagingSizing = 10;                          //default 
         /// Calculate current page offset based on nextLink stored
         /// </summary>
         /// <returns></returns>
-        //public int GetCurrentOffset()
-        //{
-        //    string link = nextLink.ToString();
-        //    string offset = link.Substring(link.IndexOf('=')+1);
-        //    return int.Parse(offset);
-        //}
 
         private PropertyType GetPropertyType(ODataProperty prop)
         {
@@ -429,7 +424,8 @@ private int currentDefaultPagingSizing = 10;                          //default 
                     });
 
 
-                    //Attach or revise the headers for carring the sesssion id, or set the paging size.
+                    //Attach or revise the headers for carring the session id, or set the paging size.
+                    //currentServiceContainer.SendingRequest2 += CurrentServiceContainer_SendingRequest2;
                     currentServiceContainer.SendingRequest += currentServiceContainer_SendingRequest;
                     currentServiceContainer.ReceivingResponse += currentServiceContainer_ReceivingResponse;
 
@@ -440,6 +436,50 @@ private int currentDefaultPagingSizing = 10;                          //default 
                     ServicePointManager.ServerCertificateValidationCallback += RemoteSSLTLSCertificateValidate;
                 }
             }
+        }
+
+        private void CurrentServiceContainer_SendingRequest2(object sender, SendingRequest2EventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// Method called before each request is sent to Service Layer
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void currentServiceContainer_SendingRequest(object sender, System.Data.Services.Client.SendingRequestEventArgs e)
+        {
+            //throw new NotImplementedException();
+            HttpWebRequest request = (HttpWebRequest)e.Request;
+            if (null != request)
+            {
+                request.Accept = "application/json;odata=minimalmetadata";
+                request.KeepAlive = true;                               //keep alive
+                request.ServicePoint.Expect100Continue = false;        //content
+                request.AllowAutoRedirect = true;
+                request.ContentType = "application/json;odata=minimalmetadata;charset=utf8";
+                request.Timeout = 10000000;    //number of seconds before considering a request as timeout (consider to change it for batch operations)
+
+                //This way works to bring additional information with request headers
+                if (false == string.IsNullOrEmpty(strCurrentSessionGUID))
+                {
+                    string strB1Session = "B1SESSION=" + strCurrentSessionGUID;
+                    if (!string.IsNullOrEmpty(strCurrentRouteIDString))
+                        strB1Session += "; " + strCurrentRouteIDString;
+
+                    e.RequestHeaders.Add("Cookie", strB1Session);
+                }
+
+                //Only works for get requests, but we can always use this, even it will be ignored by other request types.
+                e.RequestHeaders.Add("Prefer", "odata.maxpagesize=" + currentDefaultPagingSizing.ToString());
+
+
+                //For GUI, non-functional
+                BuildRequestStringContent(request);
+            }
+            else
+                throw new Exception("Failed to intercept the sending request");
         }
 
         /// <summary>
@@ -482,7 +522,6 @@ private int currentDefaultPagingSizing = 10;                          //default 
             // Just for login
             BuildResponseStringContent(e.ResponseMessage);
         }
-
 
         /// <summary>
         /// Create Header
@@ -562,45 +601,6 @@ private int currentDefaultPagingSizing = 10;                          //default 
         public string GetResponsetHeaders()
         {
             return sbHttpResponseHeaders.ToString();
-        }
-
-        /// <summary>
-        /// Method called before each request is sent to Service Layer
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void currentServiceContainer_SendingRequest(object sender, System.Data.Services.Client.SendingRequestEventArgs e)
-        {
-            //throw new NotImplementedException();
-            HttpWebRequest request = (HttpWebRequest)e.Request;
-            if (null != request)
-            {
-                request.Accept = "application/json;odata=minimalmetadata";
-                request.KeepAlive = true;                               //keep alive
-                request.ServicePoint.Expect100Continue = false;        //content
-                request.AllowAutoRedirect = true;
-                request.ContentType = "application/json;odata=minimalmetadata;charset=utf8";
-                request.Timeout = 10000000;    //number of seconds before considering a request as timeout (consider to change it for batch operations)
-
-                //This way works to bring additional information with request headers
-                if (false == string.IsNullOrEmpty(strCurrentSessionGUID))
-                {
-                    string strB1Session = "B1SESSION=" + strCurrentSessionGUID;
-                    if (!string.IsNullOrEmpty(strCurrentRouteIDString))
-                        strB1Session += "; " + strCurrentRouteIDString;
-
-                    e.RequestHeaders.Add("Cookie", strB1Session);
-                }
-
-                //Only works for get requests, but we can always use this, even it will be ignored by other request types.
-                e.RequestHeaders.Add("Prefer", "odata.maxpagesize=" + currentDefaultPagingSizing.ToString());
-
-
-                //For GUI, non-functional
-                BuildRequestStringContent(request);
-            }
-            else
-                throw new Exception("Failed to intercept the sending request");
         }
 
         /// <summary>
