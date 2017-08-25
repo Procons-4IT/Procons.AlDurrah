@@ -2,6 +2,8 @@
   "name": "Procons_Payroll",
   "version": "0.0.0",
   "scripts": {
+    "start": "webpack-dev-server --config webpack.config.dev.js",
+    "build":"webpack --config webpack.config.vendor.js",
     "test": "karma start ClientApp/test/karma.conf.js"
   },
   "dependencies": {
@@ -85,6 +87,7 @@
     "karma-cli": "1.0.1",
     "karma-jasmine": "1.1.0",
     "karma-webpack": "2.0.3",
-    "webpack": "^2.5.1"
+    "webpack": "^2.5.1",
+    "webpack-dev-server": "^2.7.1"
   }
 }

@@ -50,7 +50,7 @@ export class ComponentBase<T>  {
     }
 
     CloneObject<T>(par: T, c: { new (): T; }): T {
-        debugger;
+         
         let object: T = new c();
         for (let prop in par) {
             object[prop] = par[prop];
@@ -59,7 +59,7 @@ export class ComponentBase<T>  {
     }
 
     ShowDialogToAdd(isNewObject: boolean, objectInstance: T, displayDialog: boolean) {
-        debugger;
+         
         isNewObject = true;
         objectInstance = null;// new T();
         displayDialog = true;

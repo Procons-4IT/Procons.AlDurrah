@@ -10,7 +10,7 @@ export class profileComponent implements OnInit {
    
   constructor() { }
   public Book() {
-      window.location.href = "http://knet.testyourprojects.co.in/";
+    console.log('Attempting to Book profileComponent');
   }
 
   ngOnInit() {

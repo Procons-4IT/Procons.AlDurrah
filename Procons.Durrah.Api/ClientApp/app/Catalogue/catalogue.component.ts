@@ -17,6 +17,7 @@ import {Item} from '../Models/Item'
 import {SearchContent} from '../Models/SearchContent'
 import {WorkersService} from '../Services/WorkersService'
 import { DataGrid } from 'primeng/primeng';
+import {ApiService} from '../Services/ApiService';
 
 @Component({
     selector: '[app-catalogue]',
@@ -53,12 +54,12 @@ export class catalogueComponent implements OnInit {
 
 
 
-    constructor(private componentFactoryResolver: ComponentFactoryResolver,
+    constructor(private myApi:ApiService ,private componentFactoryResolver: ComponentFactoryResolver,
         private workersService: WorkersService) { }
 
 
     public GotoSearch() {
-        debugger;
+         
         this.selectedStatus = "";
         this.selectedLanguage = "";
         this.selectedAge = "";
@@ -75,7 +76,6 @@ export class catalogueComponent implements OnInit {
     }
 
     GotoResults() {
-        debugger
         this.workers = [
             new Worker(1, "https://www.jagonews24.com/media/imgAll/2016October/SM/shahed2017061312381720170613162337.jpg", 87, 160, 'available'),
             new Worker(2, "https://s-media-cache-ak0.pinimg.com/736x/09/4b/2a/094b2a3d1526178188f39d10eef9fd88--maids.jpg", 50, 160, 'available'),
@@ -87,7 +87,7 @@ export class catalogueComponent implements OnInit {
     }
 
     GotoProfile(event: Worker) {
-        debugger;
+         
         this.selectedWorker = event;
         this.tabSearchResults.nativeElement.classList.remove('active', 'in');
         this.tabprofile.nativeElement.classList.add('active', 'in');
@@ -111,5 +111,9 @@ export class catalogueComponent implements OnInit {
             (error) => {
 
             });
+    }
+    Book(){
+        console.log('calling knetPayment!');
+        this.myApi.knetPaymentRedirect().subscribe();
     }
 }
