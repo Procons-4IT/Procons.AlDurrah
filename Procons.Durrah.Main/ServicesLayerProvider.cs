@@ -1,8 +1,8 @@
 ﻿namespace Procons.Durrah.Main
 {
     using Microsoft.Data.OData;
-    using Newtonsoft.Json;
     using Procons.Durrah.Common;
+    using Procons.Durrah.Common.Enumerators;
     using Procons.Durrah.Main.B1ServiceLayer.SAPB1;
     using System;
     using System.Collections;
@@ -15,101 +15,34 @@
     using System.Security.Cryptography.X509Certificates;
     using System.Text;
     using System.Web;
-    using System.Linq;
 
-    //Object used by Json.Net to format json string, as content in POST/Login action.
-    class SboCred
+    public class ServiceLayerProvider
     {
-        public SboCred()
-        { }
+        private const string CookieName = Constants.ServiceLayer.HanaSessionId;
 
-        public SboCred(string user, string pass, string company)
-        {
-            UserName = user;
-            Password = pass;
-            CompanyDB = company;
-        }
-
-        public bool IsValid()
-        {
-            return (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password) && !string.IsNullOrEmpty(CompanyDB));
-        }
-
-        public string GetJsonString()
-        {
-            return JsonConvert.SerializeObject(this, Formatting.Indented);
-        }
-
-        public string UserName = string.Empty;
-        public string Password = string.Empty;
-        public string CompanyDB = string.Empty;
-    }
-
-
-    //Currently Supported Actions
-    enum DocActiontType
-    {
-        Close = 1,
-        Cancel = 2
-    }
-
-
-    //The property types when formatting JSON in WCF client.
-    enum PropertyType
-    {
-        SimpleEdmx = 0,
-        ComplexType = 1,
-        Collection = 2              //Collection of complex types
-    }
-
-
-    enum UpdateSemantics
-    {
-        PUT = 0,
-        PATCH = 1
-    }
-
-    class PageLinks
-    {
-        public DataServiceQueryContinuation<Document> currentLink = null;
-        public DataServiceQueryContinuation<Document> prevLink = null;
-        public DataServiceQueryContinuation<Document> nextLink = null;
-
-        public PageLinks(DataServiceQueryContinuation<Document> cLink, DataServiceQueryContinuation<Document> pLink, DataServiceQueryContinuation<Document> nLink)
-        {
-            currentLink = cLink;
-            prevLink = pLink;
-            nextLink = nLink;
-        }
-    }
-
-    class ServiceLayerProvider
-    {
-        private const string CookieName= "HanaSessionId";
-        //Singleton
         public static ServiceLayerProvider GetInstance()
         {
             ServiceLayerProvider instance = new ServiceLayerProvider(); ;
             var sessionCookie = HttpContext.Current != null ? HttpContext.Current.Request.Cookies.Get(CookieName) : null;
             if (sessionCookie != null && sessionCookie.Value != string.Empty && sessionCookie.Value != null)
             {
-                instance.InitServiceContainer(Utilities.GetConfigurationValue("ServiceLayer"));
+                instance.InitServiceContainer(Utilities.GetConfigurationValue(Constants.ConfigurationKeys.ServiceLayer));
                 instance.B1SessionId = sessionCookie.Value;
             }
             else
             {
-                var creds = new SboCred(Utilities.GetConfigurationValue("UserName"),
-                                        Utilities.GetConfigurationValue("Password"),
-                                        Utilities.GetConfigurationValue("DatabaseName"));
-                instance.InitServiceContainer(Utilities.GetConfigurationValue("ServiceLayer"));
+                var creds = new SboCred(Utilities.GetConfigurationValue(Constants.ConfigurationKeys.UserName),
+                                        Utilities.GetConfigurationValue(Constants.ConfigurationKeys.Password),
+                                        Utilities.GetConfigurationValue(Constants.ConfigurationKeys.DatabaseName));
+                instance.InitServiceContainer(Utilities.GetConfigurationValue(Constants.ConfigurationKeys.ServiceLayer));
                 instance.LoginServer(creds);
-                sessionCookie = new HttpCookie(CookieName, instance.strCurrentSessionGUID);
+                sessionCookie = new HttpCookie(CookieName, string.Format("{0};{1}", instance.strCurrentSessionGUID, instance.strCurrentRouteIDString));
 
                 if (HttpContext.Current != null)
                 {
                     var requestCookies = HttpContext.Current.Request.Cookies;
                     var responseCookies = HttpContext.Current.Response.Cookies;
-                    if (HttpContext.Current.Request.Cookies.AllKeys.Where(x=>x== sessionCookie.Name).Count()>0)
+                    if (HttpContext.Current.Request.Cookies.AllKeys.Where(x => x == sessionCookie.Name).Count() > 0)
                     {
                         requestCookies.Set(sessionCookie);
                         responseCookies.Set(sessionCookie);
@@ -134,22 +67,34 @@
 
         public ServiceLayerProvider()
         {
- 
+
         }
 
         public string B1SessionId
         {
-            get { return strCurrentSessionGUID; }
-            set { strCurrentSessionGUID = value; }
+            get
+            {
+                return strCurrentSessionGUID;
+            }
+            set
+            {
+                strCurrentSessionGUID = value;
+            }
+        }
+        public void SetB1Session(string cookie)
+        {
+            var properties = cookie.Split(';');
+            strCurrentSessionGUID = properties[0];
+            strCurrentRouteIDString = properties[1];
         }
 
         private string strCurrentServerURL = string.Empty;                          //Hold the service URL
         private string strCurrentSessionGUID = string.Empty;                        //Hold the session ID
         private string strCurrentRouteIDString = string.Empty;
 
-        private  ServiceLayer currentServiceContainer = null;     //EntityContainer:  DataServiceContext
+        private ServiceLayer currentServiceContainer = null;     //EntityContainer:  DataServiceContext
 
-private int currentDefaultPagingSizing = 10;                          //default paging size: 10
+        private int currentDefaultPagingSizing = 10;                          //default paging size: 10
 
         private StringBuilder sbHttpRequestHeaders = new StringBuilder();           //Used to build HttpHeaders
         private StringBuilder sbHttpResponseHeaders = new StringBuilder();           //Used to build HttpHeaders
@@ -635,9 +580,9 @@ private int currentDefaultPagingSizing = 10;                          //default 
                 //Use : UriOperationParameter for querying options.
                 //Use : BodyOperationParameter for sending JSON body.
                 BodyOperationParameter[] body = new BodyOperationParameter[3];
-                body[0] = new BodyOperationParameter("UserName", cred.UserName);
-                body[1] = new BodyOperationParameter("Password", cred.Password);
-                body[2] = new BodyOperationParameter("CompanyDB", cred.CompanyDB);
+                body[0] = new BodyOperationParameter(Constants.ServiceLayer.UserName , cred.UserName);
+                body[1] = new BodyOperationParameter(Constants.ServiceLayer.Password, cred.Password);
+                body[2] = new BodyOperationParameter(Constants.ServiceLayer.CompanyDB, cred.CompanyDB);
 
                 //Both HTTP & HTTPs protocols are supported.
                 session = (B1Session)currentServiceContainer.Execute<B1Session>(login, "POST", true, body).SingleOrDefault();
@@ -1418,6 +1363,20 @@ private int currentDefaultPagingSizing = 10;                          //default 
             return currentServiceContainer.Workers.ToList<WORKERS>();
         }
 
+    }
+
+    internal class PageLinks
+    {
+        public DataServiceQueryContinuation<Document> currentLink = null;
+        public DataServiceQueryContinuation<Document> prevLink = null;
+        public DataServiceQueryContinuation<Document> nextLink = null;
+
+        public PageLinks(DataServiceQueryContinuation<Document> cLink, DataServiceQueryContinuation<Document> pLink, DataServiceQueryContinuation<Document> nLink)
+        {
+            currentLink = cLink;
+            prevLink = pLink;
+            nextLink = nLink;
+        }
     }
 }
 

@@ -2,9 +2,7 @@
 {
     using SAPbobsCOM;
     using System;
-    using System.Data.Services.Client;
     using System.Linq;
-    using System.Text;
     public abstract class ProviderBase
     {
         private Company _oCompany;
