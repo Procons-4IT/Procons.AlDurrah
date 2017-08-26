@@ -1,4 +1,5 @@
 ﻿using Procons.Durrah.Common;
+using Procons.Durrah.Main.B1ServiceLayer.SAPB1;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -30,7 +31,7 @@ namespace Procons.Durrah.Main
         {
 
             var ServiceInstance = ServiceLayerProvider.GetInstance();
-            var workers = ServiceInstance.GetWorkers();
+            var workers = ServiceInstance.CurrentServicelayerInstance.Workers.ToList<WORKERS>();
             List<Worker> workersList = new List<Worker>();
             foreach (var w in workers)
             {

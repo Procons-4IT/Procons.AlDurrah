@@ -25,4 +25,14 @@
         PUT = 0,
         PATCH = 1
     }
+
+    public enum Operation
+    {
+        EqualTo,
+        NotEqualTo,
+        GreaterThan,
+        GreaterThanOrEqualTo,
+        LessThan,
+        LessThanOrEqualTo
+    }
 }

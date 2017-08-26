@@ -2,6 +2,7 @@
 {
     using Common;
     using DataBaseHelper;
+    using Procons.Durrah.Common.Enumerators;
     using Procons.Durrah.Main.B1ServiceLayer.SAPB1;
     using Sap.Data.Hana;
     using SAPbobsCOM;
@@ -11,7 +12,9 @@
     using System.Data.Services.Client;
     using System.Data.SqlClient;
     using System.Linq;
+    using System.Linq.Expressions;
     using System.Runtime.InteropServices;
+    using System.Web.Http;
 
     public class WorkersProvider : ProviderBase
     {
@@ -115,6 +118,98 @@
                     );
             }
             return workersList;
+        }
+
+        //public List<Worker> GetWorkers(Worker worker)
+        //{
+
+        //    var exp = GetExpression(worker);
+        //    var ServiceInstance = ServiceLayerProvider.GetInstance();
+                     
+        //    var workers = ServiceInstance.CurrentServicelayerInstance.Workers.Where(exp).ToList<WORKERS>();
+        //    List<Worker> workersList = new List<Worker>();
+        //    foreach (var w in workers)
+        //    {
+        //        workersList.Add(
+        //            new Worker()
+        //            {
+        //                Agent = w.U_Agent,
+        //                BirthDate = w.U_BirthDate.ToString(),
+        //                CivilId = w.U_CivilId,
+        //                Code = w.U_ItemCode,
+        //                Education = w.U_Education,
+        //                Gender = w.U_Gender,
+        //                Height = w.U_Height,
+        //                Language = w.U_Language,
+        //                MaritalStatus = w.U_MaritalStatus,
+        //                Nationality = w.U_Nationality,
+        //                Passport = w.U_Passport,
+        //                PassportExpDate = w.U_PassportExpDate,
+        //                PassportIssDate = w.U_PassportPoIssue,
+        //                PassportNumber = w.U_PassportNumber,
+        //                PassportPoIssue = w.U_PassportPoIssue,
+        //                Photo = w.U_Photo,
+        //                Religion = w.U_Religion,
+        //                SerialNumber = w.U_Serial,
+        //                Status = w.U_Status,
+        //                Video = w.U_Video,
+        //                Weight = w.U_Weight.ToString()
+        //            }
+        //            );
+        //    }
+        //    return workersList;
+        //}
+
+        public Expression<Func<Worker, bool>> GetExpression(Worker wrk)
+        {
+            var builder = Factory.DeclareClass<ExpressionBuilder<Worker>>();
+
+            if (wrk.Age != null)
+            {
+                if (builder.FinalExpression == null)
+                    builder.BuildExpression<double>("Age", Operation.EqualTo, wrk.Age);
+                else
+                    builder.And<double>("Age", Operation.EqualTo, wrk.Age);
+
+            }
+            if (wrk.Gender != null)
+            {
+                if (builder.FinalExpression == null)
+                    builder.BuildExpression<string>("Gender", Operation.EqualTo, wrk.Gender);
+                else
+                    builder.And<string>("Gender", Operation.EqualTo, wrk.Gender);
+
+            }
+            if (wrk.Nationality != null)
+            {
+                if (builder.FinalExpression == null)
+                    builder.BuildExpression<string>("Nationality", Operation.EqualTo, wrk.Nationality);
+                else
+                    builder.And<string>("Nationality", Operation.EqualTo, wrk.Nationality);
+            }
+            if (wrk.MaritalStatus != null)
+            {
+                if (builder.FinalExpression == null)
+                    builder.BuildExpression<string>("MaritalStatus", Operation.EqualTo, wrk.MaritalStatus);
+                else
+                    builder.And<string>("MaritalStatus", Operation.EqualTo, wrk.MaritalStatus);
+            }
+            if (wrk.Code != null)
+            {
+                if (builder.FinalExpression == null)
+                    builder.BuildExpression<string>("Code", Operation.EqualTo, wrk.Code);
+                else
+                    builder.And<string>("Code", Operation.EqualTo, wrk.Code);
+            }
+            if (wrk.Language != null)
+            {
+                if (builder.FinalExpression == null)
+                    builder.BuildExpression<string>("Language", Operation.EqualTo, wrk.Language);
+                else
+                    builder.And<string>("Language", Operation.EqualTo, wrk.Language);
+            }
+
+            return builder.Commit();
         }
 
         public double? CreateSalesOrder(Transaction trans)

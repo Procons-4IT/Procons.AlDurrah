@@ -14,6 +14,7 @@
                 base.AddFieldSL("ItemCode", "ItemCode", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
                 base.AddFieldSL("Serial", "Serial", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
                 base.AddFieldSL("Agent", "Agent", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
+                base.AddFieldSL("Age", "Age", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Float.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
                 base.AddFieldSL("BirthDate", "BirthDate", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Date.ToString(), SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
                 base.AddFieldSL("Gender", "Gender", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
                 base.AddFieldSL("Nationality", "Nationality", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);

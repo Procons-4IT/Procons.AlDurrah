@@ -5,6 +5,9 @@
     using Procons.Durrah.Main;
     using System.Data;
     using Procons.DataBaseHelper;
+    using System.Linq.Expressions;
+    using Procons.Durrah.Common.Enumerators;
+
     public class WorkersFacade : IFacade
     {
         WorkersProvider provider { get { return Factory.DeclareClass<WorkersProvider>(); } }
@@ -42,5 +45,7 @@
         {
            return provider.CreateIncomingPayment(trans);
         }
+
+       
     }
 }
