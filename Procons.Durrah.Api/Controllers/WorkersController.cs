@@ -47,7 +47,14 @@
         [HttpPost]
         public HttpResponseMessage CallKnetGateway([FromBody]Transaction transaction)
         {
+            short TransVal;
+            string varPaymentID, varPaymentPage, varErrorMsg, varRawResponse;
+
+            var claims = ((ClaimsIdentity)User.Identity).Claims;
+            //var cardCode = claims.Where(x => x.Type == Constants.ServiceLayer.UserName).FirstOrDefault().Value;
+
             transaction.TrackID = (new Random().Next(10000000) + 1).ToString();
+
             e24PaymentPipeCtlClass payment = new e24PaymentPipeCtlClass();
             payment.Action = "1";            // Purchase Transaction
             payment.Amt = transaction.Amount;          // The amount of purchase
@@ -64,11 +71,6 @@
             payment.Udf4 = "User Defined Field 4";
             payment.Udf5 = "User Defined Field 5";
 
-            //Perform the payment initilization
-         
-            short TransVal;
-            string varPaymentID, varPaymentPage, varErrorMsg, varRawResponse;
-
             TransVal = payment.PerformInitTransaction();  //return 0 for success otherwise -1 for failure
             varRawResponse = payment.RawResponse;
             varPaymentID = payment.PaymentId;
@@ -76,7 +78,6 @@
             varErrorMsg = payment.ErrorMsg;
             transaction.PaymentID = varPaymentID;
             
-            var response = Request.CreateResponse(HttpStatusCode.Moved);
             if (TransVal != 0)
             {
 

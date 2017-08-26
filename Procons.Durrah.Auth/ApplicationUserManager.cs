@@ -5,12 +5,8 @@
     using Microsoft.AspNet.Identity.EntityFramework;
     using Microsoft.AspNet.Identity.Owin;
     using Microsoft.Owin;
-    using Procons.DataBaseHelper;
     using Procons.Durrah.Facade;
-    using Sap.Data.Hana;
     using System;
-    using System.Configuration;
-    using System.Data.SqlClient;
     using System.Security.Claims;
     using System.Threading.Tasks;
 
@@ -70,7 +66,7 @@
         public override Task<ClaimsIdentity> CreateIdentityAsync(ApplicationUser user, string authenticationType)
         {
             ClaimsIdentity _claimsIdentity = new ClaimsIdentity();
-            _claimsIdentity.AddClaim(new Claim("UserName", user.UserName));
+            _claimsIdentity.AddClaim(new Claim(Common.Constants.ServiceLayer.UserName, user.UserName));
             _claimsIdentity.AddClaim(new Claim("Type", user.UserType));
             return Task.FromResult(_claimsIdentity);
         }

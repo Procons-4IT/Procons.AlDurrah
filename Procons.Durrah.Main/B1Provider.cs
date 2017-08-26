@@ -8,8 +8,8 @@
         public string InitializeTables()
         {
             try
-            {      
-                var instance = ServiceLayerProvider.GetInstance();
+            {
+                base.instance.Login();
                 base.AddTableSL("WORKERS", "WORKERS", SAPbobsCOM.BoUTBTableType.bott_MasterData);
                 base.AddFieldSL("ItemCode", "ItemCode", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
                 base.AddFieldSL("Serial", "Serial", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
@@ -32,7 +32,7 @@
                 base.AddFieldSL("PassportPoIssue", "PassportPoIssue", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
                 base.AddFieldSL("CivilId", "CivilId", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
                 base.AddFieldSL("Status", "Status", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
-                DataServiceResponse response = ServiceLayerProvider.GetInstance().CurrentServicelayerInstance.SaveChanges();
+                instance.CurrentServicelayerInstance.SaveChanges();
                 return instance.B1SessionId;
             }
             catch (Exception ex)
@@ -40,7 +40,7 @@
                 return string.Empty;
             }
 
-            
+
         }
 
     }

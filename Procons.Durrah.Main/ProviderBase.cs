@@ -5,6 +5,7 @@
     using System.Linq;
     public abstract class ProviderBase
     {
+        public ServiceLayerProvider instance = new ServiceLayerProvider();
         private Company _oCompany;
         public Company B1Company
         {
@@ -200,7 +201,7 @@
         /// <param name="validValues">Add the values seperated by comma "," for value and description ex:(Value,Description)</param>
         public void AddFieldSL(string name, string description, string tableName, string fieldType, Nullable<int> size, string mandatory, string subType, bool addedToUDT, string validValue, params string[] validValues)
         {
-            var instance = ServiceLayerProvider.GetInstance();
+           
             B1ServiceLayer.SAPB1.UserFieldMD userField = new B1ServiceLayer.SAPB1.UserFieldMD();
             try
             {
@@ -339,7 +340,6 @@
         {
             try
             {
-                var instance = ServiceLayerProvider.GetInstance();
                 var result = instance.CurrentServicelayerInstance.UserFieldsMD.Where(x => x.TableName == tableName.ToUpper() && x.Name == fieldName);
                 if (result.Count() > 0)
                     return true;
@@ -372,10 +372,9 @@
         public void AddTableSL(string tableName, string description, SAPbobsCOM.BoUTBTableType tableType)
         {
             B1ServiceLayer.SAPB1.UserTablesMD oUserTablesMD = new B1ServiceLayer.SAPB1.UserTablesMD();
-            ServiceLayerProvider instance = null;
+           
             try
             {
-                 instance = ServiceLayerProvider.GetInstance();
                 var result = instance.CurrentServicelayerInstance.UserTablesMD.Where(x => x.TableName == tableName);
                 if (result.Count() == 0)
                 {

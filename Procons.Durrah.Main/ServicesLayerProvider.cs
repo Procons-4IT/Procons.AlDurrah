@@ -18,6 +18,19 @@
 
     public class ServiceLayerProvider
     {
+        private string strCurrentServerURL = string.Empty;                          //Hold the service URL
+        private string strCurrentSessionGUID = string.Empty;                        //Hold the session ID
+        private string strCurrentRouteIDString = string.Empty;
+
+        private ServiceLayer currentServiceContainer = null;     //EntityContainer:  DataServiceContext
+
+        private int currentDefaultPagingSizing = 10;                          //default paging size: 10
+
+        private StringBuilder sbHttpRequestHeaders = new StringBuilder();           //Used to build HttpHeaders
+        private StringBuilder sbHttpResponseHeaders = new StringBuilder();           //Used to build HttpHeaders
+
+        int currentPage = -1;
+        private Hashtable pageLinksList = new Hashtable();
         private const string CookieName = Constants.ServiceLayer.HanaSessionId;
 
         public static ServiceLayerProvider GetInstance()
@@ -31,12 +44,8 @@
             }
             else
             {
-                var creds = new SboCred(Utilities.GetConfigurationValue(Constants.ConfigurationKeys.UserName),
-                                        Utilities.GetConfigurationValue(Constants.ConfigurationKeys.Password),
-                                        Utilities.GetConfigurationValue(Constants.ConfigurationKeys.DatabaseName));
-                instance.InitServiceContainer(Utilities.GetConfigurationValue(Constants.ConfigurationKeys.ServiceLayer));
-                instance.LoginServer(creds);
-                sessionCookie = new HttpCookie(CookieName, string.Format("{0};{1}", instance.strCurrentSessionGUID, instance.strCurrentRouteIDString));
+                instance.Login();
+                sessionCookie = new HttpCookie(CookieName, instance.strCurrentSessionGUID);
 
                 if (HttpContext.Current != null)
                 {
@@ -87,21 +96,6 @@
             strCurrentSessionGUID = properties[0];
             strCurrentRouteIDString = properties[1];
         }
-
-        private string strCurrentServerURL = string.Empty;                          //Hold the service URL
-        private string strCurrentSessionGUID = string.Empty;                        //Hold the session ID
-        private string strCurrentRouteIDString = string.Empty;
-
-        private ServiceLayer currentServiceContainer = null;     //EntityContainer:  DataServiceContext
-
-        private int currentDefaultPagingSizing = 10;                          //default paging size: 10
-
-        private StringBuilder sbHttpRequestHeaders = new StringBuilder();           //Used to build HttpHeaders
-        private StringBuilder sbHttpResponseHeaders = new StringBuilder();           //Used to build HttpHeaders
-
-        int currentPage = -1;
-        private Hashtable pageLinksList = new Hashtable();
-
 
         /// <summary>
         /// Get Current Paging size (stored in internal variable)
@@ -601,7 +595,14 @@
             return session;
         }
 
-
+        public B1Session Login()
+        {
+            var creds = new SboCred(Utilities.GetConfigurationValue(Constants.ConfigurationKeys.UserName),
+                                Utilities.GetConfigurationValue(Constants.ConfigurationKeys.Password),
+                                Utilities.GetConfigurationValue(Constants.ConfigurationKeys.DatabaseName));
+            this.InitServiceContainer(Utilities.GetConfigurationValue(Constants.ConfigurationKeys.ServiceLayer));
+           return this.LoginServer(creds);
+        }
 
         /// <summary>
         /// Logout server by executing logout action.
