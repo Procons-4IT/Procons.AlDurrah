@@ -56,39 +56,41 @@
             transaction.TrackID = (new Random().Next(10000000) + 1).ToString();
 
             e24PaymentPipeCtlClass payment = new e24PaymentPipeCtlClass();
-            payment.Action = "1";            // Purchase Transaction
-            payment.Amt = transaction.Amount;          // The amount of purchase
-            payment.Currency = "414";          // KD Currency
-            payment.Language = "USA";         // Payment Page Language
-            payment.ResponseUrl = "http://localhost:59822/Response.aspx"; // Your response URL where you will be notified with of transaction response
-            payment.ErrorUrl = "http://localhost:59822/Error.aspx"; //
-            payment.TrackId = transaction.TrackID; // You should create a new unique track ID for each transaction
-            payment.ResourcePath = @"C:\Workspace\Resource\"; // Directory to your resource.cgn ending with \
-            payment.Alias = "durra"; // Alias of the plug-in
+            payment.Action = "1";
+            payment.Amt = transaction.Amount;
+            payment.Currency = "414";
+            payment.Language = "USA";
+            payment.ResponseUrl = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.ResponseUrl);
+            payment.ErrorUrl = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.ErrorUrl);
+            payment.TrackId = transaction.TrackID;
+            payment.ResourcePath = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.ResourcePath);
+            payment.Alias = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.Alias); ;
             payment.Udf1 = "User Defined Field 1";
             payment.Udf2 = "User Defined Field 2";
             payment.Udf3 = "User Defined Field 3";
             payment.Udf4 = "User Defined Field 4";
             payment.Udf5 = "User Defined Field 5";
 
-            TransVal = payment.PerformInitTransaction();  //return 0 for success otherwise -1 for failure
+            TransVal = payment.PerformInitTransaction();
             varRawResponse = payment.RawResponse;
             varPaymentID = payment.PaymentId;
             varPaymentPage = payment.PaymentPage;
             varErrorMsg = payment.ErrorMsg;
             transaction.PaymentID = varPaymentID;
-            
+
             if (TransVal != 0)
             {
-
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "/Error");
             }
             else
             {
-                workersFacade.CreateSalesOrder(transaction);
-                return Request.CreateResponse(HttpStatusCode.OK, varPaymentPage + "?PaymentID=" + varPaymentID);
+                var result = workersFacade.CreateSalesOrder(transaction);
+                if (result == 0)
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "/Error");
+                else
+                    return Request.CreateResponse(HttpStatusCode.OK, varPaymentPage + "?PaymentID=" + varPaymentID);
             }
-            
+
         }
 
         [HttpPost]

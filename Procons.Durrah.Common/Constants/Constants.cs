@@ -15,6 +15,10 @@
             public const string Password = "Password";
             public const string DatabaseName = "DatabaseName";
             public const string ServiceLayer = "ServiceLayer";
+            public const string ResponseUrl = "ResponseUrl";
+            public const string ErrorUrl = "ErrorUrl";
+            public const string Alias = "Alias";
+            public const string ResourcePath = "ResourcePath";
         }
     }
 }

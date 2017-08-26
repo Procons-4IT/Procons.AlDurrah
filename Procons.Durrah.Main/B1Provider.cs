@@ -32,6 +32,15 @@
                 base.AddFieldSL("PassportPoIssue", "PassportPoIssue", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
                 base.AddFieldSL("CivilId", "CivilId", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
                 base.AddFieldSL("Status", "Status", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
+
+                base.AddFieldSL("PaymentID", "Payment Id", "ORDR", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), false);
+                base.AddFieldSL("Result", "Payment Result", "ORDR", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 20, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), false);
+                base.AddFieldSL("TranID", "Payment TranID", "ORDR", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 20, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), false);
+                base.AddFieldSL("Auth", "Payment Auth", "ORDR", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 20, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), false);
+                base.AddFieldSL("Ref", "Payment Ref", "ORDR", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 20, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), false);
+                base.AddFieldSL("TrackID", "Payment TrackID", "ORDR", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 20, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), false);
+                base.AddFieldSL("Status", "Payment Status", "ORDR", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 20, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), false);
+                base.AddFieldSL("Password", "Password", "OCRD", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 50, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), false);
                 instance.CurrentServicelayerInstance.SaveChanges();
                 return instance.B1SessionId;
             }
