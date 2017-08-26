@@ -2,10 +2,12 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { ActivatedRoute } from '@angular/router';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 import { Injectable, OnDestroy } from '@angular/core';
 import { KnetPayment } from '../Models/ApiRequestType';
+import { Worker } from '../Models/Worker';
 @Injectable()
 export class ApiService {
 
@@ -43,17 +45,29 @@ export class ApiService {
 
         });
     }
-    public createIncomingPayment(payment:KnetPayment): Observable<String> {
-        return this.httpPostHelper(this.config.incomingPaymentUrl,payment)
-        .map(response=>{
-            return response.json();
-        });
+    public createIncomingPayment(payment: KnetPayment): Observable<String> {
+        return this.httpPostHelper(this.config.incomingPaymentUrl, payment)
+            .map(response => {
+                return response.json();
+            });
+    }
+    public getAllWorkers(): Observable<Worker[]> {
+        console.log('Getting All the Workers');
+        var mockData = Observable.of(sampleWorkerData);
+        // var actualData = this.httpGetHelper(this.config.getWorkersUrl);
+        return mockData;
     }
     public httpPostHelper(url: string, body: any): Observable<Response> {
         let headers = new Headers();
         headers.append("Content-Type", 'application/x-www-form-urlencoded');
 
         return this.http.post(this.config.baseUrl + url, body, headers);
+    }
+    public httpGetHelper(url: string): Observable<Response> {
+        let headers = new Headers();
+        headers.append("Content-Type", 'application/x-www-form-urlencoded');
+
+        return this.http.get(this.config.baseUrl + url, headers);
     }
     public GetSecurityToken(): string {
         let securityToken: string = '';
@@ -73,3 +87,53 @@ export class ApiService {
         });
     }
 }
+
+var sampleWorkerData = [{
+    "id": 1,
+    "serialNumber": "2",
+    "agent": "Houssam",
+    "code": "1",
+    "birthDate": "23/08/2017 12:00:00 AM",
+    "gender": "M",
+    "nationality": "India",
+    "religion": "Other",
+    "maritalStatus": "M",
+    "language": "Arabic",
+    "image": "https://www.jagonews24.com/media/imgAll/2016October/SM/shahed2017061312381720170613162337.jpg",
+    "weight": 22,
+    "height": 153,
+    "education": "none",
+    "passport": "2313546548",
+    "video": "https://www.youtube.com/watch?v=o_XCxBbuaJE",
+    "passportNumber": "321654987",
+    "passportIssDate": null,
+    "passportExpDate": "01.08.2020",
+    "passportPoIssue": null,
+    "civilId": "111",
+    "Status": "1"
+},
+{
+    "id":2,
+    "serialNumber": "3",
+    "agent": "Houssam",
+    "code": "1",
+    "birthDate": "23/08/2017 12:00:00 AM",
+    "gender": "M",
+    "nationality": "India",
+    "religion": "Athiest",
+    "maritalStatus": "M",
+    "language": "English",
+    "image": "https://www.jagonews24.com/media/imgAll/2016October/SM/shahed2017061312381720170613162337.jpg",
+    "weight": 81,
+    "height": 180,
+    "education": "Uni",
+    "passport": "2313546548",
+    "video": "https://www.youtube.com/watch?v=o_XCxBbuaJE",
+    "passportNumber": "321654987",
+    "passportIssDate": null,
+    "passportExpDate": "01.08.2020",
+    "passportPoIssue": null,
+    "civilId": "111",
+    "Status": "1"
+}
+]

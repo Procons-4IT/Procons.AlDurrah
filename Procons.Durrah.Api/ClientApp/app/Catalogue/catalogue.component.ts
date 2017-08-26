@@ -76,14 +76,18 @@ export class catalogueComponent implements OnInit {
     }
 
     GotoResults() {
-        this.workers = [
-            new Worker(1, "https://www.jagonews24.com/media/imgAll/2016October/SM/shahed2017061312381720170613162337.jpg", 87, 160, 'available'),
-            new Worker(2, "https://s-media-cache-ak0.pinimg.com/736x/09/4b/2a/094b2a3d1526178188f39d10eef9fd88--maids.jpg", 50, 160, 'available'),
-            new Worker(3, "https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAANYAAAAJDEzMDZmNmI4LWJkOTgtNGFiZC1hOGZmLTljNzMxODE2MjdkMw.jpg", 67, 164, 'available'),
-            new Worker(4, "http://static.clickbd.com/global/classified/item_img/1680377_3_original.jpg", 58, 167, 'available')
-        ];
+        this.myApi.getAllWorkers().subscribe(workers =>{
+            this.workers = workers
         this.tabSearchForm.nativeElement.classList.remove('active', 'in');
         this.tabSearchResults.nativeElement.classList.add('active', 'in');
+
+        });
+        // this.workers = [
+        //     new Worker(1, "https://www.jagonews24.com/media/imgAll/2016October/SM/shahed2017061312381720170613162337.jpg", 87, 160, 'available'),
+        //     new Worker(2, "https://s-media-cache-ak0.pinimg.com/736x/09/4b/2a/094b2a3d1526178188f39d10eef9fd88--maids.jpg", 50, 160, 'available'),
+        //     new Worker(3, "https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAANYAAAAJDEzMDZmNmI4LWJkOTgtNGFiZC1hOGZmLTljNzMxODE2MjdkMw.jpg", 67, 164, 'available'),
+        //     new Worker(4, "http://static.clickbd.com/global/classified/item_img/1680377_3_original.jpg", 58, 167, 'available')
+        // ];
     }
 
     GotoProfile(event: Worker) {

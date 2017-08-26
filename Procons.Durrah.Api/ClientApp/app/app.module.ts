@@ -40,8 +40,10 @@ import { LoginComponent } from './login/login.component';
 import { PaymentConfirmationComponent} from './paymentConfirmation/paymentConfirmation.component';
 import { GvControlComponent } from './SharedComponents/gv-control/gv-control.component';
 import { DataGridModule } from 'primeng/primeng';
-import { ModalModule } from 'angular2-modal';
-import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
+// import { ModalModule } from 'angular2-modal';
+// import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
+import { ModalModule } from 'ngx-modialog';
+import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
 @NgModule({
     declarations: [
         AppComponent,

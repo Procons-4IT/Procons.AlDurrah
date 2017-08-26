@@ -7,9 +7,8 @@ import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/mergeMap';
 import { ComponentBase } from '../app.ComponentBase';
-import { Overlay } from 'angular2-modal';
-import { overlayConfigFactory } from 'angular2-modal';
-import { Modal } from 'angular2-modal/plugins/bootstrap';
+import { Overlay } from 'ngx-modialog';
+import { Modal } from 'ngx-modialog/plugins/bootstrap';
 import { ApiService } from '../Services/ApiService';
 
 @Component({
@@ -28,17 +27,19 @@ export class PaymentConfirmationComponent extends ComponentBase<any> implements 
         .map(x=>this.myApiService.createIncomingPayment(x))
         .mergeMap(x=>x)
         .subscribe(onSuccess=>{
-            console.log('Payment Attempted to Post: [server-response] ',onSuccess);
-            this.OpenModal();
+            var response = 'Payment Attempted to Post: [server-response] ' + onSuccess;
+            console.log(response);
+            this.OpenModal(response);
         });
 
     }
 
 
 
-    OpenModal() {
+    OpenModal(message:string) {
         this.modal.alert()
             .showClose(true)
+            .title(message)
             .body(`
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>

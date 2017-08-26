@@ -8,10 +8,10 @@ import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 import { ContextService } from '../Services/ContextService'
 import { ComponentBase } from '../app.ComponentBase';
-import { Overlay } from 'angular2-modal';
-import { overlayConfigFactory } from 'angular2-modal';
-import { Modal } from 'angular2-modal/plugins/bootstrap';
+import { Overlay } from 'ngx-modialog';
+import { Modal } from 'ngx-modialog/plugins/bootstrap';
 import { ApiService } from '../Services/ApiService';
+
 @Component({
     selector: '[app-login]',
     templateUrl: './login.component.html',
@@ -65,9 +65,6 @@ export class LoginComponent extends ComponentBase<any> implements OnInit {
         this.modal.alert()
             .showClose(true)
             .body(`
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        </div>
                         <div class="modal-body">
                             <div class="modal-icon"><img src="/Assets/src/app/images/icon_lock.png" class="icon" /></div>
                             <p><small>You are logged in</small></p>
