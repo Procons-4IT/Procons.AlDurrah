@@ -19,7 +19,8 @@ export class searchFormComponent implements OnInit {
 
     constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
     public Book() {
-
+        console.log('searchFormComponent Book!');
+        
         window.location.href = "http://knet.testyourprojects.co.in/";
     }
 

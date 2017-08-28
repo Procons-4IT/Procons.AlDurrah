@@ -10,7 +10,9 @@ export class SearchResultsComponent implements OnInit {
    
   constructor() { }
   public Book() {
-      window.location.href = "http://knet.testyourprojects.co.in/";
+
+      console.log('SearchResultsComponent Book!');
+      // window.location.href = "http://knet.testyourprojects.co.in/";
   }
 
   ngOnInit() {

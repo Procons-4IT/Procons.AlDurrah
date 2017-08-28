@@ -1,9 +1,25 @@
 export class Worker {
     constructor(
-        public id: number,
-        public image: string,
-        public weight: number,
-        public height: number,
-        public available: string
+        public serialNumber : string,
+        public agent : string,
+        public code : string,
+        public birthDate : string,
+        public gender : string,
+        public nationality : string,
+        public religion : string,
+        public maritalStatus : string,
+        public language : string,
+        public photo : string,
+        public weight : string,
+        public height: string,
+        public education  : string,
+        public passport: string,
+        public videopublic  : string,
+        public passportNumber: string,
+        public passportIssDate : string,
+        public passportExpDate : string,
+        public passportPoIssue: string,
+        public civilId : string,
+        public status : string,
     ) { }
 }
