@@ -2,6 +2,7 @@
 {
     using SAPbobsCOM;
     using System;
+    using System.Data.Services.Client;
     using System.Linq;
     public abstract class ProviderBase
     {
@@ -372,7 +373,7 @@
         public void AddTableSL(string tableName, string description, SAPbobsCOM.BoUTBTableType tableType)
         {
             B1ServiceLayer.SAPB1.UserTablesMD oUserTablesMD = new B1ServiceLayer.SAPB1.UserTablesMD();
-           
+
             try
             {
                 var result = instance.CurrentServicelayerInstance.UserTablesMD.Where(x => x.TableName == tableName);
@@ -386,11 +387,30 @@
             }
             catch (Exception ex)
             {
-                if(instance!=null)
+                if (instance != null)
                 {
                     instance.CurrentServicelayerInstance.Detach(oUserTablesMD);
-                }           
+                }
             }
+        }
+
+        public bool AddUdo(B1ServiceLayer.SAPB1.UserObjectsMD udo)
+        {
+            try
+            {
+                var slInstance = instance.CurrentServicelayerInstance;
+                var result = slInstance.UserObjectsMD.Where(x => x.Name == udo.Name);
+                if (result.Count() == 0)
+                {
+                    slInstance.AddToUserObjectsMD(udo);
+                }
+            }
+            catch (Exception ex)
+            {
+                instance.CurrentServicelayerInstance.Detach(udo);
+                throw ex;
+            }
+            return true;
         }
 
         #endregion

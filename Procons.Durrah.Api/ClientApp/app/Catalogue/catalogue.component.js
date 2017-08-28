@@ -10,19 +10,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-var Worker_1 = require("../Models/Worker");
 var SearchContent_1 = require("../Models/SearchContent");
 var WorkersService_1 = require("../Services/WorkersService");
+var ApiService_1 = require("../Services/ApiService");
+var platform_browser_1 = require("@angular/platform-browser");
 var catalogueComponent = (function () {
-    function catalogueComponent(componentFactoryResolver, workersService) {
+    function catalogueComponent(myApi, componentFactoryResolver, workersService, sanitizer) {
+        this.myApi = myApi;
         this.componentFactoryResolver = componentFactoryResolver;
         this.workersService = workersService;
+        this.sanitizer = sanitizer;
         this.isVisible = true;
         this.visiblePart = 0;
         this.searchContent = new SearchContent_1.SearchContent();
     }
     catalogueComponent.prototype.GotoSearch = function () {
-        debugger;
         this.selectedStatus = "";
         this.selectedLanguage = "";
         this.selectedAge = "";
@@ -38,24 +40,21 @@ var catalogueComponent = (function () {
         this.tabSearchForm.nativeElement.classList.add('active', 'in');
     };
     catalogueComponent.prototype.GotoResults = function () {
-        debugger;
-        this.workers = [
-            new Worker_1.Worker(1, "https://www.jagonews24.com/media/imgAll/2016October/SM/shahed2017061312381720170613162337.jpg", 87, 160, 'available'),
-            new Worker_1.Worker(2, "https://s-media-cache-ak0.pinimg.com/736x/09/4b/2a/094b2a3d1526178188f39d10eef9fd88--maids.jpg", 50, 160, 'available'),
-            new Worker_1.Worker(3, "https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAANYAAAAJDEzMDZmNmI4LWJkOTgtNGFiZC1hOGZmLTljNzMxODE2MjdkMw.jpg", 67, 164, 'available'),
-            new Worker_1.Worker(4, "http://static.clickbd.com/global/classified/item_img/1680377_3_original.jpg", 58, 167, 'available')
-        ];
-        this.tabSearchForm.nativeElement.classList.remove('active', 'in');
-        this.tabSearchResults.nativeElement.classList.add('active', 'in');
+        var _this = this;
+        this.myApi.getAllWorkers().subscribe(function (workers) {
+            console.log('workers Format! ', workers);
+            _this.workers = workers;
+            _this.tabSearchForm.nativeElement.classList.remove('active', 'in');
+            _this.tabSearchResults.nativeElement.classList.add('active', 'in');
+        });
     };
     catalogueComponent.prototype.GotoProfile = function (event) {
-        debugger;
         this.selectedWorker = event;
         this.tabSearchResults.nativeElement.classList.remove('active', 'in');
         this.tabprofile.nativeElement.classList.add('active', 'in');
     };
     catalogueComponent.prototype.ngOnInit = function () {
-        this.GetLookups();
+        // this.GetLookups();
     };
     catalogueComponent.prototype.onRowSelect = function (event) {
     };
@@ -69,6 +68,20 @@ var catalogueComponent = (function () {
             _this.workerTypes = response.json().workerTypes;
         }, function (error) {
         });
+    };
+    catalogueComponent.prototype.GetAvailableCSS = function (worker) {
+        //remove to status instead of getting the whole woker
+        var isAvaible = worker.status == "1" ? true : false;
+        return {
+            "glyphicon": true,
+            "glyphicon-ok": isAvaible,
+            "glyphicon-remove": !isAvaible
+        };
+    };
+    catalogueComponent.prototype.Book = function (selectedWorker) {
+        console.log('calling knetPayment! for worker ', selectedWorker);
+        var paymentInformation = { SerialNumber: selectedWorker.serialNumber, CardCode: "C220Temp", Amount: "100", Code: selectedWorker.code };
+        this.myApi.knetPaymentRedirect(paymentInformation).subscribe();
     };
     return catalogueComponent;
 }());
@@ -99,8 +112,8 @@ catalogueComponent = __decorate([
         styleUrls: ['./catalogue.component.css'],
         providers: [WorkersService_1.WorkersService]
     }),
-    __metadata("design:paramtypes", [core_1.ComponentFactoryResolver,
-        WorkersService_1.WorkersService])
+    __metadata("design:paramtypes", [ApiService_1.ApiService, core_1.ComponentFactoryResolver,
+        WorkersService_1.WorkersService, platform_browser_1.DomSanitizer])
 ], catalogueComponent);
 exports.catalogueComponent = catalogueComponent;
 //# sourceMappingURL=catalogue.component.js.map

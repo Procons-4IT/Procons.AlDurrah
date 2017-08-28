@@ -25,16 +25,20 @@ var app_routing_1 = require("./app.routing");
 var ActivationGuard_1 = require("./Services/ActivationGuard");
 var angular2_busy_1 = require("angular2-busy");
 var primeng_1 = require("primeng/primeng");
+var ApiService_1 = require("./Services/ApiService");
 var UserService_1 = require("./Services/UserService");
 var CarService_1 = require("./Services/CarService");
 var AccountService_1 = require("./Services/AccountService");
 var ContextService_1 = require("./Services/ContextService");
 var home_component_1 = require("./home/home.component");
 var login_component_1 = require("./login/login.component");
+var paymentConfirmation_component_1 = require("./paymentConfirmation/paymentConfirmation.component");
 var gv_control_component_1 = require("./SharedComponents/gv-control/gv-control.component");
 var primeng_2 = require("primeng/primeng");
-var angular2_modal_1 = require("angular2-modal");
-var bootstrap_1 = require("angular2-modal/plugins/bootstrap");
+// import { ModalModule } from 'angular2-modal';
+// import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
+var ngx_modialog_1 = require("ngx-modialog");
+var bootstrap_1 = require("ngx-modialog/plugins/bootstrap");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -52,6 +56,7 @@ AppModule = __decorate([
             app_routing_1.routingComponents,
             home_component_1.HomeComponent,
             login_component_1.LoginComponent,
+            paymentConfirmation_component_1.PaymentConfirmationComponent,
             gv_control_component_1.GvControlComponent,
             SearchResults_component_1.SearchResultsComponent,
             SearchForm_component_1.searchFormComponent,
@@ -59,7 +64,7 @@ AppModule = __decorate([
         ],
         imports: [
             bootstrap_1.BootstrapModalModule,
-            angular2_modal_1.ModalModule.forRoot(),
+            ngx_modialog_1.ModalModule.forRoot(),
             angular2_busy_1.BusyModule,
             platform_browser_1.BrowserModule,
             forms_1.FormsModule,
@@ -79,6 +84,7 @@ AppModule = __decorate([
         providers: [CarService_1.CarService,
             ActivationGuard_1.CanActivateViaAuthGuard,
             ContextService_1.ContextService,
+            ApiService_1.ApiService,
             AccountService_1.AccountService,
             UserService_1.UserService,
             material_1.OVERLAY_PROVIDERS],

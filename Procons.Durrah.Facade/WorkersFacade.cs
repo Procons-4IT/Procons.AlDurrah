@@ -24,14 +24,14 @@
 
         public List<Worker> GetAgentWorkers(string agent)
         {
-            var workersList = provider.GetWorkers(agent);
+            var workersList = provider.GetAgentWorkers(agent);
             //var workersList = MappingHelper.FillCollection<Worker>(dr);
             return workersList;
         }
 
-        public List<Worker> GetWorkers()
+        public List<Worker> GetWorkers(Worker wrk)
         {
-            var workersList = provider.GetWorkers();
+            var workersList = provider.GetWorkers(wrk);
             //var workersList = MappingHelper.FillCollection<Worker>(dr);
             return workersList;
         }

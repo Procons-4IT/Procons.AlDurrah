@@ -9,11 +9,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var login_component_1 = require("./login/login.component");
 var home_component_1 = require("./home/home.component");
+var paymentConfirmation_component_1 = require("./paymentConfirmation/paymentConfirmation.component");
 var router_1 = require("@angular/router");
 var routes = [
-    { path: '', pathMatch: 'full', redirectTo: '/Home' },
     { path: 'Home', component: home_component_1.HomeComponent },
-    { path: 'login', component: login_component_1.LoginComponent }
+    { path: 'login', component: login_component_1.LoginComponent },
+    { path: 'PaymentConfirmation', component: paymentConfirmation_component_1.PaymentConfirmationComponent },
+    { path: '', pathMatch: 'full', redirectTo: '/Home' },
+    { path: '**', pathMatch: 'full', redirectTo: '/Home' }
 ];
 var RoutingModule = (function () {
     function RoutingModule() {

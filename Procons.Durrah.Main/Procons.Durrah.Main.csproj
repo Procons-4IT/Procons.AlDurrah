@@ -133,6 +133,10 @@
       <Project>{024fbfde-b684-43c6-b5fc-5adeb4c86810}</Project>
       <Name>Procons.Durrah.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Procons.ExpressionBuilder\Procons.ExpressionBuilder.csproj">
+      <Project>{70bf550d-5943-4162-8fab-0bba743a3d93}</Project>
+      <Name>Procons.ExpressionBuilder</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Connected Services\B1ServiceLayer\service.edmx" />

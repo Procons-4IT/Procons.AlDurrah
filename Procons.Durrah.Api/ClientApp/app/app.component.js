@@ -23,7 +23,6 @@ var AppComponent = (function () {
         this.context.loginPageFollower.subscribe(function (value) { _this.isLoginPage = value; });
     }
     AppComponent.prototype.ngOnInit = function () {
-        debugger;
     };
     return AppComponent;
 }());

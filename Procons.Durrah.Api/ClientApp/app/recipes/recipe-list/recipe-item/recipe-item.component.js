@@ -12,10 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var RecipeItemComponent = (function () {
     function RecipeItemComponent() {
-        debugger;
     }
     RecipeItemComponent.prototype.CatchEvent = function (houssam) {
-        debugger;
         // let $ = require('../ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js');
         // $.alert('ok');
         // let par = this.testReference.nativeElement.value;

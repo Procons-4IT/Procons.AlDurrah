@@ -113,10 +113,10 @@
             return Ok();
         }
 
-        [HttpGet]
+        [HttpPost]
         public IHttpActionResult GetWorkers([FromBody]Worker worker)
-        { 
-            var workers = workersFacade.GetWorkers();
+        {
+            var workers = workersFacade.GetWorkers(worker);
             return Ok(workers);
         }
 

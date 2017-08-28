@@ -26,13 +26,13 @@
         PATCH = 1
     }
 
-    public enum Operation
-    {
-        EqualTo,
-        NotEqualTo,
-        GreaterThan,
-        GreaterThanOrEqualTo,
-        LessThan,
-        LessThanOrEqualTo
-    }
+    //public enum Operation
+    //{
+    //    EqualTo,
+    //    NotEqualTo,
+    //    GreaterThan,
+    //    GreaterThanOrEqualTo,
+    //    LessThan,
+    //    LessThanOrEqualTo
+    //}
 }

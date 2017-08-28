@@ -6,19 +6,19 @@
                     <div class="row">
                         <div class="col-md-6 col-md-offset-3">
                             <h2 class="border-alt">التسجيل</h2>
-                            <p class="login-icon"><img src="/Assets/src/app/images/icon_login.png" height="120" width="120" data-appear-animation="fadeIn" /></p>
+                            <p class="login-icon"><img src="/eldurra-master/src/app/images/icon_login.png" height="120" width="120" data-appear-animation="fadeIn" /></p>
                             <form action="/" method="post" id="loginForm" class="form-primary">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="username" name="username" placeholder="Username"  #userNameInput/>
+                                    <input type="text" class="form-control" id="username" name="username" placeholder="Username"  [(ngModel)]="userName"/>
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" #passwordInput/>
+                                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" [(ngModel)]="password"/>
                                 </div>
                                 <div class="form-group text-right">
                                     <a href="#" class="forgot-password" data-toggle="modal" data-target="#modalForgotPass">Forgot Password</a>
                                 </div>
                                 <div class="form-group">
-                                    <input type="submit" value="Login" (click)="Login(userNameInput.value,passwordInput.value);userNameInput.value= '';passwordInput.value= ''" class="btn btn-primary" id="submitLoginForm" />
+                                    <input type="submit" value="Login" (click)="Login()" class="btn btn-primary" id="submitLoginForm" />
 
                                 </div>
                                 <div class="form-group">

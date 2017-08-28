@@ -14,7 +14,8 @@ var SearchResultsComponent = (function () {
     function SearchResultsComponent() {
     }
     SearchResultsComponent.prototype.Book = function () {
-        window.location.href = "http://knet.testyourprojects.co.in/";
+        console.log('SearchResultsComponent Book!');
+        // window.location.href = "http://knet.testyourprojects.co.in/";
     };
     SearchResultsComponent.prototype.ngOnInit = function () {
     };

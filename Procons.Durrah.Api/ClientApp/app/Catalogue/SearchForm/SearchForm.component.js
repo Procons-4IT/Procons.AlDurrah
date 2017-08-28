@@ -17,6 +17,7 @@ var searchFormComponent = (function () {
         this.componentFactoryResolver = componentFactoryResolver;
     }
     searchFormComponent.prototype.Book = function () {
+        console.log('searchFormComponent Book!');
         window.location.href = "http://knet.testyourprojects.co.in/";
     };
     searchFormComponent.prototype.ngOnInit = function () {

@@ -1361,7 +1361,7 @@
 
         public List<WORKERS> GetWorkers()
         {
-            return currentServiceContainer.Workers.ToList<WORKERS>();
+            return currentServiceContainer.WORKERSUDO.ToList<WORKERS>();
         }
 
     }

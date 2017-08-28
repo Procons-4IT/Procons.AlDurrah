@@ -42,6 +42,13 @@
                 base.AddFieldSL("TrackID", "Payment TrackID", "ORDR", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 20, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), false);
                 base.AddFieldSL("Status", "Payment Status", "ORDR", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 20, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), false);
                 base.AddFieldSL("Password", "Password", "OCRD", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 50, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), false);
+
+                base.AddUdo(new B1ServiceLayer.SAPB1.UserObjectsMD()
+                {
+                    TableName = "WORKERS",
+                    Code = "WORKERSUDO",
+                    Name = "WORKERSUDO"
+                });
                 instance.CurrentServicelayerInstance.SaveChanges();
                 return instance.B1SessionId;
             }

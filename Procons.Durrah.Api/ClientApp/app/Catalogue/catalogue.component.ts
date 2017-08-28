@@ -116,12 +116,12 @@ export class catalogueComponent implements OnInit {
     }
     GetAvailableCSS(worker: Worker) {
         //remove to status instead of getting the whole woker
-        var isAvaible = worker.status == true;
+        var isAvaible = worker.status == "1" ? true : false;
         return {
             "glyphicon": true,
-            "glyphicon-ok": isAvaible
+            "glyphicon-ok": isAvaible,
             "glyphicon-remove": !isAvaible
-        }
+        };
     }
     Book(selectedWorker: Worker) {
         console.log('calling knetPayment! for worker ', selectedWorker);

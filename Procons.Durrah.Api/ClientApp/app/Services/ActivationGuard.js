@@ -19,7 +19,6 @@ var CanActivateViaAuthGuard = (function () {
         this.router = router;
     }
     CanActivateViaAuthGuard.prototype.canActivate = function () {
-        debugger;
         if (this.authService.isLogedIn()) {
             return true;
         }

@@ -40,7 +40,6 @@ var ComponentBase = (function () {
         return this.header.push(name, value);
     };
     ComponentBase.prototype.CloneObject = function (par, c) {
-        debugger;
         var object = new c();
         for (var prop in par) {
             object[prop] = par[prop];
@@ -48,7 +47,6 @@ var ComponentBase = (function () {
         return object;
     };
     ComponentBase.prototype.ShowDialogToAdd = function (isNewObject, objectInstance, displayDialog) {
-        debugger;
         isNewObject = true;
         objectInstance = null; // new T();
         displayDialog = true;

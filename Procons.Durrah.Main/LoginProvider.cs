@@ -31,7 +31,7 @@ namespace Procons.Durrah.Main
         {
 
             var ServiceInstance = ServiceLayerProvider.GetInstance();
-            var workers = ServiceInstance.CurrentServicelayerInstance.Workers.ToList<WORKERS>();
+            var workers = ServiceInstance.CurrentServicelayerInstance.WORKERSUDO.ToList<WORKERS>();
             List<Worker> workersList = new List<Worker>();
             foreach (var w in workers)
             {

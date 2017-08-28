@@ -14,7 +14,7 @@ var profileComponent = (function () {
     function profileComponent() {
     }
     profileComponent.prototype.Book = function () {
-        window.location.href = "http://knet.testyourprojects.co.in/";
+        console.log('Attempting to Book profileComponent');
     };
     profileComponent.prototype.ngOnInit = function () {
     };

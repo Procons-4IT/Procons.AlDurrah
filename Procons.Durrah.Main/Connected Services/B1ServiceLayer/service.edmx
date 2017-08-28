@@ -3748,6 +3748,7 @@
         <Property Name="U_Auth" Type="Edm.String" />
         <Property Name="U_Ref" Type="Edm.String" />
         <Property Name="U_TrackID" Type="Edm.String" />
+        <Property Name="U_Status" Type="Edm.String" />
         <Property Name="Document_ApprovalRequests" Type="Collection(SAPB1.Document_ApprovalRequest)" />
         <Property Name="DocumentLines" Type="Collection(SAPB1.DocumentLine)" />
         <Property Name="DocumentAdditionalExpenses" Type="Collection(SAPB1.DocumentAdditionalExpense)" />
@@ -4540,6 +4541,7 @@
         <Property Name="U_Auth" Type="Edm.String" />
         <Property Name="U_Ref" Type="Edm.String" />
         <Property Name="U_TrackID" Type="Edm.String" />
+        <Property Name="U_Status" Type="Edm.String" />
         <Property Name="StockTransfer_ApprovalRequests" Type="Collection(SAPB1.StockTransfer_ApprovalRequest)" />
         <Property Name="StockTransferLines" Type="Collection(SAPB1.StockTransferLine)" />
         <Property Name="StockTransferTaxExtension" Type="SAPB1.StockTransferTaxExtension" />
@@ -8435,6 +8437,7 @@
         <Property Name="OwnerCode" Type="Edm.Int32" />
         <Property Name="BlockSendingMarketingContent" Type="Edm.String" />
         <Property Name="AgentCode" Type="Edm.String" />
+        <Property Name="U_Password" Type="Edm.String" />
         <Property Name="BPAddresses" Type="Collection(SAPB1.BPAddress)" />
         <Property Name="ContactEmployees" Type="Collection(SAPB1.ContactEmployee)" />
         <Property Name="BPAccountReceivablePaybleCollection" Type="Collection(SAPB1.BPAccountReceivablePayble)" />
@@ -13229,8 +13232,10 @@
         <Property Name="UpdateDate" Type="Edm.DateTime" />
         <Property Name="UpdateTime" Type="Edm.Int32" />
         <Property Name="DataSource" Type="Edm.String" />
+        <Property Name="U_ItemCode" Type="Edm.String" />
         <Property Name="U_Serial" Type="Edm.String" />
         <Property Name="U_Agent" Type="Edm.String" />
+        <Property Name="U_Age" Type="Edm.Int32" />
         <Property Name="U_BirthDate" Type="Edm.DateTime" />
         <Property Name="U_Gender" Type="Edm.String" />
         <Property Name="U_Nationality" Type="Edm.String" />
@@ -13249,11 +13254,6 @@
         <Property Name="U_PassportPoIssue" Type="Edm.String" />
         <Property Name="U_CivilId" Type="Edm.String" />
         <Property Name="U_Status" Type="Edm.String" />
-        <Property Name="U_ItemCode" Type="Edm.String" />
-        <Property Name="U_Field3" Type="Edm.String" />
-        <Property Name="U_Field4" Type="Edm.String" />
-        <Property Name="U_Field2" Type="Edm.String" />
-        <Property Name="U_Test" Type="Edm.String" />
       </EntityType>
       <ComplexType Name="WORKERSParams">
         <Property Name="Code" Type="Edm.String" />
@@ -19217,7 +19217,7 @@
         <EntitySet EntityType="SAPB1.UserDefaultGroup" Name="UserDefaultGroups" />
         <EntitySet EntityType="SAPB1.SalesOpportunities" Name="SalesOpportunities" />
         <EntitySet EntityType="SAPB1.SalesOpportunityInterestSetup" Name="SalesOpportunityInterestsSetup" />
-        <EntitySet EntityType="SAPB1.WORKERS" Name="Workers" />
+        <EntitySet EntityType="SAPB1.WORKERS" Name="WORKERSUDO" />
         <EntitySet EntityType="SAPB1.B1Session" Name="B1Sessions" />
         <EntitySet EntityType="SAPB1.ItemImage" Name="ItemImages" />
         <FunctionImport Name="SalesOpportunitySourcesSetupService_GetSalesOpportunitySourceSetupList" ReturnType="Collection(SAPB1.SalesOpportunitySourceSetupParams)" m:HttpMethod="POST" />
