@@ -9,11 +9,11 @@ export class RecipeItemComponent implements OnInit {
   @ViewChild("testReference") testReference: ElementRef;
 
   constructor() {
-    debugger;
+     
 
   }
   CatchEvent(houssam: any) {
-    debugger;
+     
     // let $ = require('../ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js');
     // $.alert('ok');
     // let par = this.testReference.nativeElement.value;

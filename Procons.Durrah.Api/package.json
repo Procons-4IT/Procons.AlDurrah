@@ -2,6 +2,8 @@
   "name": "Procons_Payroll",
   "version": "0.0.0",
   "scripts": {
+    "start": "webpack-dev-server --config webpack.config.dev.js",
+    "build":"webpack --config webpack.config.vendor.js",
     "test": "karma start ClientApp/test/karma.conf.js"
   },
   "dependencies": {
@@ -31,7 +33,6 @@
     "@types/node": "7.0.18",
     "angular2-busy": "^2.0.4",
     "angular2-fontawesome": "^0.9.3",
-    "angular2-modal": "^3.0.2",
     "angular2-template-loader": "0.6.2",
     "aspnet-prerendering": "^2.0.5",
     "aspnet-webpack": "^1.0.29",
@@ -58,6 +59,7 @@
     "ng2-toasty": "^4.0.3",
     "ngx-bootstrap": "^1.7.1",
     "ngx-datatable": "^1.0.3",
+    "ngx-modialog": "^3.0.3",
     "preboot": "4.5.2",
     "primeng": "^4.1.0",
     "raw-loader": "0.5.1",
@@ -85,6 +87,7 @@
     "karma-cli": "1.0.1",
     "karma-jasmine": "1.1.0",
     "karma-webpack": "2.0.3",
-    "webpack": "^2.5.1"
+    "webpack": "^2.5.1",
+    "webpack-dev-server": "^2.7.1"
   }
 }

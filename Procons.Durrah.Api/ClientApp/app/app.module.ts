@@ -30,19 +30,22 @@ import {
   DialogModule
 } from 'primeng/primeng';
 
+import {ApiService} from './Services/ApiService';
 import {UserService} from './Services/UserService';
 import { CarService } from './Services/CarService';
 import { AccountService } from './Services/AccountService';
 import { ContextService } from './Services/ContextService';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
+import { PaymentConfirmationComponent} from './paymentConfirmation/paymentConfirmation.component';
 import { GvControlComponent } from './SharedComponents/gv-control/gv-control.component';
 import { DataGridModule } from 'primeng/primeng';
-import { ModalModule } from 'angular2-modal';
-import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
+// import { ModalModule } from 'angular2-modal';
+// import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
+import { ModalModule } from 'ngx-modialog';
+import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
 @NgModule({
     declarations: [
-
         AppComponent,
         catalogueComponent,
         RecipesComponent,
@@ -52,6 +55,7 @@ import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
         routingComponents,
         HomeComponent,
         LoginComponent,
+        PaymentConfirmationComponent,
         GvControlComponent,
         SearchResultsComponent,
         searchFormComponent,
@@ -79,6 +83,7 @@ import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
     providers: [CarService,
         CanActivateViaAuthGuard,
         ContextService,
+        ApiService,
         AccountService,
         UserService,
         OVERLAY_PROVIDERS],

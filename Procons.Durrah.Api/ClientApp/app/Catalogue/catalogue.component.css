@@ -1,3 +1,7 @@
+/* .ui-datatable table { table-layout: auto !important; } */
+.ui-datatable-tablewrapper {
+    overflow-x: auto;
+    }
 .Housam{
 color: red;
 }
