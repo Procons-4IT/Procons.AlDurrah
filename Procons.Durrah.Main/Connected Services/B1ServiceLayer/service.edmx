@@ -13254,6 +13254,7 @@
         <Property Name="U_PassportPoIssue" Type="Edm.String" />
         <Property Name="U_CivilId" Type="Edm.String" />
         <Property Name="U_Status" Type="Edm.String" />
+        <Property Name="U_Price" Type="Edm.Double" />
       </EntityType>
       <ComplexType Name="WORKERSParams">
         <Property Name="Code" Type="Edm.String" />

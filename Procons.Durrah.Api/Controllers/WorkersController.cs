@@ -109,7 +109,7 @@
         {
             var claims = ((ClaimsIdentity)User.Identity).Claims;
             var cardCode = claims.Where(x => x.Type == worker.Agent).FirstOrDefault().Value;
-            workersFacade.GetAgentWorkers(cardCode);
+            //workersFacade.GetAgentWorkers(cardCode);
             return Ok();
         }
 

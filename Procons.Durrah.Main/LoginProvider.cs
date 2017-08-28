@@ -1,11 +1,11 @@
-﻿using Procons.Durrah.Common;
-using Procons.Durrah.Main.B1ServiceLayer.SAPB1;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-
-namespace Procons.Durrah.Main
+﻿namespace Procons.Durrah.Main
 {
+    using Procons.Durrah.Common;
+    using Procons.Durrah.Main.B1ServiceLayer.SAPB1;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using System.Runtime.InteropServices;
     public class LoginProvider
     {
         public ApplicationUser FindUser(string userName, string password)
@@ -29,7 +29,6 @@ namespace Procons.Durrah.Main
 
         public List<Worker> GetWorkers([Optional]string agent)
         {
-
             var ServiceInstance = ServiceLayerProvider.GetInstance();
             var workers = ServiceInstance.CurrentServicelayerInstance.WORKERSUDO.ToList<WORKERS>();
             List<Worker> workersList = new List<Worker>();

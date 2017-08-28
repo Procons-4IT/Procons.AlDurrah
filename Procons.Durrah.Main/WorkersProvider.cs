@@ -5,19 +5,15 @@
     using ExpressionBuilder.Common;
     using ExpressionBuilder.Generics;
     using ExpressionBuilder.Interfaces;
-    using Procons.Durrah.Common.Enumerators;
     using Procons.Durrah.Main.B1ServiceLayer.SAPB1;
     using Sap.Data.Hana;
     using SAPbobsCOM;
     using System;
     using System.Collections.Generic;
-    using System.Data.Common;
     using System.Data.Services.Client;
     using System.Data.SqlClient;
     using System.Linq;
-    using System.Linq.Expressions;
     using System.Runtime.InteropServices;
-    using System.Web.Http;
 
     public class WorkersProvider : ProviderBase
     {
@@ -29,7 +25,7 @@
             var _worker = new WORKERS();
             _worker.Code = Guid.NewGuid().ToString();
             _worker.U_Agent = worker.Agent;
-            _worker.U_Age = Convert.ToInt32(worker.Age);
+            _worker.U_Age = worker.Age;
             _worker.U_BirthDate = Convert.ToDateTime(worker.BirthDate);
             _worker.U_CivilId = worker.CivilId;
             _worker.U_ItemCode = worker.Code;
@@ -45,6 +41,7 @@
             _worker.U_PassportNumber = worker.PassportNumber;
             _worker.U_PassportPoIssue = worker.PassportPoIssue;
             _worker.U_Photo = worker.Photo;
+            _worker.U_Price = worker.Price;
             _worker.U_Religion = worker.Religion;
             _worker.U_Serial = worker.SerialNumber;
             _worker.U_Status = worker.Status;
@@ -85,52 +82,14 @@
             return created;
         }
 
-
-        public List<Worker> GetAgentWorkers([Optional]string agent)
-        {
-
-            var ServiceInstance = ServiceLayerProvider.GetInstance();
-            var workers = ServiceInstance.GetWorkers();
-            List<Worker> workersList = new List<Worker>();
-            foreach (var w in workers)
-            {
-                workersList.Add(
-                    new Worker()
-                    {
-                        Agent = w.U_Agent,
-                        BirthDate = w.U_BirthDate.ToString(),
-                        CivilId = w.U_CivilId,
-                        Code = w.U_ItemCode,
-                        Education = w.U_Education,
-                        Gender = w.U_Gender,
-                        Height = w.U_Height,
-                        Language = w.U_Language,
-                        MaritalStatus = w.U_MaritalStatus,
-                        Nationality = w.U_Nationality,
-                        Passport = w.U_Passport,
-                        PassportExpDate = w.U_PassportExpDate,
-                        PassportIssDate = w.U_PassportPoIssue,
-                        PassportNumber = w.U_PassportNumber,
-                        PassportPoIssue = w.U_PassportPoIssue,
-                        Photo = w.U_Photo,
-                        Religion = w.U_Religion,
-                        SerialNumber = w.U_Serial,
-                        Status = w.U_Status,
-                        Video = w.U_Video,
-                        Weight = w.U_Weight.ToString()
-                    }
-                    );
-            }
-            return workersList;
-        }
-
         public List<Worker> GetWorkers(Worker worker)
         {
             var exp = GetExpression(worker);
             var ServiceInstance = ServiceLayerProvider.GetInstance();
             var workers = new List<WORKERS>();
+
             if (exp != null)
-                workers = ServiceInstance.CurrentServicelayerInstance.WORKERSUDO.Where(exp).ToList<WORKERS>();
+            workers = ServiceInstance.CurrentServicelayerInstance.WORKERSUDO.Where(exp).ToList<WORKERS>();
             else
                 workers = ServiceInstance.CurrentServicelayerInstance.WORKERSUDO.ToList<WORKERS>();
 
@@ -161,88 +120,12 @@
                         SerialNumber = w.U_Serial,
                         Status = w.U_Status,
                         Video = w.U_Video,
+                        Price = w.U_Price,
                         Weight = w.U_Weight.ToString()
                     }
                     );
             }
             return workersList;
-        }
-
-        public Filter<WORKERS> GetExpression(Worker wrk)
-        {
-            Filter<WORKERS> filter = new Filter<WORKERS>();
-            IFilterStatementConnection statementConection = null;
-            //var builder = Factory.DeclareClass<ExpressionBuilder<WORKERS>>();
-            //var b1Worker = Factory.DeclareClass<WORKERS>();
-
-            if (wrk != null)
-            {
-
-
-                if (wrk.Age != null)
-                {
-                    if (filter.Statements.Count() > 0)
-                        statementConection = statementConection.And.By("U_Age", Operation.Between, wrk.Age, wrk.Age);
-                    else
-                    {
-                        filter = new Filter<WORKERS>();
-                        statementConection = filter.By("U_Age", Operation.Between, wrk.Age, wrk.Age);
-                    }
-                }
-                if (wrk.Gender != null)
-                {
-                    if (filter.Statements.Count() > 0)
-                        statementConection = statementConection.And.By("U_Gender", Operation.EqualTo, wrk.Gender);
-                    else
-                    {
-                        filter = new Filter<WORKERS>();
-                        statementConection = filter.By("U_Gender", Operation.EqualTo, wrk.Gender);
-                    }
-                }
-                if (wrk.Nationality != null)
-                {
-                    if (filter.Statements.Count() > 0)
-                        statementConection = statementConection.And.By("U_Nationality", Operation.EqualTo, wrk.Nationality);
-                    else
-                    {
-                        filter = new Filter<WORKERS>();
-                        statementConection = filter.By("U_Nationality", Operation.EqualTo, wrk.Nationality);
-                    }
-                }
-                if (wrk.MaritalStatus != null)
-                {
-                    if (filter.Statements.Count() > 0)
-                        statementConection = statementConection.And.By("U_MaritalStatus", Operation.EqualTo, wrk.MaritalStatus);
-                    else
-                    {
-                        filter = new Filter<WORKERS>();
-                        statementConection = filter.By("U_MaritalStatus", Operation.EqualTo, wrk.MaritalStatus);
-                    }
-                }
-                if (wrk.Code != null)
-                {
-                    if (filter.Statements.Count() > 0)
-                        statementConection = statementConection.And.By("Code", Operation.EqualTo, wrk.Code);
-                    else
-                    {
-                        filter = new Filter<WORKERS>();
-                        statementConection = filter.By("Code", Operation.EqualTo, wrk.Code);
-                    }
-                }
-                if (wrk.Language != null)
-                {
-                    if (filter.Statements.Count() > 0)
-                        statementConection = statementConection.And.By("U_Language", Operation.EqualTo, wrk.Language);
-                    else
-                    {
-                        filter = new Filter<WORKERS>();
-                        statementConection = filter.By("U_Language", Operation.EqualTo, wrk.Language);
-                    }
-                }
-                return filter;
-            }
-            else
-                return null;
         }
 
         public double? CreateSalesOrder(Transaction trans)
@@ -364,5 +247,80 @@
             return salesOrder;
         }
 
+        #region PRIVATE METHODS
+        private Filter<WORKERS> GetExpression(Worker wrk)
+        {
+            Filter<WORKERS> filter = new Filter<WORKERS>();
+            IFilterStatementConnection statementConection = null;
+            if (wrk != null)
+            {
+
+
+                if (wrk.Age != null)
+                {
+                    if (filter.Statements.Count() > 0)
+                        statementConection = statementConection.And.By("U_Age", Operation.Between, wrk.Age, wrk.Age);
+                    else
+                    {
+                        filter = new Filter<WORKERS>();
+                        statementConection = filter.By("U_Age", Operation.Between, wrk.Age, wrk.Age);
+                    }
+                }
+                if (wrk.Gender != null)
+                {
+                    if (filter.Statements.Count() > 0)
+                        statementConection = statementConection.And.By("U_Gender", Operation.EqualTo, wrk.Gender);
+                    else
+                    {
+                        filter = new Filter<WORKERS>();
+                        statementConection = filter.By("U_Gender", Operation.EqualTo, wrk.Gender);
+                    }
+                }
+                if (wrk.Nationality != null)
+                {
+                    if (filter.Statements.Count() > 0)
+                        statementConection = statementConection.And.By("U_Nationality", Operation.EqualTo, wrk.Nationality);
+                    else
+                    {
+                        filter = new Filter<WORKERS>();
+                        statementConection = filter.By("U_Nationality", Operation.EqualTo, wrk.Nationality);
+                    }
+                }
+                if (wrk.MaritalStatus != null)
+                {
+                    if (filter.Statements.Count() > 0)
+                        statementConection = statementConection.And.By("U_MaritalStatus", Operation.EqualTo, wrk.MaritalStatus);
+                    else
+                    {
+                        filter = new Filter<WORKERS>();
+                        statementConection = filter.By("U_MaritalStatus", Operation.EqualTo, wrk.MaritalStatus);
+                    }
+                }
+                if (wrk.Code != null)
+                {
+                    if (filter.Statements.Count() > 0)
+                        statementConection = statementConection.And.By("Code", Operation.EqualTo, wrk.Code);
+                    else
+                    {
+                        filter = new Filter<WORKERS>();
+                        statementConection = filter.By("Code", Operation.EqualTo, wrk.Code);
+                    }
+                }
+                if (wrk.Language != null)
+                {
+                    if (filter.Statements.Count() > 0)
+                        statementConection = statementConection.And.By("U_Language", Operation.EqualTo, wrk.Language);
+                    else
+                    {
+                        filter = new Filter<WORKERS>();
+                        statementConection = filter.By("U_Language", Operation.EqualTo, wrk.Language);
+                    }
+                }
+                return filter;
+            }
+            else
+                return null;
+        }
+        #endregion
     }
 }

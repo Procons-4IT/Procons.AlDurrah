@@ -22,13 +22,6 @@
             return provider.DeleteWorker(id);
         }
 
-        public List<Worker> GetAgentWorkers(string agent)
-        {
-            var workersList = provider.GetAgentWorkers(agent);
-            //var workersList = MappingHelper.FillCollection<Worker>(dr);
-            return workersList;
-        }
-
         public List<Worker> GetWorkers(Worker wrk)
         {
             var workersList = provider.GetWorkers(wrk);
