@@ -65,8 +65,8 @@
                             <h3><span class="fa fa-search fa-fw fa-2x"></span> Advanced search results</h3>
                             <p>Please select "ONE" worker.</p>
                             <p-dataTable styleClass="table table-bordered table-hover" [value]="workers" [globalFilter]="gb"
-                                         [paginator]="true" rows="15" [responsive]="true" #dt>
-                                <p-column field="Id" header="ID" [hidden]="true" [filter]="true"></p-column>
+                                         [paginator]="true" rows="15" [responsive]="true" [tableStyle]="{'table-layout':'auto'}" #dt>
+                                <p-column field="agent" header="Agent"></p-column>
                                 <p-column field="image" header="Image">
                                     <ng-template let-col let-worker="rowData" pTemplate="body">
                                         <a (click)="GotoProfile(worker)" data-toggle="tab"><img src="{{worker[col.field]}}" width="87" class="img-thumbnail /"></a>
@@ -74,19 +74,15 @@
                                 </p-column>
                                 <p-column field="weight" header="Weight" [filter]="false" [sortable]="true"></p-column>
                                 <p-column field="height" header="Height" [filter]="false" [sortable]="true"></p-column>
-                                <p-column field="available" [filter]="false" [sortable]="true"></p-column>
-                                <p-column [filter]="false">
-                                    <ng-template pTemplate="header">
-                                    </ng-template>
-                                    <ng-template let-car="rowData" pTemplate="body">
-                                        <a href="#tabProfile" data-toggle="tab"><span [className]="'glyphicon glyphicon-play-circle'"></span></a>
+                                <p-column header="Available" [style]="{'text-align': 'center'}"[filter]="false">
+                                    <ng-template let-worker="rowData" pTemplate="body">
+                                        <a href="#tabProfile" data-toggle="tab"><span [ngClass]="GetAvailableCSS(worker)"></span></a>
                                     </ng-template>
                                 </p-column>
-                                <p-column [filter]="false">
-                                    <ng-template pTemplate="header">
-                                    </ng-template>
-                                    <ng-template let-car="rowData" pTemplate="body">
-                                        <a href="#tabProfile" data-toggle="tab"><span [className]="'glyphicon glyphicon-ok'"></span></a>
+
+                                <p-column header="Video" [filter]="false" [style]="{'text-align': 'center'}" >
+                                    <ng-template let-worker="rowData" pTemplate="body" >
+                                            <iframe width="200" height="200"  [src]="sanitizer.bypassSecurityTrustResourceUrl(worker.video)"  frameborder="0" allowfullscreen></iframe>
                                     </ng-template>
                                 </p-column>
                             </p-dataTable>
@@ -104,7 +100,7 @@
                                 </div>
                                 <div class="col-sm-6"><img src="{{selectedWorker?.image}}" class="img-thumbnail img-responsive" width="100%" /></div>
                             </div>
-                            <p><input type="submit" value="Book" (click)="Book()" class="btn btn-default" id="bookProfile" /></p>
+                            <p><input type="submit" value="Book" (click)="Book(selectedWorker)" class="btn btn-default" id="bookProfile" /></p>
                         </div>
                     </div>
                 </div>

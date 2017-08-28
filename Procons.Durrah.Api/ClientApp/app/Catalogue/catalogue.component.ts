@@ -1,23 +1,26 @@
-import { Component,
-        OnInit,
-        ViewChild,
-        ElementRef,
-        AfterViewInit,
-        ComponentRef,
-        ComponentFactory,
-        ViewContainerRef,
-        ComponentFactoryResolver,
-        ChangeDetectorRef } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    ViewChild,
+    ElementRef,
+    AfterViewInit,
+    ComponentRef,
+    ComponentFactory,
+    ViewContainerRef,
+    ComponentFactoryResolver,
+    ChangeDetectorRef
+} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { MenuItem } from 'primeng/primeng';
 import { searchFormComponent } from './SearchForm/SearchForm.component';
-import {Worker} from '../Models/Worker'
-import {Item} from '../Models/Item'
-import {SearchContent} from '../Models/SearchContent'
-import {WorkersService} from '../Services/WorkersService'
+import { Worker } from '../Models/Worker'
+import { Item } from '../Models/Item'
+import { SearchContent } from '../Models/SearchContent'
+import { WorkersService } from '../Services/WorkersService'
 import { DataGrid } from 'primeng/primeng';
-import {ApiService} from '../Services/ApiService';
+import { ApiService } from '../Services/ApiService';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
     selector: '[app-catalogue]',
@@ -37,7 +40,7 @@ export class catalogueComponent implements OnInit {
     public gender: any[];
     public workerTypes: any[];
     public searchContent = new SearchContent();
-    public selectedLanguage:any;
+    public selectedLanguage: any;
     public selectedAge: any;
     public selectedGender: any;
     public selectedType: any;
@@ -54,12 +57,12 @@ export class catalogueComponent implements OnInit {
 
 
 
-    constructor(private myApi:ApiService ,private componentFactoryResolver: ComponentFactoryResolver,
-        private workersService: WorkersService) { }
+    constructor(private myApi: ApiService, private componentFactoryResolver: ComponentFactoryResolver,
+        private workersService: WorkersService, private sanitizer: DomSanitizer) { }
 
 
     public GotoSearch() {
-         
+
         this.selectedStatus = "";
         this.selectedLanguage = "";
         this.selectedAge = "";
@@ -76,29 +79,24 @@ export class catalogueComponent implements OnInit {
     }
 
     GotoResults() {
-        this.myApi.getAllWorkers().subscribe(workers =>{
-            this.workers = workers
-        this.tabSearchForm.nativeElement.classList.remove('active', 'in');
-        this.tabSearchResults.nativeElement.classList.add('active', 'in');
+        this.myApi.getAllWorkers().subscribe(workers => {
+            console.log('workers Format! ', workers);
+            this.workers = workers;
+            this.tabSearchForm.nativeElement.classList.remove('active', 'in');
+            this.tabSearchResults.nativeElement.classList.add('active', 'in');
 
         });
-        // this.workers = [
-        //     new Worker(1, "https://www.jagonews24.com/media/imgAll/2016October/SM/shahed2017061312381720170613162337.jpg", 87, 160, 'available'),
-        //     new Worker(2, "https://s-media-cache-ak0.pinimg.com/736x/09/4b/2a/094b2a3d1526178188f39d10eef9fd88--maids.jpg", 50, 160, 'available'),
-        //     new Worker(3, "https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAANYAAAAJDEzMDZmNmI4LWJkOTgtNGFiZC1hOGZmLTljNzMxODE2MjdkMw.jpg", 67, 164, 'available'),
-        //     new Worker(4, "http://static.clickbd.com/global/classified/item_img/1680377_3_original.jpg", 58, 167, 'available')
-        // ];
     }
 
     GotoProfile(event: Worker) {
-         
+
         this.selectedWorker = event;
         this.tabSearchResults.nativeElement.classList.remove('active', 'in');
         this.tabprofile.nativeElement.classList.add('active', 'in');
     }
 
     ngOnInit() {
-        this.GetLookups();
+        // this.GetLookups();
     }
 
     onRowSelect(event) {
@@ -116,8 +114,19 @@ export class catalogueComponent implements OnInit {
 
             });
     }
-    Book(){
-        console.log('calling knetPayment!');
-        this.myApi.knetPaymentRedirect().subscribe();
+    GetAvailableCSS(worker: Worker) {
+        //remove to status instead of getting the whole woker
+        var isAvaible = worker.status == true;
+        return {
+            "glyphicon": true,
+            "glyphicon-ok": isAvaible
+            "glyphicon-remove": !isAvaible
+        }
+    }
+    Book(selectedWorker: Worker) {
+        console.log('calling knetPayment! for worker ', selectedWorker);
+        var paymentInformation = { SerialNumber: selectedWorker.serialNumber, CardCode: "C220Temp", Amount: "100", Code: selectedWorker.code }
+
+        this.myApi.knetPaymentRedirect(paymentInformation).subscribe();
     }
 }
