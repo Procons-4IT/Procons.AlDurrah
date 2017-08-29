@@ -1,69 +1,87 @@
 ﻿<div class="container">
-    <div class="section-content">
-        <div class="content-wrapper">
-            <div id="catalogueContainer" class="tab-content" #catalogue>
-                <div role="tabpanel" class="tab-pane fade in active" id="tabCatalogue" #tabcatalogue>
-                    <h2 class="border-alt"><a href="#tabSearchForm" data-toggle="tab">كتالوج الدرة</a></h2>
-                    <p>يضم "كتالوج الدرة" شريحة واسعة من العمالة المختارة للعمل، حيث يوفر الكتالوج للعملاء العديد من الاختيارات، ويعتبر هذا الكتالوج بمثابة قاعدة بيانات يتاح للعميل تصفحه والاختيار منه بعد تسجيل الدخول وتثبيت شخصيته من خلال بيانات البطاقة المدنية.</p>
-                    <p>     تضم كل صفحة من صفحات الكتالوج بيانات المرشح للعمل ويشمل ذلك: بياناته الشخصية (الاسم، الجنس، الجنسية، العمر، الديانة، الحالة الاجتماعية .. إلخ) ثم السمات الشخصية (المهارات اللغوية، الطول</p>
-                    <p class="text-right"><a href="#tabSearchForm" (click)="GotoSearch()" class="btn btn-default" data-toggle="tab">Search for worker <span class="fa fa-search fa-fw"></span></a></p>
-                </div>
-                <div role="tabpanel" class="tab-pane fade" id="tabSearchForm" #tabSearchForm>
-                    <div class="row">
-                        <div class="col-sm-6 col-sm-offset-2">
-                            <h3><span class="fa fa-search fa-fw fa-2x"></span> Advanced search</h3>
-                            <form action="#" (ngSubmit)="GotoResults()" method="post" id="searchForm" name="searchForm" #f="ngForm" >
-                                <div class="form-group">
-                                    <input type="text" class="form-control" id="age" name="selectedAge" [(ngModel)]="searchContent.selectedAge" placeholder="Age" />
-                                </div> 
-                                <!--<div class="form-group">
-                                    <select class="form-control" name="selectedCountry" [(ngModel)]="searchContent.selectedCountry">
-                                        <option value="null" disabled selected>Nationality</option>
-                                        <option *ngFor="let country of countries" [value]="country.value">{{country.name}}</option>
-                                    </select>
-                                </div>-->
-                                <div class="form-group">
-                                    <select class="form-control" name="selectedCountry" [(ngModel)]="searchContent.selectedCountry">
-                                        <option value="null" disabled selected>Nationality</option>
-                                        <option *ngFor="let country of countries" [selected]="country.value == 1" [value]="country">{{country.name}}</option>
-                                    </select>
-                                </div>
-                                    <div class="form-group">
-                                        <select class="form-control" name="selectedGender" ([ngModel])="searchContent.selectedGender">
-                                            <option value="null" disabled selected>Gender</option>
-                                            <option *ngFor="let gndr of gender" [value]="gndr.value">{{gndr.name}}</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <select class="form-control" name="selectedStatus">
-                                            <option value="null" disabled selected>Marital Status</option>
-                                            <option *ngFor="let mStatus of maritalStatus" [value]="mStatus.value">{{mStatus.name}}</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <select class="form-control" name="selectedType" ([ngModel])="searchContent.selectedType">
-                                            <option value="null" disabled selected>Type</option>
-                                            <option *ngFor="let workerType of workerTypes" [value]="workerType.value">{{workerType.name}}</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <select class="form-control" name="selectedLanguage" ([ngModel])="searchContent.selectedLanguage">
-                                            <option value="null" disabled selected>Language</option>
-                                            <option *ngFor="let language of languages" [value]="language.value">{{language.name}}</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="submit" value="Search" class="btn btn-default" id="submitSearchForm" />
-                                    </div>
-</form>
-                        </div>
-                    </div>
-                </div>
-                <div role="tabpanel" class="tab-pane fade" id="tabSearchResults" #tabSearchResults>
-                    <div class="row">
-                        <div class="col-md-8 col-sm-offset-2">
-                            <h3><span class="fa fa-search fa-fw fa-2x"></span> Advanced search results</h3>
-                            <p>Please select "ONE" worker.</p>
+        <div class="section-content">
+           <div class="content-wrapper">
+              <div id="catalogueContainer" class="tab-content" #catalogue>
+               <div role="tabpanel" class="tab-pane fade in active" id="tabCatalogue" #tabcatalogue>
+                 <h2 class="border-alt"><a href="#tabSearchForm" data-toggle="tab">كتالوج الدرة</a></h2>
+                 <p>يضم "كتالوج الدرة" شريحة واسعة من العمالة المختارة للعمل، حيث يوفر الكتالوج للعملاء العديد من الاختيارات، ويعتبر هذا الكتالوج بمثابة قاعدة بيانات يتاح للعميل تصفحه والاختيار منه بعد تسجيل الدخول وتثبيت شخصيته من خلال بيانات البطاقة المدنية.</p>
+                 <p>     تضم كل صفحة من صفحات الكتالوج بيانات المرشح للعمل ويشمل ذلك: بياناته الشخصية (الاسم، الجنس، الجنسية، العمر، الديانة، الحالة الاجتماعية .. إلخ) ثم السمات الشخصية (المهارات اللغوية، الطول</p>
+                 <p class="text-right"><a href="#tabSearchForm" (click)="GotoSearch()" class="btn btn-default" data-toggle="tab">ابحث عن عماله منزلية<span class="fa fa-search fa-fw"></span></a></p>
+               </div>
+               <div role="tabpanel" class="tab-pane fade" id="tabSearchForm" #tabSearchForm>
+                 <div class="row">
+                   <div class="col-sm-6 col-sm-offset-2">
+                     <h3><span class="fa fa-search fa-fw fa-2x"></span> البحث المتقدم</h3>
+
+                     <form action="#" (ngSubmit)="GotoResults(workTypeInput,ageInput ,sexInput ,nationalityInput ,martialStatusInput ,languageInput )" method="post" id="searchForm" name="searchForm" #f="ngForm" >
+                       <div class="form-group">
+                         <select class="form-control" #workTypeInput>
+                           <option>نوع العامل</option>
+                           <option value="مربية">مربية</option>
+                           <option value="سائق">سائق</option>
+                           <option value="طباخ">طباخ</option>
+                           <option value="عامل منزلي">عامل منزلي</option>
+                         </select>
+                       </div>
+                       <div class="form-group">
+                         <select class="form-control" #ageInput>
+                           <option>العمر</option>
+                           <option value="18-25">18-25</option>
+                           <option value="25-35">25-35</option>
+                           <option value="35-45">35-45</option>
+                           <option value="45-55">45-55</option>
+                         </select>
+                       </div>
+                       <div class="form-group">
+                         <select class="form-control" #sexInput>
+                           <option>الجنس</option>
+                           <option value="انثى">انثى</option>
+                           <option value="ذكر">ذكر</option>
+                         </select>
+                       </div>
+                       <div class="form-group">
+                         <select class="form-control" #nationalityInput>
+                           <option>الجنسية</option>
+                           <option value="الهند">الهند</option>
+                           <option value="الفلبين">الفلبين</option>
+                           <option value="ملاوي">ملاوي</option>
+                           <option value="بنين">بنين</option>
+                           <option value="تشاد">تشاد</option>
+                           <option value="نيبال">نيبال</option>
+                           <option value="سيريلانكا">سيريلانكا</option>
+                         </select>
+                       </div>
+                       <div class="form-group">
+                         <select class="form-control" #martialStatusInput>
+                           <option>الحالة الاجتماعية</option>
+                           <option value="متزوج">متزوج</option>
+                           <option value="أعزب">أعزب</option>
+                         </select>
+                       </div>
+                       <div class="form-group" #languageInput>
+                         <select class="form-control">
+                           <option>اللغات المتحدث بها</option>
+                           <option value="اخرى">اخرى</option>
+                           <option value="فرنسي">فرنسي</option>
+                           <option value="انجليزي">انجليزي</option>
+                           <option value="عربي">عربي</option>
+                         </select>
+                       </div>
+
+                       <div class="form-group">
+                          <input type="submit" value="بحث" class="btn btn-default" id="submitSearchForm" />
+                       </div>
+                     </form>
+
+                   </div>
+                 </div>
+
+               </div>
+               <div role="tabpanel" class="tab-pane fade" id="tabSearchResults" #tabSearchResults>
+                 <div class="row">
+                   <div class="col-md-8 col-sm-offset-2">
+                     <h3><span class="fa fa-search fa-fw fa-2x"></span> نتائج البحث المتقدمة</h3>
+                     <p>الرجاء اختيار عامل واحد</p>
                             <p-dataTable styleClass="table table-bordered table-hover" [value]="workers" [globalFilter]="gb"
                                          [paginator]="true" rows="15" [responsive]="true" #dt>
                                 <p-column field="Id" header="ID" [hidden]="true" [filter]="true"></p-column>
@@ -90,26 +108,60 @@
                                     </ng-template>
                                 </p-column>
                             </p-dataTable>
-                        </div>
-                        <p><input type="submit" value="Back" (click)="GotoSearch()" class="btn btn-default" /></p>
-                    </div>
-                </div>
-                <div role="tabpanel" class="tab-pane fade" id="tabProfile" #tabprofile>
-                    <div class="row">
-                        <div class="col-md-8 col-sm-offset-2">
-                            <h3>Profile</h3>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec luctus hendrerit justo et bibendum. Morbi a convallis nulla. Nulla facilisi. Cras iaculis dictum nunc, a porttitor ante porta quis. Sed non magna magna. Donec ex ipsum, condimentum ut arcu vel, suscipit venenatis quam. Donec euismod diam eget justo congue vehicula. Suspendisse lobortis, magna eu tempor lacinia, erat leo pharetra ligula, non dictum lacus justo dignissim ante. Donec varius magna diam, sit amet hendrerit nulla interdum in.</p>
-                                </div>
-                                <div class="col-sm-6"><img src="{{selectedWorker?.image}}" class="img-thumbnail img-responsive" width="100%" /></div>
+                   </div>
+                 </div>
+               </div>
+               <div role="tabpanel" class="tab-pane fade" id="tabProfile" #tabprofile>
+                 <div class="row">
+                   <div class="col-md-8 col-sm-offset-2">
+                        <h3>مرشد ملا</h3>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <td>تاريخ الميلاد</td>
+                                            <td>05/05/1987</td>
+                                        </tr>
+                                        <tr>
+                                            <td>الجنسية</td>
+                                            <td>الهند</td>
+                                        </tr>
+                                        <tr>
+                                            <td>الحالة الإجتماعية</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>اللغات المتحدث بها</td>
+                                            <td>الهندية - البنغالية</td>
+                                        </tr>
+                                        <tr>
+                                            <td>الوظيفة</td>
+                                            <td>طباخ</td>
+                                        </tr>
+                                        <tr>
+                                            <td>سنوات الخبره</td>
+                                            <td>18 سنة</td>
+                                        </tr>
+                                        <tr>
+                                            <td>تفاصيل الخبره</td>
+                                            <td>13 سنة في الهند – 5 سنوات في السعودية</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
-                            <p><input type="submit" value="Book" (click)="Book()" class="btn btn-default" id="bookProfile" /></p>
-                        </div>
-                    </div>
-                </div>
+                            <div class="col-sm-6">
+                                <p><img src="/eldurra-master/src/app/images/profiles/image1.png" class="img-thumbnail img-responsive" width="100%" /></p>
+                            </div>
+                                     <form action="/eldurra-master/src/app/submitprofile.html">
+                       <p><input type="submit" value="سجل" (click)="Book(selectedWorker)" class="btn btn-default" id="bookProfile" /></p>
+                     </form>
+                   </div>
+                 </div>
+               </div>
 
-            </div>
-        </div>
-    </div>
-</div>
+             </div>
+
+           </div>
+         </div>
+       </div>

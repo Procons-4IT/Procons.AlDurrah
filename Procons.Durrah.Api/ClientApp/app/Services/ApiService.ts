@@ -51,11 +51,11 @@ export class ApiService {
     }
     public getAllWorkers(): Observable<Worker[]> {
         console.log('Getting All the Workers');
-        var actualData = this.httpGetHelper(this.config.getWorkersUrl)
+        var actualData = this.httpPostHelper(this.config.getWorkersUrl,{})
         .map(response=>{
             var data :any[]= response.json();
             console.log('[server-worker data] ',data);
-            data.map(x=>{x.image = x.photo;x.video= "https://www.youtube.com/embed/o_XCxBbuaJE?rel=0&amp;showinfo=0"});
+            data.map(x=>{x.image = x.photo});
             return data;
         });
         return actualData;
