@@ -7,6 +7,7 @@
     using Procons.DataBaseHelper;
     using System.Linq.Expressions;
     using Procons.Durrah.Common.Enumerators;
+    using Procons.Durrah.Main.B1ServiceLayer.SAPB1;
 
     public class WorkersFacade : IFacade
     {
@@ -22,7 +23,7 @@
             return provider.DeleteWorker(id);
         }
 
-        public List<Worker> GetWorkers(Worker wrk)
+        public List<Worker> GetWorkers(Catalogue wrk)
         {
             var workersList = provider.GetWorkers(wrk);
             //var workersList = MappingHelper.FillCollection<Worker>(dr);
@@ -39,6 +40,21 @@
            return provider.CreateIncomingPayment(trans);
         }
 
-       
+       public List<LookupItem> GetLanguagesLookups()
+        {
+            return provider.GetLookupValues<LANGUAGES>();
+        }
+        public List<LookupItem> GetMaritalStatusLookups()
+        {
+            return provider.GetLookupValues<MARITALSTATUS>();
+        }
+        public List<LookupItem> GetCountriesLookups()
+        {
+            return provider.GetLookupValues<COUNTRIES>();
+        }
+        public List<LookupItem> GetWorkersTypesLookups()
+        {
+            return provider.GetLookupValues<WORKERTYPES>();
+        }
     }
 }

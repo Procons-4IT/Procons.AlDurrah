@@ -394,8 +394,14 @@
             }
         }
 
-        public bool AddUdo(B1ServiceLayer.SAPB1.UserObjectsMD udo)
+        public bool AddUdo(string code, string tableName)
         {
+            var udo = new B1ServiceLayer.SAPB1.UserObjectsMD()
+            {
+                TableName = tableName,
+                Code = code,
+                Name = code
+            };
             try
             {
                 var slInstance = instance.CurrentServicelayerInstance;

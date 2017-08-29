@@ -86,6 +86,12 @@ namespace ExpressionBuilder.Generics
 			return builder.GetExpression<TClass>(filter).Compile();
 		}
 
+        public Func<TClass, bool> GetSqlSyntax(Filter<TClass> filter)
+        {
+            var builder = new FilterBuilder(new BuilderHelper());
+            return builder.GetExpression<TClass>(filter).Compile();
+        }
+
         /// <summary>
         /// String representation of <see cref="Filter{TClass}" />.
         /// </summary>

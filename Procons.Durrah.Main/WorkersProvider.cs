@@ -14,6 +14,7 @@
     using System.Data.SqlClient;
     using System.Linq;
     using System.Runtime.InteropServices;
+    using System.Text;
 
     public class WorkersProvider : ProviderBase
     {
@@ -82,14 +83,14 @@
             return created;
         }
 
-        public List<Worker> GetWorkers(Worker worker)
+        public List<Worker> GetWorkersOld(Catalogue worker)
         {
             var exp = GetExpression(worker);
             var ServiceInstance = ServiceLayerProvider.GetInstance();
             var workers = new List<WORKERS>();
 
             if (exp != null)
-            workers = ServiceInstance.CurrentServicelayerInstance.WORKERSUDO.Where(exp).ToList<WORKERS>();
+                workers = ServiceInstance.CurrentServicelayerInstance.WORKERSUDO.Where(exp).ToList<WORKERS>();
             else
                 workers = ServiceInstance.CurrentServicelayerInstance.WORKERSUDO.ToList<WORKERS>();
 
@@ -99,38 +100,86 @@
                 workersList.Add(
                     new Worker()
                     {
-                        Agent = w.U_Agent,
-                        Age = w.U_Age,
-                        BirthDate = w.U_BirthDate.ToString(),
-                        CivilId = w.U_CivilId,
-                        Code = w.U_ItemCode,
-                        Education = w.U_Education,
-                        Gender = w.U_Gender,
-                        Height = w.U_Height,
-                        Language = w.U_Language,
-                        MaritalStatus = w.U_MaritalStatus,
-                        Nationality = w.U_Nationality,
-                        Passport = w.U_Passport,
-                        PassportExpDate = w.U_PassportExpDate,
-                        PassportIssDate = w.U_PassportPoIssue,
-                        PassportNumber = w.U_PassportNumber,
-                        PassportPoIssue = w.U_PassportPoIssue,
-                        Photo = w.U_Photo,
-                        Religion = w.U_Religion,
-                        SerialNumber = w.U_Serial,
-                        Status = w.U_Status,
-                        Video = w.U_Video,
-                        Price = w.U_Price,
-                        Weight = w.U_Weight.ToString()
+                        //Agent = w.U_Agent,
+                        //Age = w.U_Age,
+                        //BirthDate = w.U_BirthDate.ToString(),
+                        //CivilId = w.U_CivilId,
+                        //Code = w.U_ItemCode,
+                        //Education = w.U_Education,
+                        //Gender = w.U_Gender,
+                        //Height = w.U_Height,
+                        //Language = w.U_Language,
+                        //MaritalStatus = w.U_MaritalStatus,
+                        //Nationality = w.U_Nationality,
+                        //Passport = w.U_Passport,
+                        //PassportExpDate = w.U_PassportExpDate,
+                        //PassportIssDate = w.U_PassportPoIssue,
+                        //PassportNumber = w.U_PassportNumber,
+                        //PassportPoIssue = w.U_PassportPoIssue,
+                        //Photo = w.U_Photo,
+                        //Religion = w.U_Religion,
+                        //SerialNumber = w.U_Serial,
+                        //Status = w.U_Status,
+                        //Video = w.U_Video,
+                        //Price = w.U_Price,
+                        //Weight = w.U_Weight.ToString()
                     }
                     );
             }
             return workersList;
         }
 
+        public List<Worker> GetWorkers(Catalogue worker)
+        {
+            var exp = GetExpressionSql(worker);
+            var xx = exp;
+            var databaseBame = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.DatabaseName);
+
+            List<Worker> workersList = new List<Worker>();
+            var query = new StringBuilder("SELECT \"A\".\"Code\",\"A\".\"Name\",\"U_ItemCode\",\"U_Serial\",\"U_Agent\",\"U_Age\",\"U_BirthDate\",\"U_Gender\",\"D\".\"Name\" AS \"U_Nationality\",\"U_Religion\",\"C\".\"Name\" AS \"U_Language\",\"U_Photo\",\"U_Weight\",\"U_Height\",\"U_Education\",\"U_Passport\",\"U_Video\",\"U_PassportNumber\",\"U_PassportIssDate\",\"U_PassportExpDate\",\"U_PassportPoIssue\",\"U_Price\",\"U_CivilId\",\"U_CivilId\",\"U_Status\",");
+            query.Append($"\"B\".\"Name\" AS \"U_MaritalStatus\" FROM \"{databaseBame}\".\"@WORKERS\" as \"A\"");
+            query.Append($"INNER JOIN \"{databaseBame}\".\"@MARITALSTATUS\" AS \"B\" ON \"A\".\"U_MaritalStatus\" = \"B\".\"Code\"");
+            query.Append($"INNER JOIN \"{databaseBame}\".\"@LANGUAGES\" AS \"C\" ON \"A\".\"U_Language\" = \"C\".\"Code\"");
+            query.Append($"INNER JOIN \"{databaseBame}\".\"@COUNTRIES\" AS \"D\" ON \"A\".\"U_Nationality\" = \"D\".\"Code\"");
+            query.Append(exp);
+            var readerResult = dbHelper.ExecuteQuery(query.ToString());
+
+            while (readerResult.Read())
+            {
+                workersList.Add(
+                    new Worker()
+                    {
+                        Agent = MapField<string>(readerResult["U_Agent"]),
+                        Age = MapField<int>(readerResult["U_Age"]),
+                        BirthDate = MapField<string>(readerResult["U_BirthDate"]),
+                        CivilId = MapField<string>(readerResult["U_CivilId"]),
+                        Code = MapField<string>(readerResult["U_ItemCode"]),
+                        Education = MapField<string>(readerResult["U_Education"]),
+                        Gender = MapField<string>(readerResult["U_Gender"]),
+                        Height = MapField<string>(readerResult["U_Height"]),
+                        Language = MapField<string>(readerResult["U_Language"]),
+                        MaritalStatus = MapField<string>(readerResult["U_MaritalStatus"]),
+                        Nationality = MapField<string>(readerResult["U_Nationality"]),
+                        Passport = MapField<string>(readerResult["U_Passport"]),
+                        PassportExpDate = MapField<string>(readerResult["U_PassportExpDate"]),
+                        PassportIssDate = MapField<string>(readerResult["U_PassportIssDate"]),
+                        PassportNumber = MapField<string>(readerResult["U_PassportNumber"]),
+                        PassportPoIssue = MapField<string>(readerResult["U_PassportPoIssue"]),
+                        Photo = MapField<string>(readerResult["U_Photo"]),
+                        Religion = MapField<string>(readerResult["U_Religion"]),
+                        SerialNumber = MapField<string>(readerResult["U_Serial"]),
+                        Status = MapField<string>(readerResult["U_Status"]),
+                        Video = MapField<string>(readerResult["U_Video"]),
+                        Price = MapField<double>(readerResult["U_Price"]),
+                        Weight = MapField<string>(readerResult["U_Weight"])
+                    });
+            }
+            return workersList;
+        }
+
         public double? CreateSalesOrder(Transaction trans)
         {
-            var instance =  ServiceLayerProvider.GetInstance();
+            var instance = ServiceLayerProvider.GetInstance();
             Document salesOrder = new Document();
             DocumentLine salesOrderLine = new DocumentLine();
             SerialNumber dserialNum = new SerialNumber();
@@ -247,8 +296,47 @@
             return salesOrder;
         }
 
+        public List<LookupItem> GetLookupValues<T>()
+        {
+            var _serviceInstance = ServiceLayerProvider.GetInstance();
+
+
+            if (typeof(T) == typeof(COUNTRIES))
+            {
+                var results = _serviceInstance.CurrentServicelayerInstance.COUNTRIESUDO.ToList<COUNTRIES>();
+                return GetLookups<COUNTRIES>(results);
+            }
+            else if (typeof(T) == typeof(LANGUAGES))
+            {
+                var results = _serviceInstance.CurrentServicelayerInstance.LANGUAGESUDO.ToList<LANGUAGES>();
+                return GetLookups<LANGUAGES>(results);
+            }
+            else if (typeof(T) == typeof(MARITALSTATUS))
+            {
+                var results = _serviceInstance.CurrentServicelayerInstance.MARITALSTATUSUDO.ToList<MARITALSTATUS>();
+                return GetLookups<MARITALSTATUS>(results);
+            }
+            else if (typeof(T) == typeof(WORKERTYPES))
+            {
+                var results = _serviceInstance.CurrentServicelayerInstance.WORKERTYPESUDO.ToList<WORKERTYPES>();
+                return GetLookups<WORKERTYPES>(results);
+            }
+            else
+                return null;
+
+            List<LookupItem> GetLookups<Y>(List<Y> list)
+            {
+                var lookups = new List<LookupItem>();
+                foreach (dynamic r in list)
+                {
+                    lookups.Add(new LookupItem(r.Name, r.Code));
+                }
+                return lookups;
+            }
+        }
+
         #region PRIVATE METHODS
-        private Filter<WORKERS> GetExpression(Worker wrk)
+        private Filter<WORKERS> GetExpression(Catalogue wrk)
         {
             Filter<WORKERS> filter = new Filter<WORKERS>();
             IFilterStatementConnection statementConection = null;
@@ -258,12 +346,13 @@
 
                 if (wrk.Age != null)
                 {
+                    var boundaries = wrk.Age.Trim().Split('-');
                     if (filter.Statements.Count() > 0)
-                        statementConection = statementConection.And.By("U_Age", Operation.Between, wrk.Age, wrk.Age);
+                        statementConection = statementConection.And.By("U_Age", Operation.Between, Convert.ToInt32(boundaries[0]), Convert.ToInt32(boundaries[1]));
                     else
                     {
                         filter = new Filter<WORKERS>();
-                        statementConection = filter.By("U_Age", Operation.Between, wrk.Age, wrk.Age);
+                        statementConection = filter.By("U_Age", Operation.Between, Convert.ToInt32(boundaries[0]), Convert.ToInt32(boundaries[1]));
                     }
                 }
                 if (wrk.Gender != null)
@@ -296,14 +385,14 @@
                         statementConection = filter.By("U_MaritalStatus", Operation.EqualTo, wrk.MaritalStatus);
                     }
                 }
-                if (wrk.Code != null)
+                if (wrk.WorkerType != null)
                 {
                     if (filter.Statements.Count() > 0)
-                        statementConection = statementConection.And.By("Code", Operation.EqualTo, wrk.Code);
+                        statementConection = statementConection.And.By("Code", Operation.EqualTo, wrk.WorkerType);
                     else
                     {
                         filter = new Filter<WORKERS>();
-                        statementConection = filter.By("Code", Operation.EqualTo, wrk.Code);
+                        statementConection = filter.By("Code", Operation.EqualTo, wrk.WorkerType);
                     }
                 }
                 if (wrk.Language != null)
@@ -321,6 +410,89 @@
             else
                 return null;
         }
+
+        private string GetExpressionSql(Catalogue wrk)
+        {
+            StringBuilder queryBuilder = new StringBuilder();
+            if (wrk != null)
+            {
+                if (wrk.Age != null)
+                {
+                    var boundaries = wrk.Age.Trim().Split('-');
+                    if (queryBuilder.Length>0 )
+                        queryBuilder.Append($" AND \"U_Age\" BETWEEN {boundaries[0]} AND {boundaries[1]}");
+                    else
+                    {
+                        queryBuilder= new StringBuilder("WHERE ");
+                        queryBuilder.Append($"\"U_Age\" BETWEEN {boundaries[0]} AND {boundaries[1]}");
+                    }
+                }
+                if (wrk.Gender != null)
+                {
+                    if (queryBuilder.Length > 0)
+                        queryBuilder.Append($" AND \"U_Gender\" = '{wrk.Gender}'");
+                    else
+                    {
+                        queryBuilder = new StringBuilder("WHERE ");
+                        queryBuilder.Append($"\"U_Gender\" = '{wrk.Gender}'");
+                    }
+                }
+                if (wrk.Nationality != null)
+                {
+                    if (queryBuilder.Length > 0)
+                        queryBuilder.Append($" AND \"U_Nationality\" = '{wrk.Nationality}'");
+                    else
+                    {
+                        queryBuilder = new StringBuilder("WHERE ");
+                        queryBuilder.Append($"\"U_Nationality\" = '{wrk.Nationality}'");
+                    }
+                }
+                if (wrk.MaritalStatus != null)
+                {
+                    if (queryBuilder.Length > 0)
+                        queryBuilder.Append($" AND \"U_MaritalStatus\" = '{wrk.MaritalStatus}'");
+                    else
+                    {
+                        queryBuilder = new StringBuilder("WHERE ");
+                        queryBuilder.Append($"\"U_MaritalStatus\" = '{wrk.MaritalStatus}'");
+                    }
+                }
+                if (wrk.WorkerType != null)
+                {
+                    if (queryBuilder.Length > 0)
+                        queryBuilder.Append($" AND \"U_ItemCode\" = '{wrk.WorkerType}'");
+                    else
+                    {
+                        queryBuilder = new StringBuilder("WHERE ");
+                        queryBuilder.Append($"\"U_ItemCode\" = '{wrk.WorkerType}'");
+                    }
+                }
+                if (wrk.Language != null)
+                {
+                    if (queryBuilder.Length > 0)
+                        queryBuilder.Append($" AND \"U_Language\" = '{wrk.Language}'");
+                    else
+                    {
+                        queryBuilder = new StringBuilder("WHERE ");
+                        queryBuilder.Append($"\"U_Language\" = '{wrk.Language}'");
+                    }
+                }
+                return queryBuilder.ToString();
+            }
+            else
+                return null;
+        }
+
+        private T MapField<T>(object o)
+        {
+            if (o != DBNull.Value)
+            {
+                var result = (T)Convert.ChangeType(o, typeof(T));
+                return result;
+            }
+            return default(T);
+        }
+
         #endregion
     }
 }

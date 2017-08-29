@@ -1,7 +1,7 @@
- {
-    "baseUrl": "http://89.249.220.100:5555",
-    "loginUrl": "/oauth/token",
-    "knetUrl": "/api/Workers/CallKnetGateway",
-    "incomingPaymentUrl": "/api/Workers/CreatePayment",
-    "getWorkersUrl":"/api/Workers/GetWorkers"
+{
+  "baseUrl": "http://89.249.220.100:5555",
+  "loginUrl": "/oauth/token",
+  "knetUrl": "/api/Workers/CallKnetGateway",
+  "incomingPaymentUrl": "/api/Workers/CreatePayment",
+  "getWorkersUrl": "/api/Workers/GetWorkers"
 }

@@ -87,13 +87,13 @@
     <Compile Include="Factory.cs" />
     <Compile Include="Models\ApplicationRole.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
-    <Compile Include="Models\Class1.cs" />
+    <Compile Include="Models\LookupItem.cs" />
     <Compile Include="Models\RolesFromClaims.cs" />
     <Compile Include="Models\SboCred.cs" />
     <Compile Include="Models\Transaction.cs" />
     <Compile Include="Models\Worker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Models\SH15.cs" />
+    <Compile Include="Models\Catalogue.cs" />
     <Compile Include="Utilities.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

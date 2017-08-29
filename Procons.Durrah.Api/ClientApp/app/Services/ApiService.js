@@ -55,11 +55,11 @@ var ApiService = (function () {
     };
     ApiService.prototype.getAllWorkers = function () {
         console.log('Getting All the Workers');
-        var actualData = this.httpGetHelper(this.config.getWorkersUrl)
+        var actualData = this.httpPostHelper(this.config.getWorkersUrl, {})
             .map(function (response) {
             var data = response.json();
             console.log('[server-worker data] ', data);
-            data.map(function (x) { x.image = x.photo; x.video = "https://www.youtube.com/embed/o_XCxBbuaJE?rel=0&amp;showinfo=0"; });
+            data.map(function (x) { x.image = x.photo; });
             return data;
         });
         return actualData;

@@ -44,12 +44,20 @@
                 base.AddFieldSL("Status", "Payment Status", "ORDR", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 20, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), false);
                 base.AddFieldSL("Password", "Password", "OCRD", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 50, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), false);
 
-                base.AddUdo(new B1ServiceLayer.SAPB1.UserObjectsMD()
-                {
-                    TableName = "WORKERS",
-                    Code = "WORKERSUDO",
-                    Name = "WORKERSUDO"
-                });
+                base.AddUdo("WORKERSUDO", "WORKERS");
+
+                base.AddTableSL("COUNTRIES", "COUNTRIES", SAPbobsCOM.BoUTBTableType.bott_MasterData);
+                base.AddUdo("COUNTRIESUDO", "COUNTRIES");
+
+                base.AddTableSL("WORKERTYPES", "WORKERTYPES", SAPbobsCOM.BoUTBTableType.bott_MasterData);
+                base.AddUdo("WORKERTYPESUDO", "WORKERTYPES");
+
+                base.AddTableSL("LANGUAGES", "LANGUAGES", SAPbobsCOM.BoUTBTableType.bott_MasterData);
+                base.AddUdo("LANGUAGESUDO", "LANGUAGES");
+
+                base.AddTableSL("MARITALSTATUS", "MARITALSTATUS", SAPbobsCOM.BoUTBTableType.bott_MasterData);
+                base.AddUdo("MARITALSTATUSUDO", "MARITALSTATUS");
+
                 instance.CurrentServicelayerInstance.SaveChanges();
                 return instance.B1SessionId;
             }

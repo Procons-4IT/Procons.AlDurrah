@@ -12,16 +12,6 @@
     using Facade;
     using System.Web;
 
-    public class LookupItem
-    {
-        public string Name { get; set; }
-        public string Value { get; set; }
-        public LookupItem(string name, string value)
-        {
-            Name = name;
-            Value = value;
-        }
-    }
     public class WorkersController : ApiController
     {
         B1Facade b1Facade = Factory.DeclareClass<B1Facade>();
@@ -30,11 +20,12 @@
         {
 
             Dictionary<string, List<LookupItem>> result = new Dictionary<string, List<LookupItem>>();
-            List<LookupItem> languages = new List<LookupItem>() { new LookupItem("Arabic", "1"), new LookupItem("English", "2") };
-            List<LookupItem> nationality = new List<LookupItem>() { new LookupItem("India", "1"), new LookupItem("Bengladish", "2") };
+            List<LookupItem> languages = workersFacade.GetLanguagesLookups();
+            List<LookupItem> age = new List<LookupItem>() { new LookupItem("18-25", "18-25"), new LookupItem("25-35", "25-35") , new LookupItem("35-45", "35-45") , new LookupItem("45-55", "45-55") };
+            List<LookupItem> nationality = workersFacade.GetCountriesLookups();
             List<LookupItem> gender = new List<LookupItem>() { new LookupItem("Male", "1"), new LookupItem("Female", "2") };
-            List<LookupItem> maritalStatus = new List<LookupItem>() { new LookupItem("Married", "1"), new LookupItem("Engaged", "2"), new LookupItem("Divorced", "3") };
-            List<LookupItem> workerTypes = new List<LookupItem>() { new LookupItem("Servant", "1"), new LookupItem("Driver", "2") };
+            List<LookupItem> maritalStatus = workersFacade.GetMaritalStatusLookups();
+            List<LookupItem> workerTypes = workersFacade.GetWorkersTypesLookups();
             result.Add("Languages", languages);
             result.Add("Nationality", nationality);
             result.Add("Gender", gender);
@@ -114,7 +105,7 @@
         }
 
         [HttpPost]
-        public IHttpActionResult GetWorkers([FromBody]Worker worker)
+        public IHttpActionResult GetWorkers([FromBody]Catalogue worker)
         {
             var workers = workersFacade.GetWorkers(worker);
             return Ok(workers);

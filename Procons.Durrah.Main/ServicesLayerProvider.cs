@@ -37,15 +37,26 @@
         {
             ServiceLayerProvider instance = new ServiceLayerProvider(); ;
             var sessionCookie = HttpContext.Current != null ? HttpContext.Current.Request.Cookies.Get(CookieName) : null;
+            if (sessionCookie != null)
+            {
+                if (!sessionCookie.Value.ToCharArray().Contains('_'))
+                {
+                    HttpContext.Current.Request.Cookies.Clear();
+                    sessionCookie = null;
+                }
+                    
+            }
             if (sessionCookie != null && sessionCookie.Value != string.Empty && sessionCookie.Value != null)
             {
                 instance.InitServiceContainer(Utilities.GetConfigurationValue(Constants.ConfigurationKeys.ServiceLayer));
-                instance.B1SessionId = sessionCookie.Value;
+                var cookiesVaues = sessionCookie.Value.Split('_');
+                instance.B1SessionId = cookiesVaues[0];
+                instance.strCurrentRouteIDString = cookiesVaues[1];
             }
             else
             {
                 instance.Login();
-                sessionCookie = new HttpCookie(CookieName, instance.strCurrentSessionGUID);
+                sessionCookie = new HttpCookie(CookieName, instance.strCurrentSessionGUID + "_" + instance.strCurrentRouteIDString);
 
                 if (HttpContext.Current != null)
                 {

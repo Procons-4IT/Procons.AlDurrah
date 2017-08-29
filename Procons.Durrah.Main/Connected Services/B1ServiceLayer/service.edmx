@@ -13215,6 +13215,72 @@
         <Property Name="SequenceNo" Type="Edm.Int32" />
         <Property Name="Description" Type="Edm.String" />
       </ComplexType>
+      <EntityType Name="COUNTRIES">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Type="Edm.String" />
+        <Property Name="DocEntry" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Canceled" Type="Edm.String" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="UserSign" Type="Edm.Int32" />
+        <Property Name="Transfered" Type="Edm.String" />
+        <Property Name="CreateDate" Type="Edm.DateTime" />
+        <Property Name="CreateTime" Type="Edm.Int32" />
+        <Property Name="UpdateDate" Type="Edm.DateTime" />
+        <Property Name="UpdateTime" Type="Edm.Int32" />
+        <Property Name="DataSource" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="COUNTRIESParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <ComplexType Name="InvokeParams">
+        <Property Name="Value" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="LANGUAGES">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Type="Edm.String" />
+        <Property Name="DocEntry" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Canceled" Type="Edm.String" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="UserSign" Type="Edm.Int32" />
+        <Property Name="Transfered" Type="Edm.String" />
+        <Property Name="CreateDate" Type="Edm.DateTime" />
+        <Property Name="CreateTime" Type="Edm.Int32" />
+        <Property Name="UpdateDate" Type="Edm.DateTime" />
+        <Property Name="UpdateTime" Type="Edm.Int32" />
+        <Property Name="DataSource" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="LANGUAGESParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="MARITALSTATUS">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Type="Edm.String" />
+        <Property Name="DocEntry" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Canceled" Type="Edm.String" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="UserSign" Type="Edm.Int32" />
+        <Property Name="Transfered" Type="Edm.String" />
+        <Property Name="CreateDate" Type="Edm.DateTime" />
+        <Property Name="CreateTime" Type="Edm.Int32" />
+        <Property Name="UpdateDate" Type="Edm.DateTime" />
+        <Property Name="UpdateTime" Type="Edm.Int32" />
+        <Property Name="DataSource" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="MARITALSTATUSParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
       <EntityType Name="WORKERS">
         <Key>
           <PropertyRef Name="Code" />
@@ -13259,8 +13325,26 @@
       <ComplexType Name="WORKERSParams">
         <Property Name="Code" Type="Edm.String" />
       </ComplexType>
-      <ComplexType Name="InvokeParams">
-        <Property Name="Value" Type="Edm.String" />
+      <EntityType Name="WORKERTYPES">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Type="Edm.String" />
+        <Property Name="DocEntry" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Canceled" Type="Edm.String" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="UserSign" Type="Edm.Int32" />
+        <Property Name="Transfered" Type="Edm.String" />
+        <Property Name="CreateDate" Type="Edm.DateTime" />
+        <Property Name="CreateTime" Type="Edm.Int32" />
+        <Property Name="UpdateDate" Type="Edm.DateTime" />
+        <Property Name="UpdateTime" Type="Edm.Int32" />
+        <Property Name="DataSource" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="WORKERTYPESParams">
+        <Property Name="Code" Type="Edm.String" />
       </ComplexType>
       <EntityType Name="B1Session">
         <Key>
@@ -19218,7 +19302,11 @@
         <EntitySet EntityType="SAPB1.UserDefaultGroup" Name="UserDefaultGroups" />
         <EntitySet EntityType="SAPB1.SalesOpportunities" Name="SalesOpportunities" />
         <EntitySet EntityType="SAPB1.SalesOpportunityInterestSetup" Name="SalesOpportunityInterestsSetup" />
+        <EntitySet EntityType="SAPB1.COUNTRIES" Name="COUNTRIESUDO" />
+        <EntitySet EntityType="SAPB1.LANGUAGES" Name="LANGUAGESUDO" />
+        <EntitySet EntityType="SAPB1.MARITALSTATUS" Name="MARITALSTATUSUDO" />
         <EntitySet EntityType="SAPB1.WORKERS" Name="WORKERSUDO" />
+        <EntitySet EntityType="SAPB1.WORKERTYPES" Name="WORKERTYPESUDO" />
         <EntitySet EntityType="SAPB1.B1Session" Name="B1Sessions" />
         <EntitySet EntityType="SAPB1.ItemImage" Name="ItemImages" />
         <FunctionImport Name="SalesOpportunitySourcesSetupService_GetSalesOpportunitySourceSetupList" ReturnType="Collection(SAPB1.SalesOpportunitySourceSetupParams)" m:HttpMethod="POST" />

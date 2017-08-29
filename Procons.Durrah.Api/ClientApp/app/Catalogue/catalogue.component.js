@@ -39,8 +39,21 @@ var catalogueComponent = (function () {
         //this.catalogue.nativeElement.querySelector('.tab-pane .active').classList.remove('active', 'in');
         this.tabSearchForm.nativeElement.classList.add('active', 'in');
     };
-    catalogueComponent.prototype.GotoResults = function () {
+    catalogueComponent.prototype.GotoResults = function (workType, age, sex, nationality, maritalStatus, language) {
         var _this = this;
+        var argumentKeys = ["workType", "age", "sex", "nationality", "maritalStatus", "language"];
+        var workerFilterParams = {};
+        for (var i = 0; i < arguments.length; i++) {
+            var argument = arguments[i];
+            if (argument.type == 'select-one') {
+                var isFirstElement = argument.value === argument.options[0].value;
+                if (!isFirstElement) {
+                    var keyName = argumentKeys[i];
+                    workerFilterParams[keyName] = argument.value;
+                }
+            }
+        }
+        console.log("Search Criteria: ", workerFilterParams);
         this.myApi.getAllWorkers().subscribe(function (workers) {
             console.log('workers Format! ', workers);
             _this.workers = workers;
@@ -49,7 +62,8 @@ var catalogueComponent = (function () {
         });
     };
     catalogueComponent.prototype.GotoProfile = function (event) {
-        this.selectedWorker = event;
+        console.log('selected Worker: ', event),
+            this.selectedWorker = event;
         this.tabSearchResults.nativeElement.classList.remove('active', 'in');
         this.tabprofile.nativeElement.classList.add('active', 'in');
     };
@@ -70,7 +84,6 @@ var catalogueComponent = (function () {
         });
     };
     catalogueComponent.prototype.GetAvailableCSS = function (worker) {
-        //remove to status instead of getting the whole woker
         var isAvaible = worker.status == "1" ? true : false;
         return {
             "glyphicon": true,
