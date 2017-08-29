@@ -78,7 +78,21 @@ export class catalogueComponent implements OnInit {
         this.tabSearchForm.nativeElement.classList.add('active', 'in');
     }
 
-    GotoResults() {
+    GotoResults(workType, age, sex, nationality, maritalStatus, language) {
+        let argumentKeys = ["workType", "age", "sex", "nationality", "maritalStatus", "language"];
+        let workerFilterParams = {};
+        for (var i = 0; i < arguments.length; i++) {
+            let argument = arguments[i];
+            if (argument.type == 'select-one') {
+
+                let isFirstElement = argument.value === argument.options[0].value;
+                if (!isFirstElement) {
+                    let keyName:string = argumentKeys[i];
+                    workerFilterParams[keyName] = argument.value;
+                }
+            }
+        }
+        console.log("Search Criteria: ",workerFilterParams);
         this.myApi.getAllWorkers().subscribe(workers => {
             console.log('workers Format! ', workers);
             this.workers = workers;
@@ -89,7 +103,7 @@ export class catalogueComponent implements OnInit {
     }
 
     GotoProfile(event: Worker) {
-
+        console.log('selected Worker: ', event),
         this.selectedWorker = event;
         this.tabSearchResults.nativeElement.classList.remove('active', 'in');
         this.tabprofile.nativeElement.classList.add('active', 'in');
@@ -115,7 +129,6 @@ export class catalogueComponent implements OnInit {
             });
     }
     GetAvailableCSS(worker: Worker) {
-        //remove to status instead of getting the whole woker
         var isAvaible = worker.status == "1" ? true : false;
         return {
             "glyphicon": true,
