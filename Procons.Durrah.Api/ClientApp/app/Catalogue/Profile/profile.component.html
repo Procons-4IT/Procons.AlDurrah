@@ -1,14 +1,41 @@
-﻿<div role="tabpanel" class="tab-pane fade" id="tabProfile">
-    <div class="row">
-        <div class="col-md-8 col-sm-offset-2">
-            <h3>Profile</h3>
-            <div class="row">
-                <div class="col-sm-6">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec luctus hendrerit justo et bibendum. Morbi a convallis nulla. Nulla facilisi. Cras iaculis dictum nunc, a porttitor ante porta quis. Sed non magna magna. Donec ex ipsum, condimentum ut arcu vel, suscipit venenatis quam. Donec euismod diam eget justo congue vehicula. Suspendisse lobortis, magna eu tempor lacinia, erat leo pharetra ligula, non dictum lacus justo dignissim ante. Donec varius magna diam, sit amet hendrerit nulla interdum in.</p>
-                </div>
-                <div class="col-sm-6"><img src="" class="img-thumbnail img-responsive" width="100%" /></div>
-            </div>
-            <p><input type="submit" value="Book" (click)="Book()" class="btn btn-default" id="bookProfile" /></p>
+﻿<div role="tabpanel" class="tab-pane fade active in" id="tabProfile">
+  <div class="row">
+    <div class="col-md-8 col-sm-offset-2">
+      <h3>مرشد ملا</h3>
+      <div class="row">
+        <div class="col-sm-6">
+          <table class="table">
+            <tbody>
+              <tr>
+                <td>تاريخ الميلاد</td>
+                <td>05/05/1987</td>
+              </tr>
+              <tr>
+                <td>الجنسية</td>
+                <td>{{worker.nationality}}
+                  <td>
+              </tr>
+              <tr>
+                <td>الحالة الإجتماعية</td>
+                <td> {{worker.maritalStatus}}</td>
+              </tr>
+              <tr>
+                <td>اللغات المتحدث بها</td>
+                <td>{{worker.language}}</td>
+              </tr>
+              <tr>
+                <td>الوظيفة</td>
+                <td> {{worker.workerType}}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+        <div class="col-sm-6">
+          <p><img [src]="worker.photo" class="img-thumbnail img-responsive" width="100%" /></p>
+        </div>
+        <p><input type="submit" value="سجل" (click)="Book()" class="btn btn-default" id="bookProfile" /></p>
+      </div>
     </div>
+  </div>
+
 </div>

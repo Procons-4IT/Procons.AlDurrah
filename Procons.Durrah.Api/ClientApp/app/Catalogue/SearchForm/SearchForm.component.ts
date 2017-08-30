@@ -1,33 +1,46 @@
-import { Component, OnInit, ViewChild, ElementRef,
-        ComponentRef, ComponentFactory,
-        ViewContainerRef,
-        ComponentFactoryResolver,
-        ChangeDetectorRef, forwardRef  } from '@angular/core';
+import { Component, OnInit,Input, Output, EventEmitter } from '@angular/core';
 import { MenuItem } from 'primeng/primeng';
 import { catalogueComponent } from '../catalogue.component';
 import { SearchResultsComponent } from '../SearchResults/SearchResults.component';
+import { SearchCriteriaParams } from '../../Models/ApiRequestType';
+
+import { Observable } from 'rxjs';
+
+
 @Component({
-    selector: '[app-searchForm]',
+    selector: 'search-form',
     templateUrl: './searchForm.component.html',
     styleUrls: ['./searchForm.component.css']
 })
 export class searchFormComponent implements OnInit {
-    public items: MenuItem[];
-    //@ViewChild(catalogueComponent) catalogue: catalogueComponent;
-    @ViewChild(forwardRef(() => catalogueComponent)) catalogue: catalogueComponent;
-    //public catalogue: catalogueComponent;
 
-    constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
-    public Book() {
-        console.log('searchFormComponent Book!');
-        
-        window.location.href = "http://knet.testyourprojects.co.in/";
-    }
+    @Output() onSearchFilterCriteria = new EventEmitter<object>();
+    @Input()  searchCriteriaParams: SearchCriteriaParams;
+    constructor() { }
 
     ngOnInit() {
-    }
+        console.log('Init SearchForm Component, ',this.searchCriteriaParams);
+     }
 
-    GotoResults() {
 
+    GotoResults(workType, age, sex, nationality, maritalStatus, language) {
+        let argumentKeys = ["workType", "age", "sex", "nationality", "maritalStatus", "language"];
+        let workerFilterParams = {};
+        for (var i = 0; i < arguments.length; i++) {
+            let argument = arguments[i];
+            if (argument.type == 'select-one') {
+
+                let isFirstElement = argument.value === argument.options[0].value;
+                if (!isFirstElement) {
+                    let keyName: string = argumentKeys[i];
+                    workerFilterParams[keyName] = argument.value;
+                }
+            }
+        }
+        console.log('captured searchFilter ', workerFilterParams);
+        this.onSearchFilterCriteria.emit(workerFilterParams);
     }
 }
+// <!-- <div *ngFor "let nameValuePair of searchCriteriaParams.workerTypes;">
+// {{nameValuePair.name }}
+// </div> -->
