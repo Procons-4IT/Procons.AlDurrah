@@ -53,13 +53,16 @@ var ApiService = (function () {
             return response.json();
         });
     };
-    ApiService.prototype.getAllWorkers = function () {
+    ApiService.prototype.getSearchCriteriaParameters = function () {
+        return this.httpGetHelper(this.config.getSearchCriteriaUrl)
+            .map(function (response) { return response.json(); });
+    };
+    ApiService.prototype.getAllWorkers = function (optionalFilterCritera) {
         console.log('Getting All the Workers');
-        var actualData = this.httpPostHelper(this.config.getWorkersUrl, {})
+        var actualData = this.httpPostHelper(this.config.getWorkersUrl, optionalFilterCritera)
             .map(function (response) {
             var data = response.json();
             console.log('[server-worker data] ', data);
-            data.map(function (x) { x.image = x.photo; });
             return data;
         });
         return actualData;

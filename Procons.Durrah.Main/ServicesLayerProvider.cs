@@ -31,42 +31,19 @@
 
         int currentPage = -1;
         private Hashtable pageLinksList = new Hashtable();
-        private const string CookieName = Constants.ServiceLayer.HanaSessionId;
+        private const string sessionName = Constants.ServiceLayer.HanaSessionId;
 
         public static ServiceLayerProvider GetInstance()
         {
-            ServiceLayerProvider instance = new ServiceLayerProvider(); ;
-            var sessionCookie = HttpContext.Current != null ? HttpContext.Current.Request.Cookies.Get(CookieName) : null;
-            if (sessionCookie != null)
-            {
-                if (!sessionCookie.Value.ToCharArray().Contains('_'))
-                {
-                    HttpContext.Current.Request.Cookies.Clear();
-                    sessionCookie = null;
-                }
-                    
-            }
-            if (sessionCookie != null && sessionCookie.Value != string.Empty && sessionCookie.Value != null)
-            {
-                instance.InitServiceContainer(Utilities.GetConfigurationValue(Constants.ConfigurationKeys.ServiceLayer));
-                var cookiesVaues = sessionCookie.Value.Split('_');
-                instance.B1SessionId = cookiesVaues[0];
-                instance.strCurrentRouteIDString = cookiesVaues[1];
-            }
+            ServiceLayerProvider instance = new ServiceLayerProvider(); 
+
+            var currentSession = HttpContext.Current != null ? HttpContext.Current.Session[sessionName] : null;
+            if (currentSession != null)
+                instance = (ServiceLayerProvider)currentSession;
             else
             {
                 instance.Login();
-                sessionCookie = new HttpCookie(CookieName, instance.strCurrentSessionGUID + "_" + instance.strCurrentRouteIDString);
-
-                if (HttpContext.Current != null)
-                {
-                    var requestCookies = HttpContext.Current.Request.Cookies;
-                    var responseCookies = HttpContext.Current.Response.Cookies;
-                    requestCookies.Clear();
-                    responseCookies.Clear();
-                    requestCookies.Add(sessionCookie);
-                    responseCookies.Add(sessionCookie);
-                }
+                HttpContext.Current.Session.Add(sessionName, instance);
             }
             return instance;
         }

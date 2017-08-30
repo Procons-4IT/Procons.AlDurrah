@@ -60,40 +60,30 @@
 
         [AllowAnonymous]
         [Route("create")]
-        public async Task<IHttpActionResult> CreateUser(CreateUserBindingModel createUserModel)
+        public async Task<IHttpActionResult> CreateUser(ApplicationUser user)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var user = new ApplicationUser()
-            {
-                UserName = createUserModel.Username,
-                Email = createUserModel.Email,
-                FirstName = createUserModel.FirstName,
-                LastName = createUserModel.LastName,
-                Level = 3,
-                JoinDate = DateTime.Now.Date,
-            };
+            //if (!ModelState.IsValid)
+            //    return BadRequest(ModelState);
 
 
-            IdentityResult addUserResult = await this.AppUserManager.CreateAsync(user, createUserModel.Password);
+
+
+            IdentityResult addUserResult = await this.AppUserManager.CreateAsync(user);
 
             if (!addUserResult.Succeeded)
             {
                 return GetErrorResult(addUserResult);
             }
 
-            string code = await this.AppUserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+            //string code = await this.AppUserManager.GenerateEmailConfirmationTokenAsync(user.Id);
 
-            var callbackUrl = new Uri(Url.Link("ConfirmEmailRoute", new { userId = user.Id, code = code }));
+            //var callbackUrl = new Uri(Url.Link("ConfirmEmailRoute", new { userId = user.Id, code = code }));
 
             //await this.AppUserManager.SendEmailAsync(user.Id,
             //                                        "Confirm your account",
             //                                        "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-            Uri locationHeader = new Uri(Url.Link("GetUserById", new { id = user.Id }));
-
-            return Created(locationHeader, TheModelFactory.Create(user));
+            return Ok(addUserResult);
         }
 
         [AllowAnonymous]

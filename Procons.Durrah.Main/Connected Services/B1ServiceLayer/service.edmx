@@ -8438,6 +8438,7 @@
         <Property Name="BlockSendingMarketingContent" Type="Edm.String" />
         <Property Name="AgentCode" Type="Edm.String" />
         <Property Name="U_Password" Type="Edm.String" />
+        <Property Name="U_UserName" Type="Edm.String" />
         <Property Name="BPAddresses" Type="Collection(SAPB1.BPAddress)" />
         <Property Name="ContactEmployees" Type="Collection(SAPB1.ContactEmployee)" />
         <Property Name="BPAccountReceivablePaybleCollection" Type="Collection(SAPB1.BPAccountReceivablePayble)" />

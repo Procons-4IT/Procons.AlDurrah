@@ -10,19 +10,30 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
+var Worker_1 = require("../../Models/Worker");
 var profileComponent = (function () {
     function profileComponent() {
+        this.onBook = new core_1.EventEmitter();
     }
-    profileComponent.prototype.Book = function () {
-        console.log('Attempting to Book profileComponent');
-    };
     profileComponent.prototype.ngOnInit = function () {
+        console.log('Loaded Profile Component with Worker ', this.worker);
+    };
+    profileComponent.prototype.Book = function () {
+        this.onBook.emit(true);
     };
     return profileComponent;
 }());
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Worker_1.Worker)
+], profileComponent.prototype, "worker", void 0);
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", Object)
+], profileComponent.prototype, "onBook", void 0);
 profileComponent = __decorate([
     core_1.Component({
-        selector: '[app-profile]',
+        selector: 'profile',
         templateUrl: './profile.component.html',
         styleUrls: ['./profile.component.css']
     }),

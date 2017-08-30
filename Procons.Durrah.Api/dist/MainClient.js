@@ -1280,7 +1280,7 @@ var ApiService = (function () {
     function ApiService(http, activeRoute) {
         this.http = http;
         this.activeRoute = activeRoute;
-        this.config = __webpack_require__(259);
+        this.config = __webpack_require__(258);
     }
     ApiService.prototype.login = function (userName, password) {
         var requestBody = "userName=" + userName + "&password=" + password + "&grant_type=password";
@@ -1314,13 +1314,16 @@ var ApiService = (function () {
             return response.json();
         });
     };
-    ApiService.prototype.getAllWorkers = function () {
+    ApiService.prototype.getSearchCriteriaParameters = function () {
+        return this.httpGetHelper(this.config.getSearchCriteriaUrl)
+            .map(function (response) { return response.json(); });
+    };
+    ApiService.prototype.getAllWorkers = function (optionalFilterCritera) {
         console.log('Getting All the Workers');
-        var actualData = this.httpPostHelper(this.config.getWorkersUrl, {})
+        var actualData = this.httpPostHelper(this.config.getWorkersUrl, optionalFilterCritera)
             .map(function (response) {
             var data = response.json();
             console.log('[server-worker data] ', data);
-            data.map(function (x) { x.image = x.photo; });
             return data;
         });
         return actualData;
@@ -4542,7 +4545,7 @@ exports.BusyComponent = BusyComponent;
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var Subscription_1 = __webpack_require__(13);
-var util_1 = __webpack_require__(266);
+var util_1 = __webpack_require__(265);
 var promise_tracker_service_1 = __webpack_require__(46);
 var busy_service_1 = __webpack_require__(45);
 var busy_component_1 = __webpack_require__(73);
@@ -4804,144 +4807,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var SearchContent_1 = __webpack_require__(268);
-var WorkersService_1 = __webpack_require__(271);
-var ApiService_1 = __webpack_require__(29);
-var platform_browser_1 = __webpack_require__(11);
-var catalogueComponent = (function () {
-    function catalogueComponent(myApi, componentFactoryResolver, workersService, sanitizer) {
-        this.myApi = myApi;
-        this.componentFactoryResolver = componentFactoryResolver;
-        this.workersService = workersService;
-        this.sanitizer = sanitizer;
-        this.isVisible = true;
-        this.visiblePart = 0;
-        this.searchContent = new SearchContent_1.SearchContent();
-    }
-    catalogueComponent.prototype.GotoSearch = function () {
-        this.selectedStatus = "";
-        this.selectedLanguage = "";
-        this.selectedAge = "";
-        this.selectedGender = "";
-        this.selectedType = "";
-        this.selectedStatus = "";
-        this.selectedCountry = "";
-        //let compFactory: ComponentFactory<any>;
-        //compFactory = this.componentFactoryResolver.resolveComponentFactory(searchFormComponent);
-        //this.catalogue.createComponent(compFactory);
-        this.tabcatalogue.nativeElement.classList.remove('active', 'in');
-        //this.catalogue.nativeElement.querySelector('.tab-pane .active').classList.remove('active', 'in');
-        this.tabSearchForm.nativeElement.classList.add('active', 'in');
-    };
-    catalogueComponent.prototype.GotoResults = function (workType, age, sex, nationality, maritalStatus, language) {
-        var _this = this;
-        var argumentKeys = ["workType", "age", "sex", "nationality", "maritalStatus", "language"];
-        var workerFilterParams = {};
-        for (var i = 0; i < arguments.length; i++) {
-            var argument = arguments[i];
-            if (argument.type == 'select-one') {
-                var isFirstElement = argument.value === argument.options[0].value;
-                if (!isFirstElement) {
-                    var keyName = argumentKeys[i];
-                    workerFilterParams[keyName] = argument.value;
-                }
-            }
-        }
-        console.log("Search Criteria: ", workerFilterParams);
-        this.myApi.getAllWorkers().subscribe(function (workers) {
-            console.log('workers Format! ', workers);
-            _this.workers = workers;
-            _this.tabSearchForm.nativeElement.classList.remove('active', 'in');
-            _this.tabSearchResults.nativeElement.classList.add('active', 'in');
-        });
-    };
-    catalogueComponent.prototype.GotoProfile = function (event) {
-        console.log('selected Worker: ', event),
-            this.selectedWorker = event;
-        this.tabSearchResults.nativeElement.classList.remove('active', 'in');
-        this.tabprofile.nativeElement.classList.add('active', 'in');
-    };
-    catalogueComponent.prototype.ngOnInit = function () {
-        // this.GetLookups();
-    };
-    catalogueComponent.prototype.onRowSelect = function (event) {
-    };
-    catalogueComponent.prototype.GetLookups = function () {
-        var _this = this;
-        this.workersService.GetLookups("/api/Workers/GetSearchLookups").subscribe(function (response) {
-            _this.languages = response.json().languages;
-            _this.countries = response.json().nationality;
-            _this.maritalStatus = response.json().maritalStatus;
-            _this.gender = response.json().gender;
-            _this.workerTypes = response.json().workerTypes;
-        }, function (error) {
-        });
-    };
-    catalogueComponent.prototype.GetAvailableCSS = function (worker) {
-        var isAvaible = worker.status == "1" ? true : false;
-        return {
-            "glyphicon": true,
-            "glyphicon-ok": isAvaible,
-            "glyphicon-remove": !isAvaible
-        };
-    };
-    catalogueComponent.prototype.Book = function (selectedWorker) {
-        console.log('calling knetPayment! for worker ', selectedWorker);
-        var paymentInformation = { SerialNumber: selectedWorker.serialNumber, CardCode: "C220Temp", Amount: "100", Code: selectedWorker.code };
-        this.myApi.knetPaymentRedirect(paymentInformation).subscribe();
-    };
-    return catalogueComponent;
-}());
-__decorate([
-    core_1.ViewChild('catalogue'),
-    __metadata("design:type", core_1.ElementRef)
-], catalogueComponent.prototype, "catalogue", void 0);
-__decorate([
-    core_1.ViewChild('tabcatalogue'),
-    __metadata("design:type", core_1.ElementRef)
-], catalogueComponent.prototype, "tabcatalogue", void 0);
-__decorate([
-    core_1.ViewChild('tabSearchForm'),
-    __metadata("design:type", core_1.ElementRef)
-], catalogueComponent.prototype, "tabSearchForm", void 0);
-__decorate([
-    core_1.ViewChild('tabSearchResults'),
-    __metadata("design:type", core_1.ElementRef)
-], catalogueComponent.prototype, "tabSearchResults", void 0);
-__decorate([
-    core_1.ViewChild('tabprofile'),
-    __metadata("design:type", core_1.ElementRef)
-], catalogueComponent.prototype, "tabprofile", void 0);
-catalogueComponent = __decorate([
-    core_1.Component({
-        selector: '[app-catalogue]',
-        template: __webpack_require__(347),
-        styles: [__webpack_require__(437)],
-        providers: [WorkersService_1.WorkersService]
-    }),
-    __metadata("design:paramtypes", [ApiService_1.ApiService, core_1.ComponentFactoryResolver,
-        WorkersService_1.WorkersService, platform_browser_1.DomSanitizer])
-], catalogueComponent);
-exports.catalogueComponent = catalogueComponent;
-
-
-/***/ }),
-/* 78 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__(0);
 var HomeComponent = (function () {
     function HomeComponent() {
     }
@@ -4961,7 +4826,7 @@ exports.HomeComponent = HomeComponent;
 
 
 /***/ }),
-/* 79 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4989,7 +4854,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var CarService_1 = __webpack_require__(47);
 var router_1 = __webpack_require__(7);
-__webpack_require__(220);
+__webpack_require__(219);
 var ContextService_1 = __webpack_require__(25);
 var app_ComponentBase_1 = __webpack_require__(76);
 var ngx_modialog_1 = __webpack_require__(34);
@@ -5054,7 +4919,7 @@ exports.LoginComponent = LoginComponent;
 
 
 /***/ }),
-/* 80 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5081,7 +4946,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var router_1 = __webpack_require__(7);
-__webpack_require__(220);
+__webpack_require__(219);
 __webpack_require__(453);
 var app_ComponentBase_1 = __webpack_require__(76);
 var ngx_modialog_1 = __webpack_require__(34);
@@ -5129,6 +4994,7 @@ exports.PaymentConfirmationComponent = PaymentConfirmationComponent;
 
 
 /***/ }),
+/* 80 */,
 /* 81 */,
 /* 82 */,
 /* 83 */,
@@ -5260,8 +5126,7 @@ exports.PaymentConfirmationComponent = PaymentConfirmationComponent;
 /* 209 */,
 /* 210 */,
 /* 211 */,
-/* 212 */,
-/* 213 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5298,7 +5163,7 @@ exports.ConfirmationService = ConfirmationService;
 //# sourceMappingURL=confirmationservice.js.map
 
 /***/ }),
-/* 214 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5334,7 +5199,7 @@ exports.TreeDragDropService = TreeDragDropService;
 //# sourceMappingURL=treedragdropservice.js.map
 
 /***/ }),
-/* 215 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5435,7 +5300,7 @@ exports.MessagesModule = MessagesModule;
 //# sourceMappingURL=messages.js.map
 
 /***/ }),
-/* 216 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5494,7 +5359,7 @@ exports.ProgressBarModule = ProgressBarModule;
 //# sourceMappingURL=progressbar.js.map
 
 /***/ }),
-/* 217 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5545,7 +5410,7 @@ __export(__webpack_require__(401));
 __export(__webpack_require__(402));
 __export(__webpack_require__(403));
 __export(__webpack_require__(404));
-__export(__webpack_require__(215));
+__export(__webpack_require__(214));
 __export(__webpack_require__(405));
 __export(__webpack_require__(406));
 __export(__webpack_require__(407));
@@ -5555,7 +5420,7 @@ __export(__webpack_require__(409));
 __export(__webpack_require__(410));
 __export(__webpack_require__(411));
 __export(__webpack_require__(412));
-__export(__webpack_require__(216));
+__export(__webpack_require__(215));
 __export(__webpack_require__(413));
 __export(__webpack_require__(414));
 __export(__webpack_require__(415));
@@ -5577,26 +5442,26 @@ __export(__webpack_require__(430));
 __export(__webpack_require__(431));
 
 /***/ }),
+/* 217 */,
 /* 218 */,
-/* 219 */,
-/* 220 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 var Observable_1 = __webpack_require__(5);
-var takeUntil_1 = __webpack_require__(227);
+var takeUntil_1 = __webpack_require__(226);
 Observable_1.Observable.prototype.takeUntil = takeUntil_1.takeUntil;
 //# sourceMappingURL=takeUntil.js.map
 
 /***/ }),
+/* 220 */,
 /* 221 */,
 /* 222 */,
 /* 223 */,
 /* 224 */,
 /* 225 */,
-/* 226 */,
-/* 227 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5677,7 +5542,7 @@ var TakeUntilSubscriber = (function (_super) {
 //# sourceMappingURL=takeUntil.js.map
 
 /***/ }),
-/* 228 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5730,12 +5595,12 @@ exports.async = new AsyncScheduler_1.AsyncScheduler(AsyncAction_1.AsyncAction);
 //# sourceMappingURL=async.js.map
 
 /***/ }),
+/* 228 */,
 /* 229 */,
 /* 230 */,
 /* 231 */,
 /* 232 */,
-/* 233 */,
-/* 234 */
+/* 233 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5918,7 +5783,7 @@ function __asyncValues(o) {
 }
 
 /***/ }),
-/* 235 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5930,37 +5795,35 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var material_1 = __webpack_require__(262);
+var material_1 = __webpack_require__(261);
 var platform_browser_1 = __webpack_require__(11);
 var core_1 = __webpack_require__(0);
 var forms_1 = __webpack_require__(6);
 var http_1 = __webpack_require__(14);
-var animations_1 = __webpack_require__(263);
-var app_component_1 = __webpack_require__(273);
+var animations_1 = __webpack_require__(262);
+var app_component_1 = __webpack_require__(272);
 var recipes_component_1 = __webpack_require__(282);
 var recipe_list_component_1 = __webpack_require__(280);
-var catalogue_component_1 = __webpack_require__(77);
-var SearchResults_component_1 = __webpack_require__(276);
-var SearchForm_component_1 = __webpack_require__(275);
+var catalogue_component_1 = __webpack_require__(276);
+var SearchResults_component_1 = __webpack_require__(275);
+var SearchForm_component_1 = __webpack_require__(274);
 var profile_component_1 = __webpack_require__(277);
 var recipe_detail_component_1 = __webpack_require__(278);
 var recipe_item_component_1 = __webpack_require__(279);
-var app_routing_1 = __webpack_require__(274);
-var ActivationGuard_1 = __webpack_require__(270);
-var angular2_busy_1 = __webpack_require__(267);
-var primeng_1 = __webpack_require__(217);
+var app_routing_1 = __webpack_require__(273);
+var ActivationGuard_1 = __webpack_require__(269);
+var angular2_busy_1 = __webpack_require__(266);
+var primeng_1 = __webpack_require__(216);
 var ApiService_1 = __webpack_require__(29);
 var UserService_1 = __webpack_require__(75);
 var CarService_1 = __webpack_require__(47);
-var AccountService_1 = __webpack_require__(269);
+var AccountService_1 = __webpack_require__(268);
 var ContextService_1 = __webpack_require__(25);
-var home_component_1 = __webpack_require__(78);
-var login_component_1 = __webpack_require__(79);
-var paymentConfirmation_component_1 = __webpack_require__(80);
-var gv_control_component_1 = __webpack_require__(272);
-var primeng_2 = __webpack_require__(217);
-// import { ModalModule } from 'angular2-modal';
-// import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
+var home_component_1 = __webpack_require__(77);
+var login_component_1 = __webpack_require__(78);
+var paymentConfirmation_component_1 = __webpack_require__(79);
+var gv_control_component_1 = __webpack_require__(271);
+var primeng_2 = __webpack_require__(216);
 var ngx_modialog_1 = __webpack_require__(34);
 var bootstrap_1 = __webpack_require__(59);
 var AppModule = (function () {
@@ -5973,6 +5836,9 @@ AppModule = __decorate([
         declarations: [
             app_component_1.AppComponent,
             catalogue_component_1.catalogueComponent,
+            SearchResults_component_1.SearchResultsComponent,
+            SearchForm_component_1.searchFormComponent,
+            profile_component_1.profileComponent,
             recipes_component_1.RecipesComponent,
             recipe_list_component_1.RecipeListComponent,
             recipe_detail_component_1.RecipeDetailComponent,
@@ -5981,10 +5847,7 @@ AppModule = __decorate([
             home_component_1.HomeComponent,
             login_component_1.LoginComponent,
             paymentConfirmation_component_1.PaymentConfirmationComponent,
-            gv_control_component_1.GvControlComponent,
-            SearchResults_component_1.SearchResultsComponent,
-            SearchForm_component_1.searchFormComponent,
-            profile_component_1.profileComponent
+            gv_control_component_1.GvControlComponent
         ],
         imports: [
             bootstrap_1.BootstrapModalModule,
@@ -6012,14 +5875,14 @@ AppModule = __decorate([
             AccountService_1.AccountService,
             UserService_1.UserService,
             material_1.OVERLAY_PROVIDERS],
-        bootstrap: [app_component_1.AppComponent],
-        entryComponents: [SearchResults_component_1.SearchResultsComponent, SearchForm_component_1.searchFormComponent, profile_component_1.profileComponent]
+        bootstrap: [app_component_1.AppComponent]
     })
 ], AppModule);
 exports.AppModule = AppModule;
 
 
 /***/ }),
+/* 235 */,
 /* 236 */,
 /* 237 */,
 /* 238 */,
@@ -6042,20 +5905,20 @@ exports.AppModule = AppModule;
 /* 255 */,
 /* 256 */,
 /* 257 */,
-/* 258 */,
-/* 259 */
+/* 258 */
 /***/ (function(module, exports) {
 
 module.exports = {
-	"baseUrl": "https://localhost:9999",
+	"baseUrl": "http://localhost:5555",
 	"loginUrl": "/oauth/token",
 	"knetUrl": "/api/Workers/CallKnetGateway",
 	"incomingPaymentUrl": "/api/Workers/CreatePayment",
-	"getWorkersUrl": "/api/Workers/GetWorkers"
+	"getWorkersUrl": "/api/Workers/GetWorkers",
+	"getSearchCriteriaUrl": "/api/Workers/GetSearchLookups"
 };
 
 /***/ }),
-/* 260 */
+/* 259 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8592,7 +8455,7 @@ function supportsWebAnimations() {
 
 
 /***/ }),
-/* 261 */
+/* 260 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8690,11 +8553,11 @@ function supportsWebAnimations() {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return ESCAPE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_10", function() { return BACKSPACE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_11", function() { return DELETE; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(234);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(233);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operator_finally__ = __webpack_require__(472);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operator_finally___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_operator_finally__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_operator_catch__ = __webpack_require__(224);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_operator_catch__ = __webpack_require__(223);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_operator_catch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_operator_catch__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_operator_do__ = __webpack_require__(470);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_operator_do___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_operator_do__);
@@ -8702,9 +8565,9 @@ function supportsWebAnimations() {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_rxjs_operator_map__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_operator_filter__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_operator_filter___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_rxjs_operator_filter__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_operator_share__ = __webpack_require__(226);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_operator_share__ = __webpack_require__(225);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_operator_share___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_rxjs_operator_share__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_operator_first__ = __webpack_require__(225);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_operator_first__ = __webpack_require__(224);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_operator_first___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_rxjs_operator_first__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_rxjs_operator_switchMap__ = __webpack_require__(479);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_rxjs_operator_switchMap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_rxjs_operator_switchMap__);
@@ -8714,7 +8577,7 @@ function supportsWebAnimations() {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_rxjs_operator_debounceTime___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11_rxjs_operator_debounceTime__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_rxjs_operator_auditTime__ = __webpack_require__(464);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_rxjs_operator_auditTime___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12_rxjs_operator_auditTime__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_rxjs_operator_takeUntil__ = __webpack_require__(227);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_rxjs_operator_takeUntil__ = __webpack_require__(226);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_rxjs_operator_takeUntil___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13_rxjs_operator_takeUntil__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__angular_common__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_rxjs_Subject__ = __webpack_require__(12);
@@ -8722,7 +8585,7 @@ function supportsWebAnimations() {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__angular_platform_browser__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17_rxjs_observable_merge__ = __webpack_require__(61);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17_rxjs_observable_merge___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_17_rxjs_observable_merge__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18_rxjs_BehaviorSubject__ = __webpack_require__(218);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18_rxjs_BehaviorSubject__ = __webpack_require__(217);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18_rxjs_BehaviorSubject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_18_rxjs_BehaviorSubject__);
 
 /**
@@ -11601,7 +11464,7 @@ ObserveContentModule.ctorParameters = function () { return []; };
 
 
 /***/ }),
-/* 262 */
+/* 261 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11940,9 +11803,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵs", function() { return _MdTabMixinBase; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵp", function() { return MdTabLabelWrapperBase; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵq", function() { return _MdTabLabelWrapperMixinBase; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(234);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(233);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_cdk__ = __webpack_require__(261);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_cdk__ = __webpack_require__(260);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_platform_browser__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_common__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_Subject__ = __webpack_require__(12);
@@ -11962,7 +11825,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13_rxjs_Observable__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_rxjs_observable_throw__ = __webpack_require__(463);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_rxjs_observable_throw___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14_rxjs_observable_throw__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_rxjs_observable_forkJoin__ = __webpack_require__(222);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_rxjs_observable_forkJoin__ = __webpack_require__(221);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_rxjs_observable_forkJoin___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_15_rxjs_observable_forkJoin__);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "coerceBooleanProperty", function() { return __WEBPACK_IMPORTED_MODULE_2__angular_cdk__["e"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "coerceNumberProperty", function() { return __WEBPACK_IMPORTED_MODULE_2__angular_cdk__["v"]; });
@@ -33645,7 +33508,7 @@ MaterialModule.ctorParameters = function () { return []; };
 
 
 /***/ }),
-/* 263 */
+/* 262 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -33662,7 +33525,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵb", function() { return instantiateSupportedAnimationDriver; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_animations_browser__ = __webpack_require__(260);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_animations_browser__ = __webpack_require__(259);
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -34132,7 +33995,7 @@ NoopAnimationsModule.ctorParameters = function () { return []; };
 
 
 /***/ }),
-/* 264 */
+/* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34196,7 +34059,7 @@ exports.BusyModule = BusyModule;
 //# sourceMappingURL=busy.module.js.map
 
 /***/ }),
-/* 265 */
+/* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34209,14 +34072,14 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(264));
+__export(__webpack_require__(263));
 __export(__webpack_require__(74));
 __export(__webpack_require__(45));
 __export(__webpack_require__(44));
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 266 */
+/* 265 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34323,7 +34186,7 @@ exports.equals = equals;
 //# sourceMappingURL=util.js.map
 
 /***/ }),
-/* 267 */
+/* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34332,27 +34195,47 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(265));
+__export(__webpack_require__(264));
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 268 */
+/* 267 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var SearchContent = (function () {
-    function SearchContent() {
-        this.selectedCountry = "";
+var Worker = (function () {
+    function Worker(serialNumber, agent, code, birthDate, gender, nationality, religion, maritalStatus, language, photo, weight, height, education, passport, videopublic, passportNumber, passportIssDate, passportExpDate, passportPoIssue, civilId, status) {
+        this.serialNumber = serialNumber;
+        this.agent = agent;
+        this.code = code;
+        this.birthDate = birthDate;
+        this.gender = gender;
+        this.nationality = nationality;
+        this.religion = religion;
+        this.maritalStatus = maritalStatus;
+        this.language = language;
+        this.photo = photo;
+        this.weight = weight;
+        this.height = height;
+        this.education = education;
+        this.passport = passport;
+        this.videopublic = videopublic;
+        this.passportNumber = passportNumber;
+        this.passportIssDate = passportIssDate;
+        this.passportExpDate = passportExpDate;
+        this.passportPoIssue = passportPoIssue;
+        this.civilId = civilId;
+        this.status = status;
     }
-    return SearchContent;
+    return Worker;
 }());
-exports.SearchContent = SearchContent;
+exports.Worker = Worker;
 
 
 /***/ }),
-/* 269 */
+/* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34394,7 +34277,7 @@ exports.AccountService = AccountService;
 
 
 /***/ }),
-/* 270 */
+/* 269 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34437,7 +34320,7 @@ exports.CanActivateViaAuthGuard = CanActivateViaAuthGuard;
 
 
 /***/ }),
-/* 271 */
+/* 270 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34482,7 +34365,7 @@ exports.WorkersService = WorkersService;
 
 
 /***/ }),
-/* 272 */
+/* 271 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34519,7 +34402,7 @@ exports.GvControlComponent = GvControlComponent;
 
 
 /***/ }),
-/* 273 */
+/* 272 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34563,7 +34446,7 @@ exports.AppComponent = AppComponent;
 
 
 /***/ }),
-/* 274 */
+/* 273 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34576,9 +34459,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var login_component_1 = __webpack_require__(79);
-var home_component_1 = __webpack_require__(78);
-var paymentConfirmation_component_1 = __webpack_require__(80);
+var login_component_1 = __webpack_require__(78);
+var home_component_1 = __webpack_require__(77);
+var paymentConfirmation_component_1 = __webpack_require__(79);
 var router_1 = __webpack_require__(7);
 var routes = [
     { path: 'Home', component: home_component_1.HomeComponent },
@@ -34603,6 +34486,70 @@ exports.routingComponents = [home_component_1.HomeComponent];
 
 
 /***/ }),
+/* 274 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(0);
+var searchFormComponent = (function () {
+    function searchFormComponent() {
+        this.onSearchFilterCriteria = new core_1.EventEmitter();
+    }
+    searchFormComponent.prototype.ngOnInit = function () {
+        console.log('Init SearchForm Component, ', this.searchCriteriaParams);
+    };
+    searchFormComponent.prototype.GotoResults = function (workType, age, sex, nationality, maritalStatus, language) {
+        var argumentKeys = ["workType", "age", "sex", "nationality", "maritalStatus", "language"];
+        var workerFilterParams = {};
+        for (var i = 0; i < arguments.length; i++) {
+            var argument = arguments[i];
+            if (argument.type == 'select-one') {
+                var isFirstElement = argument.value === argument.options[0].value;
+                if (!isFirstElement) {
+                    var keyName = argumentKeys[i];
+                    workerFilterParams[keyName] = argument.value;
+                }
+            }
+        }
+        console.log('captured searchFilter ', workerFilterParams);
+        this.onSearchFilterCriteria.emit(workerFilterParams);
+    };
+    return searchFormComponent;
+}());
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", Object)
+], searchFormComponent.prototype, "onSearchFilterCriteria", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Object)
+], searchFormComponent.prototype, "searchCriteriaParams", void 0);
+searchFormComponent = __decorate([
+    core_1.Component({
+        selector: 'search-form',
+        template: __webpack_require__(345),
+        styles: [__webpack_require__(435)]
+    }),
+    __metadata("design:paramtypes", [])
+], searchFormComponent);
+exports.searchFormComponent = searchFormComponent;
+// <!-- <div *ngFor "let nameValuePair of searchCriteriaParams.workerTypes;">
+// {{nameValuePair.name }}
+// </div> -->
+
+
+/***/ }),
 /* 275 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -34619,35 +34566,45 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var catalogue_component_1 = __webpack_require__(77);
-var searchFormComponent = (function () {
-    //public catalogue: catalogueComponent;
-    function searchFormComponent(componentFactoryResolver) {
-        this.componentFactoryResolver = componentFactoryResolver;
+var SearchResultsComponent = (function () {
+    function SearchResultsComponent(sanitizer) {
+        this.sanitizer = sanitizer;
+        this.onSelectedWorker = new core_1.EventEmitter();
     }
-    searchFormComponent.prototype.Book = function () {
-        console.log('searchFormComponent Book!');
-        window.location.href = "http://knet.testyourprojects.co.in/";
+    SearchResultsComponent.prototype.ngOnInit = function () {
+        console.log('SearchResultsComponent Loaded! ', this.workers);
     };
-    searchFormComponent.prototype.ngOnInit = function () {
+    SearchResultsComponent.prototype.GoToProfile = function (selectedWorker) {
+        console.log('[captured] GoToProfile!: ', selectedWorker);
+        this.onSelectedWorker.emit(selectedWorker);
     };
-    searchFormComponent.prototype.GotoResults = function () {
+    SearchResultsComponent.prototype.GetAvailableCSS = function (worker) {
+        var isAvaible = worker.status == "1" ? true : false;
+        return {
+            "glyphicon": true,
+            "glyphicon-ok": isAvaible,
+            "glyphicon-remove": !isAvaible
+        };
     };
-    return searchFormComponent;
+    return SearchResultsComponent;
 }());
 __decorate([
-    core_1.ViewChild(core_1.forwardRef(function () { return catalogue_component_1.catalogueComponent; })),
-    __metadata("design:type", catalogue_component_1.catalogueComponent)
-], searchFormComponent.prototype, "catalogue", void 0);
-searchFormComponent = __decorate([
+    core_1.Input(),
+    __metadata("design:type", Array)
+], SearchResultsComponent.prototype, "workers", void 0);
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", Object)
+], SearchResultsComponent.prototype, "onSelectedWorker", void 0);
+SearchResultsComponent = __decorate([
     core_1.Component({
-        selector: '[app-searchForm]',
-        template: __webpack_require__(345),
-        styles: [__webpack_require__(435)]
+        selector: 'search-result',
+        template: __webpack_require__(346),
+        styles: [__webpack_require__(436)]
     }),
-    __metadata("design:paramtypes", [core_1.ComponentFactoryResolver])
-], searchFormComponent);
-exports.searchFormComponent = searchFormComponent;
+    __metadata("design:paramtypes", [core_1.Sanitizer])
+], SearchResultsComponent);
+exports.SearchResultsComponent = SearchResultsComponent;
 
 
 /***/ }),
@@ -34667,26 +34624,70 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var SearchResultsComponent = (function () {
-    function SearchResultsComponent() {
+var WorkersService_1 = __webpack_require__(270);
+var ApiService_1 = __webpack_require__(29);
+var platform_browser_1 = __webpack_require__(11);
+var catalogueComponent = (function () {
+    function catalogueComponent(myApi, componentFactoryResolver, workersService, sanitizer) {
+        this.myApi = myApi;
+        this.componentFactoryResolver = componentFactoryResolver;
+        this.workersService = workersService;
+        this.sanitizer = sanitizer;
+        this.showSearchSummary = true;
+        this.showSearchForm = false;
+        this.showSearchResultTable = false;
+        this.showProfile = false;
     }
-    SearchResultsComponent.prototype.Book = function () {
-        console.log('SearchResultsComponent Book!');
-        // window.location.href = "http://knet.testyourprojects.co.in/";
+    catalogueComponent.prototype.GoToSearch = function () {
+        var _this = this;
+        this.myApi.getSearchCriteriaParameters().subscribe(function (searchCriteria) {
+            _this.searchCriteriaParams = searchCriteria;
+            _this.showSearchSummary = false;
+            _this.showSearchForm = true;
+        });
     };
-    SearchResultsComponent.prototype.ngOnInit = function () {
+    catalogueComponent.prototype.GoToResults = function (workerFilter) {
+        var _this = this;
+        console.log('Search-Filter ', workerFilter);
+        this.myApi.getAllWorkers(workerFilter).subscribe(function (workers) {
+            _this.workers = workers;
+            _this.showSearchForm = false;
+            _this.showSearchResultTable = true;
+        });
     };
-    return SearchResultsComponent;
+    catalogueComponent.prototype.GoToProfile = function (event) {
+        console.log('selected Worker: ', event);
+        this.selectedWorker = event;
+        this.showSearchResultTable = false;
+        this.showProfile = true;
+    };
+    catalogueComponent.prototype.ngOnInit = function () {
+        // this.GetLookups();
+    };
+    catalogueComponent.prototype.GetLookups = function () {
+        this.myApi.getSearchCriteriaParameters().subscribe(function (searchCriteriaParams) {
+            console.log('look up values ', searchCriteriaParams);
+        });
+    };
+    catalogueComponent.prototype.Book = function (onBook) {
+        var selectedWorker = this.selectedWorker;
+        console.log('calling knetPayment! for worker ', selectedWorker);
+        var paymentInformation = { SerialNumber: selectedWorker.serialNumber, CardCode: "C220Temp", Amount: "100", Code: selectedWorker.code };
+        this.myApi.knetPaymentRedirect(paymentInformation).subscribe();
+    };
+    return catalogueComponent;
 }());
-SearchResultsComponent = __decorate([
+catalogueComponent = __decorate([
     core_1.Component({
-        selector: '[app-SearchResults]',
-        template: __webpack_require__(346),
-        styles: [__webpack_require__(436)]
+        selector: '[app-catalogue]',
+        template: __webpack_require__(347),
+        styles: [__webpack_require__(437)],
+        providers: [WorkersService_1.WorkersService],
     }),
-    __metadata("design:paramtypes", [])
-], SearchResultsComponent);
-exports.SearchResultsComponent = SearchResultsComponent;
+    __metadata("design:paramtypes", [ApiService_1.ApiService, core_1.ComponentFactoryResolver,
+        WorkersService_1.WorkersService, platform_browser_1.DomSanitizer])
+], catalogueComponent);
+exports.catalogueComponent = catalogueComponent;
 
 
 /***/ }),
@@ -34706,19 +34707,30 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
+var Worker_1 = __webpack_require__(267);
 var profileComponent = (function () {
     function profileComponent() {
+        this.onBook = new core_1.EventEmitter();
     }
-    profileComponent.prototype.Book = function () {
-        console.log('Attempting to Book profileComponent');
-    };
     profileComponent.prototype.ngOnInit = function () {
+        console.log('Loaded Profile Component with Worker ', this.worker);
+    };
+    profileComponent.prototype.Book = function () {
+        this.onBook.emit(true);
     };
     return profileComponent;
 }());
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Worker_1.Worker)
+], profileComponent.prototype, "worker", void 0);
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", Object)
+], profileComponent.prototype, "onBook", void 0);
 profileComponent = __decorate([
     core_1.Component({
-        selector: '[app-profile]',
+        selector: 'profile',
         template: __webpack_require__(348),
         styles: [__webpack_require__(438)]
     }),
@@ -34907,7 +34919,7 @@ exports.RecipesComponent = RecipesComponent;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var platform_browser_dynamic_1 = __webpack_require__(43);
-var app_module_1 = __webpack_require__(235);
+var app_module_1 = __webpack_require__(234);
 //enableProdMode();
 platform_browser_dynamic_1.platformBrowserDynamic().bootstrapModule(app_module_1.AppModule);
 
@@ -34987,31 +34999,31 @@ module.exports = "\r\n                <router-outlet></router-outlet>\r\n";
 /* 345 */
 /***/ (function(module, exports) {
 
-module.exports = "<div role=\"tabpanel\" class=\"tab-pane fade\" id=\"tabSearchForm\" #tabSearchForm>\r\n    <div class=\"row\">\r\n        <div class=\"col-sm-6 col-sm-offset-2\">\r\n            <h3><span class=\"fa fa-search fa-fw fa-2x\"></span> Advanced search</h3>\r\n            <form action=\"#\" method=\"post\" id=\"searchForm\">\r\n                <div class=\"form-group\">\r\n                    <input type=\"text\" class=\"form-control\" id=\"age\" name=\"age\" placeholder=\"Age\" />\r\n                </div>\r\n                <div class=\"form-group\">\r\n                    <select class=\"form-control\">\r\n                        <option>Nationality</option>\r\n                    </select>\r\n                </div>\r\n                <div class=\"form-group\">\r\n                    <select class=\"form-control\">\r\n                        <option>Gender</option>\r\n                    </select>\r\n                </div>\r\n                <div class=\"form-group\">\r\n                    <select class=\"form-control\">\r\n                        <option>Marital Status</option>\r\n                    </select>\r\n                </div>\r\n                <div class=\"form-group\">\r\n                    <select class=\"form-control\">\r\n                        <option>Language</option>\r\n                    </select>\r\n                </div>\r\n                <div class=\"form-group\">\r\n                    <select class=\"form-control\">\r\n                        <option>Type</option>\r\n                    </select>\r\n                </div>\r\n                <div class=\"form-group\">\r\n                    <input type=\"submit\" (click)=\"GotoResults()\" value=\"Search\" class=\"btn btn-default\" id=\"submitSearchForm\" />\r\n                </div>\r\n            </form>\r\n        </div>\r\n    </div>\r\n</div>";
+module.exports = "<div role=\"tabpanel\" class=\"tab-pane fade in active\">\r\n  <div class=\"row\">\r\n    <div class=\"col-sm-6 col-sm-offset-2\">\r\n      <h3><span class=\"fa fa-search fa-fw fa-2x\"></span> البحث المتقدم</h3>\r\n      <form action=\"#\" (ngSubmit)=\"GotoResults(workTypeInput,ageInput ,sexInput ,nationalityInput ,martialStatusInput ,languageInput )\"\r\n        method=\"post\" id=\"searchForm\" name=\"searchForm\" #f=\"ngForm\">\r\n        <div class=\"form-group\">\r\n             <select class=\"form-control\" #workTypeInput>\r\n                     <option>نوع العامل</option>\r\n                     <option value=\"مربية\">مربية</option>\r\n                     <option value=\"سائق\">سائق</option>\r\n                     <option value=\"طباخ\">طباخ</option>\r\n                     <option value=\"عامل منزلي\">عامل منزلي</option>\r\n                   </select>\r\n        </div>\r\n        <div class=\"form-group\">\r\n          <select class=\"form-control\" #ageInput>\r\n                     <option>العمر</option>\r\n                     <option value=\"18-25\">18-25</option>\r\n                     <option value=\"25-35\">25-35</option>\r\n                     <option value=\"35-45\">35-45</option>\r\n                     <option value=\"45-55\">45-55</option>\r\n                   </select>\r\n        </div>\r\n        <div class=\"form-group\">\r\n          <select class=\"form-control\" #sexInput>\r\n                     <option>الجنس</option>\r\n                     <option value=\"انثى\">انثى</option>\r\n                     <option value=\"ذكر\">ذكر</option>\r\n                   </select>\r\n        </div>\r\n        <div class=\"form-group\">\r\n          <select class=\"form-control\" #nationalityInput>\r\n                     <option>الجنسية</option>\r\n                     <option value=\"الهند\">الهند</option>\r\n                     <option value=\"الفلبين\">الفلبين</option>\r\n                     <option value=\"ملاوي\">ملاوي</option>\r\n                     <option value=\"بنين\">بنين</option>\r\n                     <option value=\"تشاد\">تشاد</option>\r\n                     <option value=\"نيبال\">نيبال</option>\r\n                     <option value=\"سيريلانكا\">سيريلانكا</option>\r\n                   </select>\r\n        </div>\r\n        <div class=\"form-group\">\r\n          <select class=\"form-control\" #martialStatusInput>\r\n                     <option>الحالة الاجتماعية</option>\r\n                     <option value=\"متزوج\">متزوج</option>\r\n                     <option value=\"أعزب\">أعزب</option>\r\n                   </select>\r\n        </div>\r\n        <div class=\"form-group\" #languageInput>\r\n          <select class=\"form-control\">\r\n                     <option>اللغات المتحدث بها</option>\r\n                     <option value=\"اخرى\">اخرى</option>\r\n                     <option value=\"فرنسي\">فرنسي</option>\r\n                     <option value=\"انجليزي\">انجليزي</option>\r\n                     <option value=\"عربي\">عربي</option>\r\n                   </select>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <input type=\"submit\" value=\"بحث\" class=\"btn btn-default\" id=\"submitSearchForm\" />\r\n        </div>\r\n      </form>\r\n    </div>\r\n  </div>\r\n</div>";
 
 /***/ }),
 /* 346 */
 /***/ (function(module, exports) {
 
-module.exports = "<div role=\"tabpanel\" class=\"tab-pane fade\" id=\"tabSearchResults\" #tabSearchResults>\r\n    <div class=\"row\">\r\n        <div class=\"col-md-8 col-sm-offset-2\">\r\n            <h3><span class=\"fa fa-search fa-fw fa-2x\"></span> Advanced search results</h3>\r\n            <p>Please select \"ONE\" worker.</p>\r\n            <table class=\"table table-bordered table-hover\">\r\n                <tbody>\r\n                    <tr>\r\n                        <td><a href=\"#tabProfile\" data-toggle=\"tab\"><img src=\"xxxHTMLLINKxxx0.006674387459529640.9069181363511816xxx\" width=\"87\" class=\"img-thumbnail /\"></a></td>\r\n                        <td>63kg</td>\r\n                        <td>1m63</td>\r\n                        <td><a href=\"#tabProfile\" data-toggle=\"tab\">available</a></td>\r\n                        <td><a href=\"#tabProfile\" data-toggle=\"tab\"><span class=\"glyphicon glyphicon-play-circle\"></span></a></td>\r\n                        <td><a href=\"#tabProfile\" data-toggle=\"tab\"><span class=\"glyphicon glyphicon-ok\"></span></a></td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td><a href=\"#tabProfile\" data-toggle=\"tab\"><img src=\"xxxHTMLLINKxxx0.76642399716378010.4677985007466343xxx\" width=\"87\" class=\"img-thumbnail /\"></a></td>\r\n                        <td>63kg</td>\r\n                        <td>1m63</td>\r\n                        <td><a href=\"#tabProfile\" data-toggle=\"tab\">available</a></td>\r\n                        <td><a href=\"#tabProfile\" data-toggle=\"tab\"><span class=\"glyphicon glyphicon-play-circle\"></span></a></td>\r\n                        <td><a href=\"#tabProfile\" data-toggle=\"tab\"><span class=\"glyphicon glyphicon-ok\"></span></a></td>\r\n                    </tr>\r\n                </tbody>\r\n            </table>\r\n        </div>\r\n    </div>\r\n</div>";
+module.exports = "<div role=\"tabpanel\" class=\"tab-pane fade active in\" id=\"tabSearchResults\">\r\n    <div class=\"row\">\r\n        <div class=\"col-md-8 col-sm-offset-2\">\r\n            <h3><span class=\"fa fa-search fa-fw fa-2x\"></span> نتائج البحث المتقدمة</h3>\r\n            <p>الرجاء اختيار عامل واحد</p>\r\n            <p-dataTable styleClass=\"table table-bordered table-hover\" [value]=\"workers\" [paginator]=\"true\" rows=\"15\" [responsive]=\"true\">\r\n                <p-column field=\"agent\" header=\"Agent\"></p-column>\r\n                <p-column field=\"age\" header=\"Age\"></p-column>\r\n                <p-column field=\"code\" header=\"Code\"></p-column>\r\n                <!-- <p-column field=\"birthDate\" header=\"BirthDate\"></p-column> -->\r\n                <p-column field=\"gender\" header=\"Gender\"></p-column>\r\n                <p-column field=\"nationality\" header=\"Nationality\"></p-column>\r\n                <p-column field=\"religion\" header=\"Religion\"></p-column>\r\n                <p-column field=\"maritalStatus\" header=\"MaritalStatus\"></p-column>\r\n                <p-column field=\"language\" header=\"Language\"></p-column>\r\n\r\n                <p-column field=\"image\" header=\"Image\">\r\n                    <ng-template let-worker=\"rowData\" pTemplate=\"body\">\r\n                        <a (click)=\"GoToProfile(worker)\" data-toggle=\"tab\"><img src=\"{{worker.photo}}\" width=\"50\" class=\"img-thumbnail\"></a>\r\n                    </ng-template>\r\n                </p-column>\r\n                <p-column field=\"price\" header=\"Price\"></p-column>\r\n                <p-column field=\"weight\" header=\"Weight\" [filter]=\"false\" [sortable]=\"true\"></p-column>\r\n                <p-column field=\"height\" header=\"Height\" [filter]=\"false\" [sortable]=\"true\"></p-column>\r\n                <p-column field=\"education\" header=\"Education\"></p-column>\r\n                <!-- Video -->\r\n                <p-column header=\"Video\" [filter]=\"false\" [style]=\"{'text-align': 'center'}\" >\r\n                    <ng-template let-worker=\"rowData\" pTemplate=\"body\" >\r\n                            <iframe width=\"200\" height=\"200\"  [src]=\"sanitizer.bypassSecurityTrustResourceUrl(worker.video)\"  frameborder=\"0\" allowfullscreen></iframe>\r\n                    </ng-template>\r\n                </p-column>\r\n                <!-- Available -->\r\n                <p-column header=\"Available\" [style]=\"{'text-align': 'center'}\" [filter]=\"false\">\r\n                    <ng-template let-worker=\"rowData\" pTemplate=\"body\">\r\n                        <a (click)=\"GoToProfile(worker)\" data-toggle=\"tab\"><span [ngClass]=\"GetAvailableCSS(worker)\"></span></a>\r\n                    </ng-template>\r\n                </p-column>\r\n            </p-dataTable>\r\n        </div>\r\n    </div>\r\n</div>";
 
 /***/ }),
 /* 347 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\r\n        <div class=\"section-content\">\r\n           <div class=\"content-wrapper\">\r\n              <div id=\"catalogueContainer\" class=\"tab-content\" #catalogue>\r\n               <div role=\"tabpanel\" class=\"tab-pane fade in active\" id=\"tabCatalogue\" #tabcatalogue>\r\n                 <h2 class=\"border-alt\"><a href=\"#tabSearchForm\" data-toggle=\"tab\">كتالوج الدرة</a></h2>\r\n                 <p>يضم \"كتالوج الدرة\" شريحة واسعة من العمالة المختارة للعمل، حيث يوفر الكتالوج للعملاء العديد من الاختيارات، ويعتبر هذا الكتالوج بمثابة قاعدة بيانات يتاح للعميل تصفحه والاختيار منه بعد تسجيل الدخول وتثبيت شخصيته من خلال بيانات البطاقة المدنية.</p>\r\n                 <p>     تضم كل صفحة من صفحات الكتالوج بيانات المرشح للعمل ويشمل ذلك: بياناته الشخصية (الاسم، الجنس، الجنسية، العمر، الديانة، الحالة الاجتماعية .. إلخ) ثم السمات الشخصية (المهارات اللغوية، الطول</p>\r\n                 <p class=\"text-right\"><a href=\"#tabSearchForm\" (click)=\"GotoSearch()\" class=\"btn btn-default\" data-toggle=\"tab\">ابحث عن عماله منزلية<span class=\"fa fa-search fa-fw\"></span></a></p>\r\n               </div>\r\n               <div role=\"tabpanel\" class=\"tab-pane fade\" id=\"tabSearchForm\" #tabSearchForm>\r\n                 <div class=\"row\">\r\n                   <div class=\"col-sm-6 col-sm-offset-2\">\r\n                     <h3><span class=\"fa fa-search fa-fw fa-2x\"></span> البحث المتقدم</h3>\r\n\r\n                     <form action=\"#\" (ngSubmit)=\"GotoResults(workTypeInput,ageInput ,sexInput ,nationalityInput ,martialStatusInput ,languageInput )\" method=\"post\" id=\"searchForm\" name=\"searchForm\" #f=\"ngForm\" >\r\n                       <div class=\"form-group\">\r\n                         <select class=\"form-control\" #workTypeInput>\r\n                           <option>نوع العامل</option>\r\n                           <option value=\"مربية\">مربية</option>\r\n                           <option value=\"سائق\">سائق</option>\r\n                           <option value=\"طباخ\">طباخ</option>\r\n                           <option value=\"عامل منزلي\">عامل منزلي</option>\r\n                         </select>\r\n                       </div>\r\n                       <div class=\"form-group\">\r\n                         <select class=\"form-control\" #ageInput>\r\n                           <option>العمر</option>\r\n                           <option value=\"18-25\">18-25</option>\r\n                           <option value=\"25-35\">25-35</option>\r\n                           <option value=\"35-45\">35-45</option>\r\n                           <option value=\"45-55\">45-55</option>\r\n                         </select>\r\n                       </div>\r\n                       <div class=\"form-group\">\r\n                         <select class=\"form-control\" #sexInput>\r\n                           <option>الجنس</option>\r\n                           <option value=\"انثى\">انثى</option>\r\n                           <option value=\"ذكر\">ذكر</option>\r\n                         </select>\r\n                       </div>\r\n                       <div class=\"form-group\">\r\n                         <select class=\"form-control\" #nationalityInput>\r\n                           <option>الجنسية</option>\r\n                           <option value=\"الهند\">الهند</option>\r\n                           <option value=\"الفلبين\">الفلبين</option>\r\n                           <option value=\"ملاوي\">ملاوي</option>\r\n                           <option value=\"بنين\">بنين</option>\r\n                           <option value=\"تشاد\">تشاد</option>\r\n                           <option value=\"نيبال\">نيبال</option>\r\n                           <option value=\"سيريلانكا\">سيريلانكا</option>\r\n                         </select>\r\n                       </div>\r\n                       <div class=\"form-group\">\r\n                         <select class=\"form-control\" #martialStatusInput>\r\n                           <option>الحالة الاجتماعية</option>\r\n                           <option value=\"متزوج\">متزوج</option>\r\n                           <option value=\"أعزب\">أعزب</option>\r\n                         </select>\r\n                       </div>\r\n                       <div class=\"form-group\" #languageInput>\r\n                         <select class=\"form-control\">\r\n                           <option>اللغات المتحدث بها</option>\r\n                           <option value=\"اخرى\">اخرى</option>\r\n                           <option value=\"فرنسي\">فرنسي</option>\r\n                           <option value=\"انجليزي\">انجليزي</option>\r\n                           <option value=\"عربي\">عربي</option>\r\n                         </select>\r\n                       </div>\r\n\r\n                       <div class=\"form-group\">\r\n                          <input type=\"submit\" value=\"بحث\" class=\"btn btn-default\" id=\"submitSearchForm\" />\r\n                       </div>\r\n                     </form>\r\n\r\n                   </div>\r\n                 </div>\r\n\r\n               </div>\r\n               <div role=\"tabpanel\" class=\"tab-pane fade\" id=\"tabSearchResults\" #tabSearchResults>\r\n                 <div class=\"row\">\r\n                   <div class=\"col-md-8 col-sm-offset-2\">\r\n                     <h3><span class=\"fa fa-search fa-fw fa-2x\"></span> نتائج البحث المتقدمة</h3>\r\n                     <p>الرجاء اختيار عامل واحد</p>\r\n                            <p-dataTable styleClass=\"table table-bordered table-hover\" [value]=\"workers\" [globalFilter]=\"gb\"\r\n                                         [paginator]=\"true\" rows=\"15\" [responsive]=\"true\" #dt>\r\n                                <p-column field=\"Id\" header=\"ID\" [hidden]=\"true\" [filter]=\"true\"></p-column>\r\n                                <p-column field=\"image\" header=\"Image\">\r\n                                    <ng-template let-col let-worker=\"rowData\" pTemplate=\"body\">\r\n                                        <a (click)=\"GotoProfile(worker)\" data-toggle=\"tab\"><img src=\"{{worker[col.field]}}\" width=\"87\" class=\"img-thumbnail /\"></a>\r\n                                    </ng-template>\r\n                                </p-column>\r\n                                <p-column field=\"weight\" header=\"Weight\" [filter]=\"false\" [sortable]=\"true\"></p-column>\r\n                                <p-column field=\"height\" header=\"Height\" [filter]=\"false\" [sortable]=\"true\"></p-column>\r\n                                <p-column field=\"available\" [filter]=\"false\" [sortable]=\"true\"></p-column>\r\n                                <p-column [filter]=\"false\">\r\n                                    <ng-template pTemplate=\"header\">\r\n                                    </ng-template>\r\n                                    <ng-template let-car=\"rowData\" pTemplate=\"body\">\r\n                                        <a href=\"#tabProfile\" data-toggle=\"tab\"><span [className]=\"'glyphicon glyphicon-play-circle'\"></span></a>\r\n                                    </ng-template>\r\n                                </p-column>\r\n                                <p-column [filter]=\"false\">\r\n                                    <ng-template pTemplate=\"header\">\r\n                                    </ng-template>\r\n                                    <ng-template let-car=\"rowData\" pTemplate=\"body\">\r\n                                        <a href=\"#tabProfile\" data-toggle=\"tab\"><span [className]=\"'glyphicon glyphicon-ok'\"></span></a>\r\n                                    </ng-template>\r\n                                </p-column>\r\n                            </p-dataTable>\r\n                   </div>\r\n                 </div>\r\n               </div>\r\n               <div role=\"tabpanel\" class=\"tab-pane fade\" id=\"tabProfile\" #tabprofile>\r\n                 <div class=\"row\">\r\n                   <div class=\"col-md-8 col-sm-offset-2\">\r\n                        <h3>مرشد ملا</h3>\r\n                        <div class=\"row\">\r\n                            <div class=\"col-sm-6\">\r\n                                <table class=\"table\">\r\n                                    <tbody>\r\n                                        <tr>\r\n                                            <td>تاريخ الميلاد</td>\r\n                                            <td>05/05/1987</td>\r\n                                        </tr>\r\n                                        <tr>\r\n                                            <td>الجنسية</td>\r\n                                            <td>الهند</td>\r\n                                        </tr>\r\n                                        <tr>\r\n                                            <td>الحالة الإجتماعية</td>\r\n                                            <td></td>\r\n                                        </tr>\r\n                                        <tr>\r\n                                            <td>اللغات المتحدث بها</td>\r\n                                            <td>الهندية - البنغالية</td>\r\n                                        </tr>\r\n                                        <tr>\r\n                                            <td>الوظيفة</td>\r\n                                            <td>طباخ</td>\r\n                                        </tr>\r\n                                        <tr>\r\n                                            <td>سنوات الخبره</td>\r\n                                            <td>18 سنة</td>\r\n                                        </tr>\r\n                                        <tr>\r\n                                            <td>تفاصيل الخبره</td>\r\n                                            <td>13 سنة في الهند – 5 سنوات في السعودية</td>\r\n                                        </tr>\r\n                                    </tbody>\r\n                                </table>\r\n                            </div>\r\n                            <div class=\"col-sm-6\">\r\n                                <p><img src=\"/eldurra-master/src/app/images/profiles/image1.png\" class=\"img-thumbnail img-responsive\" width=\"100%\" /></p>\r\n                            </div>\r\n                                     <form action=\"/eldurra-master/src/app/submitprofile.html\">\r\n                       <p><input type=\"submit\" value=\"سجل\" (click)=\"Book(selectedWorker)\" class=\"btn btn-default\" id=\"bookProfile\" /></p>\r\n                     </form>\r\n                   </div>\r\n                 </div>\r\n               </div>\r\n\r\n             </div>\r\n\r\n           </div>\r\n         </div>\r\n       </div>\r\n";
+module.exports = "<!-- {{showSearchSummary}} {{showSearchForm}} {{showSearchResultTable}} {{showProfile}} -->\r\n<div class=\"container\">\r\n  <div class=\"section-content\">\r\n    <div class=\"content-wrapper\">\r\n      <div id=\"catalogueContainer\" class=\"tab-content\" #catalogue>\r\n        <div role=\"tabpanel\" class=\"tab-pane fade in active\" id=\"tabCatalogue\" *ngIf=\"showSearchSummary\">\r\n          <h2 class=\"border-alt\"><a href=\"#tabSearchForm\" data-toggle=\"tab\">كتالوج الدرة</a></h2>\r\n          <p>يضم \"كتالوج الدرة\" شريحة واسعة من العمالة المختارة للعمل، حيث يوفر الكتالوج للعملاء العديد من الاختيارات، ويعتبر\r\n            هذا الكتالوج بمثابة قاعدة بيانات يتاح للعميل تصفحه والاختيار منه بعد تسجيل الدخول وتثبيت شخصيته من خلال بيانات\r\n            البطاقة المدنية.</p>\r\n          <p> تضم كل صفحة من صفحات الكتالوج بيانات المرشح للعمل ويشمل ذلك: بياناته الشخصية (الاسم، الجنس، الجنسية، العمر، الديانة،\r\n            الحالة الاجتماعية .. إلخ) ثم السمات الشخصية (المهارات اللغوية، الطول</p>\r\n          <p class=\"text-right\"><a href=\"#tabSearchForm\" (click)=\"GoToSearch()\" class=\"btn btn-default\" data-toggle=\"tab\">ابحث عن عماله منزلية<span class=\"fa fa-search fa-fw\"></span></a></p>\r\n        </div>\r\n        <search-form [searchCriteriaParams]= \"searchCriteriaParams\" (onSearchFilterCriteria) = \"GoToResults($event)\" *ngIf=\"showSearchForm\"></search-form>\r\n        <search-result [workers]=\"workers\" (onSelectedWorker)=\"GoToProfile($event)\" *ngIf=\"showSearchResultTable\"></search-result>\r\n        <profile [worker]=\"selectedWorker\" (onBook)= \"Book($event)\" *ngIf=\"showProfile\"></profile>\r\n      </div>\r\n    </div>\r\n  </div>";
 
 /***/ }),
 /* 348 */
 /***/ (function(module, exports) {
 
-module.exports = "<div role=\"tabpanel\" class=\"tab-pane fade\" id=\"tabProfile\">\r\n    <div class=\"row\">\r\n        <div class=\"col-md-8 col-sm-offset-2\">\r\n            <h3>Profile</h3>\r\n            <div class=\"row\">\r\n                <div class=\"col-sm-6\">\r\n                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec luctus hendrerit justo et bibendum. Morbi a convallis nulla. Nulla facilisi. Cras iaculis dictum nunc, a porttitor ante porta quis. Sed non magna magna. Donec ex ipsum, condimentum ut arcu vel, suscipit venenatis quam. Donec euismod diam eget justo congue vehicula. Suspendisse lobortis, magna eu tempor lacinia, erat leo pharetra ligula, non dictum lacus justo dignissim ante. Donec varius magna diam, sit amet hendrerit nulla interdum in.</p>\r\n                </div>\r\n                <div class=\"col-sm-6\"><img src=\"xxxHTMLLINKxxx0.100627392311731350.7855572080000586xxx\" class=\"img-thumbnail img-responsive\" width=\"100%\" /></div>\r\n            </div>\r\n            <p><input type=\"submit\" value=\"Book\" (click)=\"Book()\" class=\"btn btn-default\" id=\"bookProfile\" /></p>\r\n        </div>\r\n    </div>\r\n</div>";
+module.exports = "<div role=\"tabpanel\" class=\"tab-pane fade active in\" id=\"tabProfile\">\r\n  <div class=\"row\">\r\n    <div class=\"col-md-8 col-sm-offset-2\">\r\n      <h3>مرشد ملا</h3>\r\n      <div class=\"row\">\r\n        <div class=\"col-sm-6\">\r\n          <table class=\"table\">\r\n            <tbody>\r\n              <tr>\r\n                <td>تاريخ الميلاد</td>\r\n                <td>05/05/1987</td>\r\n              </tr>\r\n              <tr>\r\n                <td>الجنسية</td>\r\n                <td>{{worker.nationality}}\r\n                  <td>\r\n              </tr>\r\n              <tr>\r\n                <td>الحالة الإجتماعية</td>\r\n                <td> {{worker.maritalStatus}}</td>\r\n              </tr>\r\n              <tr>\r\n                <td>اللغات المتحدث بها</td>\r\n                <td>{{worker.language}}</td>\r\n              </tr>\r\n              <tr>\r\n                <td>الوظيفة</td>\r\n                <td> {{worker.workerType}}</td>\r\n              </tr>\r\n            </tbody>\r\n          </table>\r\n        </div>\r\n        <div class=\"col-sm-6\">\r\n          <p><img [src]=\"worker.photo\" class=\"img-thumbnail img-responsive\" width=\"100%\" /></p>\r\n        </div>\r\n        <p><input type=\"submit\" value=\"سجل\" (click)=\"Book()\" class=\"btn btn-default\" id=\"bookProfile\" /></p>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n</div>";
 
 /***/ }),
 /* 349 */
 /***/ (function(module, exports) {
 
-module.exports = "<header role=\"navigation\" class=\"navbar navbar-default navbar-fixed-top\">\r\n      <div class=\"container\">\r\n        <div class=\"navbar-header\">\r\n          <a href=\"/eldurra-master/src/app/index.html/#sectionLanding\" title=\"\" rel=\"home\" class=\"navbar-brand\">\r\n            <img src=\"/eldurra-master/src/app/images/logo.png\" alt=\"\" />\r\n          </a>\r\n          <!-- .btn-navbar is used as the toggle for collapsed navbar content -->\r\n          <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\".navbar-collapse\" aria-expanded=\"false\" aria-controls=\"navbar\">\r\n            <span class=\"sr-only\">Toggle navigation</span>\r\n            <span class=\"icon-bar\"></span>\r\n            <span class=\"icon-bar\"></span>\r\n            <span class=\"icon-bar\"></span>\r\n          </button>\r\n        </div>\r\n\r\n        <div class=\"navbar-collapse collapse\">\r\n          <nav role=\"navigation\">\r\n            <ul class=\"menu nav navbar-nav\">\r\n              <li><a href=\"#sectionContact\" class=\"page-scroll\">اتصل بنا</a></li>\r\n              <li><a href=\"#sectionLogin\" class=\"page-scroll\">التسجيل</a></li>\r\n              <li><a href=\"#sectionWebshop\" class=\"page-scroll\">سوق الدرة</a></li>\r\n              <li><a href=\"#sectionCatalogue\" class=\"page-scroll\">كتالوج الدره</a></li>\r\n              <li><a href=\"#sectionServices\" class=\"page-scroll\">خدماتنا</a></li>\r\n              <li><a href=\"#sectionIntroduction\" class=\"page-scroll\"> نبذه عن الشركه</a></li>\r\n              <li><a href=\"#sectionLogin\" class=\"page-scroll btn btn-default\">دخول</a></li>\r\n            </ul>\r\n          </nav>\r\n        </div>\r\n      </div>\r\n    </header>\r\n\r\n    <section role=\"main\" class=\"main-container\">\r\n\r\n      <div class=\"section section-border\" id=\"sectionLanding\">\r\n        <div class=\"container\">\r\n          <div class=\"section-content\">\r\n            <div class=\"content-wrapper\">\r\n              <div class=\"row\">\r\n                <div class=\"caption animated bounceInLeft\">\r\n                  <p>إذا كنت تبحث عن الثقة والسرعة فسنكون عند حسن الظن دوماً</p>\r\n                </div>\r\n                <div id=\"slider\" class=\"carousel slide\" data-ride=\"carousel\">\r\n                  <ol class=\"carousel-indicators\">\r\n                    <li data-target=\"#slider\" data-slide-to=\"0\" class=\"active\"></li>\r\n                    <li data-target=\"#slider\" data-slide-to=\"1\"></li>\r\n                    <li data-target=\"#slider\" data-slide-to=\"2\"></li>\r\n                    <li data-target=\"#slider\" data-slide-to=\"3\"></li>\r\n                  </ol>\r\n                  <div class=\"carousel-inner\" role=\"listbox\">\r\n                    <div class=\"item active\">\r\n                      <img src=\"/eldurra-master/src/app/images/slide_01.jpg\" height=\"611\" width=\"1346\" alt=\"\">\r\n                    </div>\r\n                    <div class=\"item\">\r\n                      <img src=\"/eldurra-master/src/app/images/slide_02.jpg\" height=\"611\" width=\"1346\" alt=\"\">\r\n                    </div>\r\n                    <div class=\"item\">\r\n                      <img src=\"/eldurra-master/src/app/images/slide_03.jpg\" height=\"611\" width=\"1346\" alt=\"\">\r\n                    </div>\r\n                    <div class=\"item\">\r\n                      <img src=\"/eldurra-master/src/app/images/slide_04.jpg\" height=\"611\" width=\"1346\" alt=\"\">\r\n                    </div>\r\n                  </div>\r\n                </div>\r\n\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"section section-overlay\" id=\"sectionIntroduction\">\r\n        <div class=\"container\">\r\n          <div class=\"section-content\">\r\n            <div class=\"content-wrapper\" data-appear-animation=\"bounceInRight\">\r\n              <h2 class=\"border-alt\">نبذه عن الشركه</h2>\r\n              <p class=\"lead\"> شركة الدرة لاستقدام وتشغيل العمالة المنزلية هي الأولى في الكويت التي تتشكل من جهات وطنية تهتم بالصالح العام وتحقق نقلة نوعية في هذا النوع من الأعمال.</p>\r\n              <ul class=\"list-style-arrow\">\r\n                <li>نحمل رؤية ورسالة وطنية وإنسانية في إدارة سوق العمل.</li>\r\n                <li>نتولى كل الإجراءات بدءا من دولة المصدر إلى الفحوصات والإقامة بدولة الكويت وذلك بأسعار تنافسية ورمزية وبأعلى قدر من الكفاءة وسرعة الإنجاز.</li>\r\n                <li>نعمل على تأهيل العمالة المرشحة للعمل بالبلاد وإكسابها قدراً من المعلومات عن ثقافة وتقاليد وعادات مجتمعنا والأسر الكويتية من خلال دورات تأهيلية في بلدها.</li>\r\n                <li>نضمن سلامة العمالة المستقدمة وخلوها من الأمراض قبل قدومها للبلاد وذلك بفحصها في المراكز المعتمدة من وزارة الصحة في الدولة المصدرة.</li>\r\n                <li>لدينا قاعدة بيانات وأرشيف يدار بأحدث وسائل التكنولوجيا ويضم معلومات وبيانات العمالة وطرق تحديد هويتها.</li>\r\n                <li>\r\nنتفرد بخدمات المتابعة إلكترونياً حيث يمكنك متابعة خطوات الاستقدام منذ تقديم الطلب وحتى حضور العمالة لحظة بلحظة.</li>\r\n                 <li>لدينا فروع في كل محافظات الكويت بالجمعيات التعاونية، ولدينا مكاتب في عدد من دول العالم.</li>\r\n                 <li>\r\n\"سوق الدرة\" يقدم لك باقة متنوعة من اليونيفورم وكافة احتياجات العمالة. </li>\r\n                <li>من خلال موقعنا هذا يمكنكم التقديم على طلب الاستقدام و الحجز بشكل الكتروني.</li>\r\n              </ul>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"section section-inverse\" id=\"sectionStory\">\r\n        <div class=\"container\">\r\n           <div class=\"section-content\">\r\n            <div class=\"content-wrapper \" data-appear-animation=\"fadeInUpBig\">\r\n              <div class=\"row\">\r\n                <div class=\"col-sm-6\">\r\n                  <h2>الرؤية</h2>\r\n                  <p>أن تكون شركة الدرة لاستقدام وتشغيل العمالة المنزلية هي الشركة الرائدة في دولة الكويت في مجال عملها، وأن نكون خياركم الأول في رحلة البحث عن العمالة المناسبة والماهرة</p>\r\n                </div>\r\n                <div class=\"col-sm-6\">\r\n                  <h2>الرسالة</h2>\r\n                  <p>تقديم تجربة فريدة لعملائنا تقوم على التميز في توفير عمالة ذات كفاءة عالية تتوافق مع احتياجات صاحب العمل، وترسيخ ثقافة احترام حقوق العامل وصاحب العمل وفقاً للمصلحة المشتركة ومبادئ حقوق الإنسان، مع المساهمة في تنظيم النشاط والارتقاء به وتقديم أفضل صورة عن الكويت في الخارج</p>\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"section section-overlay section-inverse\" id=\"sectionStory2\">\r\n        <div class=\"container\">\r\n          <div class=\"section-content\">\r\n            <div class=\"content-wrapper\" data-appear-animation=\"fadeInUpBig\">\r\n              <div class=\"row\">\r\n                <div class=\"col-sm-6\">\r\n                  <h2 class=\"border-alt\">قيمنا</h2>\r\n                  <ul class=\"list-style-arrow\">\r\n                    <li>التعامل بصدق وعدالة وشفافية مع عملائنا وعمالتنا.</li>\r\n                    <li>عدم استغلال حاجة رب العمل والسوق لتحقيق أرباح غير عادلة.</li>\r\n                    <li>الحفاظ على هويتنا وعاداتنا الأصيلة.</li>\r\n                    <li>الاستفادة من أحدث التكنولوجيات في إدارة العمل.</li>\r\n                  </ul>\r\n                </div>\r\n                <div class=\"col-sm-6\">\r\n                  <h2 class=\"border-alt\">الأهداف</h2>\r\n                  <ul class=\"list-style-arrow\">\r\n                    <li>توفير عمالة منزلية مدربة.</li>\r\n                    <li> كسر الممارسات الاحتكارية والمبالغة في رسوم الاستقدام.</li>\r\n                    <li>تصويب مسار سوق استقدام وتشغيل العمالة المنزلية وإعادة الثقة إليه.</li>\r\n                    <li>تذليل عقبات وإجراءات الاستقدام وتحقيق سرعة العمل والإنجاز.</li>\r\n                    <li>خلق علاقات إنسانية سليمة بين رب العمل والعامل وضمان رضا كافة الأطراف.</li>\r\n                    <li>توفير قاعدة بيانات إلكترونية تشمل الأيدي العاملة المتاحة والتي تم استقدامها ومصادر تصدير العمالة.</li>\r\n                    <li>تحسين صورة الكويت في المنظمات الدولية ذات العلاقة بهذا المجال.</li>\r\n                    <li>بناء علاقات متينة مع الدول المصدرة للعمالة</li>\r\n                  </ul>\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"section section-overlay\" id=\"sectionServices\">\r\n        <div class=\"container\">\r\n          <div class=\"section-content\">\r\n            <div class=\"content-wrapper\">\r\n              <div class=\"row\">\r\n                <div class=\"col-md-6 col-xs-10 col-md-offset-2 col-xs-offset-1\">\r\n                  <div class=\"wrapper\">\r\n                    <h2>خدماتنا</h2>\r\n                    <ul class=\"list-services\">\r\n                      <li><img src=\"/eldurra-master/src/app/images/icon_services_1.png\" class=\"img-responsive\" data-appear-animation=\"fadeIn\" alt=\"عامل منزلي\" /><span class=\"caption\">عامل منزلي</span></li>\r\n                      <li><img src=\"/eldurra-master/src/app/images/icon_services_2.png\" class=\"img-responsive\" data-appear-animation=\"fadeIn\" alt=\"مربية\" /><span class=\"caption\">مربية</span></li>\r\n                      <li><img src=\"/eldurra-master/src/app/images/icon_services_3.png\" class=\"img-responsive\" data-appear-animation=\"fadeIn\" alt=\"سائق\" /><span class=\"caption\">سائق</span></li>\r\n                      <li><img src=\"/eldurra-master/src/app/images/icon_services_4.png\" class=\"img-responsive\" data-appear-animation=\"fadeIn\" alt=\"طباخ\" /><span class=\"caption\">طباخ</span></li>\r\n                    </ul>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"section section-overlay\" id=\"sectionCatalogue\" app-catalogue>\r\n      </div>\r\n\r\n     <div class=\"section\" id=\"sectionWebshop\">\r\n        <div class=\"container\">\r\n          <div class=\"section-content\">\r\n            <div class=\"content-wrapper\">\r\n\r\n              <div class=\"tab-content\">\r\n                <div role=\"tabpanel\" class=\"tab-pane fade in active\" id=\"tabWebshop\">\r\n                  <div class=\"content\">\r\n                    <h2>سوق الدرة</h2>\r\n                    <p><a href=\"/eldurra-master/src/app/categories.html\"><img src=\"/eldurra-master/src/app/images/icon_webshop.png\" width=\"164\" data-appear-animation=\"fadeIn\" /></a></p>\r\n                  </div>\r\n                </div>\r\n                <div role=\"tabpanel\" class=\"tab-pane fade\" id=\"tabCategories\">\r\n                  <div class=\"\">\r\n                    <div class=\"col-sm-6\">\r\n                      <ul class=\"list-categoories row\">\r\n                        <li class=\"col-xs-4 cat_01\"><a href=\"#\">أحذية</a></li>\r\n                        <li class=\"col-xs-4 cat_02\"><a href=\"#\">ملابس</a></li>\r\n                        <li class=\"col-xs-4 cat_03\"><a href=\"#\">لباس موحد</a></li>\r\n                        <li class=\"col-xs-4 cat_04\"><a href=\"#\">أحذية</a></li>\r\n                        <li class=\"col-xs-4 cat_05\"><a href=\"#\">ملابس</a></li>\r\n                        <li class=\"col-xs-4 cat_06\"><a href=\"#\">لباس موحد</a></li>\r\n                        <li class=\"col-xs-4 cat_07\"><a href=\"#\">أحذية</a></li>\r\n                        <li class=\"col-xs-4 cat_08\"><a href=\"#\">ملابس</a></li>\r\n                        <li class=\"col-xs-4 cat_09\"><a href=\"#\">لباس موحد</a></li>\r\n                      </ul>\r\n                    </div>\r\n                    <div class=\"col-sm-6\">\r\n                      <div class=\"shop-content\">\r\n                          <h4>لباس موحد</h4>\r\n                          <div class=\"shop-image\">\r\n                              <img src=\"xxxHTMLLINKxxx0.25814683003036620.5852309938091642xxx\" height=\"180\">\r\n                          </div>\r\n                          <div class=\"shop-desciption\"></div>\r\n                      </div>\r\n                    </div>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"section section-overlay section-inverse section-border\" id=\"sectionLogin\">\r\n        <div class=\"container\">\r\n          <div class=\"section-content\">\r\n            <div class=\"content-wrapper\">\r\n\r\n              <div class=\"tab-content\">\r\n                <div role=\"tabpanel\" class=\"tab-pane fade in active\" id=\"tabLogin\">\r\n                  <div class=\"row\">\r\n                    <div class=\"col-md-6 col-md-offset-3\">\r\n                      <h2 class=\"border-alt\">التسجيل</h2>\r\n\r\n                      <p class=\"login-icon\"><img src=\"/eldurra-master/src/app/images/icon_login.png\" height=\"120\" width=\"120\" data-appear-animation=\"fadeIn\" /></p>\r\n\r\n                      <form action=\"/\" method=\"post\" id=\"loginForm\" class=\"form-primary\">\r\n                        <div class=\"form-group\">\r\n                          <input type=\"text\" class=\"form-control\" id=\"username\" name=\"username\" placeholder=\"اسم المستخدم\" />\r\n                        </div>\r\n                        <div class=\"form-group\">\r\n                          <input type=\"password\" class=\"form-control\" id=\"password\" name=\"password\" placeholder=\"كلمه السر\" />\r\n                        </div>\r\n                        <div class=\"form-group text-right\">\r\n                          <a href=\"#\" class=\"forgot-password\" data-toggle=\"modal\" data-target=\"#modalForgotPass\">هل نسيت كلمة المرور</a>\r\n                        </div>\r\n                        <div class=\"form-group\">\r\n                           <input type=\"submit\" value=\"تسجيل الدخول\" class=\"btn btn-primary\" id=\"submitLoginForm\" />\r\n                        </div>\r\n                        <div class=\"form-group\">\r\n                          <a href=\"#tabRegister\" class=\"btn btn-primary\" data-toggle=\"tab\">مستخدم جديد</a>\r\n                        </div>\r\n                      </form>\r\n                    </div>\r\n                  </div>\r\n\r\n                </div>\r\n                <div role=\"tabpanel\" class=\"tab-pane fade\" id=\"tabRegister\">\r\n                  <div class=\"row\">\r\n                    <div class=\"col-md-6 col-md-offset-3\">\r\n                      <h3>مستخدم جديد</h3>\r\n\r\n                      <form action=\"#\" method=\"post\" id=\"registrationForm\" class=\"form-primary\">\r\n                        <div class=\"form-group required\">\r\n                          <input type=\"text\" class=\"form-control\" id=\"regfirstname\" name=\"regfirstname\" placeholder=\"الاسم الاول\" required=\"true\" />\r\n                        </div>\r\n                        <div class=\"form-group required\">\r\n                          <input type=\"text\" class=\"form-control\" id=\"reglastname\" name=\"reglastname\" placeholder=\"اسم العائلة\" required=\"true\" />\r\n                        </div>\r\n                        <div class=\"form-group required\">\r\n                          <input type=\"text\" class=\"form-control\" id=\"regusername\" name=\"regusername\" placeholder=\"اسم المستخدم\" required=\"true\" />\r\n                        </div>\r\n                        <div class=\"form-group required\">\r\n                          <input type=\"text\" class=\"form-control\" id=\"regcivilid\" name=\"regcivilid\" placeholder=\"الرقم المدني\" required=\"true\" />\r\n                        </div>\r\n                        <div class=\"form-group required\">\r\n                          <input type=\"password\" class=\"form-control\" id=\"regpassword\" name=\"regpassword\" placeholder=\"كلمه السر\" required=\"true\" />\r\n                        </div>\r\n                        <div class=\"form-group required\">\r\n                          <input type=\"password\" class=\"form-control\" id=\"regconfirmpassword\" name=\"regconfirmpassword\" placeholder=\"تأكيدكلمة السر\" required=\"true\" />\r\n                        </div>\r\n                        <div class=\"form-group required\">\r\n                          <input type=\"email\" class=\"form-control\" id=\"regemail\" name=\"regemail\" placeholder=\"البريد الإلكتروني\" required=\"true\" />\r\n                        </div>\r\n\r\n                        <div class=\"form-group\">\r\n                           <input type=\"submit\" value=\"سجل\" class=\"btn btn-primary\" id=\"submitRegistrationForm\" />\r\n                        </div>\r\n                      </form>\r\n                    </div>\r\n                  </div>\r\n\r\n                </div>\r\n                <div role=\"tabpanel\" class=\"tab-pane fade\" id=\"tabNewPass\">\r\n                  <div class=\"row\">\r\n                    <div class=\"col-md-6 col-md-offset-3\">\r\n                      <h3>نشئ كلمة مرور جديدة</h3>\r\n\r\n                      <form action=\"#\" method=\"post\" id=\"newPassForm\" class=\"form-primary\">\r\n                        <div class=\"form-group required\">\r\n                          <input type=\"password\" class=\"form-control\" id=\"newpassword\" name=\"newpassword\" placeholder=\"Password\" required=\"true\" />\r\n                        </div>\r\n                        <div class=\"form-group required\">\r\n                          <input type=\"password\" class=\"form-control\" id=\"newconfirmpassword\" name=\"newconfirmpassword\" placeholder=\"تأكيد كلمة المرور\" required=\"true\" />\r\n                        </div>\r\n\r\n                        <div class=\"form-group\">\r\n                           <input type=\"submit\" value=\"إرسال\" class=\"btn btn-primary\" id=\"submitNewPassForm\" />\r\n                        </div>\r\n                      </form>\r\n                    </div>\r\n                  </div>\r\n\r\n                </div>\r\n                <div role=\"tabpanel\" class=\"tab-pane fade\" id=\"tabChangePass\">\r\n                  <div class=\"row\">\r\n                    <div class=\"col-md-6 col-md-offset-3\">\r\n                      <h3>نشئ كلمة مرور جديدة</h3>\r\n\r\n                      <form action=\"#\" method=\"post\" id=\"changePassForm\" class=\"form-primary\">\r\n                        <div class=\"form-group required\">\r\n                          <input type=\"password\" class=\"form-control\" id=\"changeoldpassword\" name=\"changeoldpassword\" placeholder=\"كلمة المرور القديمة\" required=\"true\" />\r\n                        </div>\r\n                        <div class=\"form-group required\">\r\n                          <input type=\"password\" class=\"form-control\" id=\"changepassword\" name=\"changepassword\" placeholder=\"كلمة السر الجديدة\" required=\"true\" />\r\n                        </div>\r\n                        <div class=\"form-group required\">\r\n                          <input type=\"password\" class=\"form-control\" id=\"changeconfirmpassword\" name=\"changeconfirmpassword\" placeholder=\"تأكيد كلمة المرور الجديدة\" required=\"true\" />\r\n                        </div>\r\n\r\n                        <div class=\"form-group\">\r\n                           <input type=\"submit\" value=\"إرسال\" class=\"btn btn-primary\" id=\"submitChangePassForm\" />\r\n                        </div>\r\n                      </form>\r\n                    </div>\r\n                  </div>\r\n\r\n                </div>\r\n              </div>\r\n\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"section section-overlay\" id=\"sectionContact\">\r\n        <div class=\"container\">\r\n          <div class=\"section-content\">\r\n            <div class=\"content-wrapper text-center\">\r\n              <h2 class=\"border-alt\">اتصل بنا</h2>\r\n              <p class=\"text-center\"></p>\r\n              <form action=\"#\" method=\"post\" id=\"messageForm\">\r\n                <div class=\"row\">\r\n                  <div class=\"form-group col-md-6 col-md-offset-3\">\r\n                    <input type=\"text\" class=\"form-control\" id=\"name\" name=\"name\" placeholder=\"اسم\" />\r\n                  </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                  <div class=\"form-group col-md-6 col-md-offset-3\">\r\n                    <input type=\"email\" class=\"form-control\" id=\"email\" name=\"email\" placeholder=\"عنوان الايميل\" />\r\n                  </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                  <div class=\"form-group col-md-6 col-md-offset-3\">\r\n                    <input type=\"text\" class=\"form-control\" id=\"subject\" name=\"subject\" placeholder=\"موضوع\" />\r\n                  </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                  <div class=\"form-group col-md-8 col-md-offset-2\">\r\n                     <textarea class=\"form-control\" rows=\"8\" placeholder=\"رسالة\"></textarea>\r\n                  </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                  <div class=\"form-group text-right col-md-8 col-md-offset-2\">\r\n                    <a href=\"#\" class=\"btn btn-default btn-xs\">إرسال</a>\r\n                  </div>\r\n                </div>\r\n              </form>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"section section-border\" id=\"sectionBranches\">\r\n        <div class=\"container\">\r\n         <div class=\"section-content\">\r\n            <div class=\"content-wrapper\">\r\n              <ol class=\"list-branches row\">\r\n                <li class=\"col-sm-4\">\r\n                  قريبا\r\n                  <span class=\"title\">Company Branche 1</span>\r\n                </li>\r\n                <li class=\"col-sm-4\">\r\n                  قريبا\r\n                  <span class=\"title\">Company Branche 2</span>\r\n                </li>\r\n                <li class=\"col-sm-4\">\r\n                  قريبا\r\n                  <span class=\"title\">Company Branche 3</span>\r\n                </li>\r\n                <li class=\"col-sm-4\">\r\n                  قريبا\r\n                  <span class=\"title\">Company Branche 4</span>\r\n                </li>\r\n                <li class=\"col-sm-4\">\r\n                  قريبا\r\n                  <span class=\"title\">Company Branche 5</span>\r\n                </li>\r\n                <li class=\"col-sm-4\">\r\n                  قريبا\r\n                  <span class=\"title\">Company Branche 6</span>\r\n                </li>\r\n              </ol>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"section\" id=\"sectionMap\">\r\n        <iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27812.877133235226!2d47.9693904382064!3d29.38171693212824!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3fcf8491843a4d71%3A0x948c40a503f4f48e!2sDar+Al+Awadi+Tower%2C+Ahmad+Al+Jaber+St%2C+Kuwait+City%2C+Kuvait!5e0!3m2!1shu!2shu!4v1502281497983\" width=\"100%\" height=\"560\" frameborder=\"0\" style=\"border:0\" allowfullscreen></iframe>\r\n      </div>\r\n\r\n    </section>\r\n\r\n    <footer class=\"footer\">\r\n      <div class=\"footer-inner\">\r\n        <div class=\"container\">\r\n          <div class=\"copyright pull-left\">2017  -  كل الحقوق محفوظة</div>\r\n          <div class=\"pull-right\"><a href=\"#\" class=\"facebook\">FACEBOOK</a></div>\r\n        </div>\r\n      </div>\r\n    </footer>\r\n\r\n    <div class=\"modal fade\" tabindex=\"-1\" role=\"dialog\" id=\"modalLogin\">\r\n      <div class=\"modal-dialog\" role=\"document\">\r\n        <div class=\"modal-content\">\r\n          <div class=\"modal-header\">\r\n            <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"غلق\"><span aria-hidden=\"true\">&times;</span></button>\r\n          </div>\r\n          <div class=\"modal-body\">\r\n            <div class=\"modal-icon\"><img src=\"/eldurra-master/src/app/images/icon_lock.png\" class=\"icon\" /></div>\r\n            <p><small>لقد سجلت الدخول</small></p>\r\n            <h4>إنشاء كلمة المرور</h4>\r\n            <a href=\"#tabNewPass\" data-toggle=\"tab\" data-dismiss=\"modal\">واصل</a>\r\n          </div>\r\n        </div><!-- /.modal-content -->\r\n      </div><!-- /.modal-dialog -->\r\n    </div><!-- /.modal -->\r\n\r\n    <div class=\"modal fade\" tabindex=\"-1\" role=\"dialog\" id=\"modalForgotPass\">\r\n      <div class=\"modal-dialog\" role=\"document\">\r\n        <div class=\"modal-content\">\r\n          <div class=\"modal-header\">\r\n            <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"غلق\"><span aria-hidden=\"true\">&times;</span></button>\r\n          </div>\r\n          <div class=\"modal-body\">\r\n            <h4>ملء البريد الإلكتروني المسجل</h4>\r\n           <form action=\"#\" method=\"post\" id=\"forgotPassForm\">\r\n              <div class=\"form-group\">\r\n                <input type=\"text\" class=\"form-control\" id=\"forgotPassEmail\" name=\"email\" placeholder=\"البريد الإلكتروني\" />\r\n              </div>\r\n              <div class=\"form-group\">\r\n                 <input type=\"submit\" value=\"إرسال\" class=\"btn btn-default\" id=\"submitForgotPassForm\" data-dismiss=\"modal\" />\r\n              </div>\r\n            </form>\r\n          </div>\r\n        </div><!-- /.modal-content -->\r\n      </div><!-- /.modal-dialog -->\r\n    </div><!-- /.modal -->\r\n\r\n";
+module.exports = "<header role=\"navigation\" class=\"navbar navbar-default navbar-fixed-top\">\r\n      <div class=\"container\">\r\n        <div class=\"navbar-header\">\r\n          <a href=\"/eldurra-master/src/app/index.html/#sectionLanding\" title=\"\" rel=\"home\" class=\"navbar-brand\">\r\n            <img src=\"/eldurra-master/src/app/images/logo.png\" alt=\"\" />\r\n          </a>\r\n          <!-- .btn-navbar is used as the toggle for collapsed navbar content -->\r\n          <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\".navbar-collapse\" aria-expanded=\"false\" aria-controls=\"navbar\">\r\n            <span class=\"sr-only\">Toggle navigation</span>\r\n            <span class=\"icon-bar\"></span>\r\n            <span class=\"icon-bar\"></span>\r\n            <span class=\"icon-bar\"></span>\r\n          </button>\r\n        </div>\r\n\r\n        <div class=\"navbar-collapse collapse\">\r\n          <nav role=\"navigation\">\r\n            <ul class=\"menu nav navbar-nav\">\r\n              <li><a href=\"#sectionContact\" class=\"page-scroll\">اتصل بنا</a></li>\r\n              <li><a href=\"#sectionLogin\" class=\"page-scroll\">التسجيل</a></li>\r\n              <li><a href=\"#sectionWebshop\" class=\"page-scroll\">سوق الدرة</a></li>\r\n              <li><a href=\"#sectionCatalogue\" class=\"page-scroll\">كتالوج الدره</a></li>\r\n              <li><a href=\"#sectionServices\" class=\"page-scroll\">خدماتنا</a></li>\r\n              <li><a href=\"#sectionIntroduction\" class=\"page-scroll\"> نبذه عن الشركه</a></li>\r\n              <li><a href=\"#sectionLogin\" class=\"page-scroll btn btn-default\">دخول</a></li>\r\n            </ul>\r\n          </nav>\r\n        </div>\r\n      </div>\r\n    </header>\r\n\r\n    <section role=\"main\" class=\"main-container\">\r\n\r\n      <div class=\"section section-border\" id=\"sectionLanding\">\r\n        <div class=\"container\">\r\n          <div class=\"section-content\">\r\n            <div class=\"content-wrapper\">\r\n              <div class=\"row\">\r\n                <div class=\"caption animated bounceInLeft\">\r\n                  <p>إذا كنت تبحث عن الثقة والسرعة فسنكون عند حسن الظن دوماً</p>\r\n                </div>\r\n                <div id=\"slider\" class=\"carousel slide\" data-ride=\"carousel\">\r\n                  <ol class=\"carousel-indicators\">\r\n                    <li data-target=\"#slider\" data-slide-to=\"0\" class=\"active\"></li>\r\n                    <li data-target=\"#slider\" data-slide-to=\"1\"></li>\r\n                    <li data-target=\"#slider\" data-slide-to=\"2\"></li>\r\n                    <li data-target=\"#slider\" data-slide-to=\"3\"></li>\r\n                  </ol>\r\n                  <div class=\"carousel-inner\" role=\"listbox\">\r\n                    <div class=\"item active\">\r\n                      <img src=\"/eldurra-master/src/app/images/slide_01.jpg\" height=\"611\" width=\"1346\" alt=\"\">\r\n                    </div>\r\n                    <div class=\"item\">\r\n                      <img src=\"/eldurra-master/src/app/images/slide_02.jpg\" height=\"611\" width=\"1346\" alt=\"\">\r\n                    </div>\r\n                    <div class=\"item\">\r\n                      <img src=\"/eldurra-master/src/app/images/slide_03.jpg\" height=\"611\" width=\"1346\" alt=\"\">\r\n                    </div>\r\n                    <div class=\"item\">\r\n                      <img src=\"/eldurra-master/src/app/images/slide_04.jpg\" height=\"611\" width=\"1346\" alt=\"\">\r\n                    </div>\r\n                  </div>\r\n                </div>\r\n\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"section section-overlay\" id=\"sectionIntroduction\">\r\n        <div class=\"container\">\r\n          <div class=\"section-content\">\r\n            <div class=\"content-wrapper\" data-appear-animation=\"bounceInRight\">\r\n              <h2 class=\"border-alt\">نبذه عن الشركه</h2>\r\n              <p class=\"lead\"> شركة الدرة لاستقدام وتشغيل العمالة المنزلية هي الأولى في الكويت التي تتشكل من جهات وطنية تهتم بالصالح العام وتحقق نقلة نوعية في هذا النوع من الأعمال.</p>\r\n              <ul class=\"list-style-arrow\">\r\n                <li>نحمل رؤية ورسالة وطنية وإنسانية في إدارة سوق العمل.</li>\r\n                <li>نتولى كل الإجراءات بدءا من دولة المصدر إلى الفحوصات والإقامة بدولة الكويت وذلك بأسعار تنافسية ورمزية وبأعلى قدر من الكفاءة وسرعة الإنجاز.</li>\r\n                <li>نعمل على تأهيل العمالة المرشحة للعمل بالبلاد وإكسابها قدراً من المعلومات عن ثقافة وتقاليد وعادات مجتمعنا والأسر الكويتية من خلال دورات تأهيلية في بلدها.</li>\r\n                <li>نضمن سلامة العمالة المستقدمة وخلوها من الأمراض قبل قدومها للبلاد وذلك بفحصها في المراكز المعتمدة من وزارة الصحة في الدولة المصدرة.</li>\r\n                <li>لدينا قاعدة بيانات وأرشيف يدار بأحدث وسائل التكنولوجيا ويضم معلومات وبيانات العمالة وطرق تحديد هويتها.</li>\r\n                <li>\r\nنتفرد بخدمات المتابعة إلكترونياً حيث يمكنك متابعة خطوات الاستقدام منذ تقديم الطلب وحتى حضور العمالة لحظة بلحظة.</li>\r\n                 <li>لدينا فروع في كل محافظات الكويت بالجمعيات التعاونية، ولدينا مكاتب في عدد من دول العالم.</li>\r\n                 <li>\r\n\"سوق الدرة\" يقدم لك باقة متنوعة من اليونيفورم وكافة احتياجات العمالة. </li>\r\n                <li>من خلال موقعنا هذا يمكنكم التقديم على طلب الاستقدام و الحجز بشكل الكتروني.</li>\r\n              </ul>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"section section-inverse\" id=\"sectionStory\">\r\n        <div class=\"container\">\r\n           <div class=\"section-content\">\r\n            <div class=\"content-wrapper \" data-appear-animation=\"fadeInUpBig\">\r\n              <div class=\"row\">\r\n                <div class=\"col-sm-6\">\r\n                  <h2>الرؤية</h2>\r\n                  <p>أن تكون شركة الدرة لاستقدام وتشغيل العمالة المنزلية هي الشركة الرائدة في دولة الكويت في مجال عملها، وأن نكون خياركم الأول في رحلة البحث عن العمالة المناسبة والماهرة</p>\r\n                </div>\r\n                <div class=\"col-sm-6\">\r\n                  <h2>الرسالة</h2>\r\n                  <p>تقديم تجربة فريدة لعملائنا تقوم على التميز في توفير عمالة ذات كفاءة عالية تتوافق مع احتياجات صاحب العمل، وترسيخ ثقافة احترام حقوق العامل وصاحب العمل وفقاً للمصلحة المشتركة ومبادئ حقوق الإنسان، مع المساهمة في تنظيم النشاط والارتقاء به وتقديم أفضل صورة عن الكويت في الخارج</p>\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"section section-overlay section-inverse\" id=\"sectionStory2\">\r\n        <div class=\"container\">\r\n          <div class=\"section-content\">\r\n            <div class=\"content-wrapper\" data-appear-animation=\"fadeInUpBig\">\r\n              <div class=\"row\">\r\n                <div class=\"col-sm-6\">\r\n                  <h2 class=\"border-alt\">قيمنا</h2>\r\n                  <ul class=\"list-style-arrow\">\r\n                    <li>التعامل بصدق وعدالة وشفافية مع عملائنا وعمالتنا.</li>\r\n                    <li>عدم استغلال حاجة رب العمل والسوق لتحقيق أرباح غير عادلة.</li>\r\n                    <li>الحفاظ على هويتنا وعاداتنا الأصيلة.</li>\r\n                    <li>الاستفادة من أحدث التكنولوجيات في إدارة العمل.</li>\r\n                  </ul>\r\n                </div>\r\n                <div class=\"col-sm-6\">\r\n                  <h2 class=\"border-alt\">الأهداف</h2>\r\n                  <ul class=\"list-style-arrow\">\r\n                    <li>توفير عمالة منزلية مدربة.</li>\r\n                    <li> كسر الممارسات الاحتكارية والمبالغة في رسوم الاستقدام.</li>\r\n                    <li>تصويب مسار سوق استقدام وتشغيل العمالة المنزلية وإعادة الثقة إليه.</li>\r\n                    <li>تذليل عقبات وإجراءات الاستقدام وتحقيق سرعة العمل والإنجاز.</li>\r\n                    <li>خلق علاقات إنسانية سليمة بين رب العمل والعامل وضمان رضا كافة الأطراف.</li>\r\n                    <li>توفير قاعدة بيانات إلكترونية تشمل الأيدي العاملة المتاحة والتي تم استقدامها ومصادر تصدير العمالة.</li>\r\n                    <li>تحسين صورة الكويت في المنظمات الدولية ذات العلاقة بهذا المجال.</li>\r\n                    <li>بناء علاقات متينة مع الدول المصدرة للعمالة</li>\r\n                  </ul>\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"section section-overlay\" id=\"sectionServices\">\r\n        <div class=\"container\">\r\n          <div class=\"section-content\">\r\n            <div class=\"content-wrapper\">\r\n              <div class=\"row\">\r\n                <div class=\"col-md-6 col-xs-10 col-md-offset-2 col-xs-offset-1\">\r\n                  <div class=\"wrapper\">\r\n                    <h2>خدماتنا</h2>\r\n                    <ul class=\"list-services\">\r\n                      <li><img src=\"/eldurra-master/src/app/images/icon_services_1.png\" class=\"img-responsive\" data-appear-animation=\"fadeIn\" alt=\"عامل منزلي\" /><span class=\"caption\">عامل منزلي</span></li>\r\n                      <li><img src=\"/eldurra-master/src/app/images/icon_services_2.png\" class=\"img-responsive\" data-appear-animation=\"fadeIn\" alt=\"مربية\" /><span class=\"caption\">مربية</span></li>\r\n                      <li><img src=\"/eldurra-master/src/app/images/icon_services_3.png\" class=\"img-responsive\" data-appear-animation=\"fadeIn\" alt=\"سائق\" /><span class=\"caption\">سائق</span></li>\r\n                      <li><img src=\"/eldurra-master/src/app/images/icon_services_4.png\" class=\"img-responsive\" data-appear-animation=\"fadeIn\" alt=\"طباخ\" /><span class=\"caption\">طباخ</span></li>\r\n                    </ul>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"section section-overlay\" id=\"sectionCatalogue\" app-catalogue>\r\n      </div>\r\n\r\n     <div class=\"section\" id=\"sectionWebshop\">\r\n        <div class=\"container\">\r\n          <div class=\"section-content\">\r\n            <div class=\"content-wrapper\">\r\n\r\n              <div class=\"tab-content\">\r\n                <div role=\"tabpanel\" class=\"tab-pane fade in active\" id=\"tabWebshop\">\r\n                  <div class=\"content\">\r\n                    <h2>سوق الدرة</h2>\r\n                    <p><a href=\"/eldurra-master/src/app/categories.html\"><img src=\"/eldurra-master/src/app/images/icon_webshop.png\" width=\"164\" data-appear-animation=\"fadeIn\" /></a></p>\r\n                  </div>\r\n                </div>\r\n                <div role=\"tabpanel\" class=\"tab-pane fade\" id=\"tabCategories\">\r\n                  <div class=\"\">\r\n                    <div class=\"col-sm-6\">\r\n                      <ul class=\"list-categoories row\">\r\n                        <li class=\"col-xs-4 cat_01\"><a href=\"#\">أحذية</a></li>\r\n                        <li class=\"col-xs-4 cat_02\"><a href=\"#\">ملابس</a></li>\r\n                        <li class=\"col-xs-4 cat_03\"><a href=\"#\">لباس موحد</a></li>\r\n                        <li class=\"col-xs-4 cat_04\"><a href=\"#\">أحذية</a></li>\r\n                        <li class=\"col-xs-4 cat_05\"><a href=\"#\">ملابس</a></li>\r\n                        <li class=\"col-xs-4 cat_06\"><a href=\"#\">لباس موحد</a></li>\r\n                        <li class=\"col-xs-4 cat_07\"><a href=\"#\">أحذية</a></li>\r\n                        <li class=\"col-xs-4 cat_08\"><a href=\"#\">ملابس</a></li>\r\n                        <li class=\"col-xs-4 cat_09\"><a href=\"#\">لباس موحد</a></li>\r\n                      </ul>\r\n                    </div>\r\n                    <div class=\"col-sm-6\">\r\n                      <div class=\"shop-content\">\r\n                          <h4>لباس موحد</h4>\r\n                          <div class=\"shop-image\">\r\n                              <img src=\"xxxHTMLLINKxxx0.380749577860602260.07098575710968325xxx\" height=\"180\">\r\n                          </div>\r\n                          <div class=\"shop-desciption\"></div>\r\n                      </div>\r\n                    </div>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"section section-overlay section-inverse section-border\" id=\"sectionLogin\">\r\n        <div class=\"container\">\r\n          <div class=\"section-content\">\r\n            <div class=\"content-wrapper\">\r\n\r\n              <div class=\"tab-content\">\r\n                <div role=\"tabpanel\" class=\"tab-pane fade in active\" id=\"tabLogin\">\r\n                  <div class=\"row\">\r\n                    <div class=\"col-md-6 col-md-offset-3\">\r\n                      <h2 class=\"border-alt\">التسجيل</h2>\r\n\r\n                      <p class=\"login-icon\"><img src=\"/eldurra-master/src/app/images/icon_login.png\" height=\"120\" width=\"120\" data-appear-animation=\"fadeIn\" /></p>\r\n\r\n                      <form action=\"/\" method=\"post\" id=\"loginForm\" class=\"form-primary\">\r\n                        <div class=\"form-group\">\r\n                          <input type=\"text\" class=\"form-control\" id=\"username\" name=\"username\" placeholder=\"اسم المستخدم\" />\r\n                        </div>\r\n                        <div class=\"form-group\">\r\n                          <input type=\"password\" class=\"form-control\" id=\"password\" name=\"password\" placeholder=\"كلمه السر\" />\r\n                        </div>\r\n                        <div class=\"form-group text-right\">\r\n                          <a href=\"#\" class=\"forgot-password\" data-toggle=\"modal\" data-target=\"#modalForgotPass\">هل نسيت كلمة المرور</a>\r\n                        </div>\r\n                        <div class=\"form-group\">\r\n                           <input type=\"submit\" value=\"تسجيل الدخول\" class=\"btn btn-primary\" id=\"submitLoginForm\" />\r\n                        </div>\r\n                        <div class=\"form-group\">\r\n                          <a href=\"#tabRegister\" class=\"btn btn-primary\" data-toggle=\"tab\">مستخدم جديد</a>\r\n                        </div>\r\n                      </form>\r\n                    </div>\r\n                  </div>\r\n\r\n                </div>\r\n                <div role=\"tabpanel\" class=\"tab-pane fade\" id=\"tabRegister\">\r\n                  <div class=\"row\">\r\n                    <div class=\"col-md-6 col-md-offset-3\">\r\n                      <h3>مستخدم جديد</h3>\r\n\r\n                      <form action=\"#\" method=\"post\" id=\"registrationForm\" class=\"form-primary\">\r\n                        <div class=\"form-group required\">\r\n                          <input type=\"text\" class=\"form-control\" id=\"regfirstname\" name=\"regfirstname\" placeholder=\"الاسم الاول\" required=\"true\" />\r\n                        </div>\r\n                        <div class=\"form-group required\">\r\n                          <input type=\"text\" class=\"form-control\" id=\"reglastname\" name=\"reglastname\" placeholder=\"اسم العائلة\" required=\"true\" />\r\n                        </div>\r\n                        <div class=\"form-group required\">\r\n                          <input type=\"text\" class=\"form-control\" id=\"regusername\" name=\"regusername\" placeholder=\"اسم المستخدم\" required=\"true\" />\r\n                        </div>\r\n                        <div class=\"form-group required\">\r\n                          <input type=\"text\" class=\"form-control\" id=\"regcivilid\" name=\"regcivilid\" placeholder=\"الرقم المدني\" required=\"true\" />\r\n                        </div>\r\n                        <div class=\"form-group required\">\r\n                          <input type=\"password\" class=\"form-control\" id=\"regpassword\" name=\"regpassword\" placeholder=\"كلمه السر\" required=\"true\" />\r\n                        </div>\r\n                        <div class=\"form-group required\">\r\n                          <input type=\"password\" class=\"form-control\" id=\"regconfirmpassword\" name=\"regconfirmpassword\" placeholder=\"تأكيدكلمة السر\" required=\"true\" />\r\n                        </div>\r\n                        <div class=\"form-group required\">\r\n                          <input type=\"email\" class=\"form-control\" id=\"regemail\" name=\"regemail\" placeholder=\"البريد الإلكتروني\" required=\"true\" />\r\n                        </div>\r\n\r\n                        <div class=\"form-group\">\r\n                           <input type=\"submit\" value=\"سجل\" class=\"btn btn-primary\" id=\"submitRegistrationForm\" />\r\n                        </div>\r\n                      </form>\r\n                    </div>\r\n                  </div>\r\n\r\n                </div>\r\n                <div role=\"tabpanel\" class=\"tab-pane fade\" id=\"tabNewPass\">\r\n                  <div class=\"row\">\r\n                    <div class=\"col-md-6 col-md-offset-3\">\r\n                      <h3>نشئ كلمة مرور جديدة</h3>\r\n\r\n                      <form action=\"#\" method=\"post\" id=\"newPassForm\" class=\"form-primary\">\r\n                        <div class=\"form-group required\">\r\n                          <input type=\"password\" class=\"form-control\" id=\"newpassword\" name=\"newpassword\" placeholder=\"Password\" required=\"true\" />\r\n                        </div>\r\n                        <div class=\"form-group required\">\r\n                          <input type=\"password\" class=\"form-control\" id=\"newconfirmpassword\" name=\"newconfirmpassword\" placeholder=\"تأكيد كلمة المرور\" required=\"true\" />\r\n                        </div>\r\n\r\n                        <div class=\"form-group\">\r\n                           <input type=\"submit\" value=\"إرسال\" class=\"btn btn-primary\" id=\"submitNewPassForm\" />\r\n                        </div>\r\n                      </form>\r\n                    </div>\r\n                  </div>\r\n\r\n                </div>\r\n                <div role=\"tabpanel\" class=\"tab-pane fade\" id=\"tabChangePass\">\r\n                  <div class=\"row\">\r\n                    <div class=\"col-md-6 col-md-offset-3\">\r\n                      <h3>نشئ كلمة مرور جديدة</h3>\r\n\r\n                      <form action=\"#\" method=\"post\" id=\"changePassForm\" class=\"form-primary\">\r\n                        <div class=\"form-group required\">\r\n                          <input type=\"password\" class=\"form-control\" id=\"changeoldpassword\" name=\"changeoldpassword\" placeholder=\"كلمة المرور القديمة\" required=\"true\" />\r\n                        </div>\r\n                        <div class=\"form-group required\">\r\n                          <input type=\"password\" class=\"form-control\" id=\"changepassword\" name=\"changepassword\" placeholder=\"كلمة السر الجديدة\" required=\"true\" />\r\n                        </div>\r\n                        <div class=\"form-group required\">\r\n                          <input type=\"password\" class=\"form-control\" id=\"changeconfirmpassword\" name=\"changeconfirmpassword\" placeholder=\"تأكيد كلمة المرور الجديدة\" required=\"true\" />\r\n                        </div>\r\n\r\n                        <div class=\"form-group\">\r\n                           <input type=\"submit\" value=\"إرسال\" class=\"btn btn-primary\" id=\"submitChangePassForm\" />\r\n                        </div>\r\n                      </form>\r\n                    </div>\r\n                  </div>\r\n\r\n                </div>\r\n              </div>\r\n\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"section section-overlay\" id=\"sectionContact\">\r\n        <div class=\"container\">\r\n          <div class=\"section-content\">\r\n            <div class=\"content-wrapper text-center\">\r\n              <h2 class=\"border-alt\">اتصل بنا</h2>\r\n              <p class=\"text-center\"></p>\r\n              <form action=\"#\" method=\"post\" id=\"messageForm\">\r\n                <div class=\"row\">\r\n                  <div class=\"form-group col-md-6 col-md-offset-3\">\r\n                    <input type=\"text\" class=\"form-control\" id=\"name\" name=\"name\" placeholder=\"اسم\" />\r\n                  </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                  <div class=\"form-group col-md-6 col-md-offset-3\">\r\n                    <input type=\"email\" class=\"form-control\" id=\"email\" name=\"email\" placeholder=\"عنوان الايميل\" />\r\n                  </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                  <div class=\"form-group col-md-6 col-md-offset-3\">\r\n                    <input type=\"text\" class=\"form-control\" id=\"subject\" name=\"subject\" placeholder=\"موضوع\" />\r\n                  </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                  <div class=\"form-group col-md-8 col-md-offset-2\">\r\n                     <textarea class=\"form-control\" rows=\"8\" placeholder=\"رسالة\"></textarea>\r\n                  </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                  <div class=\"form-group text-right col-md-8 col-md-offset-2\">\r\n                    <a href=\"#\" class=\"btn btn-default btn-xs\">إرسال</a>\r\n                  </div>\r\n                </div>\r\n              </form>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"section section-border\" id=\"sectionBranches\">\r\n        <div class=\"container\">\r\n         <div class=\"section-content\">\r\n            <div class=\"content-wrapper\">\r\n              <ol class=\"list-branches row\">\r\n                <li class=\"col-sm-4\">\r\n                  قريبا\r\n                  <span class=\"title\">Company Branche 1</span>\r\n                </li>\r\n                <li class=\"col-sm-4\">\r\n                  قريبا\r\n                  <span class=\"title\">Company Branche 2</span>\r\n                </li>\r\n                <li class=\"col-sm-4\">\r\n                  قريبا\r\n                  <span class=\"title\">Company Branche 3</span>\r\n                </li>\r\n                <li class=\"col-sm-4\">\r\n                  قريبا\r\n                  <span class=\"title\">Company Branche 4</span>\r\n                </li>\r\n                <li class=\"col-sm-4\">\r\n                  قريبا\r\n                  <span class=\"title\">Company Branche 5</span>\r\n                </li>\r\n                <li class=\"col-sm-4\">\r\n                  قريبا\r\n                  <span class=\"title\">Company Branche 6</span>\r\n                </li>\r\n              </ol>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"section\" id=\"sectionMap\">\r\n        <iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27812.877133235226!2d47.9693904382064!3d29.38171693212824!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3fcf8491843a4d71%3A0x948c40a503f4f48e!2sDar+Al+Awadi+Tower%2C+Ahmad+Al+Jaber+St%2C+Kuwait+City%2C+Kuvait!5e0!3m2!1shu!2shu!4v1502281497983\" width=\"100%\" height=\"560\" frameborder=\"0\" style=\"border:0\" allowfullscreen></iframe>\r\n      </div>\r\n\r\n    </section>\r\n\r\n    <footer class=\"footer\">\r\n      <div class=\"footer-inner\">\r\n        <div class=\"container\">\r\n          <div class=\"copyright pull-left\">2017  -  كل الحقوق محفوظة</div>\r\n          <div class=\"pull-right\"><a href=\"#\" class=\"facebook\">FACEBOOK</a></div>\r\n        </div>\r\n      </div>\r\n    </footer>\r\n\r\n    <div class=\"modal fade\" tabindex=\"-1\" role=\"dialog\" id=\"modalLogin\">\r\n      <div class=\"modal-dialog\" role=\"document\">\r\n        <div class=\"modal-content\">\r\n          <div class=\"modal-header\">\r\n            <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"غلق\"><span aria-hidden=\"true\">&times;</span></button>\r\n          </div>\r\n          <div class=\"modal-body\">\r\n            <div class=\"modal-icon\"><img src=\"/eldurra-master/src/app/images/icon_lock.png\" class=\"icon\" /></div>\r\n            <p><small>لقد سجلت الدخول</small></p>\r\n            <h4>إنشاء كلمة المرور</h4>\r\n            <a href=\"#tabNewPass\" data-toggle=\"tab\" data-dismiss=\"modal\">واصل</a>\r\n          </div>\r\n        </div><!-- /.modal-content -->\r\n      </div><!-- /.modal-dialog -->\r\n    </div><!-- /.modal -->\r\n\r\n    <div class=\"modal fade\" tabindex=\"-1\" role=\"dialog\" id=\"modalForgotPass\">\r\n      <div class=\"modal-dialog\" role=\"document\">\r\n        <div class=\"modal-content\">\r\n          <div class=\"modal-header\">\r\n            <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"غلق\"><span aria-hidden=\"true\">&times;</span></button>\r\n          </div>\r\n          <div class=\"modal-body\">\r\n            <h4>ملء البريد الإلكتروني المسجل</h4>\r\n           <form action=\"#\" method=\"post\" id=\"forgotPassForm\">\r\n              <div class=\"form-group\">\r\n                <input type=\"text\" class=\"form-control\" id=\"forgotPassEmail\" name=\"email\" placeholder=\"البريد الإلكتروني\" />\r\n              </div>\r\n              <div class=\"form-group\">\r\n                 <input type=\"submit\" value=\"إرسال\" class=\"btn btn-default\" id=\"submitForgotPassForm\" data-dismiss=\"modal\" />\r\n              </div>\r\n            </form>\r\n          </div>\r\n        </div><!-- /.modal-content -->\r\n      </div><!-- /.modal-dialog -->\r\n    </div><!-- /.modal -->\r\n\r\n";
 
 /***/ }),
 /* 350 */
@@ -35029,7 +35041,7 @@ module.exports = "<section role=\"main\" class=\"main-container\">\r\n        \r
 /* 352 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\n  <div class=\"col-xs-12\">\n    <img src=\"xxxHTMLLINKxxx0.44340222408156270.7736887039604621xxx\" alt=\"\" class=\"img-responsive\">\n  </div>\n</div>\n<div class=\"row\">\n  <div class=\"col-xs-12\">\n    <h1>Recipe Name</h1>\n  </div>\n</div>\n<div class=\"row\">\n  <div class=\"col-xs-12\">\n    <div class=\"btn-group\">\n      <button\n        type=\"button\"\n        class=\"btn btn-primary dropdown-toggle\">\n        Manage Recipe <span class=\"caret\"></span>\n      </button>\n      <ul class=\"dropdown-menu\">\n        <li><a href=\"#\">To Shopping List</a></li>\n        <li><a href=\"#\">Edit Recipe</a></li>\n        <li><a href=\"#\">Delete Recipe</a></li>\n      </ul>\n    </div>\n  </div>\n</div>\n<div class=\"row\">\n  <div class=\"col-xs-12\">\n    Description\n  </div>\n</div>\n<div class=\"row\">\n  <div class=\"col-xs-12\">\n    Ingredients\n  </div>\n</div>\n";
+module.exports = "<div class=\"row\">\n  <div class=\"col-xs-12\">\n    <img src=\"xxxHTMLLINKxxx0.75842654751852660.34911805590396194xxx\" alt=\"\" class=\"img-responsive\">\n  </div>\n</div>\n<div class=\"row\">\n  <div class=\"col-xs-12\">\n    <h1>Recipe Name</h1>\n  </div>\n</div>\n<div class=\"row\">\n  <div class=\"col-xs-12\">\n    <div class=\"btn-group\">\n      <button\n        type=\"button\"\n        class=\"btn btn-primary dropdown-toggle\">\n        Manage Recipe <span class=\"caret\"></span>\n      </button>\n      <ul class=\"dropdown-menu\">\n        <li><a href=\"#\">To Shopping List</a></li>\n        <li><a href=\"#\">Edit Recipe</a></li>\n        <li><a href=\"#\">Delete Recipe</a></li>\n      </ul>\n    </div>\n  </div>\n</div>\n<div class=\"row\">\n  <div class=\"col-xs-12\">\n    Description\n  </div>\n</div>\n<div class=\"row\">\n  <div class=\"col-xs-12\">\n    Ingredients\n  </div>\n</div>\n";
 
 /***/ }),
 /* 353 */
@@ -38851,9 +38863,9 @@ exports.ColorPickerModule = ColorPickerModule;
 Object.defineProperty(exports, "__esModule", { value: true });
 var domhandler_1 = __webpack_require__(3);
 exports.DomHandler = domhandler_1.DomHandler;
-var treedragdropservice_1 = __webpack_require__(214);
+var treedragdropservice_1 = __webpack_require__(213);
 exports.TreeDragDropService = treedragdropservice_1.TreeDragDropService;
-var confirmationservice_1 = __webpack_require__(213);
+var confirmationservice_1 = __webpack_require__(212);
 exports.ConfirmationService = confirmationservice_1.ConfirmationService;
 //# sourceMappingURL=api.js.map
 
@@ -38879,7 +38891,7 @@ var common_1 = __webpack_require__(2);
 var domhandler_1 = __webpack_require__(3);
 var shared_1 = __webpack_require__(4);
 var button_1 = __webpack_require__(15);
-var confirmationservice_1 = __webpack_require__(213);
+var confirmationservice_1 = __webpack_require__(212);
 var ConfirmDialog = (function () {
     function ConfirmDialog(el, domHandler, renderer, confirmationService) {
         var _this = this;
@@ -44036,8 +44048,8 @@ var core_1 = __webpack_require__(0);
 var common_1 = __webpack_require__(2);
 var platform_browser_1 = __webpack_require__(11);
 var button_1 = __webpack_require__(15);
-var messages_1 = __webpack_require__(215);
-var progressbar_1 = __webpack_require__(216);
+var messages_1 = __webpack_require__(214);
+var progressbar_1 = __webpack_require__(215);
 var shared_1 = __webpack_require__(4);
 var FileUpload = (function () {
     function FileUpload(sanitizer) {
@@ -52604,7 +52616,7 @@ var core_2 = __webpack_require__(0);
 var common_1 = __webpack_require__(2);
 var shared_1 = __webpack_require__(4);
 var shared_2 = __webpack_require__(4);
-var treedragdropservice_1 = __webpack_require__(214);
+var treedragdropservice_1 = __webpack_require__(213);
 var TreeNodeTemplateLoader = (function () {
     function TreeNodeTemplateLoader(viewContainer) {
         this.viewContainer = viewContainer;
@@ -54157,7 +54169,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Observable_1 = __webpack_require__(5);
-var tryCatch_1 = __webpack_require__(233);
+var tryCatch_1 = __webpack_require__(232);
 var isFunction_1 = __webpack_require__(69);
 var errorObject_1 = __webpack_require__(68);
 var Subscription_1 = __webpack_require__(13);
@@ -54325,7 +54337,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var async_1 = __webpack_require__(228);
+var async_1 = __webpack_require__(227);
 var Subscriber_1 = __webpack_require__(10);
 /**
  * Ignores source values for `duration` milliseconds, then emits the most recent
@@ -54776,7 +54788,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Subscriber_1 = __webpack_require__(10);
-var async_1 = __webpack_require__(228);
+var async_1 = __webpack_require__(227);
 /**
  * Emits a value from the source Observable only after a particular time span
  * has passed without another source emission.

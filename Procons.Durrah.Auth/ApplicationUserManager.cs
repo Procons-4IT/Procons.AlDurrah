@@ -31,11 +31,11 @@
 
             appUserManager.PasswordValidator = new PasswordValidator
             {
-                RequiredLength = 6,
-                RequireNonLetterOrDigit = true,
+                RequiredLength = 4,
+                RequireNonLetterOrDigit = false,
                 RequireDigit = false,
-                RequireLowercase = true,
-                RequireUppercase = true,
+                RequireLowercase = false,
+                RequireUppercase = false,
             };
 
             //appUserManager.EmailService = new Procons.Durrah.Services.EmailService();
@@ -52,15 +52,16 @@
             return appUserManager;
         }
 
-        public static Func<string> testc(string v)
-        {
-            throw new NotImplementedException();
-        }
 
         public override Task<ApplicationUser> FindAsync(string userName, string password)
         {
             var user = loginFacade.FindUser(userName, password);
             return Task.FromResult(user);
+        }
+
+        public override Task<IdentityResult> CreateAsync(ApplicationUser user)
+        {
+           return Task.FromResult(loginFacade.CreateUser(user));
         }
 
         public override Task<ClaimsIdentity> CreateIdentityAsync(ApplicationUser user, string authenticationType)

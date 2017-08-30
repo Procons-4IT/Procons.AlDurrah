@@ -10,7 +10,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-var SearchContent_1 = require("../Models/SearchContent");
 var WorkersService_1 = require("../Services/WorkersService");
 var ApiService_1 = require("../Services/ApiService");
 var platform_browser_1 = require("@angular/platform-browser");
@@ -20,110 +19,56 @@ var catalogueComponent = (function () {
         this.componentFactoryResolver = componentFactoryResolver;
         this.workersService = workersService;
         this.sanitizer = sanitizer;
-        this.isVisible = true;
-        this.visiblePart = 0;
-        this.searchContent = new SearchContent_1.SearchContent();
+        this.showSearchSummary = true;
+        this.showSearchForm = false;
+        this.showSearchResultTable = false;
+        this.showProfile = false;
     }
-    catalogueComponent.prototype.GotoSearch = function () {
-        this.selectedStatus = "";
-        this.selectedLanguage = "";
-        this.selectedAge = "";
-        this.selectedGender = "";
-        this.selectedType = "";
-        this.selectedStatus = "";
-        this.selectedCountry = "";
-        //let compFactory: ComponentFactory<any>;
-        //compFactory = this.componentFactoryResolver.resolveComponentFactory(searchFormComponent);
-        //this.catalogue.createComponent(compFactory);
-        this.tabcatalogue.nativeElement.classList.remove('active', 'in');
-        //this.catalogue.nativeElement.querySelector('.tab-pane .active').classList.remove('active', 'in');
-        this.tabSearchForm.nativeElement.classList.add('active', 'in');
-    };
-    catalogueComponent.prototype.GotoResults = function (workType, age, sex, nationality, maritalStatus, language) {
+    catalogueComponent.prototype.GoToSearch = function () {
         var _this = this;
-        var argumentKeys = ["workType", "age", "sex", "nationality", "maritalStatus", "language"];
-        var workerFilterParams = {};
-        for (var i = 0; i < arguments.length; i++) {
-            var argument = arguments[i];
-            if (argument.type == 'select-one') {
-                var isFirstElement = argument.value === argument.options[0].value;
-                if (!isFirstElement) {
-                    var keyName = argumentKeys[i];
-                    workerFilterParams[keyName] = argument.value;
-                }
-            }
-        }
-        console.log("Search Criteria: ", workerFilterParams);
-        this.myApi.getAllWorkers().subscribe(function (workers) {
-            console.log('workers Format! ', workers);
-            _this.workers = workers;
-            _this.tabSearchForm.nativeElement.classList.remove('active', 'in');
-            _this.tabSearchResults.nativeElement.classList.add('active', 'in');
+        this.myApi.getSearchCriteriaParameters().subscribe(function (searchCriteria) {
+            _this.searchCriteriaParams = searchCriteria;
+            _this.showSearchSummary = false;
+            _this.showSearchForm = true;
         });
     };
-    catalogueComponent.prototype.GotoProfile = function (event) {
-        console.log('selected Worker: ', event),
-            this.selectedWorker = event;
-        this.tabSearchResults.nativeElement.classList.remove('active', 'in');
-        this.tabprofile.nativeElement.classList.add('active', 'in');
+    catalogueComponent.prototype.GoToResults = function (workerFilter) {
+        var _this = this;
+        console.log('Search-Filter ', workerFilter);
+        this.myApi.getAllWorkers(workerFilter).subscribe(function (workers) {
+            _this.workers = workers;
+            _this.showSearchForm = false;
+            _this.showSearchResultTable = true;
+        });
+    };
+    catalogueComponent.prototype.GoToProfile = function (event) {
+        console.log('selected Worker: ', event);
+        this.selectedWorker = event;
+        this.showSearchResultTable = false;
+        this.showProfile = true;
     };
     catalogueComponent.prototype.ngOnInit = function () {
         // this.GetLookups();
     };
-    catalogueComponent.prototype.onRowSelect = function (event) {
-    };
     catalogueComponent.prototype.GetLookups = function () {
-        var _this = this;
-        this.workersService.GetLookups("/api/Workers/GetSearchLookups").subscribe(function (response) {
-            _this.languages = response.json().languages;
-            _this.countries = response.json().nationality;
-            _this.maritalStatus = response.json().maritalStatus;
-            _this.gender = response.json().gender;
-            _this.workerTypes = response.json().workerTypes;
-        }, function (error) {
+        this.myApi.getSearchCriteriaParameters().subscribe(function (searchCriteriaParams) {
+            console.log('look up values ', searchCriteriaParams);
         });
     };
-    catalogueComponent.prototype.GetAvailableCSS = function (worker) {
-        var isAvaible = worker.status == "1" ? true : false;
-        return {
-            "glyphicon": true,
-            "glyphicon-ok": isAvaible,
-            "glyphicon-remove": !isAvaible
-        };
-    };
-    catalogueComponent.prototype.Book = function (selectedWorker) {
+    catalogueComponent.prototype.Book = function (onBook) {
+        var selectedWorker = this.selectedWorker;
         console.log('calling knetPayment! for worker ', selectedWorker);
         var paymentInformation = { SerialNumber: selectedWorker.serialNumber, CardCode: "C220Temp", Amount: "100", Code: selectedWorker.code };
         this.myApi.knetPaymentRedirect(paymentInformation).subscribe();
     };
     return catalogueComponent;
 }());
-__decorate([
-    core_1.ViewChild('catalogue'),
-    __metadata("design:type", core_1.ElementRef)
-], catalogueComponent.prototype, "catalogue", void 0);
-__decorate([
-    core_1.ViewChild('tabcatalogue'),
-    __metadata("design:type", core_1.ElementRef)
-], catalogueComponent.prototype, "tabcatalogue", void 0);
-__decorate([
-    core_1.ViewChild('tabSearchForm'),
-    __metadata("design:type", core_1.ElementRef)
-], catalogueComponent.prototype, "tabSearchForm", void 0);
-__decorate([
-    core_1.ViewChild('tabSearchResults'),
-    __metadata("design:type", core_1.ElementRef)
-], catalogueComponent.prototype, "tabSearchResults", void 0);
-__decorate([
-    core_1.ViewChild('tabprofile'),
-    __metadata("design:type", core_1.ElementRef)
-], catalogueComponent.prototype, "tabprofile", void 0);
 catalogueComponent = __decorate([
     core_1.Component({
         selector: '[app-catalogue]',
         templateUrl: './catalogue.component.html',
         styleUrls: ['./catalogue.component.css'],
-        providers: [WorkersService_1.WorkersService]
+        providers: [WorkersService_1.WorkersService],
     }),
     __metadata("design:paramtypes", [ApiService_1.ApiService, core_1.ComponentFactoryResolver,
         WorkersService_1.WorkersService, platform_browser_1.DomSanitizer])

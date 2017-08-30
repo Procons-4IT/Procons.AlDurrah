@@ -29,9 +29,9 @@ namespace Procons.Durrah
     {
 
     }
-    public class SessionHandler :ISessionHandler, IDisposable
+    public class SessionHandler : ISessionHandler, IDisposable
     {
-       public string SessionId { get; set; }
+        public string SessionId { get; set; }
 
         public SessionHandler()
         {
@@ -43,7 +43,7 @@ namespace Procons.Durrah
         }
         public void Dispose()
         {
-           
+
         }
     }
     public class Startup
@@ -65,9 +65,6 @@ namespace Procons.Durrah
 
             B1Facade b1Facade = Factory.DeclareClass<B1Facade>();
             var sessionId = b1Facade.InitializeTables();
-
-            //Func<SessionHandler> passParams = () => { return new SessionHandler(sessionId); };
-            //app.CreatePerOwinContext<SessionHandler>(passParams);
         }
 
         private void ConfigureOAuthTokenGeneration(IAppBuilder app)

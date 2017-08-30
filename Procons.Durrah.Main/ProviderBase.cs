@@ -1,18 +1,27 @@
 ﻿namespace Procons.Durrah.Main
 {
+    using Procons.DataBaseHelper;
+    using Procons.Durrah.Common;
+    using Sap.Data.Hana;
     using SAPbobsCOM;
     using System;
     using System.Data.Services.Client;
     using System.Linq;
+    using System.Web;
+
     public abstract class ProviderBase
     {
-        public ServiceLayerProvider instance = new ServiceLayerProvider();
+        private const string CompanySession = "B1CompanySession";
+        protected ServiceLayerProvider instance = new ServiceLayerProvider();
+        protected ServiceLayerProvider Instance { get { return ServiceLayerProvider.GetInstance(); } }
+        public DatabaseHelper<HanaConnection> dbHelper = Factory.DeclareClass<DatabaseHelper<HanaConnection>>();
+        public string databaseName = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.DatabaseName);
         private Company _oCompany;
         public Company B1Company
         {
             get
             {
-                return _oCompany == null ? ConnectCompany() : _oCompany;
+                return this.GetInstance();
             }
         }
         private Company ConnectCompany()
@@ -59,6 +68,21 @@
                 }
             }
             return _oCompany;
+        }
+
+        public Company GetInstance()
+        {
+            Company company = null;
+
+            var currentSession = HttpContext.Current != null ? HttpContext.Current.Session[CompanySession] : null;
+            if (currentSession != null)
+                company = (Company)currentSession;
+            else
+            {
+                company = ConnectCompany();
+                HttpContext.Current.Session.Add(CompanySession, company);
+            }
+            return company;
         }
 
         #region Table Methods
