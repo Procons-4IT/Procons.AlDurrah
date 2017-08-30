@@ -62,16 +62,10 @@
                 {
                     var requestCookies = HttpContext.Current.Request.Cookies;
                     var responseCookies = HttpContext.Current.Response.Cookies;
-                    if (HttpContext.Current.Request.Cookies.AllKeys.Where(x => x == sessionCookie.Name).Count() > 0)
-                    {
-                        requestCookies.Set(sessionCookie);
-                        responseCookies.Set(sessionCookie);
-                    }
-                    else
-                    {
-                        requestCookies.Add(sessionCookie);
-                        responseCookies.Add(sessionCookie);
-                    }
+                    requestCookies.Clear();
+                    responseCookies.Clear();
+                    requestCookies.Add(sessionCookie);
+                    responseCookies.Add(sessionCookie);
                 }
             }
             return instance;

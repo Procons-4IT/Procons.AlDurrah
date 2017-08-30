@@ -75,11 +75,13 @@
             }
             else
             {
-                var result = workersFacade.CreateSalesOrder(transaction);
-                if (result == 0)
-                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "/Error");
-                else
-                    return Request.CreateResponse(HttpStatusCode.OK, varPaymentPage + "?PaymentID=" + varPaymentID);
+                //var result = workersFacade.CreateSalesOrder(transaction);
+                //if (result == 0)
+                //    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "/Error");
+                //else
+                //    return Request.CreateResponse(HttpStatusCode.OK, varPaymentPage + "?PaymentID=" + varPaymentID);
+
+                return Request.CreateResponse(HttpStatusCode.OK, varPaymentPage + "?PaymentID=" + varPaymentID);
             }
 
         }
