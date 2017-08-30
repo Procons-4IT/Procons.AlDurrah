@@ -26,107 +26,51 @@ import { DomSanitizer } from '@angular/platform-browser';
     selector: '[app-catalogue]',
     templateUrl: './catalogue.component.html',
     styleUrls: ['./catalogue.component.css'],
-    providers: [WorkersService]
+    providers: [WorkersService],
 })
 export class catalogueComponent implements OnInit {
-    public items: MenuItem[];
-    public isVisible = true;
-    public visiblePart = 0;
-    public selectedWorker: Worker;
+
     public workers: Worker[];
-    public countries: any[];
-    public languages: any[];
-    public maritalStatus: any[];
-    public gender: any[];
-    public workerTypes: any[];
-    public searchContent = new SearchContent();
-    public selectedLanguage: any;
-    public selectedAge: any;
-    public selectedGender: any;
-    public selectedType: any;
-    public selectedStatus: any;
-    public selectedCountry: any;
+    public selectedWorker: Worker;
 
-
-    //@ViewChild('catalogue', { read: ViewContainerRef }) catalogue: ViewContainerRef;
-    @ViewChild('catalogue') catalogue: ElementRef;
-    @ViewChild('tabcatalogue') tabcatalogue: ElementRef;
-    @ViewChild('tabSearchForm') tabSearchForm: ElementRef;
-    @ViewChild('tabSearchResults') tabSearchResults: ElementRef;
-    @ViewChild('tabprofile') tabprofile: ElementRef;
-
-
+    public showSearchSummary: boolean = true;
+    public showSearchForm: boolean = false;
+    public showSearchResultTable: boolean = false;
+    public showProfile: boolean = false;
 
     constructor(private myApi: ApiService, private componentFactoryResolver: ComponentFactoryResolver,
         private workersService: WorkersService, private sanitizer: DomSanitizer) { }
 
 
-    public GotoSearch() {
-
-        this.selectedStatus = "";
-        this.selectedLanguage = "";
-        this.selectedAge = "";
-        this.selectedGender = "";
-        this.selectedType = "";
-        this.selectedStatus = "";
-        this.selectedCountry = "";
-        //let compFactory: ComponentFactory<any>;
-        //compFactory = this.componentFactoryResolver.resolveComponentFactory(searchFormComponent);
-        //this.catalogue.createComponent(compFactory);
-        this.tabcatalogue.nativeElement.classList.remove('active', 'in');
-        //this.catalogue.nativeElement.querySelector('.tab-pane .active').classList.remove('active', 'in');
-        this.tabSearchForm.nativeElement.classList.add('active', 'in');
+    public GoToSearch() {
+        this.showSearchSummary = false;
+        this.showSearchForm = true;
     }
 
-    GotoResults(workType, age, sex, nationality, maritalStatus, language) {
-        let argumentKeys = ["workType", "age", "sex", "nationality", "maritalStatus", "language"];
-        let workerFilterParams = {};
-        for (var i = 0; i < arguments.length; i++) {
-            let argument = arguments[i];
-            if (argument.type == 'select-one') {
-
-                let isFirstElement = argument.value === argument.options[0].value;
-                if (!isFirstElement) {
-                    let keyName:string = argumentKeys[i];
-                    workerFilterParams[keyName] = argument.value;
-                }
-            }
-        }
-        console.log("Search Criteria: ",workerFilterParams);
-        this.myApi.getAllWorkers().subscribe(workers => {
-            console.log('workers Format! ', workers);
+    GoToResults(workerFilter: Worker) {
+        console.log('Search-Filter ', workerFilter);
+        this.myApi.getAllWorkers(workerFilter).subscribe(workers => {
             this.workers = workers;
-            this.tabSearchForm.nativeElement.classList.remove('active', 'in');
-            this.tabSearchResults.nativeElement.classList.add('active', 'in');
-
+            this.showSearchForm = false;
+            this.showSearchResultTable = true;
         });
     }
 
-    GotoProfile(event: Worker) {
-        console.log('selected Worker: ', event),
+    GoToProfile(event: Worker) {
+        console.log('selected Worker: ', event);
         this.selectedWorker = event;
-        this.tabSearchResults.nativeElement.classList.remove('active', 'in');
-        this.tabprofile.nativeElement.classList.add('active', 'in');
+        this.showSearchResultTable = false;
+        this.showProfile = true;
     }
 
     ngOnInit() {
         // this.GetLookups();
     }
 
-    onRowSelect(event) {
-    }
-
     GetLookups() {
-        this.workersService.GetLookups("/api/Workers/GetSearchLookups").subscribe(response => {
-            this.languages = response.json().languages;
-            this.countries = response.json().nationality;
-            this.maritalStatus = response.json().maritalStatus;
-            this.gender = response.json().gender;
-            this.workerTypes = response.json().workerTypes;
-        },
-            (error) => {
-
-            });
+        this.myApi.getSearchCriteriaParameters().subscribe(searchCriteriaParams => {
+            console.log('look up values ', searchCriteriaParams);
+        });
     }
     GetAvailableCSS(worker: Worker) {
         var isAvaible = worker.status == "1" ? true : false;
@@ -136,10 +80,10 @@ export class catalogueComponent implements OnInit {
             "glyphicon-remove": !isAvaible
         };
     }
-    Book(selectedWorker: Worker) {
+    Book(onBook: Boolean) {
+        var selectedWorker = this.selectedWorker;
         console.log('calling knetPayment! for worker ', selectedWorker);
         var paymentInformation = { SerialNumber: selectedWorker.serialNumber, CardCode: "C220Temp", Amount: "100", Code: selectedWorker.code }
-
         this.myApi.knetPaymentRedirect(paymentInformation).subscribe();
     }
 }

@@ -11,3 +11,15 @@ export interface PaymentRedirectParams{
     Amount: string,
     Code: string
 }
+export interface SearchCriteriaParams{
+    languages: NameValuePair[],
+    nationality: NameValuePair[],
+    gender: NameValuePair[],
+    martialStatus: NameValuePair[],
+    workerType: NameValuePair[]
+}
+
+export interface NameValuePair{
+    name: string
+    value: string
+}

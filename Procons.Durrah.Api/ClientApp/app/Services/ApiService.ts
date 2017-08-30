@@ -6,7 +6,7 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 import { Injectable, OnDestroy } from '@angular/core';
-import { PaymentRedirectParams,KnetPayment } from '../Models/ApiRequestType';
+import { PaymentRedirectParams,KnetPayment,SearchCriteriaParams } from '../Models/ApiRequestType';
 import { Worker } from '../Models/Worker';
 @Injectable()
 export class ApiService {
@@ -49,9 +49,13 @@ export class ApiService {
                 return response.json();
             });
     }
-    public getAllWorkers(): Observable<Worker[]> {
+    public getSearchCriteriaParameters(): Observable<SearchCriteriaParams>{
+        return this.httpGetHelper(this.config.getSearchCriteriaUrl)
+        .map(response=>{ return response.json(); });
+    }
+    public getAllWorkers(optionalFilterCritera:Worker): Observable<Worker[]> {
         console.log('Getting All the Workers');
-        var actualData = this.httpPostHelper(this.config.getWorkersUrl,{})
+        var actualData = this.httpPostHelper(this.config.getWorkersUrl,optionalFilterCritera)
         .map(response=>{
             var data :any[]= response.json();
             console.log('[server-worker data] ',data);

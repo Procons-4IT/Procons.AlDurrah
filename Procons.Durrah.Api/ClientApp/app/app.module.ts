@@ -40,14 +40,15 @@ import { LoginComponent } from './login/login.component';
 import { PaymentConfirmationComponent} from './paymentConfirmation/paymentConfirmation.component';
 import { GvControlComponent } from './SharedComponents/gv-control/gv-control.component';
 import { DataGridModule } from 'primeng/primeng';
-// import { ModalModule } from 'angular2-modal';
-// import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
 import { ModalModule } from 'ngx-modialog';
 import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
 @NgModule({
     declarations: [
         AppComponent,
         catalogueComponent,
+        SearchResultsComponent,
+        searchFormComponent,
+        profileComponent,
         RecipesComponent,
         RecipeListComponent,
         RecipeDetailComponent,
@@ -56,10 +57,7 @@ import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
         HomeComponent,
         LoginComponent,
         PaymentConfirmationComponent,
-        GvControlComponent,
-        SearchResultsComponent,
-        searchFormComponent,
-        profileComponent
+        GvControlComponent
     ],
     imports: [
         BootstrapModalModule,
@@ -88,7 +86,6 @@ import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
         UserService,
         OVERLAY_PROVIDERS],
 
-    bootstrap: [AppComponent],
-    entryComponents: [SearchResultsComponent, searchFormComponent, profileComponent]
+    bootstrap: [AppComponent] 
 })
 export class AppModule { }

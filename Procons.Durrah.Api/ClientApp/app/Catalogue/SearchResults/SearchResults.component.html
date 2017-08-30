@@ -1,28 +1,33 @@
-﻿<div role="tabpanel" class="tab-pane fade" id="tabSearchResults" #tabSearchResults>
+﻿<div role="tabpanel" class="tab-pane fade active in" id="tabSearchResults">
     <div class="row">
         <div class="col-md-8 col-sm-offset-2">
-            <h3><span class="fa fa-search fa-fw fa-2x"></span> Advanced search results</h3>
-            <p>Please select "ONE" worker.</p>
-            <table class="table table-bordered table-hover">
-                <tbody>
-                    <tr>
-                        <td><a href="#tabProfile" data-toggle="tab"><img src="" width="87" class="img-thumbnail /"></a></td>
-                        <td>63kg</td>
-                        <td>1m63</td>
-                        <td><a href="#tabProfile" data-toggle="tab">available</a></td>
-                        <td><a href="#tabProfile" data-toggle="tab"><span class="glyphicon glyphicon-play-circle"></span></a></td>
-                        <td><a href="#tabProfile" data-toggle="tab"><span class="glyphicon glyphicon-ok"></span></a></td>
-                    </tr>
-                    <tr>
-                        <td><a href="#tabProfile" data-toggle="tab"><img src="" width="87" class="img-thumbnail /"></a></td>
-                        <td>63kg</td>
-                        <td>1m63</td>
-                        <td><a href="#tabProfile" data-toggle="tab">available</a></td>
-                        <td><a href="#tabProfile" data-toggle="tab"><span class="glyphicon glyphicon-play-circle"></span></a></td>
-                        <td><a href="#tabProfile" data-toggle="tab"><span class="glyphicon glyphicon-ok"></span></a></td>
-                    </tr>
-                </tbody>
-            </table>
+            <h3><span class="fa fa-search fa-fw fa-2x"></span> نتائج البحث المتقدمة</h3>
+            <p>الرجاء اختيار عامل واحد</p>
+            <p-dataTable styleClass="table table-bordered table-hover" [value]="workers" [globalFilter]="gb" [paginator]="true" rows="15"
+                [responsive]="true" #dt>
+                <p-column field="image" header="Image">
+                    <ng-template let-worker="rowData" pTemplate="body">
+                        <a (click)="GoToProfile(worker)" data-toggle="tab"><img src="{{worker.photo}}" width="87" class="img-thumbnail /"></a>
+                    </ng-template>
+                </p-column>
+                <p-column field="weight" header="Weight" [filter]="false" [sortable]="true"></p-column>
+                <p-column field="height" header="Height" [filter]="false" [sortable]="true"></p-column>
+                <!-- <p-column field="available" [filter]="false" [sortable]="true"></p-column> -->
+                <!-- <p-column [filter]="false">
+                    <ng-template pTemplate="header">
+                    </ng-template>
+                    <ng-template let-car="rowData" pTemplate="body">
+                        <a href="#tabProfile" data-toggle="tab"><span [className]="'glyphicon glyphicon-play-circle'"></span></a>
+                    </ng-template>
+                </p-column> -->
+                <!-- <p-column [filter]="false">
+                    <ng-template pTemplate="header">
+                    </ng-template>
+                    <ng-template let-car="rowData" pTemplate="body">
+                        <a href="#tabProfile" data-toggle="tab"><span [className]="'glyphicon glyphicon-ok'"></span></a>
+                    </ng-template>
+                </p-column> -->
+            </p-dataTable>
         </div>
     </div>
 </div>
