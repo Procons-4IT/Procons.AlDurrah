@@ -1,19 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output,Input,EventEmitter } from '@angular/core';
 import { MenuItem } from 'primeng/primeng';
+import {Worker} from '../../Models/Worker';
+
 @Component({
-    selector: '[app-profile]',
+  selector: 'profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
 export class profileComponent implements OnInit {
-   public items: MenuItem[];
-   
+
+  @Input() worker: Worker 
+  @Output() onBook = new EventEmitter<Boolean>();
+
   constructor() { }
-  public Book() {
-    console.log('Attempting to Book profileComponent');
-  }
 
   ngOnInit() {
+    console.log('Loaded Profile Component with Worker ',this.worker);
+  }
+
+  Book(){
+    this.onBook.emit(true);
   }
 
 }

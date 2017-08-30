@@ -3,5 +3,6 @@
   "loginUrl": "/oauth/token",
   "knetUrl": "/api/Workers/CallKnetGateway",
   "incomingPaymentUrl": "/api/Workers/CreatePayment",
-  "getWorkersUrl": "/api/Workers/GetWorkers"
+  "getWorkersUrl": "/api/Workers/GetWorkers",
+  "getSearchCriteriaUrl": "/api/Workers/GetSearchLookups"
 }
