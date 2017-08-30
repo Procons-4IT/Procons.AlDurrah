@@ -1,7 +1,11 @@
-import { Component, OnInit, Output,EventEmitter} from '@angular/core';
+import { Component, OnInit,Input, Output, EventEmitter } from '@angular/core';
 import { MenuItem } from 'primeng/primeng';
 import { catalogueComponent } from '../catalogue.component';
 import { SearchResultsComponent } from '../SearchResults/SearchResults.component';
+import { SearchCriteriaParams } from '../../Models/ApiRequestType';
+
+import { Observable } from 'rxjs';
+
 
 @Component({
     selector: 'search-form',
@@ -11,10 +15,13 @@ import { SearchResultsComponent } from '../SearchResults/SearchResults.component
 export class searchFormComponent implements OnInit {
 
     @Output() onSearchFilterCriteria = new EventEmitter<object>();
-
+    @Input()  searchCriteriaParams: SearchCriteriaParams;
     constructor() { }
 
-    ngOnInit() { }
+    ngOnInit() {
+        console.log('Init SearchForm Component, ',this.searchCriteriaParams);
+     }
+
 
     GotoResults(workType, age, sex, nationality, maritalStatus, language) {
         let argumentKeys = ["workType", "age", "sex", "nationality", "maritalStatus", "language"];
@@ -30,7 +37,10 @@ export class searchFormComponent implements OnInit {
                 }
             }
         }
-        console.log('captured searchFilter ',workerFilterParams);
+        console.log('captured searchFilter ', workerFilterParams);
         this.onSearchFilterCriteria.emit(workerFilterParams);
     }
 }
+// <!-- <div *ngFor "let nameValuePair of searchCriteriaParams.workerTypes;">
+// {{nameValuePair.name }}
+// </div> -->
