@@ -58,8 +58,7 @@ export class ApiService {
         var actualData = this.httpPostHelper(this.config.getWorkersUrl,optionalFilterCritera)
         .map(response=>{
             var data :any[]= response.json();
-            console.log('[server-worker data] ',data);
-            data.map(x=>{x.image = x.photo});
+            console.log('[server-worker data] ', data);
             return data;
         });
         return actualData;

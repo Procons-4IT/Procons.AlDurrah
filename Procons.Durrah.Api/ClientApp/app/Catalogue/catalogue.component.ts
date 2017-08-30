@@ -15,8 +15,8 @@ import { Subscription } from 'rxjs/Subscription';
 import { MenuItem } from 'primeng/primeng';
 import { searchFormComponent } from './SearchForm/SearchForm.component';
 import { Worker } from '../Models/Worker'
-import { Item } from '../Models/Item'
 import { SearchContent } from '../Models/SearchContent'
+import {SearchCriteriaParams} from '../Models/ApiRequestType'
 import { WorkersService } from '../Services/WorkersService'
 import { DataGrid } from 'primeng/primeng';
 import { ApiService } from '../Services/ApiService';
@@ -32,7 +32,7 @@ export class catalogueComponent implements OnInit {
 
     public workers: Worker[];
     public selectedWorker: Worker;
-
+    public searchCriteriaParams: SearchCriteriaParams;
     public showSearchSummary: boolean = true;
     public showSearchForm: boolean = false;
     public showSearchResultTable: boolean = false;
@@ -43,8 +43,12 @@ export class catalogueComponent implements OnInit {
 
 
     public GoToSearch() {
-        this.showSearchSummary = false;
-        this.showSearchForm = true;
+        this.myApi.getSearchCriteriaParameters().subscribe(searchCriteria=>{
+
+            this.searchCriteriaParams = searchCriteria;
+            this.showSearchSummary = false;
+            this.showSearchForm = true;
+        })
     }
 
     GoToResults(workerFilter: Worker) {
@@ -71,14 +75,6 @@ export class catalogueComponent implements OnInit {
         this.myApi.getSearchCriteriaParameters().subscribe(searchCriteriaParams => {
             console.log('look up values ', searchCriteriaParams);
         });
-    }
-    GetAvailableCSS(worker: Worker) {
-        var isAvaible = worker.status == "1" ? true : false;
-        return {
-            "glyphicon": true,
-            "glyphicon-ok": isAvaible,
-            "glyphicon-remove": !isAvaible
-        };
     }
     Book(onBook: Boolean) {
         var selectedWorker = this.selectedWorker;

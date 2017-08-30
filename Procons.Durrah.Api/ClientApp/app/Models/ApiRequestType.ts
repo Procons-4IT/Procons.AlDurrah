@@ -16,7 +16,7 @@ export interface SearchCriteriaParams{
     nationality: NameValuePair[],
     gender: NameValuePair[],
     martialStatus: NameValuePair[],
-    workerType: NameValuePair[]
+    workerTypes: NameValuePair[]
 }
 
 export interface NameValuePair{

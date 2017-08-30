@@ -1,36 +1,36 @@
 ﻿<div role="tabpanel" class="tab-pane fade in active">
-    <div class="row">
-      <div class="col-sm-6 col-sm-offset-2">
-        <h3><span class="fa fa-search fa-fw fa-2x"></span> البحث المتقدم</h3>
-        <form action="#" (ngSubmit)="GotoResults(workTypeInput,ageInput ,sexInput ,nationalityInput ,martialStatusInput ,languageInput )"
-          method="post" id="searchForm" name="searchForm" #f="ngForm">
-          <div class="form-group">
-            <select class="form-control" #workTypeInput>
+  <div class="row">
+    <div class="col-sm-6 col-sm-offset-2">
+      <h3><span class="fa fa-search fa-fw fa-2x"></span> البحث المتقدم</h3>
+      <form action="#" (ngSubmit)="GotoResults(workTypeInput,ageInput ,sexInput ,nationalityInput ,martialStatusInput ,languageInput )"
+        method="post" id="searchForm" name="searchForm" #f="ngForm">
+        <div class="form-group">
+             <select class="form-control" #workTypeInput>
                      <option>نوع العامل</option>
                      <option value="مربية">مربية</option>
                      <option value="سائق">سائق</option>
                      <option value="طباخ">طباخ</option>
                      <option value="عامل منزلي">عامل منزلي</option>
                    </select>
-          </div>
-          <div class="form-group">
-            <select class="form-control" #ageInput>
+        </div>
+        <div class="form-group">
+          <select class="form-control" #ageInput>
                      <option>العمر</option>
                      <option value="18-25">18-25</option>
                      <option value="25-35">25-35</option>
                      <option value="35-45">35-45</option>
                      <option value="45-55">45-55</option>
                    </select>
-          </div>
-          <div class="form-group">
-            <select class="form-control" #sexInput>
+        </div>
+        <div class="form-group">
+          <select class="form-control" #sexInput>
                      <option>الجنس</option>
                      <option value="انثى">انثى</option>
                      <option value="ذكر">ذكر</option>
                    </select>
-          </div>
-          <div class="form-group">
-            <select class="form-control" #nationalityInput>
+        </div>
+        <div class="form-group">
+          <select class="form-control" #nationalityInput>
                      <option>الجنسية</option>
                      <option value="الهند">الهند</option>
                      <option value="الفلبين">الفلبين</option>
@@ -40,29 +40,28 @@
                      <option value="نيبال">نيبال</option>
                      <option value="سيريلانكا">سيريلانكا</option>
                    </select>
-          </div>
-          <div class="form-group">
-            <select class="form-control" #martialStatusInput>
+        </div>
+        <div class="form-group">
+          <select class="form-control" #martialStatusInput>
                      <option>الحالة الاجتماعية</option>
                      <option value="متزوج">متزوج</option>
                      <option value="أعزب">أعزب</option>
                    </select>
-          </div>
-          <div class="form-group" #languageInput>
-            <select class="form-control">
+        </div>
+        <div class="form-group" #languageInput>
+          <select class="form-control">
                      <option>اللغات المتحدث بها</option>
                      <option value="اخرى">اخرى</option>
                      <option value="فرنسي">فرنسي</option>
                      <option value="انجليزي">انجليزي</option>
                      <option value="عربي">عربي</option>
                    </select>
-          </div>
+        </div>
 
-          <div class="form-group">
-            <input type="submit" value="بحث" class="btn btn-default" id="submitSearchForm" />
-          </div>
-        </form>
-
-      </div>
+        <div class="form-group">
+          <input type="submit" value="بحث" class="btn btn-default" id="submitSearchForm" />
+        </div>
+      </form>
     </div>
   </div>
+</div>

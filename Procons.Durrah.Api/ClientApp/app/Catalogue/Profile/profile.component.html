@@ -1,52 +1,41 @@
 ﻿<div role="tabpanel" class="tab-pane fade active in" id="tabProfile">
-    <div class="row">
-      <div class="col-md-8 col-sm-offset-2">
-        <h3>مرشد ملا</h3>
-        <div class="row">
-          <div class="col-sm-6">
-            <table class="table">
-              <tbody>
-                <tr>
-                  <td>تاريخ الميلاد</td>
-                  <td>05/05/1987</td>
-                </tr>
-                <tr>
-                  <td>الجنسية</td>
-                  <td>الهند</td>
-                </tr>
-                <tr>
-                  <td>الحالة الإجتماعية</td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td>اللغات المتحدث بها</td>
-                  <td>الهندية - البنغالية</td>
-                </tr>
-                <tr>
-                  <td>الوظيفة</td>
-                  <td>طباخ</td>
-                </tr>
-                <tr>
-                  <td>سنوات الخبره</td>
-                  <td>18 سنة</td>
-                </tr>
-                <tr>
-                  <td>تفاصيل الخبره</td>
-                  <td>13 سنة في الهند – 5 سنوات في السعودية</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="col-sm-6">
-            <p><img src="/eldurra-master/src/app/images/profiles/image1.png" class="img-thumbnail img-responsive" width="100%"
-              /></p>
-          </div>
-          <form action="/eldurra-master/src/app/submitprofile.html">
-            <p><input type="submit" value="سجل" (click)="Book(selectedWorker)" class="btn btn-default" id="bookProfile"
-              /></p>
-          </form>
+  <div class="row">
+    <div class="col-md-8 col-sm-offset-2">
+      <h3>مرشد ملا</h3>
+      <div class="row">
+        <div class="col-sm-6">
+          <table class="table">
+            <tbody>
+              <tr>
+                <td>تاريخ الميلاد</td>
+                <td>05/05/1987</td>
+              </tr>
+              <tr>
+                <td>الجنسية</td>
+                <td>{{worker.nationality}}
+                  <td>
+              </tr>
+              <tr>
+                <td>الحالة الإجتماعية</td>
+                <td> {{worker.maritalStatus}}</td>
+              </tr>
+              <tr>
+                <td>اللغات المتحدث بها</td>
+                <td>{{worker.language}}</td>
+              </tr>
+              <tr>
+                <td>الوظيفة</td>
+                <td> {{worker.workerType}}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+        <div class="col-sm-6">
+          <p><img [src]="worker.photo" class="img-thumbnail img-responsive" width="100%" /></p>
+        </div>
+        <p><input type="submit" value="سجل" (click)="Book()" class="btn btn-default" id="bookProfile" /></p>
       </div>
     </div>
-
   </div>
+
+</div>

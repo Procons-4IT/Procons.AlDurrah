@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, Sanitizer} from '@angular/core';
 import {Worker} from '../../Models/Worker';
 import { MenuItem } from 'primeng/primeng';
 
@@ -11,7 +11,7 @@ export class SearchResultsComponent implements OnInit {
   @Input() workers: Worker[];
   @Output() onSelectedWorker = new EventEmitter<Worker>();
 
-  constructor() { }
+  constructor(public sanitizer: Sanitizer) { }
 
   ngOnInit() {
     console.log('SearchResultsComponent Loaded! ', this.workers);
@@ -20,4 +20,13 @@ export class SearchResultsComponent implements OnInit {
     console.log('[captured] GoToProfile!: ', selectedWorker);
     this.onSelectedWorker.emit(selectedWorker);
   }
+    GetAvailableCSS(worker: Worker) {
+        var isAvaible = worker.status == "1" ? true : false;
+        return {
+            "glyphicon": true,
+            "glyphicon-ok": isAvaible,
+            "glyphicon-remove": !isAvaible
+        };
+    }
+
 }

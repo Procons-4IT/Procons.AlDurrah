@@ -1,4 +1,4 @@
-﻿{{showSearchSummary}} {{showSearchForm}} {{showSearchResultTable}} {{showProfile}}
+﻿<!-- {{showSearchSummary}} {{showSearchForm}} {{showSearchResultTable}} {{showProfile}} -->
 <div class="container">
   <div class="section-content">
     <div class="content-wrapper">
@@ -12,7 +12,7 @@
             الحالة الاجتماعية .. إلخ) ثم السمات الشخصية (المهارات اللغوية، الطول</p>
           <p class="text-right"><a href="#tabSearchForm" (click)="GoToSearch()" class="btn btn-default" data-toggle="tab">ابحث عن عماله منزلية<span class="fa fa-search fa-fw"></span></a></p>
         </div>
-        <search-form (onSearchFilterCriteria) = "GoToResults($event)" *ngIf="showSearchForm"></search-form>
+        <search-form [searchCriteriaParams]= "searchCriteriaParams" (onSearchFilterCriteria) = "GoToResults($event)" *ngIf="showSearchForm"></search-form>
         <search-result [workers]="workers" (onSelectedWorker)="GoToProfile($event)" *ngIf="showSearchResultTable"></search-result>
         <profile [worker]="selectedWorker" (onBook)= "Book($event)" *ngIf="showProfile"></profile>
       </div>
