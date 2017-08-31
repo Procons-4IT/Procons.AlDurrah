@@ -260,3 +260,5 @@ paket-files/
 __pycache__/
 *.pyc
 /Procons.Durrah.Api/Assets/src/app
+/Procons.Durrah.Api/font-awesome-4.7.0
+/Procons.Durrah.Api/ClientApp/Assets/font-awesome-4.7.0

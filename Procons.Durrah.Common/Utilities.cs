@@ -3,6 +3,7 @@
     using System;
     using System.Configuration;
     using System.IO;
+    using System.Linq;
     using System.Security.Cryptography;
 
     public class Utilities
@@ -56,7 +57,13 @@
             return string.Empty;
         }
 
-
+        public static string RandomString()
+        {
+            var random = new Random();
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, 15)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
     }
 }
 

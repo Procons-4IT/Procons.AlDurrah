@@ -335,6 +335,35 @@
             }
         }
 
+        public bool CreatePasswordReset(string email)
+        {
+            try
+            {
+                var random = Utilities.RandomString();
+                var ServiceInstance = ServiceLayerProvider.GetInstance();
+                var password = new PASSRESET();
+                password.Code = random;
+                password.Name = email;
+                ServiceInstance.CurrentServicelayerInstance.AddToPASSRESET(password);
+                ServiceInstance.CurrentServicelayerInstance.SaveChanges();
+                return true;
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public void ResetPassword(string newPassword, string randomId, string email)
+        {
+            var ServiceInstance = ServiceLayerProvider.GetInstance();
+            var result = ServiceInstance.CurrentServicelayerInstance.PASSRESET.Where(x => x.Code == newPassword).FirstOrDefault();
+            if (result != null)
+            {
+                ServiceInstance.CurrentServicelayerInstance.BusinessPartners.Where(x=>x.em)
+            }
+        }
+
         #region PRIVATE METHODS
         private Filter<WORKERS> GetExpression(Catalogue wrk)
         {

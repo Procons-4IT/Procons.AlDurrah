@@ -8438,6 +8438,7 @@
         <Property Name="BlockSendingMarketingContent" Type="Edm.String" />
         <Property Name="AgentCode" Type="Edm.String" />
         <Property Name="U_Password" Type="Edm.String" />
+        <Property Name="U_UserName" Type="Edm.String" />
         <Property Name="BPAddresses" Type="Collection(SAPB1.BPAddress)" />
         <Property Name="ContactEmployees" Type="Collection(SAPB1.ContactEmployee)" />
         <Property Name="BPAccountReceivablePaybleCollection" Type="Collection(SAPB1.BPAccountReceivablePayble)" />
@@ -13279,6 +13280,27 @@
         <Property Name="DataSource" Type="Edm.String" />
       </EntityType>
       <ComplexType Name="MARITALSTATUSParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="PASSRESET">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Type="Edm.String" />
+        <Property Name="DocEntry" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Canceled" Type="Edm.String" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="UserSign" Type="Edm.Int32" />
+        <Property Name="Transfered" Type="Edm.String" />
+        <Property Name="CreateDate" Type="Edm.DateTime" />
+        <Property Name="CreateTime" Type="Edm.Int32" />
+        <Property Name="UpdateDate" Type="Edm.DateTime" />
+        <Property Name="UpdateTime" Type="Edm.Int32" />
+        <Property Name="DataSource" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="PASSRESETParams">
         <Property Name="Code" Type="Edm.String" />
       </ComplexType>
       <EntityType Name="WORKERS">
@@ -19305,6 +19327,7 @@
         <EntitySet EntityType="SAPB1.COUNTRIES" Name="COUNTRIESUDO" />
         <EntitySet EntityType="SAPB1.LANGUAGES" Name="LANGUAGESUDO" />
         <EntitySet EntityType="SAPB1.MARITALSTATUS" Name="MARITALSTATUSUDO" />
+        <EntitySet EntityType="SAPB1.PASSRESET" Name="PASSRESET" />
         <EntitySet EntityType="SAPB1.WORKERS" Name="WORKERSUDO" />
         <EntitySet EntityType="SAPB1.WORKERTYPES" Name="WORKERTYPESUDO" />
         <EntitySet EntityType="SAPB1.B1Session" Name="B1Sessions" />

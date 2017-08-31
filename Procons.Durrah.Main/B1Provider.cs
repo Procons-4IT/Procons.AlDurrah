@@ -58,6 +58,9 @@
                 base.AddTableSL("MARITALSTATUS", "MARITALSTATUS", SAPbobsCOM.BoUTBTableType.bott_MasterData);
                 base.AddUdo("MARITALSTATUSUDO", "MARITALSTATUS");
 
+                base.AddTableSL("PASSRESET", "Password Reset", SAPbobsCOM.BoUTBTableType.bott_MasterData);
+                base.AddUdo("PASSRESET", "PASSRESET");
+
                 instance.CurrentServicelayerInstance.SaveChanges();
                 return instance.B1SessionId;
             }
