@@ -88,6 +88,7 @@
     <Compile Include="Models\ApplicationRole.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\LookupItem.cs" />
+    <Compile Include="Models\PasswordModel.cs" />
     <Compile Include="Models\RolesFromClaims.cs" />
     <Compile Include="Models\SboCred.cs" />
     <Compile Include="Models\Transaction.cs" />

@@ -78,6 +78,7 @@
             oDoc.Series = GetSeriesCode();
             oDoc.UserFields.Fields.Item("U_Password").Value = password;
             oDoc.UserFields.Fields.Item("U_UserName").Value = user.UserName;
+            oDoc.EmailAddress = user.Email;
             oDoc.CardName = $"{user.FirstName} {user.LastName}";
             oDoc.EmailAddress = user.Email;
             if (oDoc.Add() != 0)
@@ -122,6 +123,53 @@
 
             //}
             return identityResult;
+        }
+
+
+        public bool CreatePasswordReset(string email)
+        {
+            try
+            {
+                var random = Utilities.RandomString();
+                var ServiceInstance = ServiceLayerProvider.GetInstance();
+                var password = new PASSRESET();
+                password.Code = random;
+                password.Name = email;
+                ServiceInstance.CurrentServicelayerInstance.AddToPASSRESET(password);
+                ServiceInstance.CurrentServicelayerInstance.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public bool ResetPassword(string newPassword, string randomId, string email)
+        {
+            var creationResult = false;
+            try
+            {
+                var ServiceInstance = ServiceLayerProvider.GetInstance();
+                var searchPassword = Utilities.Encrypt(newPassword);
+                var result = ServiceInstance.CurrentServicelayerInstance.PASSRESET.Where(x => x.Code == randomId && x.Name == email).FirstOrDefault();
+                if (result != null)
+                {
+                    var user = ServiceInstance.CurrentServicelayerInstance.BusinessPartners.Where(x => x.EmailAddress == email).FirstOrDefault();
+                    if (user != null)
+                    {
+                        user.U_Password = Utilities.Encrypt(newPassword);
+                        ServiceInstance.CurrentServicelayerInstance.UpdateObject(user);
+                        creationResult = true;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                creationResult = false;
+            }
+            return creationResult;
         }
 
         private int GetSeriesCode()

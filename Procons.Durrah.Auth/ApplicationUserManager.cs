@@ -26,7 +26,7 @@
             appUserManager.UserValidator = new UserValidator<ApplicationUser>(appUserManager)
             {
                 AllowOnlyAlphanumericUserNames = true,
-                RequireUniqueEmail = true
+                RequireUniqueEmail = true,
             };
 
             appUserManager.PasswordValidator = new PasswordValidator

@@ -24,5 +24,15 @@
         {
             return provider.GetWorkers();
         }
+
+        public bool ResetPassword(string pass,string validationId,string email)
+        {
+            return provider.ResetPassword(pass, validationId, email);
+        }
+
+        public bool ResetRequest(string emailAddress)
+        {
+            return provider.CreatePasswordReset(emailAddress);
+        }
     }
 }

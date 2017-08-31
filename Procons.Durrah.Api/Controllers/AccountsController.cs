@@ -11,13 +11,14 @@
     using Procons.Durrah.Common;
     using Procons.Durrah.Models;
     using Procons.Durrah.Facade;
+    using Procons.Durrah.Common.Models;
 
     [ApplicationExceptionFilter]
     [RoutePrefix("api/accounts")]
     public class AccountsController : BaseApiController
     {
 
-        [Authorize(Roles = "Admin")]
+
         [Route("users")]
         public IHttpActionResult GetUsers()
         {
@@ -126,6 +127,32 @@
             }
 
             return Ok();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("reset")]
+        public  IHttpActionResult ResetPassword([FromBody]PasswordModel model)
+        {
+            var loginFacade = Factory.DeclareClass<LoginFacade>();
+           var result= loginFacade.ResetPassword(model.Password, model.ValidationId, model.EmailAddress);
+            if (result)
+                return Ok();
+            else
+                return InternalServerError();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("resetrequest")]
+        public  IHttpActionResult RequestReset([FromBody]PasswordModel model)
+        {
+            var loginFacade = Factory.DeclareClass<LoginFacade>();
+            var result = loginFacade.ResetRequest(model.EmailAddress);
+            if (result)
+                return Ok();
+            else
+                return InternalServerError();
         }
 
         [Authorize(Roles = "Admin")]
