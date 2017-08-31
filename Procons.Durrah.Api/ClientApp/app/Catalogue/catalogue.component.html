@@ -1,6 +1,8 @@
 ﻿<div class="container">
+
   <div class="section-content">
     <div class="content-wrapper">
+      <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
       <div id="catalogueContainer" class="tab-content" #catalogue>
         <div role="tabpanel" class="tab-pane fade in active" id="tabCatalogue" *ngIf="showSearchSummary">
           <h2 class="border-alt"><a href="#tabSearchForm" data-toggle="tab">كتالوج الدرة</a></h2>
@@ -9,12 +11,13 @@
             البطاقة المدنية.</p>
           <p> تضم كل صفحة من صفحات الكتالوج بيانات المرشح للعمل ويشمل ذلك: بياناته الشخصية (الاسم، الجنس، الجنسية، العمر، الديانة،
             الحالة الاجتماعية .. إلخ) ثم السمات الشخصية (المهارات اللغوية، الطول</p>
-          <p class="text-right"><a href="#tabSearchForm" (click)="GoToSearch()" class="btn btn-default" data-toggle="tab">ابحث عن عماله منزلية<span class="fa fa-search fa-fw"></span></a></p>
+          <p class="text-right">
+            <a href="#tabSearchForm" (click)="GoToSearch()" class="btn btn-default" data-toggle="tab">ابحث عن عماله منزلية<span class="fa fa-search fa-fw"></span></a>
+          </p>
         </div>
-        <search-form [searchCriteriaParams]= "searchCriteriaParams" (onSearchFilterCriteria) = "GoToResults($event)" *ngIf="showSearchForm"></search-form>
+        <search-form [searchCriteriaParams]="searchCriteriaParams" (onSearchFilterCriteria)="GoToResults($event)" *ngIf="showSearchForm"></search-form>
         <search-result [workers]="workers" (onSelectedWorker)="GoToProfile($event)" *ngIf="showSearchResultTable"></search-result>
-        <profile [worker]="selectedWorker" (onBook)= "Book($event)" *ngIf="showProfile"></profile>
+        <profile [worker]="selectedWorker" (onBook)="Book($event)" *ngIf="showProfile"></profile>
       </div>
     </div>
   </div>
-  <h1>hi! </h1>

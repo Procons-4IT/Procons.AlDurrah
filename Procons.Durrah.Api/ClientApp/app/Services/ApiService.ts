@@ -5,8 +5,9 @@ import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
+import 'rxjs/add/operator/catch';
 import { Injectable, OnDestroy } from '@angular/core';
-import { PaymentRedirectParams,KnetPayment,SearchCriteriaParams } from '../Models/ApiRequestType';
+import { PaymentRedirectParams, KnetPayment, SearchCriteriaParams } from '../Models/ApiRequestType';
 import { Worker } from '../Models/Worker';
 @Injectable()
 export class ApiService {
@@ -29,52 +30,59 @@ export class ApiService {
                 return false;
         });
     }
-    public knetPaymentRedirect(paymentInformation: PaymentRedirectParams): Observable<string> {
-
-        return this.httpPostHelper(this.config.knetUrl, paymentInformation).map(response => {
-            if (response.status = 200) {
-                var knetPortalUrl: string = response.json();
-                if (knetPortalUrl) {
-                    window.location.href = knetPortalUrl;
-                }
-            }
-            console.error('knetPayment failed to get valid response ', response);
-            return '';
-
-        });
+    public knetPaymentRedirectUrl(paymentInformation: PaymentRedirectParams): Observable<string> {
+        return this.httpPostHelper(this.config.knetUrl, paymentInformation)
+            .map(response => {
+                return response.json();
+            });
     }
+
+
     public createIncomingPayment(payment: KnetPayment): Observable<String> {
         return this.httpPostHelper(this.config.incomingPaymentUrl, payment)
             .map(response => {
                 return response.json();
             });
     }
-    public getSearchCriteriaParameters(): Observable<SearchCriteriaParams>{
+    public getSearchCriteriaParameters(): Observable<SearchCriteriaParams> {
         return this.httpGetHelper(this.config.getSearchCriteriaUrl)
-        .map(response=>{ return response.json(); });
+            .map(response => { return response.json(); })
     }
-    public getAllWorkers(optionalFilterCritera:Worker): Observable<Worker[]> {
+    public getAllWorkers(optionalFilterCritera: Worker): Observable<Worker[]> {
         console.log('Getting All the Workers');
-        var actualData = this.httpPostHelper(this.config.getWorkersUrl,optionalFilterCritera)
-        .map(response=>{
-            var data :any[]= response.json();
-            console.log('[server-worker data] ', data);
-            return data;
-        });
+        var actualData = this.httpPostHelper(this.config.getWorkersUrl, optionalFilterCritera)
+            .map(response => {
+                var data: any[] = response.json();
+                console.log('[server-worker data] ', data);
+                return data;
+            });
         return actualData;
     }
     public httpPostHelper(url: string, body: any): Observable<Response> {
         // let headers = new Headers();
         // headers.append("Content-Type", 'application/x-www-form-urlencoded');
 
-        return this.http.post(this.config.baseUrl + url, body);
+        return this.http.post(this.config.baseUrl + url, body)
+            // .catch(tempCatch => {
+            //     var fakeObject = {
+            //         json: () => [1, 2, 3]
+            //     };
+            //     return Observable.of(<Response>fakeObject);
+            // });
     }
     public httpGetHelper(url: string): Observable<Response> {
         let headers = new Headers();
         headers.append("Content-Type", 'application/json');
         let options: RequestOptions = new RequestOptions({ headers: headers });
-        
-        return this.http.get(this.config.baseUrl + url,options);
+
+        return this.http.get(this.config.baseUrl + url, options)
+            // .catch(tempCatch => {
+            //     var fakeObject = {
+            //         json: () => [1, 2, 3]
+            //     };
+            //     return Observable.of(<Response>fakeObject);
+
+            // });
     }
     public GetSecurityToken(): string {
         let securityToken: string = '';
@@ -82,6 +90,7 @@ export class ApiService {
         return securityToken
     }
 
+    //Reusable Helper Methods
     public getKnetUrlProperties() {
         return this.activeRoute.queryParams.map(x => {
             return {
@@ -93,4 +102,8 @@ export class ApiService {
             }
         });
     }
+    public redirectToUrl(url: string) {
+        window.location.href = url;
+    }
+
 }

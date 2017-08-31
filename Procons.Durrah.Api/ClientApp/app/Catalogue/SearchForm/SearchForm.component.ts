@@ -12,9 +12,10 @@ import { Observable } from 'rxjs';
     styleUrls: ['./searchForm.component.css']
 })
 export class searchFormComponent implements OnInit {
-
+    
     @Output() onSearchFilterCriteria = new EventEmitter<object>();
     @Input()  searchCriteriaParams: SearchCriteriaParams;
+
     constructor() { }
 
     ngOnInit() {

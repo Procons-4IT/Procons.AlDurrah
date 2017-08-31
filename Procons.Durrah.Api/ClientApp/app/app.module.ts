@@ -10,7 +10,7 @@ import { RecipeListComponent } from './recipes/recipe-list/recipe-list.component
 import { CatalogueComponent } from './Catalogue/catalogue.component';
 import { SearchResultsComponent } from './Catalogue/SearchResults/SearchResults.component';
 import { searchFormComponent } from './Catalogue/SearchForm/SearchForm.component';
-import { profileComponent } from './Catalogue/profile/profile.component';
+import { profileComponent } from './Catalogue/Profile/profile.component';
 
 import { RecipeDetailComponent } from './recipes/recipe-detail/recipe-detail.component';
 import { RecipeItemComponent } from './recipes/recipe-list/recipe-item/recipe-item.component';
@@ -18,6 +18,8 @@ import { RoutingModule, routingComponents, } from './app.routing';
 import { CanActivateViaAuthGuard } from "./Services/ActivationGuard";
 import { RouterStateSnapshot } from '@angular/router';
 import { BusyModule } from 'angular2-busy';
+import { LoadingModule } from 'ngx-loading';
+
 import {
   DataTableModule,
   SharedModule,
@@ -63,6 +65,7 @@ import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
         BootstrapModalModule,
         ModalModule.forRoot(),
         BusyModule,
+        LoadingModule,
         BrowserModule,
         FormsModule,
         HttpModule,

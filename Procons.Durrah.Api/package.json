@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "start": "ng serve",
-    "build": "webpack --config webpack.config.vendor.js",
+    "build": "ng build --prod",
     "test": "karma start ClientApp/test/karma.conf.js"
   },
   "dependencies": {
@@ -58,6 +58,7 @@
     "ng2-toasty": "^4.0.3",
     "ngx-bootstrap": "^1.7.1",
     "ngx-datatable": "^1.0.3",
+    "ngx-loading": "^1.0.7",
     "ngx-modialog": "^3.0.3",
     "preboot": "4.5.2",
     "primeng": "^4.1.0",
