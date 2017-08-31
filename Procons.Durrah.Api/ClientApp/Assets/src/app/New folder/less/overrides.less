@@ -1,0 +1,165 @@
+h1, .h1, h2, .h2, h3, .h3 {
+  display: inline-block;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  &:after {
+    display: block;
+    clear: both;
+  }
+}
+
+h2, .h2 {
+  font-weight: bold;
+  border-bottom: 3px solid @text-color;
+  a {
+    text-decoration: none;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}
+
+.container {
+  width: 100%;
+  max-width: 1352px;
+}
+
+.navbar {
+  background-image: url(../images/menu_bg.png);
+  background-repeat: repeat-x;
+  background-position: top center;
+  font-size: 130%;
+  text-shadow: -3px 4px 5px argb(rgba(red(#011b26), green(#011b26), blue(#011b26), 0.25));
+  text-shadow: -3px 4px 5px rgba(red(#011b26), green(#011b26), blue(#011b26), 0.25);
+  .transition(height .2s);
+  margin-bottom: 0;
+
+  .navbar-nav {
+    padding-top: @navbar-padding-vertical;
+    >li >a {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+    li.active {
+      .btn {
+        color: #fff;
+        background-color: @btn-default-border;
+      }
+    }
+  }
+
+  body.navbar-is-fixed-top.scrolled & {
+    height: @navbar-height-small;
+    min-height: @navbar-height-small;
+
+    .navbar-collapse {
+      margin-top: 0;
+    }
+  }
+
+  @media (min-width: @grid-float-breakpoint) {
+    height: 150px;
+    padding: 0;
+
+    .navbar-nav {
+      float: right;
+    }
+
+    .navbar-collapse {
+      margin-top: 68px;
+    }
+  }
+
+  .btn {
+    &:hover,
+    &:active,
+    &:focus {
+      color: #fff;
+      background-color: @btn-default-border;
+    }
+  }
+}
+
+.navbar-collapse {
+  background-color: #F6F8FC;
+
+  @media (min-width: @grid-float-breakpoint) {
+    background-color: transparent;
+  }
+}
+
+.navbar-brand {
+  padding-top: 0;
+  padding-bottom: 0;
+
+  img {
+    height: 157px;
+    @media (max-width: @grid-float-breakpoint-max) {
+      height: 70px;
+    }
+  }
+
+  body.navbar-is-fixed-top.scrolled & {
+    img {
+      height: 70px;
+    }
+  }
+}
+
+.btn,
+.form-control {
+  border-width: 2px;
+}
+
+.btn {
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+// Scale up the modal
+@media (min-width: @screen-sm-min) {
+  // Automatically set modal's width for larger viewports
+  .modal-dialog {
+    margin: 100px auto;
+  }
+  .modal-content {
+    .box-shadow(0 3px 9px rgba(0,0,0,.2));
+  }
+}
+
+.modal-content {
+  text-align: center;
+  .box-shadow(0 3px 9px rgba(0,0,0,.2));
+
+  a {
+      color: @text-color;
+     text-decoration: underline;
+  }
+
+  .form-control {
+    border-color: @brand-primary;
+    border-width: 1px;
+  }
+
+  .modal-icon {
+    .icon {
+      height: 95px;
+    }
+    padding-bottom: 10px;
+  }
+}
+
+.form-group.required {
+  position: relative;
+
+    &:after {
+      content:"*";
+      color:red;
+      display: block;
+      float: right;
+      position: absolute;
+      right: -20px;
+      top:0;
+      font-size: 1.5em;
+    }
+}

@@ -23,12 +23,12 @@ import { ApiService } from '../Services/ApiService';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
-    selector: '[app-catalogue]',
+    selector: 'app-catalogue',
     templateUrl: './catalogue.component.html',
     styleUrls: ['./catalogue.component.css'],
     providers: [WorkersService],
 })
-export class catalogueComponent implements OnInit {
+export class CatalogueComponent implements OnInit {
 
     public workers: Worker[];
     public selectedWorker: Worker;
@@ -39,7 +39,9 @@ export class catalogueComponent implements OnInit {
     public showProfile: boolean = false;
 
     constructor(private myApi: ApiService, private componentFactoryResolver: ComponentFactoryResolver,
-        private workersService: WorkersService, private sanitizer: DomSanitizer) { }
+        private workersService: WorkersService, private sanitizer: DomSanitizer) {
+            console.log('hello other world!')
+         }
 
 
     public GoToSearch() {

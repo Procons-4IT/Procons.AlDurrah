@@ -1,6 +1,5 @@
 import { Component, OnInit,Input, Output, EventEmitter } from '@angular/core';
 import { MenuItem } from 'primeng/primeng';
-import { catalogueComponent } from '../catalogue.component';
 import { SearchResultsComponent } from '../SearchResults/SearchResults.component';
 import { SearchCriteriaParams } from '../../Models/ApiRequestType';
 
