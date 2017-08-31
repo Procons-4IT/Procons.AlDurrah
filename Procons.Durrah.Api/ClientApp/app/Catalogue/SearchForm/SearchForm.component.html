@@ -2,6 +2,10 @@
   <div class="row">
     <div class="col-sm-6 col-sm-offset-2">
       <h3><span class="fa fa-search fa-fw fa-2x"></span> البحث المتقدم</h3>
+      
+      <li *ngFor="let user of searchCriteriaParams.workerTypes;">
+        {{user.name}}
+      </li>
       <form action="#" (ngSubmit)="GotoResults(workTypeInput,ageInput ,sexInput ,nationalityInput ,martialStatusInput ,languageInput )"
         method="post" id="searchForm" name="searchForm" #f="ngForm">
         <div class="form-group">

@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, EventEmitter, Output, Sanitizer} from '@angular/core';
-import {Worker} from '../../Models/Worker';
+import { Component, OnInit, Input, EventEmitter, Output, Sanitizer } from '@angular/core';
+import { Worker } from '../../Models/Worker';
 import { MenuItem } from 'primeng/primeng';
 
 @Component({
@@ -20,13 +20,22 @@ export class SearchResultsComponent implements OnInit {
     console.log('[captured] GoToProfile!: ', selectedWorker);
     this.onSelectedWorker.emit(selectedWorker);
   }
-    GetAvailableCSS(worker: Worker) {
-        var isAvaible = worker.status == "1" ? true : false;
-        return {
-            "glyphicon": true,
-            "glyphicon-ok": isAvaible,
-            "glyphicon-remove": !isAvaible
-        };
+  GetAvailableCSS(worker: Worker) {
+    var isAvaible = worker.status == "1" ? true : false;
+    return {
+      "glyphicon": true,
+      "glyphicon-ok": isAvaible,
+      "glyphicon-remove": !isAvaible
+    };
+  }
+  public openRequestedPopup(url) {
+    console.log('opening url ',url);
+    if (!url) {
+      url = "https://www.youtube.com/watch?v=TzqxmgwcKUs";
     }
+    var strWindowFeatures = "menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes";
+    return window.open(url, "Video", strWindowFeatures);
+  }
+
 
 }

@@ -7,10 +7,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { RecipesComponent } from './recipes/recipes.component';
 import { RecipeListComponent } from './recipes/recipe-list/recipe-list.component';
-import { catalogueComponent } from './catalogue/catalogue.component';
-import { SearchResultsComponent } from './catalogue/SearchResults/SearchResults.component';
-import { searchFormComponent } from './catalogue/SearchForm/SearchForm.component';
-import { profileComponent } from './catalogue/profile/profile.component';
+import { CatalogueComponent } from './Catalogue/catalogue.component';
+import { SearchResultsComponent } from './Catalogue/SearchResults/SearchResults.component';
+import { searchFormComponent } from './Catalogue/SearchForm/SearchForm.component';
+import { profileComponent } from './Catalogue/Profile/profile.component';
 
 import { RecipeDetailComponent } from './recipes/recipe-detail/recipe-detail.component';
 import { RecipeItemComponent } from './recipes/recipe-list/recipe-item/recipe-item.component';
@@ -18,6 +18,8 @@ import { RoutingModule, routingComponents, } from './app.routing';
 import { CanActivateViaAuthGuard } from "./Services/ActivationGuard";
 import { RouterStateSnapshot } from '@angular/router';
 import { BusyModule } from 'angular2-busy';
+import { LoadingModule } from 'ngx-loading';
+
 import {
   DataTableModule,
   SharedModule,
@@ -45,7 +47,7 @@ import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
 @NgModule({
     declarations: [
         AppComponent,
-        catalogueComponent,
+        CatalogueComponent,
         SearchResultsComponent,
         searchFormComponent,
         profileComponent,
@@ -63,6 +65,7 @@ import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
         BootstrapModalModule,
         ModalModule.forRoot(),
         BusyModule,
+        LoadingModule,
         BrowserModule,
         FormsModule,
         HttpModule,
