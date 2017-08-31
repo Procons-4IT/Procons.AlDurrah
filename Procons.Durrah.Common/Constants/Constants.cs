@@ -19,6 +19,7 @@
             public const string ErrorUrl = "ErrorUrl";
             public const string Alias = "Alias";
             public const string ResourcePath = "ResourcePath";
+            public const string SeriesName = "SeriesName";
         }
     }
 }

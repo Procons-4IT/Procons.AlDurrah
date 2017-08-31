@@ -10,33 +10,49 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-var catalogue_component_1 = require("../catalogue.component");
 var searchFormComponent = (function () {
-    //public catalogue: catalogueComponent;
-    function searchFormComponent(componentFactoryResolver) {
-        this.componentFactoryResolver = componentFactoryResolver;
+    function searchFormComponent() {
+        this.onSearchFilterCriteria = new core_1.EventEmitter();
     }
-    searchFormComponent.prototype.Book = function () {
-        console.log('searchFormComponent Book!');
-        window.location.href = "http://knet.testyourprojects.co.in/";
-    };
     searchFormComponent.prototype.ngOnInit = function () {
+        console.log('Init SearchForm Component, ', this.searchCriteriaParams);
     };
-    searchFormComponent.prototype.GotoResults = function () {
+    searchFormComponent.prototype.GotoResults = function (workType, age, sex, nationality, maritalStatus, language) {
+        var argumentKeys = ["workType", "age", "sex", "nationality", "maritalStatus", "language"];
+        var workerFilterParams = {};
+        for (var i = 0; i < arguments.length; i++) {
+            var argument = arguments[i];
+            if (argument.type == 'select-one') {
+                var isFirstElement = argument.value === argument.options[0].value;
+                if (!isFirstElement) {
+                    var keyName = argumentKeys[i];
+                    workerFilterParams[keyName] = argument.value;
+                }
+            }
+        }
+        console.log('captured searchFilter ', workerFilterParams);
+        this.onSearchFilterCriteria.emit(workerFilterParams);
     };
     return searchFormComponent;
 }());
 __decorate([
-    core_1.ViewChild(core_1.forwardRef(function () { return catalogue_component_1.catalogueComponent; })),
-    __metadata("design:type", catalogue_component_1.catalogueComponent)
-], searchFormComponent.prototype, "catalogue", void 0);
+    core_1.Output(),
+    __metadata("design:type", Object)
+], searchFormComponent.prototype, "onSearchFilterCriteria", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Object)
+], searchFormComponent.prototype, "searchCriteriaParams", void 0);
 searchFormComponent = __decorate([
     core_1.Component({
-        selector: '[app-searchForm]',
+        selector: 'search-form',
         templateUrl: './searchForm.component.html',
         styleUrls: ['./searchForm.component.css']
     }),
-    __metadata("design:paramtypes", [core_1.ComponentFactoryResolver])
+    __metadata("design:paramtypes", [])
 ], searchFormComponent);
 exports.searchFormComponent = searchFormComponent;
+// <!-- <div *ngFor "let nameValuePair of searchCriteriaParams.workerTypes;">
+// {{nameValuePair.name }}
+// </div> -->
 //# sourceMappingURL=SearchForm.component.js.map

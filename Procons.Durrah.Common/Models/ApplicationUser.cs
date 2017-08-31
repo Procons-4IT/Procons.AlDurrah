@@ -24,14 +24,11 @@
 
         public string UserType { get; set; }
 
+        public string Password { get; set; }
+
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager, string authenticationType)
         {
             var userIdentity = await manager.CreateIdentityAsync(this, authenticationType);
-
-            //var s=new ClaimsIdentity()
-            // Add custom user claims here
-      
-
             return userIdentity;
         }
     }

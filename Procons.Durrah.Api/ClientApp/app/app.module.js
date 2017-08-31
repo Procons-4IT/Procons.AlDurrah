@@ -35,8 +35,6 @@ var login_component_1 = require("./login/login.component");
 var paymentConfirmation_component_1 = require("./paymentConfirmation/paymentConfirmation.component");
 var gv_control_component_1 = require("./SharedComponents/gv-control/gv-control.component");
 var primeng_2 = require("primeng/primeng");
-// import { ModalModule } from 'angular2-modal';
-// import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
 var ngx_modialog_1 = require("ngx-modialog");
 var bootstrap_1 = require("ngx-modialog/plugins/bootstrap");
 var AppModule = (function () {
@@ -49,6 +47,9 @@ AppModule = __decorate([
         declarations: [
             app_component_1.AppComponent,
             catalogue_component_1.catalogueComponent,
+            SearchResults_component_1.SearchResultsComponent,
+            SearchForm_component_1.searchFormComponent,
+            profile_component_1.profileComponent,
             recipes_component_1.RecipesComponent,
             recipe_list_component_1.RecipeListComponent,
             recipe_detail_component_1.RecipeDetailComponent,
@@ -57,10 +58,7 @@ AppModule = __decorate([
             home_component_1.HomeComponent,
             login_component_1.LoginComponent,
             paymentConfirmation_component_1.PaymentConfirmationComponent,
-            gv_control_component_1.GvControlComponent,
-            SearchResults_component_1.SearchResultsComponent,
-            SearchForm_component_1.searchFormComponent,
-            profile_component_1.profileComponent
+            gv_control_component_1.GvControlComponent
         ],
         imports: [
             bootstrap_1.BootstrapModalModule,
@@ -88,8 +86,7 @@ AppModule = __decorate([
             AccountService_1.AccountService,
             UserService_1.UserService,
             material_1.OVERLAY_PROVIDERS],
-        bootstrap: [app_component_1.AppComponent],
-        entryComponents: [SearchResults_component_1.SearchResultsComponent, SearchForm_component_1.searchFormComponent, profile_component_1.profileComponent]
+        bootstrap: [app_component_1.AppComponent]
     })
 ], AppModule);
 exports.AppModule = AppModule;

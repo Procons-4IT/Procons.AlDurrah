@@ -18,7 +18,6 @@
 
     public class WorkersProvider : ProviderBase
     {
-        DatabaseHelper<HanaConnection> dbHelper = Factory.DeclareClass<DatabaseHelper<HanaConnection>>();
         public bool CreateWorker(Worker worker)
         {
             var created = false;
