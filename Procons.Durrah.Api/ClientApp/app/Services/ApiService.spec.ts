@@ -4,7 +4,7 @@
 import { TestBed, inject, async } from '@angular/core/testing';
 import { Http, HttpModule } from '@angular/http';
 import { ApiService } from './ApiService'
-import { PaymentRedirectParams, KnetPayment } from '../Models/ApiRequestType';
+import { ResetPasswordParams, PaymentRedirectParams, KnetPayment } from '../Models/ApiRequestType';
 
 describe('MyApiService', () => {
     beforeEach(() => {
@@ -85,10 +85,23 @@ describe('MyApiService', () => {
                 if (onError.status == '403') {
                     console.log('something');
 
+                } else {
+                    fail();
                 }
             });
     })));
 
+    it('resettPassword ', async(inject([ApiService], (service: ApiService) => {
+        let resetParam: ResetPasswordParams = { "EmailAddress": "mazen@procons.com", "ValidationId": "akjdhk4hk3", "Password": "1234" }
+        service.resetPassword(resetParam).subscribe(response => {
+            console.log(`API-TEST  resetParam:${resetParam}`, response.json());
+            expect(response).toBeTruthy;
+        },
+            onError => {
+                console.log(`API-TEST  resetParam:${resetParam}`, onError);
+                fail();
+            });
+    })));
 
 
 

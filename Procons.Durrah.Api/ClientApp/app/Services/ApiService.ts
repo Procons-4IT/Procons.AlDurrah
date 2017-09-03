@@ -7,7 +7,7 @@ import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/catch';
 
 import { Injectable, OnDestroy } from '@angular/core';
-import { PaymentRedirectParams, KnetPayment, SearchCriteriaParams } from '../Models/ApiRequestType';
+import { PaymentRedirectParams, KnetPayment, SearchCriteriaParams, ResetPasswordParams } from '../Models/ApiRequestType';
 import { Worker } from '../Models/Worker';
 @Injectable()
 export class ApiService {
@@ -35,6 +35,9 @@ export class ApiService {
         return this.httpPostHelper(this.config.forgotPasswordUrl, requestBody);
 
     }
+    public resetPassword(param: ResetPasswordParams) {
+        return this.httpPostHelper(this.config.resetPasswordUrl, param);
+    }
     public knetPaymentRedirectUrl(paymentInformation: PaymentRedirectParams): Observable<string> {
         return this.httpPostHelper(this.config.knetUrl, paymentInformation)
             .map(response => {
@@ -43,7 +46,7 @@ export class ApiService {
     }
 
 
-    public createIncomingPayment(payment: KnetPayment): Observable<String> {
+    public createIncomingPayment(payment: KnetPayment): Observable<string> {
         return this.httpPostHelper(this.config.incomingPaymentUrl, payment)
             .map(response => {
                 return response.json();

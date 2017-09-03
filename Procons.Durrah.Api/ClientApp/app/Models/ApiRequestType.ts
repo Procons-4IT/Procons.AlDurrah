@@ -23,3 +23,8 @@ export interface NameValuePair{
     name: string
     value: string
 }
+export interface ResetPasswordParams{
+    EmailAddress: string,
+    ValidationId: string,
+    Password: string
+}

@@ -9,7 +9,7 @@ import { Routes, RouterModule } from '@angular/router'
 const routes: Routes = [
   { path: 'Home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'PaymentConfirmation', component: PaymentConfirmationComponent },
+  { path: 'PaymentConfirmation', data: { isPayment: true }, component: HomeComponent },
   { path: 'ResetPassword', component: LoginComponent },
   { path: '', pathMatch: 'full', redirectTo: '/Home' },
   { path: '**', pathMatch: 'full', redirectTo: '/Home' }

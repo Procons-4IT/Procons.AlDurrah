@@ -6,11 +6,11 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class UtilityService {
 
-    constructor(private activeRoute: ActivatedRoute) { }
+    constructor() { }
 
     //Reusable Helper Methods
-    public getKnetUrlProperties() {
-        return this.activeRoute.queryParams.map(x => {
+    public getKnetUrlProperties(activeRoute: ActivatedRoute) {
+        return activeRoute.queryParams.map(x => {
             return {
                 PaymentID: x.PaymentID,
                 Postdate: x.Postdate,

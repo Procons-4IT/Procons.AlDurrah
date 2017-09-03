@@ -43,7 +43,6 @@ import { ContextService } from './Services/ContextService';
 
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
-import { PaymentConfirmationComponent } from './paymentConfirmation/paymentConfirmation.component';
 import { GvControlComponent } from './SharedComponents/gv-control/gv-control.component';
 import { DataGridModule } from 'primeng/primeng';
 import { ModalModule } from 'ngx-modialog';
@@ -62,7 +61,6 @@ import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
         routingComponents,
         HomeComponent,
         LoginComponent,
-        PaymentConfirmationComponent,
         GvControlComponent
     ],
     imports: [
