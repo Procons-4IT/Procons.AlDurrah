@@ -10,6 +10,8 @@ import { ComponentBase } from '../app.ComponentBase';
 import { Overlay } from 'ngx-modialog';
 import { Modal } from 'ngx-modialog/plugins/bootstrap';
 import { ApiService } from '../Services/ApiService';
+import { UtilityService } from '../Services/UtilityService';
+
 
 @Component({
     selector: '[app-paymentConfirmation]',
@@ -18,25 +20,25 @@ import { ApiService } from '../Services/ApiService';
     providers: [Modal, Overlay]
 })
 export class PaymentConfirmationComponent extends ComponentBase<any> implements OnInit {
-    constructor(private myApiService: ApiService, private modal: Modal, private route: ActivatedRoute) {
+    constructor(private myApiService: ApiService, private utility: UtilityService, private modal: Modal, private route: ActivatedRoute) {
         super();
     }
 
     ngOnInit() {
-        this.myApiService.getKnetUrlProperties()
-        .map(x=>this.myApiService.createIncomingPayment(x))
-        .mergeMap(x=>x)
-        .subscribe(onSuccess=>{
-            var response = 'Payment Attempted to Post: [server-response] ' + onSuccess;
-            console.log(response);
-            this.OpenModal(response);
-        });
+        this.utility.getKnetUrlProperties()
+            .map(x => this.myApiService.createIncomingPayment(x))
+            .mergeMap(x => x)
+            .subscribe(onSuccess => {
+                var response = 'Payment Attempted to Post: [server-response] ' + onSuccess;
+                console.log(response);
+                this.OpenModal(response);
+            });
 
     }
 
 
 
-    OpenModal(message:string) {
+    OpenModal(message: string) {
         this.modal.alert()
             .showClose(true)
             .title(message)

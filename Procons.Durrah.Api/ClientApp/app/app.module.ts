@@ -1,4 +1,4 @@
-import {OVERLAY_PROVIDERS} from "@angular/material";
+import { OVERLAY_PROVIDERS } from "@angular/material";
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -21,25 +21,29 @@ import { BusyModule } from 'angular2-busy';
 import { LoadingModule } from 'ngx-loading';
 
 import {
-  DataTableModule,
-  SharedModule,
-  SliderModule,
-  DropdownModule,
-  MultiSelectModule,
-  PanelMenuModule,
-  MenuItem,
-  ButtonModule,
-  DialogModule
+    DataTableModule,
+    SharedModule,
+    SliderModule,
+    DropdownModule,
+    MultiSelectModule,
+    PanelMenuModule,
+    MenuItem,
+    ButtonModule,
+    DialogModule
 } from 'primeng/primeng';
 
-import {ApiService} from './Services/ApiService';
-import {UserService} from './Services/UserService';
+import { ApiService } from './Services/ApiService';
+import { UtilityService } from './Services/UtilityService';
+
+import { ProconsModalSerivce } from './Services/ProconsModalService';
+import { UserService } from './Services/UserService';
 import { CarService } from './Services/CarService';
 import { AccountService } from './Services/AccountService';
 import { ContextService } from './Services/ContextService';
+
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
-import { PaymentConfirmationComponent} from './paymentConfirmation/paymentConfirmation.component';
+import { PaymentConfirmationComponent } from './paymentConfirmation/paymentConfirmation.component';
 import { GvControlComponent } from './SharedComponents/gv-control/gv-control.component';
 import { DataGridModule } from 'primeng/primeng';
 import { ModalModule } from 'ngx-modialog';
@@ -85,10 +89,12 @@ import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
         CanActivateViaAuthGuard,
         ContextService,
         ApiService,
+        UtilityService,
         AccountService,
         UserService,
-        OVERLAY_PROVIDERS],
+        OVERLAY_PROVIDERS,
+        ProconsModalSerivce],
 
-    bootstrap: [AppComponent] 
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

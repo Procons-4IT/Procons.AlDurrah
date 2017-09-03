@@ -1,76 +1,79 @@
-import { Component, OnInit, OnDestroy, Input} from '@angular/core';
-import { CarService } from '../Services/CarService'
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Router } from '@angular/router';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { Subscription } from 'rxjs/Subscription';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/takeUntil';
-import { ContextService } from '../Services/ContextService'
-import { ComponentBase } from '../app.ComponentBase';
-import { Overlay } from 'ngx-modialog';
-import { Modal } from 'ngx-modialog/plugins/bootstrap';
 import { ApiService } from '../Services/ApiService';
+import { ProconsModalSerivce } from '../Services/ProconsModalService';
 
+declare var $;
 @Component({
-    selector: '[app-login]',
+    selector: 'login',
     templateUrl: './login.component.html',
-    styleUrls: ['./login.component.css'],
-    providers: [Modal, Overlay]
+    styleUrls: ['./login.component.css']
+
 })
-export class LoginComponent extends ComponentBase<any> implements OnInit {
-    subscriptions: Subscription[];
-    userName: string;
-    password: string;
-    displayError: boolean;
-    errorMessage: string = "";
-    constructor(private myApiService: ApiService, private carService: CarService, private router: Router, private context: ContextService, public modal: Modal) {
-        super();
-    }
+export class LoginComponent implements OnInit {
 
-    ngOnInit() {
+    public loading: boolean = false;
+    public isLoggedIn: boolean = false;
+    public forgotPassModalLoading: boolean = false;
+    public forgotPassModalError: string = "";
+    public resetPassModalLoading: boolean = false;
+    public showForgotPasswordModal = false;
 
-    }
+    constructor(private myApiService: ApiService, public myModal: ProconsModalSerivce) { }
+    ngOnInit() { }
 
     Login(userName: string, password: string) {
-        console.log('Logging in with userName: ',userName,' password: ','####');
-        this.myApiService.login(userName, password).subscribe(isLoggedIn => {
-            if (isLoggedIn) {
-                this.OpenModal();
-                this.router.navigateByUrl("/Home");
-            } else {
+        console.log('Logging in with userName: ', userName, ' password: ', '####');
+        this.loading = true;
 
-            }
+        this.myApiService.login(userName, password).subscribe(isLoggedIn => {
+            this.loading = false;
+            this.OpenModal();
         }, (error) => {
-            this.errorMessage = "";
-            this.errorMessage = error.json().error_description
-            this.displayError = true;
-        }, () => {
-            // this.userName = null;
-            // this.password = null;
+            this.loading = false;
+            this.myModal.showErrorModal();
         });
 
     }
+    ForgotPassword(email: string) {
+        console.log('### Sending ForgotPassword Request for email ', email);
+        this.forgotPassModalError = "";
+        this.forgotPassModalLoading = true;
+        this.myApiService.forgotPassword(email).subscribe(isSuccesful => {
+            this.forgotPassModalLoading = false;
+            console.log('I got a reply!');
+            $('#myModal').modal('toggle')
+            this.showForgotPasswordModal = false;
 
-    Redirect() {
-        window.location.href = "http://knet.testyourprojects.co.in/";
+
+        }, onError => {
+            this.forgotPassModalLoading = false;
+
+            if (onError.status == '404') {
+                this.forgotPassModalError = "Invalid Email";
+
+            } else {
+                this.myModal.showErrorModal();
+            }
+        })
+
     }
-
-    OnDestroy() {
-
+    ResetPassword(password: string, confirmPassword: string) {
+        this.resetPassModalLoading = true;
+        console.log('Reset Password Unimplemented Called!', password, ' ', confirmPassword);
+        setTimeout(() => { this.resetPassModalLoading = false }, 500);
     }
 
 
     OpenModal() {
-        this.modal.alert()
-            .showClose(true)
-            .body(`
-                        <div class="modal-body">
-                            <div class="modal-icon"><img src="/Assets/src/app/images/icon_lock.png" class="icon" /></div>
-                            <p><small>You are logged in</small></p>
-                            <h4>Create your own password</h4>
-                            <a href="#tabNewPass" data-toggle="tab" data-dismiss="modal">Continue</a>
-                        </div>`)
-            .open();
+        let html = `
+            <div class="modal-body">
+                <div class="modal-icon"><img src="/Assets/src/app/images/icon_lock.png" class="icon" /></div>
+                <p><small>لقد سجلت الدخول</small></p>
+                <h4>إنشاء كلمة المرور</h4>
+                <a href="#tabNewPass" data-toggle="tab" data-dismiss="modal">واصل</a>
+            </div> `
+
+        this.myModal.showHTMLModal(html);
     }
 }

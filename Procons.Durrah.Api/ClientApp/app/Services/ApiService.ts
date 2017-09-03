@@ -1,11 +1,11 @@
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { ActivatedRoute } from '@angular/router';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/catch';
+
 import { Injectable, OnDestroy } from '@angular/core';
 import { PaymentRedirectParams, KnetPayment, SearchCriteriaParams } from '../Models/ApiRequestType';
 import { Worker } from '../Models/Worker';
@@ -14,7 +14,7 @@ export class ApiService {
 
     private config = require('../../config.json');
 
-    constructor(private http: Http, private activeRoute: ActivatedRoute) { }
+    constructor(private http: Http) { }
 
     public login(userName: string, password: string): Observable<boolean> {
         let requestBody = "userName=" + userName + "&password=" + password + "&grant_type=password";
@@ -29,6 +29,11 @@ export class ApiService {
             } else
                 return false;
         });
+    }
+    public forgotPassword(email: string): Observable<any> {
+        var requestBody = { EmailAddress: email };;
+        return this.httpPostHelper(this.config.forgotPasswordUrl, requestBody);
+
     }
     public knetPaymentRedirectUrl(paymentInformation: PaymentRedirectParams): Observable<string> {
         return this.httpPostHelper(this.config.knetUrl, paymentInformation)
@@ -48,7 +53,7 @@ export class ApiService {
         return this.httpGetHelper(this.config.getSearchCriteriaUrl)
             .map(response => { return response.json(); })
     }
-    public getAllWorkers(optionalFilterCritera: Worker): Observable<Worker[]> {
+    public getAllWorkers(optionalFilterCritera: Worker | object): Observable<Worker[]> {
         console.log('Getting All the Workers');
         var actualData = this.httpPostHelper(this.config.getWorkersUrl, optionalFilterCritera)
             .map(response => {
@@ -63,12 +68,12 @@ export class ApiService {
         // headers.append("Content-Type", 'application/x-www-form-urlencoded');
 
         return this.http.post(this.config.baseUrl + url, body)
-            // .catch(tempCatch => {
-            //     var fakeObject = {
-            //         json: () => [1, 2, 3]
-            //     };
-            //     return Observable.of(<Response>fakeObject);
-            // });
+        // .catch(tempCatch => {
+        //     var fakeObject = {
+        //         json: () => [1, 2, 3]
+        //     };
+        //     return Observable.of(<Response>fakeObject);
+        // });
     }
     public httpGetHelper(url: string): Observable<Response> {
         let headers = new Headers();
@@ -76,34 +81,17 @@ export class ApiService {
         let options: RequestOptions = new RequestOptions({ headers: headers });
 
         return this.http.get(this.config.baseUrl + url, options)
-            // .catch(tempCatch => {
-            //     var fakeObject = {
-            //         json: () => [1, 2, 3]
-            //     };
-            //     return Observable.of(<Response>fakeObject);
+        // .catch(tempCatch => {
+        //     var fakeObject = {
+        //         json: () => [1, 2, 3]
+        //     };
+        //     return Observable.of(<Response>fakeObject);
 
-            // });
+        // });
     }
     public GetSecurityToken(): string {
         let securityToken: string = '';
         securityToken = 'bearer ' + sessionStorage.getItem('SecurityToken');
         return securityToken
     }
-
-    //Reusable Helper Methods
-    public getKnetUrlProperties() {
-        return this.activeRoute.queryParams.map(x => {
-            return {
-                PaymentID: x.PaymentID,
-                Postdate: x.Postdate,
-                Result: x.Result,
-                TranID: x.TranID,
-                Auth: x.Auth
-            }
-        });
-    }
-    public redirectToUrl(url: string) {
-        window.location.href = url;
-    }
-
 }

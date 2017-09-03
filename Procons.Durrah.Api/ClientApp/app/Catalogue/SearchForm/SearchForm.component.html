@@ -2,19 +2,14 @@
   <div class="row">
     <div class="col-sm-6 col-sm-offset-2">
       <h3><span class="fa fa-search fa-fw fa-2x"></span> البحث المتقدم</h3>
-      
-      <li *ngFor="let user of searchCriteriaParams.workerTypes;">
-        {{user.name}}
-      </li>
       <form action="#" (ngSubmit)="GotoResults(workTypeInput,ageInput ,sexInput ,nationalityInput ,martialStatusInput ,languageInput )"
         method="post" id="searchForm" name="searchForm" #f="ngForm">
         <div class="form-group">
              <select class="form-control" #workTypeInput>
                      <option>نوع العامل</option>
-                     <option value="مربية">مربية</option>
-                     <option value="سائق">سائق</option>
-                     <option value="طباخ">طباخ</option>
-                     <option value="عامل منزلي">عامل منزلي</option>
+                     <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriteriaParams.workerTypes;">
+                       {{nameValuePair.name}}
+                     </option>
                    </select>
         </div>
         <div class="form-group">
@@ -29,37 +24,34 @@
         <div class="form-group">
           <select class="form-control" #sexInput>
                      <option>الجنس</option>
-                     <option value="انثى">انثى</option>
-                     <option value="ذكر">ذكر</option>
+                     <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriteriaParams.gender;">
+                        {{nameValuePair.name}}
+                      </option>
                    </select>
         </div>
         <div class="form-group">
           <select class="form-control" #nationalityInput>
                      <option>الجنسية</option>
-                     <option value="الهند">الهند</option>
-                     <option value="الفلبين">الفلبين</option>
-                     <option value="ملاوي">ملاوي</option>
-                     <option value="بنين">بنين</option>
-                     <option value="تشاد">تشاد</option>
-                     <option value="نيبال">نيبال</option>
-                     <option value="سيريلانكا">سيريلانكا</option>
+                     <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriteriaParams.nationality;">
+                        {{nameValuePair.name}}
+                      </option>
                    </select>
         </div>
         <div class="form-group">
           <select class="form-control" #martialStatusInput>
                      <option>الحالة الاجتماعية</option>
-                     <option value="متزوج">متزوج</option>
-                     <option value="أعزب">أعزب</option>
+                     <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriteriaParams.martialStatus;">
+                        {{nameValuePair.name}}
+                      </option>
                    </select>
         </div>
         <div class="form-group" #languageInput>
           <select class="form-control">
                      <option>اللغات المتحدث بها</option>
-                     <option value="اخرى">اخرى</option>
-                     <option value="فرنسي">فرنسي</option>
-                     <option value="انجليزي">انجليزي</option>
-                     <option value="عربي">عربي</option>
-                   </select>
+                     <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriteriaParams.languages;">
+                        {{nameValuePair.name}}
+                      </option>
+                    </select>
         </div>
 
         <div class="form-group">
