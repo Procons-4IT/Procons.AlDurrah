@@ -6,5 +6,6 @@
   "incomingPaymentUrl": "/api/Workers/CreatePayment",
   "loginUrl": "/oauth/token",
   "forgotPasswordUrl": "/api/accounts/resetrequest",
-  "resetPasswordUrl":"/api/accounts/reset"
+  "resetPasswordUrl": "/api/accounts/reset",
+  "createNewUserUrl": "/api/accounts/newUser"
 }

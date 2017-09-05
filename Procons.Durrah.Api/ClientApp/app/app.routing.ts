@@ -9,7 +9,7 @@ const routes: Routes = [
   { path: 'Home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'PaymentConfirmation', data: { isPayment: true }, component: HomeComponent },
-  { path: 'ResetPassword', component: LoginComponent },
+  { path: 'ResetPassword', data: { isPasswordReset: true }, component: HomeComponent },
   { path: '', pathMatch: 'full', redirectTo: '/Home' },
   { path: '**', pathMatch: 'full', redirectTo: '/Home' }
 ];

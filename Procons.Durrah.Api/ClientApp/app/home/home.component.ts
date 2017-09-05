@@ -21,12 +21,15 @@ export class HomeComponent implements OnInit {
 
   public paymentModalText: string = "";
   public loadingPayment: boolean = false;
-  constructor(public myApi: ApiService, public utility: UtilityService, public activeRouter: ActivatedRoute) { }
+  constructor(public myApi: ApiService
+    , public utility: UtilityService,
+    public activeRouter: ActivatedRoute) { }
 
 
   ngOnInit() {
     this.handlePaymentRoute();
   }
+
 
   handlePaymentRoute() {
     console.log('## Checking if PaymentRoute');

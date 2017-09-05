@@ -20,6 +20,15 @@ export class UtilityService {
             }
         });
     }
+    public getResetPasswordUrlProperties(activeRoute: ActivatedRoute) {
+        return activeRoute.queryParams.map(x => {
+            return {
+                Email: x.Email,
+                ValidationId: x.ValidationId
+            }
+        });
+    }
+
     public redirectToUrl(url: string) {
         window.location.href = url;
     }

@@ -5,13 +5,13 @@ export interface KnetPayment {
     TranID: string,
     Auth: string
 }
-export interface PaymentRedirectParams{
+export interface PaymentRedirectParams {
     SerialNumber: string,
     CardCode: string,
     Amount: string,
     Code: string
 }
-export interface SearchCriteriaParams{
+export interface SearchCriteriaParams {
     languages: NameValuePair[],
     nationality: NameValuePair[],
     gender: NameValuePair[],
@@ -19,12 +19,21 @@ export interface SearchCriteriaParams{
     workerTypes: NameValuePair[]
 }
 
-export interface NameValuePair{
+export interface NameValuePair {
     name: string
     value: string
 }
-export interface ResetPasswordParams{
+export interface ResetPasswordParams {
     EmailAddress: string,
     ValidationId: string,
     Password: string
+}
+export interface CreateNewUserParams {
+    firstName: string
+    lastName: string,
+    userName: string,
+    civilId: string,
+    password: string,
+    confirmPassword: string,
+    email: string
 }

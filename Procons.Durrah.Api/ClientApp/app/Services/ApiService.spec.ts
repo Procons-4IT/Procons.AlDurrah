@@ -4,7 +4,7 @@
 import { TestBed, inject, async } from '@angular/core/testing';
 import { Http, HttpModule } from '@angular/http';
 import { ApiService } from './ApiService'
-import { ResetPasswordParams, PaymentRedirectParams, KnetPayment } from '../Models/ApiRequestType';
+import { CreateNewUserParams, ResetPasswordParams, PaymentRedirectParams, KnetPayment } from '../Models/ApiRequestType';
 
 describe('MyApiService', () => {
     beforeEach(() => {
@@ -102,6 +102,21 @@ describe('MyApiService', () => {
                 fail();
             });
     })));
+
+    it('createNewUser ', async(inject([ApiService], (service: ApiService) => {
+        let param: CreateNewUserParams = { firstName: "Houssam", lastName: "Doe", userName: "someUser", civilId: "1222", email: "Houssam.doe@gmail.com", confirmPassword: "1234", password: "1234" };
+
+        service.createNewUser(param).subscribe(response => {
+            console.log(`API-TEST  createUser:${param}`, response);
+            console.log(`API-TEST  createUser:${param}`, response.json());
+            expect(response).toBeTruthy;
+        },
+            onError => {
+                console.log(`API-TEST  createNewUser:${param}`, onError);
+                fail();
+            });
+    })));
+
 
 
 
