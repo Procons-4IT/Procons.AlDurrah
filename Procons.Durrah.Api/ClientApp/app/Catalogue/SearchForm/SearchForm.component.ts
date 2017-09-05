@@ -1,7 +1,7 @@
-import { Component, OnInit,Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MenuItem } from 'primeng/primeng';
 import { SearchResultsComponent } from '../SearchResults/SearchResults.component';
-import { SearchCriteriaParams } from '../../Models/ApiRequestType';
+import { SearchCriteriaParams} from '../../Models/ApiRequestType';
 
 import { Observable } from 'rxjs';
 
@@ -12,15 +12,15 @@ import { Observable } from 'rxjs';
     styleUrls: ['./searchForm.component.css']
 })
 export class searchFormComponent implements OnInit {
-    
+
     @Output() onSearchFilterCriteria = new EventEmitter<object>();
-    @Input()  searchCriteriaParams: SearchCriteriaParams;
+    @Input() searchCriteriaParams: SearchCriteriaParams;
 
     constructor() { }
 
     ngOnInit() {
-        console.log('Init SearchForm Component, ',this.searchCriteriaParams);
-     }
+        console.log('Init SearchForm Component, ', this.searchCriteriaParams);
+    }
 
 
     GotoResults(workType, age, sex, nationality, maritalStatus, language) {
@@ -29,8 +29,7 @@ export class searchFormComponent implements OnInit {
         for (var i = 0; i < arguments.length; i++) {
             let argument = arguments[i];
             if (argument.type == 'select-one') {
-
-                let isFirstElement = argument.value === argument.options[0].value;
+                let isFirstElement = argument.selectedIndex === 0;
                 if (!isFirstElement) {
                     let keyName: string = argumentKeys[i];
                     workerFilterParams[keyName] = argument.value;

@@ -1,0 +1,23 @@
+<!-- Reset Password Form Snipper -->
+<form action="#" method="post" id="resetPassForm" (ngSubmit)="ResetPassword(passwordInput.value,confirmPasswordInput.value)">
+    <div class="form-group">
+        <input type="password" class="form-control" id="resetPass" name="password" placeholder="password" #passwordInput />
+    </div>
+    <div class="form-group">
+        <input type="password" class="form-control" id="confirmResetPass" name="confirm password" placeholder="confirm password"
+            #confirmPasswordInput/>
+        <span id="helpBlock2" class="help-block" *ngIf="resetPassInputError">{{resetPassInputError}} </span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="إرسال" class="btn btn-default" />
+    </div>
+</form>
+<!-- newUser Debugging -->
+<div> {{newUser.firstName}}</div>
+<div> {{newUser.lastName}}</div>
+<div> {{newUser.civilId}}</div>
+<div> {{newUser.email}}</div>
+<div> {{newUser.userName}}</div>
+<div> {{newUser.password}}</div>
+<div> {{newUser.confirmPassword}}</div>

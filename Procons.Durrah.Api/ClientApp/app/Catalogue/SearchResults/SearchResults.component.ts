@@ -1,5 +1,7 @@
-import { Component, OnInit, Input, EventEmitter, Output, Sanitizer } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Worker } from '../../Models/Worker';
+import { ProconsModalSerivce } from '../../Services/ProconsModalService';
 import { MenuItem } from 'primeng/primeng';
 
 @Component({
@@ -10,8 +12,10 @@ import { MenuItem } from 'primeng/primeng';
 export class SearchResultsComponent implements OnInit {
   @Input() workers: Worker[];
   @Output() onSelectedWorker = new EventEmitter<Worker>();
+  public showVideoModal: boolean = false;
+  public videoUrl;
 
-  constructor(public sanitizer: Sanitizer) { }
+  constructor(public sanitizer: DomSanitizer, public myModal: ProconsModalSerivce) { }
 
   ngOnInit() {
     console.log('SearchResultsComponent Loaded! ', this.workers);
@@ -29,13 +33,11 @@ export class SearchResultsComponent implements OnInit {
     };
   }
   public openRequestedPopup(url) {
-    console.log('opening url ',url);
-    if (!url) {
-      url = "https://www.youtube.com/watch?v=TzqxmgwcKUs";
-    }
-    var strWindowFeatures = "menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes";
-    return window.open(url, "Video", strWindowFeatures);
+    console.log('opening url ', url);
+    this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    this.showVideoModal = true;
   }
+
 
 
 }

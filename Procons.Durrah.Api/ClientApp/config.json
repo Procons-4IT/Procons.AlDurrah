@@ -1,8 +1,11 @@
 {
   "baseUrl": "http://89.249.220.100:80",
-  "loginUrl": "/oauth/token",
+  "getSearchCriteriaUrl": "/api/Workers/GetSearchLookups",
+  "getWorkersUrl": "/api/Workers/GetWorkers",
   "knetUrl": "/api/Workers/CallKnetGateway",
   "incomingPaymentUrl": "/api/Workers/CreatePayment",
-  "getWorkersUrl": "/api/Workers/GetWorkers",
-  "getSearchCriteriaUrl": "/api/Workers/GetSearchLookups"
+  "loginUrl": "/oauth/token",
+  "forgotPasswordUrl": "/api/accounts/resetrequest",
+  "resetPasswordUrl": "/api/accounts/reset",
+  "createNewUserUrl": "/api/accounts/newUser"
 }

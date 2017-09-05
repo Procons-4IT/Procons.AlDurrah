@@ -7,7 +7,6 @@ import {
     ComponentRef,
     ComponentFactory,
     ViewContainerRef,
-    ComponentFactoryResolver,
     ChangeDetectorRef
 } from '@angular/core';
 
@@ -24,6 +23,8 @@ import { SearchContent } from '../Models/SearchContent'
 import { SearchCriteriaParams } from '../Models/ApiRequestType'
 
 import { ApiService } from '../Services/ApiService';
+import { UtilityService } from '../Services/UtilityService';
+
 import { ProconsModalSerivce } from '../Services/ProconsModalService';
 
 @Component({
@@ -42,7 +43,7 @@ export class CatalogueComponent implements OnInit {
     public showSearchResultTable: boolean = false;
     public showProfile: boolean = false;
 
-    constructor(private myApi: ApiService, private componentFactoryResolver: ComponentFactoryResolver,
+    constructor(private myApi: ApiService, private utility:UtilityService, 
         private sanitizer: DomSanitizer, private myModal: ProconsModalSerivce) {
     }
 
@@ -106,10 +107,10 @@ export class CatalogueComponent implements OnInit {
         var paymentInformation = { SerialNumber: selectedWorker.serialNumber, CardCode: "C220Temp", Amount: "100", Code: selectedWorker.code }
         this.loading = true;
         this.myApi.knetPaymentRedirectUrl(paymentInformation)
-        .map(url=> this.myApi.redirectToUrl(url))
-        .subscribe(onSuccess=>{},onError=>{
-            this.loading = false;
-            this.myModal.showErrorModal();
-        });
+            .map(url => this.utility.redirectToUrl(url))
+            .subscribe(onSuccess => { }, onError => {
+                this.loading = false;
+                this.myModal.showErrorModal();
+            });
     }
 }
