@@ -34,5 +34,15 @@
         {
             return provider.CreatePasswordReset(emailAddress);
         }
+
+        public string GenerateCofnirmationToken(string email)
+        {
+            return provider.GenerateConfirmationToken(email);
+        }
+
+        public bool ConfirmEmail(string validationId,string email)
+        {
+            return provider.ConfirmEmail(validationId, email);
+        }
     }
 }

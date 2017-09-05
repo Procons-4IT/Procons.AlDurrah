@@ -74,23 +74,41 @@
             AspNet.IdentityResult identityResult = null;
             var password = Utilities.Encrypt(user.Password);
             var oDoc = base.B1Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oBusinessPartners) as SAPbobsCOM.BusinessPartners;
-            oDoc.CardType = SAPbobsCOM.BoCardTypes.cCustomer;
-            oDoc.Series = GetSeriesCode();
-            oDoc.UserFields.Fields.Item("U_Password").Value = password;
-            oDoc.UserFields.Fields.Item("U_UserName").Value = user.UserName;
-            oDoc.EmailAddress = user.Email;
-            oDoc.CardName = $"{user.FirstName} {user.LastName}";
-            oDoc.EmailAddress = user.Email;
-            if (oDoc.Add() != 0)
+            var oRecords = base.B1Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.BoRecordset) as SAPbobsCOM.Recordset;
+            try
             {
+                oRecords.DoQuery($@"SELECT ""CardCode"" FROM OCRD WHERE ""U_UserName"" = '{user.UserName}' OR ""E_Mail"" = '{user.Email}'");
+                if (oRecords.RecordCount == 0)
+                {
+                    oDoc.CardType = SAPbobsCOM.BoCardTypes.cCustomer;
+                    oDoc.Series = GetSeriesCode();
+                    oDoc.UserFields.Fields.Item("U_Password").Value = password;
+                    oDoc.UserFields.Fields.Item("U_UserName").Value = user.UserName;
+                    oDoc.EmailAddress = user.Email;
+                    oDoc.CardName = $"{user.FirstName} {user.LastName}";
+                    oDoc.EmailAddress = user.Email;
+                    if (oDoc.Add() != 0)
+                    {
+                        var err = base.B1Company.GetLastErrorDescription();
+                        identityResult = new AspNet.IdentityResult(err);
+                    }
+                    else
+                        identityResult = AspNet.IdentityResult.Success; ;
+                }
+                else
+                    identityResult = new AspNet.IdentityResult("Username or Email are already in use!");
+            }
+            catch (Exception ex)
+            {
+                identityResult = new AspNet.IdentityResult(ex.Message);
+            }
+            finally
+            {
+                oRecords.ReleaseObject();
+                oDoc.ReleaseObject();
+            }
 
-                var err = base.B1Company.GetLastErrorDescription();
-                identityResult = new AspNet.IdentityResult(err);
-            }
-            else
-            {
-                identityResult = AspNet.IdentityResult.Success; ;
-            }
+
 
             //ServiceLayerProvider slInstance = new ServiceLayerProvider();
             //slInstance.Login();
@@ -125,6 +143,53 @@
             return identityResult;
         }
 
+        public string GenerateConfirmationToken(string email)
+        {
+            try
+            {
+                var random = Utilities.RandomString();
+                var ServiceInstance = ServiceLayerProvider.GetInstance();
+                var password = new EMAILCONFIRMATION();
+                password.Code = random;
+                password.Name = email;
+                ServiceInstance.CurrentServicelayerInstance.AddToEMAILCONFIRMATION(password);
+                ServiceInstance.CurrentServicelayerInstance.SaveChanges();
+                return random;
+            }
+            catch (Exception ex)
+            {
+                return string.Empty;
+            }
+        }
+
+        public bool ConfirmEmail(string validationId, string email)
+        {
+            var confirmed = false;
+            try
+            {
+                var ServiceInstance = ServiceLayerProvider.GetInstance();
+
+                var result = ServiceInstance.CurrentServicelayerInstance.EMAILCONFIRMATION.Where(x => x.Code == validationId && x.Name == email).FirstOrDefault();
+                if (result != null)
+                {
+                    var user = ServiceInstance.CurrentServicelayerInstance.BusinessPartners.Where(x => x.EmailAddress == email).FirstOrDefault();
+                    if (user != null)
+                    {
+                        user.U_Confirmed = "Y";
+                        ServiceInstance.CurrentServicelayerInstance.UpdateObject(user);
+                        var commit = ServiceInstance.CurrentServicelayerInstance.SaveChanges();
+                        if (commit != null)
+                            confirmed = true;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                confirmed = false;
+            }
+            return confirmed;
+        }
 
         public string CreatePasswordReset(string email)
         {
@@ -160,7 +225,9 @@
                     {
                         user.U_Password = Utilities.Encrypt(newPassword);
                         ServiceInstance.CurrentServicelayerInstance.UpdateObject(user);
-                        creationResult = true;
+                        var commit = ServiceInstance.CurrentServicelayerInstance.SaveChanges();
+                        if (commit != null)
+                            creationResult = true;
                     }
                 }
 

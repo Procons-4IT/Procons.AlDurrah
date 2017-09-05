@@ -17,6 +17,10 @@
         public string LastName { get; set; }
 
         [Required]
+        [MaxLength(100)]
+        public string CivilId { get; set; }
+
+        [Required]
         public byte Level { get; set; }
 
         [Required]

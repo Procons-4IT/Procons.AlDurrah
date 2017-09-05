@@ -8439,6 +8439,7 @@
         <Property Name="AgentCode" Type="Edm.String" />
         <Property Name="U_Password" Type="Edm.String" />
         <Property Name="U_UserName" Type="Edm.String" />
+        <Property Name="U_Confirmed" Type="Edm.String" />
         <Property Name="BPAddresses" Type="Collection(SAPB1.BPAddress)" />
         <Property Name="ContactEmployees" Type="Collection(SAPB1.ContactEmployee)" />
         <Property Name="BPAccountReceivablePaybleCollection" Type="Collection(SAPB1.BPAccountReceivablePayble)" />
@@ -10601,6 +10602,7 @@
         <Property Name="Letter" Type="Edm.String" />
         <Property Name="FolioNumberFrom" Type="Edm.Int32" />
         <Property Name="FolioNumberTo" Type="Edm.Int32" />
+        <Property Name="U_IntUniqID" Type="Edm.String" />
         <Property Name="JournalEntryLines" Type="Collection(SAPB1.JournalEntryLine)" />
         <Property Name="WithholdingTaxDataCollection" Type="Collection(SAPB1.WithholdingTaxData)" />
         <NavigationProperty FromRole="JournalEntries" Name="LandedCosts" Relationship="SAPB1.FK_LandedCosts_JournalEntries" ToRole="LandedCosts" />
@@ -13240,6 +13242,48 @@
       <ComplexType Name="InvokeParams">
         <Property Name="Value" Type="Edm.String" />
       </ComplexType>
+      <EntityType Name="EDUCATION">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Type="Edm.String" />
+        <Property Name="DocEntry" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Canceled" Type="Edm.String" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="UserSign" Type="Edm.Int32" />
+        <Property Name="Transfered" Type="Edm.String" />
+        <Property Name="CreateDate" Type="Edm.DateTime" />
+        <Property Name="CreateTime" Type="Edm.Int32" />
+        <Property Name="UpdateDate" Type="Edm.DateTime" />
+        <Property Name="UpdateTime" Type="Edm.Int32" />
+        <Property Name="DataSource" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="EDUCATIONParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="EMAILCONFIRMATION">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Type="Edm.String" />
+        <Property Name="DocEntry" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Canceled" Type="Edm.String" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="UserSign" Type="Edm.Int32" />
+        <Property Name="Transfered" Type="Edm.String" />
+        <Property Name="CreateDate" Type="Edm.DateTime" />
+        <Property Name="CreateTime" Type="Edm.Int32" />
+        <Property Name="UpdateDate" Type="Edm.DateTime" />
+        <Property Name="UpdateTime" Type="Edm.Int32" />
+        <Property Name="DataSource" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="EMAILCONFIRMATIONParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
       <EntityType Name="LANGUAGES">
         <Key>
           <PropertyRef Name="Code" />
@@ -13303,6 +13347,27 @@
       <ComplexType Name="PASSRESETParams">
         <Property Name="Code" Type="Edm.String" />
       </ComplexType>
+      <EntityType Name="RELIGION">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Type="Edm.String" />
+        <Property Name="DocEntry" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Canceled" Type="Edm.String" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="UserSign" Type="Edm.Int32" />
+        <Property Name="Transfered" Type="Edm.String" />
+        <Property Name="CreateDate" Type="Edm.DateTime" />
+        <Property Name="CreateTime" Type="Edm.Int32" />
+        <Property Name="UpdateDate" Type="Edm.DateTime" />
+        <Property Name="UpdateTime" Type="Edm.Int32" />
+        <Property Name="DataSource" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="RELIGIONParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
       <EntityType Name="WORKERS">
         <Key>
           <PropertyRef Name="Code" />
@@ -13323,7 +13388,7 @@
         <Property Name="U_ItemCode" Type="Edm.String" />
         <Property Name="U_Serial" Type="Edm.String" />
         <Property Name="U_Agent" Type="Edm.String" />
-        <Property Name="U_Age" Type="Edm.Int32" />
+        <Property Name="U_Age" Type="Edm.Double" />
         <Property Name="U_BirthDate" Type="Edm.DateTime" />
         <Property Name="U_Gender" Type="Edm.String" />
         <Property Name="U_Nationality" Type="Edm.String" />
@@ -13340,9 +13405,9 @@
         <Property Name="U_PassportIssDate" Type="Edm.DateTime" />
         <Property Name="U_PassportExpDate" Type="Edm.String" />
         <Property Name="U_PassportPoIssue" Type="Edm.String" />
+        <Property Name="U_Price" Type="Edm.Double" />
         <Property Name="U_CivilId" Type="Edm.String" />
         <Property Name="U_Status" Type="Edm.String" />
-        <Property Name="U_Price" Type="Edm.Double" />
       </EntityType>
       <ComplexType Name="WORKERSParams">
         <Property Name="Code" Type="Edm.String" />
@@ -19325,9 +19390,12 @@
         <EntitySet EntityType="SAPB1.SalesOpportunities" Name="SalesOpportunities" />
         <EntitySet EntityType="SAPB1.SalesOpportunityInterestSetup" Name="SalesOpportunityInterestsSetup" />
         <EntitySet EntityType="SAPB1.COUNTRIES" Name="COUNTRIESUDO" />
+        <EntitySet EntityType="SAPB1.EDUCATION" Name="EDUCATION" />
+        <EntitySet EntityType="SAPB1.EMAILCONFIRMATION" Name="EMAILCONFIRMATION" />
         <EntitySet EntityType="SAPB1.LANGUAGES" Name="LANGUAGESUDO" />
         <EntitySet EntityType="SAPB1.MARITALSTATUS" Name="MARITALSTATUSUDO" />
         <EntitySet EntityType="SAPB1.PASSRESET" Name="PASSRESET" />
+        <EntitySet EntityType="SAPB1.RELIGION" Name="RELIGION" />
         <EntitySet EntityType="SAPB1.WORKERS" Name="WORKERSUDO" />
         <EntitySet EntityType="SAPB1.WORKERTYPES" Name="WORKERTYPESUDO" />
         <EntitySet EntityType="SAPB1.B1Session" Name="B1Sessions" />

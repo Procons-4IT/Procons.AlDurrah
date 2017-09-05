@@ -87,6 +87,7 @@
     <Compile Include="Factory.cs" />
     <Compile Include="Models\ApplicationRole.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
+    <Compile Include="Models\ConfirmationModel.cs" />
     <Compile Include="Models\LookupItem.cs" />
     <Compile Include="Models\PasswordModel.cs" />
     <Compile Include="Models\RolesFromClaims.cs" />

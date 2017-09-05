@@ -12,11 +12,17 @@
     using Procons.Durrah.Models;
     using Procons.Durrah.Facade;
     using Procons.Durrah.Common.Models;
+    using System.Web;
 
     [ApplicationExceptionFilter]
     [RoutePrefix("api/accounts")]
     public class AccountsController : BaseApiController
     {
+        #region PRIVATE VARIABLES
+        EmailService eService = new EmailService();
+        IdentityMessage idMessage = new IdentityMessage();
+        LoginFacade loginFacade = Factory.DeclareClass<LoginFacade>();
+        #endregion
 
 
         [Route("users")]
@@ -65,49 +71,45 @@
         {
             //if (!ModelState.IsValid)
             //    return BadRequest(ModelState);
-
-
-
-
+            var baseUrl = Request.RequestUri.GetLeftPart(UriPartial.Authority);
             IdentityResult addUserResult = await this.AppUserManager.CreateAsync(user);
 
             if (!addUserResult.Succeeded)
-            {
                 return GetErrorResult(addUserResult);
+            else
+            {
+                string code = loginFacade.GenerateCofnirmationToken(user.Email);
+
+                idMessage.Destination = user.Email;
+                idMessage.Subject = "Durra Confirmation Email";
+                var result = loginFacade.GenerateCofnirmationToken(user.Email);
+                if (result != string.Empty)
+                {
+                    var messageBody = $"Click on the following link to confirm your email <a href=\"{baseUrl}/confirmemail?validationId={result}&email={user.Email}\">here</a>";
+                    idMessage.Body = messageBody;
+                    eService.SendAsync(idMessage);
+                    return Ok("Confirmation email sent...");
+                }
+                else
+                    return NotFound();
             }
-
-            string code = await this.AppUserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-
-            var callbackUrl = new Uri(Url.Link("ConfirmEmailRoute", new { userId = user.Id, code = code }));
-
-            //await this.AppUserManager.SendEmailAsync(user.Id,
-            //                                        "Confirm your account",
-            //                                        "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
-            return Ok(addUserResult);
         }
 
         [AllowAnonymous]
-        [HttpGet]
-        [Route("ConfirmEmail", Name = "ConfirmEmailRoute")]
-        public async Task<IHttpActionResult> ConfirmEmail(string userId = "", string code = "")
+        [Route("confirmEmail")]
+        public async Task<IHttpActionResult> ConfirmEmail(ConfirmationModel model)
         {
-            if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(code))
+            if (model.Email != null && model.ValidationId != null)
             {
-                ModelState.AddModelError("", "User Id and Code are required");
-                return BadRequest(ModelState);
+              var result=  loginFacade.ConfirmEmail(model.ValidationId, model.Email);
+                if (result)
+                {
+                    return Ok();
+                }
+                else
+                    return InternalServerError();
             }
-
-            IdentityResult result = await this.AppUserManager.ConfirmEmailAsync(userId, code);
-
-            if (result.Succeeded)
-            {
-                return Ok();
-            }
-            else
-            {
-                return GetErrorResult(result);
-            }
+            return NotFound();
         }
 
         [Authorize]
@@ -132,10 +134,10 @@
         [HttpPost]
         [AllowAnonymous]
         [Route("reset")]
-        public  IHttpActionResult ResetPassword([FromBody]PasswordModel model)
+        public IHttpActionResult ResetPassword([FromBody]PasswordModel model)
         {
             var loginFacade = Factory.DeclareClass<LoginFacade>();
-           var result= loginFacade.ResetPassword(model.Password, model.ValidationId, model.EmailAddress);
+            var result = loginFacade.ResetPassword(model.Password, model.ValidationId, model.EmailAddress);
             if (result)
                 return Ok();
             else
@@ -145,22 +147,21 @@
         [HttpPost]
         [AllowAnonymous]
         [Route("resetrequest")]
-        public  IHttpActionResult RequestReset([FromBody]PasswordModel model)
+        public IHttpActionResult RequestReset([FromBody]PasswordModel model)
         {
-            EmailService eService = new EmailService();
-            IdentityMessage idMessage = new IdentityMessage();
-            idMessage.Body = "Click on the following link to change your password <a href=\"http://89.249.220.100\">here</a>";
+            var baseUrl = Request.RequestUri.GetLeftPart(UriPartial.Authority);
+
             idMessage.Destination = model.EmailAddress;
             idMessage.Subject = "Durra Password Reset";
-
-            var loginFacade = Factory.DeclareClass<LoginFacade>();
             var result = loginFacade.ResetRequest(model.EmailAddress);
-            if (result!=string.Empty)
+            if (result != string.Empty)
             {
+                var messageBody = $"Click on the following link to change your password <a href=\"{baseUrl}/ResetPassword?validationId={result}&email={model.EmailAddress}\">here</a>";
+                idMessage.Body = messageBody;
                 eService.SendAsync(idMessage);
                 return Ok();
             }
-               
+
             else
                 return NotFound();
         }
@@ -190,6 +191,13 @@
             return NotFound();
 
         }
+
+
+        #region Private Methods
+
+        #endregion
+
+        #region Unused Methods
 
         [Authorize(Roles = "Admin")]
         [Route("user/{id:guid}/roles")]
@@ -234,7 +242,6 @@
             return Ok();
 
         }
-
         [Authorize(Roles = "Admin")]
         [Route("user/{id:guid}/assignclaims")]
         [HttpPut]
@@ -294,5 +301,7 @@
 
             return Ok();
         }
+
+        #endregion
     }
 }

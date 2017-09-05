@@ -71,5 +71,6 @@
             _claimsIdentity.AddClaim(new Claim("Type", user.UserType));
             return Task.FromResult(_claimsIdentity);
         }
+
     }
 }
