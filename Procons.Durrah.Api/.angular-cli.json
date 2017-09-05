@@ -3,33 +3,40 @@
   "project": {
     "name": "durrah"
   },
-  "apps": [
-    {
-      "root": "ClientApp",
-      "outDir": "dist",
-      "assets": [
-        "Assets"
-      ],
-      "index": "index.html",
-      "main": "bootclient.ts",
-      "polyfills": "polyfills.ts",
+  "apps": [{
+    "root": "ClientApp",
+    "outDir": "dist",
+    "assets": [
+      "Assets"
+    ],
+    "index": "index.html",
+    "main": "bootclient.ts",
+    "polyfills": "polyfills.ts",
 
-      "tsconfig": "../tsconfig.json",
-      "prefix": "app",
-      "styles": [
-        "../Assets/src/app/libraries/font-awesome/css/font-awesome.min.css",
-        "../node_modules/primeng/resources/primeng.min.css",
-        "../node_modules/primeng/resources/themes/omega/theme.css",
-        "../font-awesome-4.7.0/css/font-awesome.min.css"
-      ],
-      "scripts": []
+    "tsconfig": "tsconfig.app.json",
+    "test": "test.ts",
+    "testTsconfig": "tsconfig.spec.json",
+    "prefix": "app",
+    "styles": [
+      "../node_modules/font-awesome/css/font-awesome.min.css",
+      "../node_modules/primeng/resources/primeng.min.css",
+      "../node_modules/primeng/resources/themes/omega/theme.css"
+    ],
+    "scripts": [],
+    "environmentSource": "environments/environment.ts",
+    "environments": {
+      "dev": "environments/environment.ts",
+      "prod": "environments/environment.prod.ts"
+    }    
+  }],
+  "lint": [{
+    "project": "tsconfig.json"
+  }],
+  "test": {
+    "karma": {
+      "config": "./karma.conf.js"
     }
-  ],
-  "lint": [
-    {
-      "project": "tsconfig.json"
-    }
- ],
+  },
   "defaults": {
     "styleExt": "css",
     "component": {}

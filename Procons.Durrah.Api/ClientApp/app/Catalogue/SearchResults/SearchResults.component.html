@@ -3,34 +3,43 @@
         <div class="col-md-8 col-sm-offset-2">
             <h3><span class="fa fa-search fa-fw fa-2x"></span> نتائج البحث المتقدمة</h3>
             <p>الرجاء اختيار عامل واحد</p>
-            <p-dataTable styleClass="table table-bordered table-hover" [value]="workers" [paginator]="true" rows="15" [responsive]="true">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <p-dialog header="Video" [(visible)]="showVideoModal">
+                <iframe width="480" *ngIf="showVideoModal" height="270" [src]="videoUrl" frameborder="0"> </iframe>
+            </p-dialog>
+            <p-dataTable [value]="workers" [paginator]="true" rows="15" [responsive]="true">
+                <p-column field="image" header="Image">
+                    <ng-template let-worker="rowData" pTemplate="body">
+                        <div (click)="GoToProfile(worker)" data-toggle="tab"><img src="{{worker.photo}}" width="80" class="img-thumbnail"></div>
+                    </ng-template>
+                </p-column>
                 <p-column field="age" header="Age"></p-column>
-                <p-column field="code" header="WorkerType"></p-column>
+                <p-column field="code" header="Type"></p-column>
                 <p-column field="gender" header="Gender"></p-column>
                 <p-column field="nationality" header="Nationality"></p-column>
                 <p-column field="language" header="Language"></p-column>
-                <p-column field="image" header="Image">
-                    <ng-template let-worker="rowData" pTemplate="body">
-                        <div (click)="GoToProfile(worker)" data-toggle="tab"><img src="{{worker.photo}}" width="50" class="img-thumbnail"></div>
-                    </ng-template>
-                </p-column>
                 <p-column field="price" header="Price"></p-column>
                 <p-column field="education" header="Education"></p-column>
                 <!-- Video -->
-                <p-column header="Video" [filter]="false" >
+                <p-column header="Video" [filter]="false">
                     <!-- [style]="{'text-align': 'center'}" -->
                     <ng-template let-worker="rowData" pTemplate="body">
-                            <div (click)="openRequestedPopup(worker.video)" data-toggle="tab"><span [className]="'glyphicon glyphicon-play-circle'"></span></div>
+                        <div (click)="openRequestedPopup(worker.video)" data-toggle="tab" [className]="'glyphicon glyphicon-play-circle icon-large'"></div>
                         <!-- <iframe width="200" height="200"  [src]="sanitizer.bypassSecurityTrustResourceUrl(worker.video)"  frameborder="0" allowfullscreen></iframe> -->
                     </ng-template>
                 </p-column>
                 <!-- Available -->
-                <p-column header="Available" [filter]="false">
+                <p-column header="Status" [filter]="false">
                     <ng-template let-worker="rowData" pTemplate="body">
                         <a (click)="GoToProfile(worker)" data-toggle="tab"><span [ngClass]="GetAvailableCSS(worker)"></span></a>
                     </ng-template>
                 </p-column>
             </p-dataTable>
         </div>
+        <div class="col-md-1"></div>
     </div>
 </div>

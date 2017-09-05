@@ -7,18 +7,25 @@ export class ProconsModalSerivce {
     constructor(private modal: Modal) {
 
     }
-    showErrorModal(){
+
+    showErrorModal() {
         this.modal.alert()
-        .showClose(true)
-        .body(`
+            .showClose(true)
+            .body(`
                     <div class="modal-body">
                         <div class="modal-icon"><img src="/Assets/src/app/images/icon_lock.png" class="icon" /></div>
                         <p><small>Network Error</small></p>
                         <h4>please try again</h4>
                     </div>`
-                )
-        .okBtn('Ok')
-        .open();
+            )
+            .okBtn('Ok')
+            .open();
 
+    }
+    showHTMLModal(html: string) {
+        this.modal.alert()
+            .showClose(true)
+            .body(html)
+            .open();
     }
 }
