@@ -126,7 +126,7 @@
         }
 
 
-        public bool CreatePasswordReset(string email)
+        public string CreatePasswordReset(string email)
         {
             try
             {
@@ -137,11 +137,11 @@
                 password.Name = email;
                 ServiceInstance.CurrentServicelayerInstance.AddToPASSRESET(password);
                 ServiceInstance.CurrentServicelayerInstance.SaveChanges();
-                return true;
+                return random;
             }
             catch (Exception ex)
             {
-                return false;
+                return string.Empty;
             }
         }
 

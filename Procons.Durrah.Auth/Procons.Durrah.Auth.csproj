@@ -84,6 +84,7 @@
   <ItemGroup>
     <Compile Include="ApplicationRoleManager.cs" />
     <Compile Include="ApplicationUserManager.cs" />
+    <Compile Include="EmailService.cs" />
     <Compile Include="ExtendedClaimsProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -30,7 +30,7 @@
             return provider.ResetPassword(pass, validationId, email);
         }
 
-        public bool ResetRequest(string emailAddress)
+        public string ResetRequest(string emailAddress)
         {
             return provider.CreatePasswordReset(emailAddress);
         }

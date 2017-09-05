@@ -33,7 +33,7 @@
             string dbUsername = "SYSTEM";
             string dbPassword = "Pr0c0ns41t";
             string sapUsername = "manager";
-            string sapPassword = "1234";
+            string sapPassword = "4321";
             string dbServerType = "Hana";
             string sapLicense = "saphana:40000";
 
@@ -248,7 +248,7 @@
                     else
                         userField.EditSize = 10;
 
-                    if (fieldType == "db_Float" && subType == "st_None")
+                    if (fieldType == "db_Float" && (subType == "st_None" || subType == null))
                         userField.SubType = "st_Quantity";
                     else
                         userField.SubType = subType;

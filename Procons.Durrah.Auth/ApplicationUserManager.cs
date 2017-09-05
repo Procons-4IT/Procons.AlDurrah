@@ -38,7 +38,7 @@
                 RequireUppercase = false,
             };
 
-            //appUserManager.EmailService = new Procons.Durrah.Services.EmailService();
+            //appUserManager.EmailService = new EmailService();
 
             var dataProtectionProvider = options.DataProtectionProvider;
             if (dataProtectionProvider != null)

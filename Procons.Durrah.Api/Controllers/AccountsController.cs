@@ -76,9 +76,9 @@
                 return GetErrorResult(addUserResult);
             }
 
-            //string code = await this.AppUserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+            string code = await this.AppUserManager.GenerateEmailConfirmationTokenAsync(user.Id);
 
-            //var callbackUrl = new Uri(Url.Link("ConfirmEmailRoute", new { userId = user.Id, code = code }));
+            var callbackUrl = new Uri(Url.Link("ConfirmEmailRoute", new { userId = user.Id, code = code }));
 
             //await this.AppUserManager.SendEmailAsync(user.Id,
             //                                        "Confirm your account",
@@ -147,12 +147,22 @@
         [Route("resetrequest")]
         public  IHttpActionResult RequestReset([FromBody]PasswordModel model)
         {
+            EmailService eService = new EmailService();
+            IdentityMessage idMessage = new IdentityMessage();
+            idMessage.Body = "Click on the following link to change your password <a href=\"http://89.249.220.100\">here</a>";
+            idMessage.Destination = model.EmailAddress;
+            idMessage.Subject = "Durra Password Reset";
+
             var loginFacade = Factory.DeclareClass<LoginFacade>();
             var result = loginFacade.ResetRequest(model.EmailAddress);
-            if (result)
+            if (result!=string.Empty)
+            {
+                eService.SendAsync(idMessage);
                 return Ok();
+            }
+               
             else
-                return InternalServerError();
+                return NotFound();
         }
 
         [Authorize(Roles = "Admin")]

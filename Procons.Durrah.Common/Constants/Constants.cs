@@ -20,6 +20,13 @@
             public const string Alias = "Alias";
             public const string ResourcePath = "ResourcePath";
             public const string SeriesName = "SeriesName";
+
+            public const string MailServer = "MailServer";
+            public const string AdminMail = "AdminMail";
+            public const string MailUid = "MailUid";
+            public const string MailPwd = "MailPwd";
+            public const string MailSSl = "MailSSl";
+            public const string MailPort = "MailPort"; 
         }
     }
 }
