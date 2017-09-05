@@ -62,6 +62,10 @@ describe('MyApiService', () => {
             console.log('API-TEST createIncoming Payment ', url);
             expect(url).toBeTruthy();
             expect(typeof url).toEqual(typeof '');
+        }, onError => {
+            throw onError;
+            // console.log('API-TEST createIncoming Payment ', onError);
+            // fail();
         });
     })));
     it('login ', async(inject([ApiService], (service: ApiService) => {
@@ -81,25 +85,26 @@ describe('MyApiService', () => {
             expect(emailResponse).toBeTruthy;
         },
             onError => {
-                console.log(`API-TEST  email:${email}`, onError);
-                if (onError.status == '403') {
-                    console.log('something');
+                throw onError;
+                // if (onError.status == '403') {
+                //     console.log('something');
 
-                } else {
-                    fail();
-                }
+                // } else {
+                //     fail();
+                // }
             });
     })));
 
-    it('resettPassword ', async(inject([ApiService], (service: ApiService) => {
+    it('resetPassword ', async(inject([ApiService], (service: ApiService) => {
         let resetParam: ResetPasswordParams = { "EmailAddress": "mazen@procons.com", "ValidationId": "akjdhk4hk3", "Password": "1234" }
         service.resetPassword(resetParam).subscribe(response => {
             console.log(`API-TEST  resetParam:${resetParam}`, response.json());
             expect(response).toBeTruthy;
         },
             onError => {
-                console.log(`API-TEST  resetParam:${resetParam}`, onError);
-                fail();
+                throw onError;
+                // console.log(`API-TEST  resetParam:${resetParam}`, onError);
+                // fail();
             });
     })));
 
@@ -112,8 +117,9 @@ describe('MyApiService', () => {
             expect(response).toBeTruthy;
         },
             onError => {
-                console.log(`API-TEST  createNewUser:${param}`, onError);
-                fail();
+                throw onError;
+                // console.log(`API-TEST  createNewUser:${param}`, onError);
+                // fail();
             });
     })));
 
