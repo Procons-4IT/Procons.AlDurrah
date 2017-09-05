@@ -62,6 +62,12 @@
                 base.AddTableSL("PASSRESET", "Password Reset", SAPbobsCOM.BoUTBTableType.bott_MasterData);
                 base.AddUdo("PASSRESET", "PASSRESET");
 
+                base.AddTableSL("EDUCATION", "Education", SAPbobsCOM.BoUTBTableType.bott_MasterData);
+                base.AddUdo("EDUCATION", "EDUCATION");
+
+                base.AddTableSL("RELIGION", "Religion", SAPbobsCOM.BoUTBTableType.bott_MasterData);
+                base.AddUdo("RELIGION", "RELIGION");
+
                 instance.CurrentServicelayerInstance.SaveChanges();
                 return instance.B1SessionId;
             }

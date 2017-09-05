@@ -135,11 +135,15 @@
             var databaseBame = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.DatabaseName);
 
             List<Worker> workersList = new List<Worker>();
-            var query = new StringBuilder("SELECT \"A\".\"Code\",\"A\".\"Name\",\"U_ItemCode\",\"U_Serial\",\"U_Agent\",\"U_Age\",\"U_BirthDate\",\"U_Gender\",\"D\".\"Name\" AS \"U_Nationality\",\"U_Religion\",\"C\".\"Name\" AS \"U_Language\",\"U_Photo\",\"U_Weight\",\"U_Height\",\"U_Education\",\"U_Passport\",\"U_Video\",\"U_PassportNumber\",\"U_PassportIssDate\",\"U_PassportExpDate\",\"U_PassportPoIssue\",\"U_Price\",\"U_CivilId\",\"U_CivilId\",\"U_Status\",");
-            query.Append($"\"B\".\"Name\" AS \"U_MaritalStatus\" FROM \"{databaseBame}\".\"@WORKERS\" as \"A\"");
+            var query = new StringBuilder("SELECT \"A\".\"Code\",\"A\".\"Name\",\"U_ItemCode\",\"U_Serial\",\"U_Agent\",\"U_Age\",\"U_BirthDate\",\"U_Gender\",\"D\".\"Name\" AS \"U_Nationality\",\"R\".\"Name\" AS \"U_Religion\",\"C\".\"Name\" AS \"U_Language\",\"U_Photo\",\"U_Weight\",\"U_Height\",\"E\".\"Name\" AS \"U_Education\",\"U_Passport\",\"U_Video\",\"U_PassportNumber\",\"U_PassportIssDate\",\"U_PassportExpDate\",\"U_PassportPoIssue\",\"U_Price\",\"U_CivilId\",\"U_Status\",");
+            query.Append($"\"B\".\"Name\" AS \"U_MaritalStatus\"");
+            query.Append($" FROM \"{databaseBame}\".\"@WORKERS\" as \"A\"");
             query.Append($"INNER JOIN \"{databaseBame}\".\"@MARITALSTATUS\" AS \"B\" ON \"A\".\"U_MaritalStatus\" = \"B\".\"Code\"");
             query.Append($"INNER JOIN \"{databaseBame}\".\"@LANGUAGES\" AS \"C\" ON \"A\".\"U_Language\" = \"C\".\"Code\"");
             query.Append($"INNER JOIN \"{databaseBame}\".\"@COUNTRIES\" AS \"D\" ON \"A\".\"U_Nationality\" = \"D\".\"Code\"");
+
+            query.Append($"INNER JOIN \"{databaseBame}\".\"@RELIGION\" AS \"R\" ON \"A\".\"U_Religion\" = \"R\".\"Code\"");
+            query.Append($"INNER JOIN \"{databaseBame}\".\"@EDUCATION\" AS \"E\" ON \"A\".\"U_Education\" = \"E\".\"Code\"");
             query.Append(exp);
             var readerResult = dbHelper.ExecuteQuery(query.ToString());
 
@@ -169,7 +173,7 @@
                         SerialNumber = MapField<string>(readerResult["U_Serial"]),
                         Status = MapField<string>(readerResult["U_Status"]),
                         Video = MapField<string>(readerResult["U_Video"]),
-                        Price = MapField<double>(readerResult["U_Price"]),
+                        Price = MapField<float>(readerResult["U_Price"]),
                         Weight = MapField<string>(readerResult["U_Weight"])
                     });
             }
@@ -484,12 +488,19 @@
 
         private T MapField<T>(object o)
         {
+            var result = default(T);
             if (o != DBNull.Value)
             {
-                var result = (T)Convert.ChangeType(o, typeof(T));
+                if (o.GetType() == typeof(HanaDecimal))
+                    result = (T)Convert.ChangeType(Convert.ToDecimal(o), typeof(T));
+                else if (o.GetType() == typeof(float))
+                    result = (T)Convert.ChangeType(float.Parse(o.ToString()), typeof(T));
+                else
+                    result = (T)Convert.ChangeType(o, typeof(T));
                 return result;
             }
-            return default(T);
+            else
+                return default(T);
         }
 
         #endregion
