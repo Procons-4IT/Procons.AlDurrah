@@ -30,14 +30,14 @@ export class LoginComponent implements OnInit {
     public resetPassModalText: string = "";
 
 
+    public confirmPassword = "";
     public newUser: CreateNewUserParams = {
-        firstName: "",
-        lastName: "",
-        userName: "",
-        civilId: "",
-        password: "",
-        confirmPassword: "",
-        email: ""
+        FirstName: "",
+        LastName: "",
+        UserName: "",
+        CivilId: "",
+        Password: "",
+        Email: ""
     };
 
     public resetParams: ResetPasswordParams = {

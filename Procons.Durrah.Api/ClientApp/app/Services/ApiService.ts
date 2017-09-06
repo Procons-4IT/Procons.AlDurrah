@@ -7,7 +7,7 @@ import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/catch';
 
 import { Injectable, OnDestroy } from '@angular/core';
-import { PaymentRedirectParams, KnetPayment, SearchCriteriaParams, ResetPasswordParams, CreateNewUserParams } from '../Models/ApiRequestType';
+import { ConfirmEmailParams, PaymentRedirectParams, KnetPayment, SearchCriteriaParams, ResetPasswordParams, CreateNewUserParams } from '../Models/ApiRequestType';
 import { Worker } from '../Models/Worker';
 @Injectable()
 export class ApiService {
@@ -37,6 +37,12 @@ export class ApiService {
     }
     public resetPassword(param: ResetPasswordParams) {
         return this.httpPostHelper(this.config.resetPasswordUrl, param);
+    }
+    public confirmEmail(param: ConfirmEmailParams): Observable<boolean> {
+        return this.httpPostHelper(this.config.emailValidationUrl, param)
+            .map(response => {
+                return response.status === 200;
+            });
     }
     public createNewUser(param: CreateNewUserParams) {
         return this.httpPostHelper(this.config.createNewUserUrl, param)
