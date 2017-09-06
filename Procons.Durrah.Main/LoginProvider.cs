@@ -16,12 +16,12 @@
             ServiceLayerProvider loginInstance = new ServiceLayerProvider();
             loginInstance.Login();
             var encryptedPassword = Utilities.Encrypt(password);
-            var result = loginInstance.CurrentServicelayerInstance.BusinessPartners.Where(x => x.CardCode == userName & x.U_Password == encryptedPassword).FirstOrDefault();
+            var result = loginInstance.CurrentServicelayerInstance.BusinessPartners.Where(x => x.U_UserName == userName & x.U_Password == encryptedPassword).FirstOrDefault();
             if (result != null)
             {
                 user = new ApplicationUser()
                 {
-                    UserName = result.CardCode,
+                    UserName = result.U_UserName,
                     EmailConfirmed = true,
                     FirstName = result.CardName,
                     LastName = result.CardName,

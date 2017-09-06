@@ -25,7 +25,7 @@
             var appUserManager = new ApplicationUserManager(new UserStore<ApplicationUser>());
             appUserManager.UserValidator = new UserValidator<ApplicationUser>(appUserManager)
             {
-                AllowOnlyAlphanumericUserNames = true,
+                AllowOnlyAlphanumericUserNames = false,
                 RequireUniqueEmail = true,
             };
 

@@ -466,6 +466,7 @@
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Attributes\ClaimsAuthorizationAttribute.cs" />
     <Compile Include="Controllers\WorkersController.cs" />
+    <Compile Include="Handlers\LanguageMessageHandler.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\ClaimBindingModel.cs" />
     <Compile Include="Models\ModelFactory.cs" />
@@ -507,6 +508,7 @@
     <TypeScriptCompile Include="ClientApp\app\Catalogue\SearchResults\SearchResults.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\home\home.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\login\login.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\Models\ApiRequestType.ts" />
     <TypeScriptCompile Include="ClientApp\app\Models\Item.ts" />
     <TypeScriptCompile Include="ClientApp\app\Models\RequestBody.ts" />
     <TypeScriptCompile Include="ClientApp\app\Models\SearchContent.ts" />

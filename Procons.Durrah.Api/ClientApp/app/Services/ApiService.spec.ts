@@ -129,7 +129,7 @@ describe('MyApiService', () => {
 
         service.confirmEmail(param).subscribe(response => {
             console.log(`API-TEST  confirmEmail:${param}`, response);
-            console.log(`API-TEST  confirmEmail:${param}`, response.json());
+            //console.log(`API-TEST  confirmEmail:${param}`, response.json());
             expect(response).toBeTruthy;
         },
             onError => {

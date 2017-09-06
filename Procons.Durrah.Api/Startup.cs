@@ -7,6 +7,7 @@ using Microsoft.Owin.Security.Jwt;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
 using Owin;
+using Procons.Durrah.Api.Handlers;
 using Procons.Durrah.Auth;
 using Procons.Durrah.Common;
 using Procons.Durrah.Facade;
@@ -105,6 +106,7 @@ namespace Procons.Durrah
         private void ConfigureWebApi(HttpConfiguration config)
         {
             //config.Filters.Add(new ApplicationExceptionFilterAttribute());
+            config.MessageHandlers.Add(new LanguageMessageHandler());
             config.MapHttpAttributeRoutes();
             config.Routes.MapHttpRoute(
                                         name: "DefaultApi",

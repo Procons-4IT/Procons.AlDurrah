@@ -25,52 +25,12 @@
         #endregion
 
 
-        [Route("users")]
-        public IHttpActionResult GetUsers()
-        {
-            //Only SuperAdmin or Admin can delete users (Later when implement roles)
-            var identity = User.Identity as System.Security.Claims.ClaimsIdentity;
-
-            return Ok(this.AppUserManager.Users.ToList().Select(u => this.TheModelFactory.Create(u)));
-        }
-
-        [Authorize(Roles = "Admin")]
-        [Route("user/{id:guid}", Name = "GetUserById")]
-        public async Task<IHttpActionResult> GetUser(string Id)
-        {
-            //Only SuperAdmin or Admin can delete users (Later when implement roles)
-            var user = await this.AppUserManager.FindByIdAsync(Id);
-
-            if (user != null)
-            {
-                return Ok(this.TheModelFactory.Create(user));
-            }
-
-            return NotFound();
-        }
-
-        [Authorize(Roles = "Admin")]
-        [Route("user/{username}")]
-        public async Task<IHttpActionResult> GetUserByName(string username)
-        {
-            //Only SuperAdmin or Admin can delete users (Later when implement roles)
-            var user = await this.AppUserManager.FindByNameAsync(username);
-
-            if (user != null)
-            {
-                return Ok(this.TheModelFactory.Create(user));
-            }
-
-            return NotFound();
-
-        }
-
         [AllowAnonymous]
         [Route("create")]
         public async Task<IHttpActionResult> CreateUser(ApplicationUser user)
         {
-            //if (!ModelState.IsValid)
-            //    return BadRequest(ModelState);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
             var baseUrl = Request.RequestUri.GetLeftPart(UriPartial.Authority);
             IdentityResult addUserResult = await this.AppUserManager.CreateAsync(user);
 
@@ -78,14 +38,12 @@
                 return GetErrorResult(addUserResult);
             else
             {
-                string code = loginFacade.GenerateCofnirmationToken(user.Email);
-
                 idMessage.Destination = user.Email;
                 idMessage.Subject = "Durra Confirmation Email";
                 var result = loginFacade.GenerateCofnirmationToken(user.Email);
                 if (result != string.Empty)
                 {
-                    var messageBody = $"Click on the following link to confirm your email <a href=\"{baseUrl}/confirmemail?validationId={result}&email={user.Email}\">here</a>";
+                    var messageBody = $"Click on the following link to confirm your email <a href=\"{baseUrl}/ConfirmEmail?ValidationId={result}&Email={user.Email}\">here</a>";
                     idMessage.Body = messageBody;
                     eService.SendAsync(idMessage);
                     return Ok("Confirmation email sent...");
@@ -97,7 +55,7 @@
 
         [AllowAnonymous]
         [Route("confirmEmail")]
-        public async Task<IHttpActionResult> ConfirmEmail(ConfirmationModel model)
+        public IHttpActionResult ConfirmEmail(ConfirmationModel model)
         {
             if (model.Email != null && model.ValidationId != null)
             {
@@ -156,7 +114,7 @@
             var result = loginFacade.ResetRequest(model.EmailAddress);
             if (result != string.Empty)
             {
-                var messageBody = $"Click on the following link to change your password <a href=\"{baseUrl}/ResetPassword?validationId={result}&email={model.EmailAddress}\">here</a>";
+                var messageBody = $"Click on the following link to change your password <a href=\"{baseUrl}/ResetPassword?ValidationId={result}&Email={model.EmailAddress}\">here</a>";
                 idMessage.Body = messageBody;
                 eService.SendAsync(idMessage);
                 return Ok();
@@ -198,7 +156,45 @@
         #endregion
 
         #region Unused Methods
+        [Route("users")]
+        public IHttpActionResult GetUsers()
+        {
+            //Only SuperAdmin or Admin can delete users (Later when implement roles)
+            var identity = User.Identity as System.Security.Claims.ClaimsIdentity;
 
+            return Ok(this.AppUserManager.Users.ToList().Select(u => this.TheModelFactory.Create(u)));
+        }
+
+        [Authorize(Roles = "Admin")]
+        [Route("user/{id:guid}", Name = "GetUserById")]
+        public async Task<IHttpActionResult> GetUser(string Id)
+        {
+            //Only SuperAdmin or Admin can delete users (Later when implement roles)
+            var user = await this.AppUserManager.FindByIdAsync(Id);
+
+            if (user != null)
+            {
+                return Ok(this.TheModelFactory.Create(user));
+            }
+
+            return NotFound();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [Route("user/{username}")]
+        public async Task<IHttpActionResult> GetUserByName(string username)
+        {
+            //Only SuperAdmin or Admin can delete users (Later when implement roles)
+            var user = await this.AppUserManager.FindByNameAsync(username);
+
+            if (user != null)
+            {
+                return Ok(this.TheModelFactory.Create(user));
+            }
+
+            return NotFound();
+
+        }
         [Authorize(Roles = "Admin")]
         [Route("user/{id:guid}/roles")]
         [HttpPut]
