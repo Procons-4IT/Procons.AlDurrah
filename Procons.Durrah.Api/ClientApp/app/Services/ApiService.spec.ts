@@ -4,7 +4,7 @@
 import { TestBed, inject, async } from '@angular/core/testing';
 import { Http, HttpModule } from '@angular/http';
 import { ApiService } from './ApiService'
-import { CreateNewUserParams, ResetPasswordParams, PaymentRedirectParams, KnetPayment } from '../Models/ApiRequestType';
+import { ConfirmEmailParams, CreateNewUserParams, ResetPasswordParams, PaymentRedirectParams, KnetPayment } from '../Models/ApiRequestType';
 
 describe('MyApiService', () => {
     beforeEach(() => {
@@ -109,11 +109,27 @@ describe('MyApiService', () => {
     })));
 
     it('createNewUser ', async(inject([ApiService], (service: ApiService) => {
-        let param: CreateNewUserParams = { firstName: "Houssam", lastName: "Doe", userName: "someUser", civilId: "1222", email: "Houssam.doe@gmail.com", confirmPassword: "1234", password: "1234" };
+        let param: CreateNewUserParams = { "Email": "mazen1@procons.com", "UserName": "Mazen1", "Password": "1234", "FirstName": "Mazen", "LastName": "Khwise", "CivilId": "1234" };
 
         service.createNewUser(param).subscribe(response => {
             console.log(`API-TEST  createUser:${param}`, response);
             console.log(`API-TEST  createUser:${param}`, response.json());
+            expect(response).toBeTruthy;
+        },
+            onError => {
+                throw onError;
+                // console.log(`API-TEST  createNewUser:${param}`, onError);
+                // fail();
+            });
+    })));
+
+
+    it('confirmEmail ', async(inject([ApiService], (service: ApiService) => {
+        let param: ConfirmEmailParams = { "ValidationId": "F2C2HCOO677AM5T", "Email": "houssam.saghir@procons-4it.com" };
+
+        service.confirmEmail(param).subscribe(response => {
+            console.log(`API-TEST  confirmEmail:${param}`, response);
+            console.log(`API-TEST  confirmEmail:${param}`, response.json());
             expect(response).toBeTruthy;
         },
             onError => {

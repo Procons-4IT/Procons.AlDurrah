@@ -61,8 +61,8 @@
                                     </div>
                                     <div class="form-group required">
                                         <input type="password" class="form-control" id="regconfirmpassword" name="regconfirmpassword" placeholder="تأكيدكلمة السر"
-                                            required="true" [(ngModel)]="newUser.confirmPassword" #confirmPass="ngModel" />
-                                        <span class="help-block" *ngIf="(newUser.confirmPassword !== newUser.password) && (confirmPass.dirty || confirmPass.touched)">Passwords Don't Match </span>
+                                            required="true" [(ngModel)]="confirmPassword" #confirmPass="ngModel" />
+                                        <span class="help-block" *ngIf="(confirmPassword !== newUser.password) && (confirmPass.dirty || confirmPass.touched)">Passwords Don't Match </span>
                                     </div>
                                     <div class="form-group required">
                                         <input type="email" class="form-control" id="regemail" name="regemail" placeholder="البريد الإلكتروني" required="true" [(ngModel)]="newUser.email"
