@@ -29,11 +29,15 @@ export interface ResetPasswordParams {
     Password: string
 }
 export interface CreateNewUserParams {
-    firstName: string
-    lastName: string,
-    userName: string,
-    civilId: string,
-    password: string,
-    confirmPassword: string,
-    email: string
+    FirstName: string
+    LastName: string,
+    UserName: string,
+    CivilId: string,
+    Password: string,
+    Email: string
+}
+
+export interface ConfirmEmailParams {
+    ValidationId: string,
+    Email: string
 }

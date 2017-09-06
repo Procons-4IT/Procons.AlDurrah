@@ -2,14 +2,20 @@ import { NgModule } from '@angular/core';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { CanActivateViaAuthGuard } from "./Services/ActivationGuard"
-import { Routes, RouterModule } from '@angular/router'
+import { Routes, RouterModule, DefaultUrlSerializer, UrlTree } from '@angular/router'
 
+export class LowerCaseUrlSerializer extends DefaultUrlSerializer {
+  parse(url: string): UrlTree {
+    return super.parse(url.toLocaleLowerCase());
+  }
+}
 
 const routes: Routes = [
   { path: 'Home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'PaymentConfirmation', data: { isPayment: true }, component: HomeComponent },
   { path: 'ResetPassword', data: { isPasswordReset: true }, component: HomeComponent },
+  { path: 'ConfirmEmail', data: { isConfirmEmail: true }, component: HomeComponent },
   { path: '', pathMatch: 'full', redirectTo: '/Home' },
   { path: '**', pathMatch: 'full', redirectTo: '/Home' }
 ];
@@ -17,7 +23,9 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
+  providers: [LowerCaseUrlSerializer]
 })
 export class RoutingModule { }
 
 export const routingComponents = [HomeComponent];
+
