@@ -132,7 +132,6 @@
         public List<Worker> GetWorkers(Catalogue worker)
         {
             var exp = GetExpressionSql(worker);
-            var xx = exp;
             var databaseBame = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.DatabaseName);
 
             List<Worker> workersList = new List<Worker>();
@@ -145,6 +144,7 @@
 
             query.Append($"INNER JOIN \"{databaseBame}\".\"@RELIGION\" AS \"R\" ON \"A\".\"U_Religion\" = \"R\".\"Code\"");
             query.Append($"INNER JOIN \"{databaseBame}\".\"@EDUCATION\" AS \"E\" ON \"A\".\"U_Education\" = \"E\".\"Code\"");
+
             query.Append(exp);
             var readerResult = dbHelper.ExecuteQuery(query.ToString());
 
