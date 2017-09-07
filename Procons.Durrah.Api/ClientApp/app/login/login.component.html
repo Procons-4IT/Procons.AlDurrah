@@ -40,37 +40,39 @@
                                 <h3>مستخدم جديد</h3>
                                 <form action="#" method="post" id="registrationForm" class="form-primary" (ngSubmit)="CreateUser()" #createUserForm="ngForm">
                                     <div class="form-group required">
-                                        <input type="text" class="form-control" id="regfirstname" name="regfirstname" placeholder="الاسم الاول" required="true" [(ngModel)]="newUser.FirstName"
-                                            #firstName="ngModel" />
+                                        <input type="text" required class="form-control" id="regfirstname" name="regfirstname" placeholder="الاسم الاول" required="true"
+                                            [(ngModel)]="newUser.FirstName" #firstName="ngModel" />
                                     </div>
                                     <div class="form-group required">
-                                        <input type="text" class="form-control" id="reglastname" name="reglastname" placeholder="اسم العائلة" required="true" [(ngModel)]="newUser.LastName"
-                                            #lastName="ngModel" />
+                                        <input type="text" required class="form-control" id="reglastname" name="reglastname" placeholder="اسم العائلة" required="true"
+                                            [(ngModel)]="newUser.LastName" #lastName="ngModel" />
                                     </div>
                                     <div class="form-group required">
-                                        <input type="text" class="form-control" id="regusername" name="regusername" placeholder="اسم المستخدم" required="true" [(ngModel)]="newUser.UserName"
-                                            #userName="ngModel" />
+                                        <input type="text" required class="form-control" id="regusername" name="regusername" placeholder="اسم المستخدم" required="true"
+                                            [(ngModel)]="newUser.UserName" #userName="ngModel" />
                                     </div>
                                     <div class="form-group required">
-                                        <input type="text" class="form-control" id="regcivilid" name="regcivilid" placeholder="الرقم المدني" required="true" [(ngModel)]="newUser.CivilId"
-                                            #civilId="ngModel" />
+                                        <input type="text" required class="form-control" id="regcivilid" name="regcivilid" placeholder="الرقم المدني" required="true"
+                                            [(ngModel)]="newUser.CivilId" #civilId="ngModel" />
                                     </div>
                                     <div class="form-group required">
-                                        <input type="password" class="form-control" id="regpassword" name="regpassword" placeholder="كلمه السر" required="true" [(ngModel)]="newUser.Password"
-                                            #password="ngModel" />
+                                        <input type="password" required class="form-control" id="regpassword" name="regpassword" placeholder="كلمه السر" required="true"
+                                            [(ngModel)]="newUser.Password" #password="ngModel" />
                                     </div>
                                     <div class="form-group required">
-                                        <input type="password" class="form-control" id="regconfirmpassword" name="regconfirmpassword" placeholder="تأكيدكلمة السر"
+                                        <input type="password" required class="form-control" id="regconfirmpassword" name="regconfirmpassword" placeholder="تأكيدكلمة السر"
                                             required="true" [(ngModel)]="confirmPassword" #confirmPass="ngModel" />
-                                        <span class="help-block" *ngIf="(confirmPassword !== newUser.Password) && (confirmPass.dirty || confirmPass.touched)">Passwords Don't Match </span>
+                                        <span class="help-block" *ngIf="!passwordMatch() && (confirmPass.dirty || confirmPass.touched)">Passwords Don't Match </span>
                                     </div>
                                     <div class="form-group required">
-                                        <input type="email" class="form-control" id="regemail" name="regemail" placeholder="البريد الإلكتروني" required="true" [(ngModel)]="newUser.Email"
-                                            #email="ngModel" />
+                                        <input type="email" required class="form-control" id="regemail" name="regemail" placeholder="البريد الإلكتروني" required="true"
+                                            [(ngModel)]="newUser.Email" #email="ngModel" />
                                     </div>
 
                                     <div class="form-group">
-                                        <input type="submit" value="سجل" class="btn btn-primary" id="submitRegistrationForm" />
+                                        <input type="submit" value="سجل" [disabled]="!passwordMatch() || !createUserForm.valid" class="btn btn-primary" id="submitRegistrationForm"
+                                        />
+                                        <a href="#tabLogin" class="btn btn-primary" aria-controls="tabLogin" role="tab" data-toggle="tab">Back</a>
                                     </div>
                                 </form>
                             </div>
@@ -93,6 +95,8 @@
 
                                     <div class="form-group">
                                         <input type="submit" value="إرسال" class="btn btn-primary" id="submitNewPassForm" />
+                                        <a href="#tabLogin" class="btn btn-primary" aria-controls="tabLogin" role="tab" data-toggle="tab">Back</a>
+
                                     </div>
                                 </form>
                             </div>
@@ -120,6 +124,7 @@
 
                                     <div class="form-group">
                                         <input type="submit" value="إرسال" class="btn btn-primary" id="submitChangePassForm" />
+                                        <a href="#tabLogin" class="btn btn-primary" aria-controls="tabLogin" role="tab" data-toggle="tab">Back</a>
                                     </div>
                                 </form>
                             </div>
@@ -166,10 +171,6 @@
                         <h3>نشئ كلمة مرور جديدة</h3>
                         <h3>{{resetPassModalText}}</h3>
                         <form action="#" method="post" id="changePassForm" class="form-primary" (ngSubmit)="ResetPassword(passwordInput.value,confirmPasswordInput.value)">
-                            <div class="form-group required">
-                                <input type="password" class="form-control" id="changeoldpassword" name="changeoldpassword" placeholder="كلمة المرور القديمة"
-                                    required="true" />
-                            </div>
                             <div class="form-group required">
                                 <input type="password" class="form-control" id="changepassword" name="changepassword" placeholder="كلمة السر الجديدة" required="true"
                                     #passwordInput />
