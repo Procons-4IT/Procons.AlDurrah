@@ -22,9 +22,8 @@ export class searchFormComponent implements OnInit {
         console.log('Init SearchForm Component, ', this.searchCriteriaParams);
     }
 
-
     GotoResults(workType, age, sex, nationality, maritalStatus, language) {
-        let argumentKeys = ["workType", "age", "sex", "nationality", "maritalStatus", "language"];
+        let argumentKeys = ["workType", "age", "gender", "nationality", "maritalStatus", "language"];
         let workerFilterParams = {};
         for (var i = 0; i < arguments.length; i++) {
             let argument = arguments[i];

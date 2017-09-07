@@ -32,18 +32,18 @@
                 <td> {{worker.religion}}</td>
               </tr>
               <tr>
-                  <td>Agent</td>
-                  <td>{{worker.agent}}</td>
-                </tr>
+                <td>Agent</td>
+                <td>{{worker.agent}}</td>
+              </tr>
               <tr>
                 <td>Height</td>
                 <td>{{worker.height}}</td>
               </tr>
-               <tr>
+              <tr>
                 <td>Weight</td>
                 <td>{{worker.weight}}</td>
               </tr>
- 
+
             </tbody>
           </table>
         </div>
@@ -51,6 +51,7 @@
           <p><img [src]="worker.photo" class="img-thumbnail img-responsive" width="100%" /></p>
         </div>
         <p><input type="submit" value="سجل" (click)="Book()" class="btn btn-default" id="bookProfile" /></p>
+        <div class="btn btn-default" (click)="GoBack()">Back</div>
       </div>
     </div>
   </div>

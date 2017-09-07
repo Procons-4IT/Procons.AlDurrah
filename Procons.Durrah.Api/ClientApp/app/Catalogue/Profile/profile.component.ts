@@ -1,6 +1,6 @@
-import { Component, OnInit, Output,Input,EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { MenuItem } from 'primeng/primeng';
-import {Worker} from '../../Models/Worker';
+import { Worker } from '../../Models/Worker';
 
 @Component({
   selector: 'profile',
@@ -9,16 +9,21 @@ import {Worker} from '../../Models/Worker';
 })
 export class profileComponent implements OnInit {
 
-  @Input() worker: Worker 
+  @Input() worker: Worker
   @Output() onBook = new EventEmitter<Boolean>();
+  @Output() onBack = new EventEmitter<any>();
 
   constructor() { }
 
   ngOnInit() {
-    console.log('Loaded Profile Component with Worker ',this.worker);
+    console.log('Loaded Profile Component with Worker ', this.worker);
   }
 
-  Book(){
+  GoBack() {
+    this.onBack.emit();
+  }
+
+  Book() {
     this.onBook.emit(true);
   }
 
