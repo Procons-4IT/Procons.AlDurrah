@@ -78,11 +78,11 @@ export class LoginComponent implements OnInit {
     }
 
 
-    Login(userName: string, password: string) {
-        console.log('Logging in with userName: ', userName, ' password: ', '####');
+    Login() {
+        console.log('Logging in with userName: ', this.newUser.UserName, ' password: ', '####');
         this.loading = true;
 
-        this.myApi.login(userName, password).subscribe(isLoggedIn => {
+        this.myApi.login(this.newUser.UserName, this.newUser.Password).subscribe(isLoggedIn => {
             this.loading = false;
             this.OpenModal();
         }, (error) => {

@@ -13,12 +13,12 @@
                                     <img src="/Assets/src/app/images/icon_login.png" height="120" width="120" data-appear-animation="fadeIn" />
                                 </p>
 
-                                <form (ngSubmit)="Login(userName.value,password.value)" id="loginForm" class="form-primary">
+                                <form (ngSubmit)="Login()" id="loginForm" class="form-primary" #createUserForm="ngForm">
                                     <div class="form-group">
-                                        <input type="text" class="form-control" id="username" name="username" placeholder="اسم المستخدم" #userName />
+                                        <input type="text" class="form-control" id="username" name="username" placeholder="اسم المستخدم" [(ngModel)]="newUser.UserName" #userName="ngModel" />
                                     </div>
                                     <div class="form-group">
-                                        <input type="password" class="form-control" id="password" name="password" placeholder="كلمه السر" #password/>
+                                        <input type="password" class="form-control" id="password" name="password" placeholder="كلمه السر" [(ngModel)]="newUser.Password" #password="ngModel" />
                                     </div>
                                     <div class="form-group text-right">
                                         <a href="#" class="forgot-password" data-toggle="modal" data-target="#modalForgotPass">هل نسيت كلمة المرور</a>
