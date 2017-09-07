@@ -7,17 +7,20 @@ import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/catch';
 
 import { Injectable, OnDestroy } from '@angular/core';
-import { ConfirmEmailParams, PaymentRedirectParams, KnetPayment, SearchCriteriaParams, ResetPasswordParams, CreateNewUserParams } from '../Models/ApiRequestType';
+import { WorkerFilterParams, ConfirmEmailParams, PaymentRedirectParams, KnetPayment, SearchCriteriaParams, ResetPasswordParams, CreateNewUserParams } from '../Models/ApiRequestType';
 import { Worker } from '../Models/Worker';
 @Injectable()
 export class ApiService {
 
     private config = require('../../config.json');
+    private language: string;
 
-    constructor(private http: Http) { }
+    constructor(private http: Http) {
+        this.language = navigator.language;
+    }
 
     public login(userName: string, password: string): Observable<boolean> {
-        let requestBody = "userName=" + userName + "&password=" + password + "&grant_type=password";
+        let requestBody = `grant_type=password&username=${userName}&password=${password}`;
 
         return this.httpPostHelper(this.config.loginUrl, requestBody).map(response => {
             if (response.status == 200) {
@@ -68,7 +71,7 @@ export class ApiService {
         return this.httpGetHelper(this.config.getSearchCriteriaUrl)
             .map(response => { return response.json(); })
     }
-    public getAllWorkers(optionalFilterCritera: Worker | object): Observable<Worker[]> {
+    public getAllWorkers(optionalFilterCritera: WorkerFilterParams | object): Observable<Worker[]> {
         console.log('Getting All the Workers');
         var actualData = this.httpPostHelper(this.config.getWorkersUrl, optionalFilterCritera)
             .map(response => {
@@ -79,10 +82,11 @@ export class ApiService {
         return actualData;
     }
     public httpPostHelper(url: string, body: any): Observable<Response> {
-        // let headers = new Headers();
-        // headers.append("Content-Type", 'application/x-www-form-urlencoded');
+        let headers = new Headers();
+        headers.append("accept-language", this.language);
+        let options: RequestOptions = new RequestOptions({ headers: headers });
 
-        return this.http.post(this.config.baseUrl + url, body)
+        return this.http.post(this.config.baseUrl + url, body, options);
         // .catch(tempCatch => {
         //     var fakeObject = {
         //         json: () => [1, 2, 3]
@@ -93,6 +97,7 @@ export class ApiService {
     public httpGetHelper(url: string): Observable<Response> {
         let headers = new Headers();
         headers.append("Content-Type", 'application/json');
+        headers.append("accept-language", this.language);
         let options: RequestOptions = new RequestOptions({ headers: headers });
 
         return this.http.get(this.config.baseUrl + url, options)

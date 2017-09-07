@@ -12,6 +12,8 @@ import { MenuItem } from 'primeng/primeng';
 export class SearchResultsComponent implements OnInit {
   @Input() workers: Worker[];
   @Output() onSelectedWorker = new EventEmitter<Worker>();
+  @Output() onBack = new EventEmitter<any>();
+
   public showVideoModal: boolean = false;
   public videoUrl;
 
@@ -19,6 +21,9 @@ export class SearchResultsComponent implements OnInit {
 
   ngOnInit() {
     console.log('SearchResultsComponent Loaded! ', this.workers);
+  }
+  GoBack() {
+    this.onBack.emit();
   }
   GoToProfile(selectedWorker: Worker) {
     console.log('[captured] GoToProfile!: ', selectedWorker);

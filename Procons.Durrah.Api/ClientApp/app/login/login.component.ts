@@ -55,6 +55,9 @@ export class LoginComponent implements OnInit {
 
         this.handlePasswordResetRoute();
     }
+    passwordMatch(): boolean {
+        return this.confirmPassword === this.newUser.Password;
+    }
 
     handlePasswordResetRoute() {
         console.log('## Checking if PasswordResetRoute');
@@ -125,6 +128,7 @@ export class LoginComponent implements OnInit {
                     this.resetPassModalLoading = false;
                     if (isReset) {
                         console.log('## Password was Reset! ');
+                        this.resetPassModalText = 'Password was Reset!';
                     }
                 }, onError => {
                     this.resetPassModalLoading = false;

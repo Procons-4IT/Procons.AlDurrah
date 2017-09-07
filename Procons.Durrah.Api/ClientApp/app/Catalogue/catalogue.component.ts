@@ -113,4 +113,17 @@ export class CatalogueComponent implements OnInit {
                 this.myModal.showErrorModal();
             });
     }
+    ShowSearchResult() {
+        this.showProfile = false;
+        this.showSearchForm = false;
+        this.showSearchSummary = false;
+        this.showSearchResultTable = true;
+    }
+    ShowSearchFilter(){
+        this.showProfile = false;
+        this.showSearchForm = true;
+        this.showSearchSummary = false;
+        this.showSearchResultTable = false;
+ 
+    }
 }

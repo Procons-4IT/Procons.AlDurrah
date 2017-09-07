@@ -16,8 +16,8 @@
             </p>
           </div>
           <search-form [searchCriteriaParams]="searchCriteriaParams" (onSearchFilterCriteria)="GoToResults($event)" *ngIf="showSearchForm"></search-form>
-          <search-result [workers]="workers" (onSelectedWorker)="GoToProfile($event)" *ngIf="showSearchResultTable"></search-result>
-          <profile [worker]="selectedWorker" (onBook)="Book($event)" *ngIf="showProfile"></profile>
+          <search-result [workers]="workers" (onBack)="ShowSearchFilter()" (onSelectedWorker)="GoToProfile($event)" *ngIf="showSearchResultTable"></search-result>
+          <profile [worker]="selectedWorker" (onBack)="ShowSearchResult()" (onBook)="Book($event)" *ngIf="showProfile"></profile>
         </div>
       </div>
     </div>

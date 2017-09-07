@@ -28,6 +28,13 @@ export interface ResetPasswordParams {
     ValidationId: string,
     Password: string
 }
+export interface WorkerFilterParams {
+    languages: NameValuePair[],
+    nationality: NameValuePair[],
+    gender: NameValuePair[],
+    maritalStatus: NameValuePair[],
+    workerTypes: NameValuePair[]
+}
 export interface CreateNewUserParams {
     FirstName: string
     LastName: string,

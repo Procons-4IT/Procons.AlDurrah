@@ -24,7 +24,7 @@ describe('MyApiService', () => {
             expect(criteriaParams).toBeTruthy();
             expect(criteriaParams.languages.length).toBeGreaterThan(0);
         })
-    })));
+    })), 10000);
 
     //add getWorkers with filter Params
     it('get Workers ', async(inject([ApiService], (service: ApiService) => {
@@ -67,10 +67,10 @@ describe('MyApiService', () => {
             // console.log('API-TEST createIncoming Payment ', onError);
             // fail();
         });
-    })));
+    })),30000);
     it('login ', async(inject([ApiService], (service: ApiService) => {
         let userName = "Houssam";
-        let password = "somePassword";
+        let password = "1234";
 
         service.login(userName, password).subscribe(isLoggedIn => {
             console.log(`API-TEST  user:${userName} pass:${password}: `, isLoggedIn);
@@ -93,12 +93,12 @@ describe('MyApiService', () => {
                 //     fail();
                 // }
             });
-    })));
+    })),30000);
 
     it('resetPassword ', async(inject([ApiService], (service: ApiService) => {
-        let resetParam: ResetPasswordParams = { "EmailAddress": "mazen@procons.com", "ValidationId": "akjdhk4hk3", "Password": "1234" }
+        let resetParam: ResetPasswordParams = { "ValidationId": "3PGO8E9S6X0XCR3", "EmailAddress": "houssam.saghir@procons-4it.com", "Password": "12345" };
         service.resetPassword(resetParam).subscribe(response => {
-            console.log(`API-TEST  resetParam:${resetParam}`, response.json());
+            console.log(`API-TEST  resetParam:${resetParam}`, response);
             expect(response).toBeTruthy;
         },
             onError => {
@@ -106,14 +106,13 @@ describe('MyApiService', () => {
                 // console.log(`API-TEST  resetParam:${resetParam}`, onError);
                 // fail();
             });
-    })));
+    })),30000);
 
     it('createNewUser ', async(inject([ApiService], (service: ApiService) => {
-        let param: CreateNewUserParams = { "Email": "mazen1@procons.com", "UserName": "Mazen1", "Password": "1234", "FirstName": "Mazen", "LastName": "Khwise", "CivilId": "1234" };
+        let param: CreateNewUserParams = { "Email": "houssam.saghir1234@procons-4it.com", "UserName": "Rami1234", "Password": "1234", "FirstName": "Rami", "LastName": "Chalhoob", "CivilId": "1234" };
 
         service.createNewUser(param).subscribe(response => {
             console.log(`API-TEST  createUser:${param}`, response);
-            console.log(`API-TEST  createUser:${param}`, response.json());
             expect(response).toBeTruthy;
         },
             onError => {
@@ -121,7 +120,7 @@ describe('MyApiService', () => {
                 // console.log(`API-TEST  createNewUser:${param}`, onError);
                 // fail();
             });
-    })));
+    })),30000);
 
 
     it('confirmEmail ', async(inject([ApiService], (service: ApiService) => {
