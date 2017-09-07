@@ -56,5 +56,10 @@
         {
             return provider.GetLookupValues<WORKERTYPES>();
         }
+
+        public double GetDownPaymentAmount()
+        {
+            return provider.GetDownPaymentAmount();
+        }
     }
 }

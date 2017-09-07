@@ -45,6 +45,7 @@
                 base.AddFieldSL("Password", "Password", "OCRD", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 50, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), false);
                 base.AddFieldSL("UserName", "UserName", "OCRD", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 50, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), false);
                 base.AddFieldSL("Confirmed", "Confirmed", "OCRD", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 1, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), false);
+                base.AddFieldSL("DownPay", "Down Payment Amount", "OADM", SAPbobsCOM.BoFieldTypes.db_Float.ToString(), SAPbobsCOM.BoYesNoEnum.tNO.ToString(), SAPbobsCOM.BoFldSubTypes.st_Price.ToString(), false);
 
                 base.AddUdo("WORKERSUDO", "WORKERS");
 

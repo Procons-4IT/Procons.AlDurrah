@@ -14,7 +14,7 @@
     using System.Data.SqlClient;
     using System.Linq;
     using System.Runtime.InteropServices;
-    using System.Text;   
+    using System.Text;
 
 
     public class WorkersProvider : ProviderBase
@@ -339,6 +339,18 @@
             }
         }
 
+        public double GetDownPaymentAmount()
+        {
+            var conn = Factory.DeclareClass<DatabaseHelper<HanaConnection>>();
+            double paymentAmount = 0;
+            var result = conn.ExecuteQuery($@"SELECT ""U_DownPay"" FROM ""{base.databaseName}"".""OADM""");
+            while (result.Read())
+            {
+                paymentAmount = MapField<double>(result["U_DownPay"]);
+            }
+            return paymentAmount;
+        }
+
         #region PRIVATE METHODS
         private Filter<WORKERS> GetExpression(Catalogue wrk)
         {
@@ -423,11 +435,11 @@
                 if (wrk.Age != null)
                 {
                     var boundaries = wrk.Age.Trim().Split('-');
-                    if (queryBuilder.Length>0 )
+                    if (queryBuilder.Length > 0)
                         queryBuilder.Append($" AND \"U_Age\" BETWEEN {boundaries[0]} AND {boundaries[1]}");
                     else
                     {
-                        queryBuilder= new StringBuilder("WHERE ");
+                        queryBuilder = new StringBuilder("WHERE ");
                         queryBuilder.Append($"\"U_Age\" BETWEEN {boundaries[0]} AND {boundaries[1]}");
                     }
                 }

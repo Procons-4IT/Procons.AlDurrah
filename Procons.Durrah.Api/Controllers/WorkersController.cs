@@ -48,7 +48,7 @@
 
             e24PaymentPipeCtlClass payment = new e24PaymentPipeCtlClass();
             payment.Action = "1";
-            payment.Amt = transaction.Amount;
+            payment.Amt = workersFacade.GetDownPaymentAmount().ToString();
             payment.Currency = "414";
             payment.Language = "USA";
             payment.ResponseUrl = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.ResponseUrl);
@@ -84,6 +84,12 @@
                 return Request.CreateResponse(HttpStatusCode.OK, varPaymentPage + "?PaymentID=" + varPaymentID);
             }
 
+        }
+
+        public IHttpActionResult GetDownPaymentAmount()
+        {
+            workersFacade.GetDownPaymentAmount();
+            return Ok();
         }
 
         [HttpPost]

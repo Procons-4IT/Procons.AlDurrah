@@ -556,12 +556,14 @@
                 //Use : UriOperationParameter for querying options.
                 //Use : BodyOperationParameter for sending JSON body.
                 BodyOperationParameter[] body = new BodyOperationParameter[3];
-                body[0] = new BodyOperationParameter(Constants.ServiceLayer.UserName , cred.UserName);
+                body[0] = new BodyOperationParameter(Constants.ServiceLayer.UserName, cred.UserName);
                 body[1] = new BodyOperationParameter(Constants.ServiceLayer.Password, cred.Password);
                 body[2] = new BodyOperationParameter(Constants.ServiceLayer.CompanyDB, cred.CompanyDB);
 
                 //Both HTTP & HTTPs protocols are supported.
+
                 session = (B1Session)currentServiceContainer.Execute<B1Session>(login, "POST", true, body).SingleOrDefault();
+
                 if (null != session)
                 {
                     strCurrentSessionGUID = session.SessionId;
