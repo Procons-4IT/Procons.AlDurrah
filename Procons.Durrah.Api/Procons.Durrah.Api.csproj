@@ -445,6 +445,7 @@
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Views\Main\Index.cshtml" />
     <Content Include="tsconfig.json" />
+    <Content Include="Views\Main\Confirm.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

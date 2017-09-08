@@ -121,6 +121,11 @@ namespace Procons.Durrah
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.MapRoute(
+        name: "Confirm",
+        url: "{controller}.mvc/{action}",
+        defaults: new { controller = "Main", action = "Confirm", id = UrlParameter.Optional }
+    );
+            routes.MapRoute(
                     name: "Default",
                     url: "{*anything}",
                     defaults: new { controller = "Main", action = "Index", id = UrlParameter.Optional }
