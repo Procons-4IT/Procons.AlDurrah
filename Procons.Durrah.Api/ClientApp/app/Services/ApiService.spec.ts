@@ -69,7 +69,7 @@ describe('MyApiService', () => {
         });
     })),30000);
     it('login ', async(inject([ApiService], (service: ApiService) => {
-        let userName = "Houssam";
+        let userName = "Rami";
         let password = "1234";
 
         service.login(userName, password).subscribe(isLoggedIn => {

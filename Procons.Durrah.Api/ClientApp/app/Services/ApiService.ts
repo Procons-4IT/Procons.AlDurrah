@@ -14,11 +14,17 @@ export class ApiService {
 
     private config = require('../../config.json');
     private language: string;
+    private userLoggedIn = new Subject<boolean>();
 
     constructor(private http: Http) {
         this.language = navigator.language;
     }
 
+    public logOut() {
+        this.RemoveSecurityToken();
+        this.alertListenersUserLoggedIn(false);
+    }
+    
     public login(userName: string, password: string): Observable<boolean> {
         let requestBody = `grant_type=password&username=${userName}&password=${password}`;
 
@@ -31,7 +37,7 @@ export class ApiService {
                 return true;
             } else
                 return false;
-        });
+        }).do(x => { this.alertListenersUserLoggedIn(true) });
     }
     public forgotPassword(email: string): Observable<any> {
         var requestBody = { EmailAddress: email };;
@@ -84,8 +90,11 @@ export class ApiService {
     public httpPostHelper(url: string, body: any): Observable<Response> {
         let headers = new Headers();
         headers.append("accept-language", this.language);
+        let token = this.GetSecurityToken();
+        if (token) {
+            headers.append('Authorization', `bearer ${token}`);
+        }
         let options: RequestOptions = new RequestOptions({ headers: headers });
-
         return this.http.post(this.config.baseUrl + url, body, options);
         // .catch(tempCatch => {
         //     var fakeObject = {
@@ -110,8 +119,19 @@ export class ApiService {
         // });
     }
     public GetSecurityToken(): string {
-        let securityToken: string = '';
-        securityToken = 'bearer ' + sessionStorage.getItem('SecurityToken');
-        return securityToken
+        // let securityToken: string = '';
+        // securityToken = 'bearer ' + sessionStorage.getItem('SecurityToken');
+        // return securityToken
+        return sessionStorage.getItem('SecurityToken');
+    }
+    public RemoveSecurityToken(): void {
+        sessionStorage.removeItem('SecurityToken');
+    }
+
+    public alertListenersUserLoggedIn(isLoggedIn: boolean) {
+        this.userLoggedIn.next(isLoggedIn);
+    }
+    public onUserLoggedIn(): Subject<boolean> {
+        return this.userLoggedIn;
     }
 }
