@@ -30,9 +30,9 @@
             return workersList;
         }
 
-        public double? CreateSalesOrder(Transaction transaction)
+        public double? CreateSalesOrder(Transaction transaction,string cardCode)
         {
-            return provider.CreateSalesOrder(transaction);
+            return provider.CreateSalesOrder(transaction, cardCode);
         }
 
         public bool SavePaymentDetails(Transaction trans)

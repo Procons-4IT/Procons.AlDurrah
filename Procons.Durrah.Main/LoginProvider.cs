@@ -25,7 +25,8 @@
                     EmailConfirmed = true,
                     FirstName = result.CardName,
                     LastName = result.CardName,
-                    UserType = result.CardType
+                    UserType = result.CardType,
+                    CardCode=result.CardCode
                 };
             }
             return user;

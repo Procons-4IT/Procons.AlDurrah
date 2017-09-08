@@ -181,18 +181,18 @@
             return workersList;
         }
 
-        public double? CreateSalesOrder(Transaction trans)
+        public double? CreateSalesOrder(Transaction trans,string cardCode)
         {
             var instance = ServiceLayerProvider.GetInstance();
             Document salesOrder = new Document();
             DocumentLine salesOrderLine = new DocumentLine();
             SerialNumber dserialNum = new SerialNumber();
 
-            double? returnResult = 0;
+            double? returnResult = double.MinValue;
             try
             {
                 var serialDetails = instance.CurrentServicelayerInstance.SerialNumberDetails.Where(x => x.SerialNumber == trans.SerialNumber && x.ItemCode == trans.Code).FirstOrDefault();
-                salesOrder.CardCode = trans.CardCode;
+                salesOrder.CardCode = cardCode;
                 salesOrder.U_PaymentID = trans.PaymentID;
                 salesOrder.U_Auth = trans.Auth;
                 salesOrder.U_TrackID = trans.TrackID;
@@ -205,18 +205,18 @@
                 salesOrder.DocumentLines.Add(salesOrderLine);
 
                 instance.CurrentServicelayerInstance.AddToOrders(salesOrder);
-                var resultOrder = instance.CurrentServicelayerInstance.SaveChanges();
+                //UPDATE WORKER STATUS
+                var worker = instance.CurrentServicelayerInstance.WORKERSUDO.Where(x => x.U_Serial == trans.SerialNumber && x.U_ItemCode == trans.Code).FirstOrDefault();
+                worker.U_Status = "0";
+                instance.CurrentServicelayerInstance.UpdateObject(worker);
+               var resultOrder = instance.CurrentServicelayerInstance.SaveChanges();
 
                 if (null != resultOrder)
                 {
-                    ChangeOperationResponse opRes = (ChangeOperationResponse)resultOrder.SingleOrDefault();
+                    ChangeOperationResponse opRes = (ChangeOperationResponse)resultOrder.FirstOrDefault();
                     object retDoc = ((System.Data.Services.Client.EntityDescriptor)(opRes.Descriptor)).Entity;
                     if (null != retDoc)
-                    {
                         returnResult = ((Document)retDoc).DocTotal;
-                    }
-                    else
-                        returnResult = 0;
                 }
             }
             catch (Exception ex)

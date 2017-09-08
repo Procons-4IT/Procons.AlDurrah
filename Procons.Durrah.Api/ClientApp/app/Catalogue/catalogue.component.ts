@@ -110,7 +110,7 @@ export class CatalogueComponent implements OnInit {
     Book(onBook: Boolean) {
         var selectedWorker = this.selectedWorker;
         console.log('calling knetPayment! for worker ', selectedWorker);
-        var paymentInformation = { SerialNumber: selectedWorker.serialNumber, CardCode: "C220Temp", Amount: "100", Code: selectedWorker.code }
+        var paymentInformation = { SerialNumber: selectedWorker.serialNumber, CardCode: selectedWorker.agent, Amount: "100", Code: selectedWorker.code }
         this.loading = true;
         this.myApi.knetPaymentRedirectUrl(paymentInformation)
             .map(url => this.utility.redirectToUrl(url))

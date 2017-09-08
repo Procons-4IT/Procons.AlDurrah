@@ -1,5 +1,5 @@
 {
-  "baseUrl": "http://89.249.220.100:80",
+  "baseUrl": "http://dev.procons-scloud.com",
   "getSearchCriteriaUrl": "/api/Workers/GetSearchLookups",
   "getWorkersUrl": "/api/Workers/GetWorkers",
   "knetUrl": "/api/Workers/CallKnetGateway",

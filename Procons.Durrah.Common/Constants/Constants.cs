@@ -8,6 +8,7 @@
             public const string UserName = "UserName";
             public const string Password = "Password";
             public const string CompanyDB = "CompanyDB";
+            public const string CardCode = "CardCode";
         }
         public struct ConfigurationKeys
         {

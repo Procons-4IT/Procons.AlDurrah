@@ -42,7 +42,7 @@
             string varPaymentID, varPaymentPage, varErrorMsg, varRawResponse;
 
             var claims = ((ClaimsIdentity)User.Identity).Claims;
-            //var cardCode = claims.Where(x => x.Type == Constants.ServiceLayer.UserName).FirstOrDefault().Value;
+            var cardCode = claims.Where(x => x.Type == Constants.ServiceLayer.CardCode).FirstOrDefault().Value;
 
             transaction.TrackID = (new Random().Next(10000000) + 1).ToString();
 
@@ -75,8 +75,8 @@
             }
             else
             {
-                var result = workersFacade.CreateSalesOrder(transaction);
-                if (result == 0)
+                var result = workersFacade.CreateSalesOrder(transaction, cardCode);
+                if (result == double.MinValue)
                     return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "/Error");
                 else
                     return Request.CreateResponse(HttpStatusCode.OK, varPaymentPage + "?PaymentID=" + varPaymentID);
