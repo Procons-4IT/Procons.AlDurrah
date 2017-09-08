@@ -5,6 +5,7 @@ import { ContextService } from './Services/ContextService'
 import { UserService } from './Services/UserService'
 import { Router } from '@angular/router'
 
+import { ApiService } from './Services/ApiService';
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
@@ -14,14 +15,29 @@ export class AppComponent implements OnInit {
     public items: MenuItem[];
     public isLoginPage: boolean;
     public isAdmin: boolean;
+    public isLoggedIn: boolean = false;
     public menuNode = {};
-    constructor(private context: ContextService, private router: Router, private userService: UserService) {
+    constructor(private context: ContextService
+        , private router: Router
+        , private userService: UserService
+        , private myApi: ApiService) {
+
         this.context.loginPageFollower.subscribe(value => { this.isLoginPage = value });
     }
-  
+
 
     ngOnInit() {
-
+        this.listenToUserLogin();
     }
+
+    listenToUserLogin() {
+        this.myApi.onUserLoggedIn().subscribe(x => {
+            this.isLoggedIn = x;
+        });
+    }
+    logOut() {
+        this.myApi.logOut()
+    }
+
 
 }

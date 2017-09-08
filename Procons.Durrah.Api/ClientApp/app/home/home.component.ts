@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router'
 import { Observable, ObservableInput } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/filter';

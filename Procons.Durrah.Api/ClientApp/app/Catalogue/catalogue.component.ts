@@ -43,28 +43,34 @@ export class CatalogueComponent implements OnInit {
     public showSearchResultTable: boolean = false;
     public showProfile: boolean = false;
 
-    constructor(private myApi: ApiService, private utility:UtilityService, 
+    constructor(private myApi: ApiService, private utility: UtilityService,
         private sanitizer: DomSanitizer, private myModal: ProconsModalSerivce) {
     }
 
 
     public GoToSearch() {
-        this.loading = true;
-        this.myApi.getSearchCriteriaParameters().subscribe(searchCriteria => {
-            this.loading = false;
+        var securityToken = this.myApi.GetSecurityToken();
+        if (securityToken) {
 
-            this.searchCriteriaParams = searchCriteria;
-            this.showSearchSummary = false;
-            this.showSearchForm = true;
-        },
-            onError => {
+            this.loading = true;
+            this.myApi.getSearchCriteriaParameters().subscribe(searchCriteria => {
                 this.loading = false;
-                console.error('Error: ', onError);
-                this.myModal.showErrorModal();
-            }, () => {
-                this.loading = false;
-                console.log('subscription complete!');
-            });
+
+                this.searchCriteriaParams = searchCriteria;
+                this.showSearchSummary = false;
+                this.showSearchForm = true;
+            },
+                onError => {
+                    this.loading = false;
+                    console.error('Error: ', onError);
+                    this.myModal.showErrorModal();
+                }, () => {
+                    this.loading = false;
+                    console.log('subscription complete!');
+                });
+        } else {
+            this.myModal.showErrorModal('Please Login!');
+        }
     }
 
     GoToResults(workerFilter: Worker) {
@@ -119,11 +125,11 @@ export class CatalogueComponent implements OnInit {
         this.showSearchSummary = false;
         this.showSearchResultTable = true;
     }
-    ShowSearchFilter(){
+    ShowSearchFilter() {
         this.showProfile = false;
         this.showSearchForm = true;
         this.showSearchSummary = false;
         this.showSearchResultTable = false;
- 
+
     }
 }
