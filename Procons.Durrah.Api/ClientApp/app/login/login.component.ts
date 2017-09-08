@@ -24,6 +24,7 @@ export class LoginComponent implements OnInit {
     public showForgotPasswordModal = false;
     public forgotPassModalLoading: boolean = false;
     public forgotPassModalError: string = "";
+    public forgotPassModalText: string = "";
 
     public resetPassModalLoading: boolean = false;
     public resetPassInputError: string = "";
@@ -97,9 +98,9 @@ export class LoginComponent implements OnInit {
         this.forgotPassModalLoading = true;
         this.myApi.forgotPassword(email).subscribe(isSuccesful => {
             this.forgotPassModalLoading = false;
-            console.log('I got a reply!');
             $('#myModal').modal('toggle')
             this.showForgotPasswordModal = false;
+            this.forgotPassModalText = "Reset Has Been Sent!";
 
 
         }, onError => {
