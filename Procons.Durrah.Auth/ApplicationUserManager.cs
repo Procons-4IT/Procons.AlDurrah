@@ -9,6 +9,7 @@
     using System;
     using System.Security.Claims;
     using System.Threading.Tasks;
+    using System.Web;
 
     public class ApplicationUserManager : UserManager<ApplicationUser>
     {
@@ -55,6 +56,7 @@
 
         public override Task<ApplicationUser> FindAsync(string userName, string password)
         {
+            
             var user = loginFacade.FindUser(userName, password);
             return Task.FromResult(user);
         }
