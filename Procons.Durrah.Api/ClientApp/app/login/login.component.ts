@@ -8,8 +8,10 @@ import { ApiService } from '../Services/ApiService';
 import { ProconsModalSerivce } from '../Services/ProconsModalService';
 import { UtilityService } from '../Services/UtilityService';
 
-declare var $;
+var errorMessages = require('../../errorMessages.json');
 
+declare var $;
+declare var grecaptcha
 @Component({
     selector: 'login',
     templateUrl: './login.component.html',
@@ -74,7 +76,7 @@ export class LoginComponent implements OnInit {
                 this.resetParams.EmailAddress = x.Email;
                 this.resetParams.ValidationId = x.ValidationId;
             }, onError => {
-                this.resetPassModalText = 'Something Went Wrong!'
+                this.resetPassModalText = errorMessages.resetPassowrd;
             });
     }
 
@@ -88,7 +90,7 @@ export class LoginComponent implements OnInit {
             this.OpenModal();
         }, (error) => {
             this.loading = false;
-            this.myModal.showErrorModal();
+            this.myModal.showErrorModal(errorMessages.login);
         });
 
     }
@@ -110,7 +112,7 @@ export class LoginComponent implements OnInit {
                 this.forgotPassModalError = "Invalid Email";
 
             } else {
-                this.myModal.showErrorModal();
+                this.myModal.showErrorModal(errorMessages.forgotPassword);
             }
         })
 
@@ -133,22 +135,24 @@ export class LoginComponent implements OnInit {
                     }
                 }, onError => {
                     this.resetPassModalLoading = false;
-                    this.resetPassModalText = 'Something Went Wrong!';
+                    this.resetPassModalText = errorMessages.resetPassword;
                 });
         }
     }
     CreateUser() {
         console.log('### Create User Unimplemented Method! ', this.newUser);
         this.loading = true;
+        this.newUser["g-recaptcha-response"] = grecaptcha.getResponse();
         this.myApi.createNewUser(this.newUser).subscribe(x => {
             this.loading = false;
 
         }, onError => {
             console.log(onError);
             this.loading = false;
-            this.myModal.showErrorModal();
+            this.myModal.showErrorModal(errorMessages.register);
         });
     }
+
     OpenModal() {
         let html = `
             <div class="modal-body">

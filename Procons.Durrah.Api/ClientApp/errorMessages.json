@@ -1,0 +1,14 @@
+{
+    "login": "Login Failed. Pleasre Try Again!",
+    "register": "Invalid Registration. Please Try Again!",
+    "forgotPassword": "Something went wrong!",
+    "resetPassowrd": "Something went wrong!",
+    "confirmEmail": "Something went wrong!",
+
+    "paymentConfirmation": "Invalid Payment Process",
+
+    "getSearchCriteria": "Something went wrong!",
+    "bookWorker": "Something went wrong!",
+    "getWorkers": "Something went wrong!"
+
+}
