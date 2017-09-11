@@ -266,7 +266,9 @@
                         oPay.Invoices.DocEntry = Convert.ToInt32(InvoiceNo);
 
                         var test = oDoc.DocTotal;
-                        oPay.CashSum = oDoc.Lines.UnitPrice * oDoc.Lines.Quantity;
+                        //oPay.CashSum = oDoc.Lines.UnitPrice * oDoc.Lines.Quantity;
+                        var paymentAmount = GetDownPaymentAmount();
+                        oPay.CashSum = paymentAmount;
                         int RetCode1 = oPay.Add();
                         if (RetCode1 != 0)
                         {
@@ -343,7 +345,7 @@
         {
             var conn = Factory.DeclareClass<DatabaseHelper<HanaConnection>>();
             double paymentAmount = 0;
-            var result = conn.ExecuteQuery($@"SELECT ""U_DownPay"" FROM ""{base.databaseName}"".""OADM""");
+            var result = conn.ExecuteQuery($@"SELECT IFNULL(""U_DownPay"",0) FROM ""{base.databaseName}"".""OADM""");
             while (result.Read())
             {
                 paymentAmount = MapField<double>(result["U_DownPay"]);

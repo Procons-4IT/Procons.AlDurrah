@@ -31,13 +31,9 @@
         [Route("create")]
         public async Task<IHttpActionResult> CreateUser(ApplicationUser user)
         {
-            Stream req = HttpContext.Current.Request.InputStream; 
-            req.Seek(0, System.IO.SeekOrigin.Begin);
-            string json = new StreamReader(req).ReadToEnd();
-
-           dynamic input = JsonConvert.DeserializeObject(json);
+            if (!base.GoogleReCaptcha(user.CaptchaCode))
+                return BadRequest("Verify Captcha!");
             
-
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             var baseUrl = Request.RequestUri.GetLeftPart(UriPartial.Authority);

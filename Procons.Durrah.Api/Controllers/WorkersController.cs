@@ -35,6 +35,7 @@
             return Ok(result);
         }
 
+        [Authorize]
         [HttpPost]
         public HttpResponseMessage CallKnetGateway([FromBody]Transaction transaction)
         {
@@ -85,6 +86,7 @@
 
         }
 
+        [Authorize]
         public IHttpActionResult GetDownPaymentAmount()
         {
             workersFacade.GetDownPaymentAmount();
@@ -92,6 +94,7 @@
         }
 
         [HttpPost]
+        [Authorize]
         public HttpResponseMessage CreatePayment([FromBody]Transaction payment)
         {
 
@@ -103,6 +106,7 @@
         }
 
         [HttpPost]
+        [Authorize]
         public IHttpActionResult GetAgentWorkers([FromBody]Worker worker)
         {
             var claims = ((ClaimsIdentity)User.Identity).Claims;
@@ -112,6 +116,7 @@
         }
 
         [HttpPost]
+        [Authorize]
         public IHttpActionResult GetWorkers([FromBody]Catalogue worker)
         {
             var workers = workersFacade.GetWorkers(worker);
@@ -119,6 +124,7 @@
         }
 
         [HttpPost]
+        [Authorize]
         public IHttpActionResult AddWorker([FromBody]Worker worker)
         {
             var result = workersFacade.CreateWorker(worker);
@@ -126,6 +132,7 @@
         }
 
         [HttpPost]
+        [Authorize]
         public IHttpActionResult DeleteWorker(string code)
         {
             return Ok();

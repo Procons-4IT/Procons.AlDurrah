@@ -7,6 +7,11 @@
     using System.Web.Http;
     using Procons.Durrah.Auth;
     using Procons.Durrah.Models;
+    using System.Net;
+    using System.IO;
+    using Newtonsoft.Json;
+    using Procons.Durrah.Common.Models;
+
     public class BaseApiController : ApiController
     {
 
@@ -68,6 +73,43 @@
             }
 
             return null;
+        }
+
+        public bool GoogleReCaptcha(string gRecaptchaResponse)
+        {
+            bool captchaResult = false;
+            string urlToPost = "https://www.google.com/recaptcha/api/siteverify";
+            string secretKey = "6LdxFzAUAAAAAGS5UvbX5fr_fzl7712hlQ9yN4O7"; 
+            var postData = "secret=" + secretKey + "&response=" + gRecaptchaResponse;
+
+            // send post data
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlToPost);
+            request.Method = "POST";
+            request.ContentLength = postData.Length;
+            request.ContentType = "application/x-www-form-urlencoded";
+
+            using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+            {
+                streamWriter.Write(postData);
+            }
+
+            // receive the response now
+            string result = string.Empty;
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            {
+                using (var reader = new StreamReader(response.GetResponseStream()))
+                {
+                    result = reader.ReadToEnd();
+                }
+            }
+
+            // validate the response from Google reCaptcha
+            var captChaesponse = JsonConvert.DeserializeObject<ReCaptchaResponse>(result);
+            if (captChaesponse.Success)
+            {
+                captchaResult = true;
+            }
+            return captchaResult;
         }
     }
 }
