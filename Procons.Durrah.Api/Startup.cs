@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
-using Microsoft.Owin;
+﻿using Microsoft.Owin;
 using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.DataHandler.Encoder;
 using Microsoft.Owin.Security.Jwt;
 using Microsoft.Owin.Security.OAuth;
@@ -18,7 +16,6 @@ using System.Linq;
 using System.Net.Http.Formatting;
 using System.Web;
 using System.Web.Http;
-using System.Web.Http.WebHost;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.SessionState;
@@ -26,27 +23,6 @@ using System.Web.SessionState;
 [assembly: OwinStartup(typeof(Procons.Durrah.Startup))]
 namespace Procons.Durrah
 {
-    public class ISessionHandler
-    {
-
-    }
-    public class SessionHandler : ISessionHandler, IDisposable
-    {
-        public string SessionId { get; set; }
-
-        public SessionHandler()
-        {
-
-        }
-        public SessionHandler(string ses)
-        {
-            SessionId = ses;
-        }
-        public void Dispose()
-        {
-
-        }
-    }
     public class Startup
     {
         public void Configuration(IAppBuilder app)
@@ -121,9 +97,9 @@ namespace Procons.Durrah
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.MapRoute(
-        name: "Confirm",
-        url: "{controller}.mvc/{action}",
-        defaults: new { controller = "Main", action = "Confirm", id = UrlParameter.Optional }
+                    name: "Confirm",
+                    url: "{controller}.mvc/{action}",
+                    defaults: new { controller = "Main", action = "Confirm", id = UrlParameter.Optional }
     );
             routes.MapRoute(
                     name: "Default",

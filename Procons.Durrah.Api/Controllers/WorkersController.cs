@@ -11,8 +11,9 @@
     using System.Linq;
     using Facade;
     using System.Web;
+    using Procons.Durrah.Controllers;
 
-    public class WorkersController : ApiController
+    public class WorkersController : BaseApiController
     {
         B1Facade b1Facade = Factory.DeclareClass<B1Facade>();
         WorkersFacade workersFacade = Factory.DeclareClass<WorkersFacade>();

@@ -83,7 +83,6 @@
   <ItemGroup>
     <Compile Include="Constants\Constants.cs" />
     <Compile Include="Constants\Enumerators.cs" />
-    <Compile Include="ExpressionBuilder.cs" />
     <Compile Include="Factory.cs" />
     <Compile Include="Models\ApplicationRole.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
