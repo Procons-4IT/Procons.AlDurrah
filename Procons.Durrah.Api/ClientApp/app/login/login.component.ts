@@ -88,6 +88,10 @@ export class LoginComponent implements OnInit {
         this.myApi.login(this.newUser.UserName, this.newUser.Password).subscribe(isLoggedIn => {
             this.loading = false;
             this.OpenModal();
+            this.isLoggedIn = true;
+            this.myApi.onUserLoggedIn().subscribe(x => {
+                this.isLoggedIn = x;
+            })
         }, (error) => {
             this.loading = false;
             this.myModal.showErrorModal(errorMessages.login);
