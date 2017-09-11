@@ -41,7 +41,8 @@ export interface CreateNewUserParams {
     UserName: string,
     CivilId: string,
     Password: string,
-    Email: string
+    Email: string,
+    "g-recaptcha-response"?: string
 }
 
 export interface ConfirmEmailParams {

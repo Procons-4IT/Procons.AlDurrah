@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { CanActivateViaAuthGuard } from "./Services/ActivationGuard"
-import { Routes, RouterModule, DefaultUrlSerializer, UrlTree } from '@angular/router'
+import { Routes, RouterModule, DefaultUrlSerializer, UrlTree, UrlSerializer } from '@angular/router'
 
 export class LowerCaseUrlSerializer extends DefaultUrlSerializer {
   parse(url: string): UrlTree {
@@ -11,19 +11,19 @@ export class LowerCaseUrlSerializer extends DefaultUrlSerializer {
 }
 
 const routes: Routes = [
-  { path: 'Home', component: HomeComponent },
+  { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'PaymentConfirmation', data: { isPayment: true }, component: HomeComponent },
-  { path: 'ResetPassword', data: { isPasswordReset: true }, component: HomeComponent },
-  { path: 'ConfirmEmail', data: { isConfirmEmail: true }, component: HomeComponent },
-  { path: '', pathMatch: 'full', redirectTo: '/Home' },
-  { path: '**', pathMatch: 'full', redirectTo: '/Home' }
+  { path: 'paymentconfirmation', data: { isPayment: true }, component: HomeComponent },
+  { path: 'resetpassword', data: { isPasswordReset: true }, component: HomeComponent },
+  { path: 'confirmemail', data: { isConfirmEmail: true }, component: HomeComponent },
+  { path: '', pathMatch: 'full', redirectTo: '/home' },
+  { path: '**', pathMatch: 'full', redirectTo: '/home' }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  providers: [LowerCaseUrlSerializer]
+  providers: [{ provide: UrlSerializer, useClass: LowerCaseUrlSerializer }]
 })
 export class RoutingModule { }
 
