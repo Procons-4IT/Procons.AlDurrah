@@ -4,7 +4,7 @@
 
     public class CreateUserBindingModel
     {
-        [Required(AllowEmptyStrings = false,ErrorMessage ="Email is required!")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Email is required!")]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
@@ -35,6 +35,7 @@
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
     }
 
     public class ChangePasswordBindingModel

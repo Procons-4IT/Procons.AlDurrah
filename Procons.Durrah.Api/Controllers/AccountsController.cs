@@ -13,6 +13,8 @@
     using Procons.Durrah.Facade;
     using Procons.Durrah.Common.Models;
     using System.Web;
+    using Newtonsoft.Json;
+    using System.IO;
 
     [ApplicationExceptionFilter]
     [RoutePrefix("api/accounts")]
@@ -29,6 +31,13 @@
         [Route("create")]
         public async Task<IHttpActionResult> CreateUser(ApplicationUser user)
         {
+            Stream req = HttpContext.Current.Request.InputStream; 
+            req.Seek(0, System.IO.SeekOrigin.Begin);
+            string json = new StreamReader(req).ReadToEnd();
+
+           dynamic input = JsonConvert.DeserializeObject(json);
+            
+
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             var baseUrl = Request.RequestUri.GetLeftPart(UriPartial.Authority);

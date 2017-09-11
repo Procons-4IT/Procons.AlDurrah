@@ -146,7 +146,7 @@ export class LoginComponent implements OnInit {
     CreateUser() {
         console.log('### Create User Unimplemented Method! ', this.newUser);
         this.loading = true;
-        this.newUser["g-recaptcha-response"] = grecaptcha.getResponse();
+        this.newUser["CaptchaCode"] = grecaptcha.getResponse();
         this.myApi.createNewUser(this.newUser).subscribe(x => {
             this.loading = false;
 

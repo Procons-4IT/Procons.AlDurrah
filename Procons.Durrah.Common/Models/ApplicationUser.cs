@@ -30,6 +30,7 @@
         public string CardCode { get; set; }
 
         public string Password { get; set; }
+        public string CaptchaCode { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager, string authenticationType)
         {
