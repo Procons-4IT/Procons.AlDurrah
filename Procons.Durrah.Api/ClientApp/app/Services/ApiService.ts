@@ -118,6 +118,9 @@ export class ApiService {
 
         // });
     }
+    public isLoggedIn(): boolean {
+        return this.GetSecurityToken() && true;
+    }
     public GetSecurityToken(): string {
         // let securityToken: string = '';
         // securityToken = 'bearer ' + sessionStorage.getItem('SecurityToken');

@@ -8,7 +8,7 @@ export class ProconsModalSerivce {
 
     }
 
-    showErrorModal(optionalMessage: string = "Network Error") {
+    showErrorModal(optionalMessage: string = "Something Went Wrong") {
         this.modal.alert()
             .showClose(true)
             .body(`
