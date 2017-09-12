@@ -46,11 +46,13 @@
 
             </tbody>
           </table>
+
         </div>
         <div class="col-sm-6">
           <p><img [src]="worker.photo" class="img-thumbnail img-responsive" width="100%" /></p>
         </div>
-        <p><input type="submit" value="سجل"  [disabled]="worker.status" (click)="Book()" class="btn btn-default" id="bookProfile" /></p>
+        <p><input type="submit" value="سجل" [disabled]="!worker.status" (click)="Book()" class="btn btn-default" id="bookProfile"
+          /></p>
         <div class="btn btn-default" (click)="GoBack()">Back</div>
       </div>
     </div>

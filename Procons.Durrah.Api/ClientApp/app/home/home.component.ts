@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { Observable, ObservableInput } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
@@ -7,6 +7,8 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/do';
 
+
+import { ResetPasswordParams } from '../Models/ApiRequestType';
 
 import { ApiService } from '../Services/ApiService';
 import { UtilityService } from '../Services/UtilityService';
@@ -20,16 +22,34 @@ declare var $;
 })
 export class HomeComponent implements OnInit {
 
+  errorMessages = require('../../errorMessages.json');
   public paymentModalText: string = "";
+
+  public resetPassModalLoading: boolean = false;
+  public resetPassInputError: string = "";
+  public resetPassModalText: string = "";
+
+  public resetParams: ResetPasswordParams = {
+    EmailAddress: "",
+    Password: "",
+    ValidationId: ""
+  };
+
   public loadingPayment: boolean = false;
   constructor(public myApi: ApiService
     , public utility: UtilityService,
-    public activeRouter: ActivatedRoute) { }
-
+    public activeRouter: ActivatedRoute,
+    public router: Router) { }
 
   ngOnInit() {
+    let userLoggedIn$ = this.myApi.onUserLoggedIn();
+    console.log('user init state ', userLoggedIn$.getValue());
+    userLoggedIn$.subscribe(isLoggedIn => {
+      console.log('user state', isLoggedIn);
+    });
     this.handlePaymentRoute();
     this.handleConfirmEmailRoute();
+    this.handlePasswordResetRoute();
   }
 
 
@@ -51,6 +71,7 @@ export class HomeComponent implements OnInit {
         this.loadingPayment = false;
         if (x) {
           this.paymentModalText = 'Email Confirmed!';
+          this.router.navigate(['/home']);
         } else {
           this.paymentModalText = 'Invalid Email!';
         }
@@ -83,5 +104,51 @@ export class HomeComponent implements OnInit {
       });
 
   }
+
+  handlePasswordResetRoute() {
+    console.log('## Checking if PasswordResetRoute');
+
+    this.activeRouter.data
+      .filter((data, idx) => { return data.isPasswordReset; })
+      .do(x => {
+        $('#modalResetPass').modal('toggle');
+      })
+      .mergeMap(x => { return this.utility.getResetPasswordUrlProperties(this.activeRouter) })
+      .subscribe(x => {
+        console.log('Recieved ResetParams! ', x);
+        this.resetParams.EmailAddress = x.Email;
+        this.resetParams.ValidationId = x.ValidationId;
+      }, onError => {
+        this.resetPassModalText = this.errorMessages.resetPassowrd;
+      });
+  }
+
+  ResetPassword(password: string, confirmPassword: string) {
+    if (password !== confirmPassword) {
+      this.resetPassInputError = "Error Passwords not matching";
+    } else {
+      this.resetPassModalLoading = true;
+      this.resetParams.Password = password;
+
+      this.myApi.resetPassword(this.resetParams)
+        .subscribe(isReset => {
+          this.resetPassModalLoading = false;
+          if (isReset) {
+            console.log('## Password was Reset! ');
+            this.resetPassModalText = 'Password was Reset!';
+            setTimeout(x => {
+              this.router.navigate(['/home']);
+            }, 3000);
+
+          }
+        }, onError => {
+          this.resetPassModalLoading = false;
+          this.resetPassModalText = this.errorMessages.resetPassword;
+        });
+    }
+  }
+
+
+
 
 }

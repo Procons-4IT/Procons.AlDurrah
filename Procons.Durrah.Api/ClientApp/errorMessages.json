@@ -2,7 +2,7 @@
     "login": "Login Failed. Pleasre Try Again!",
     "register": "Invalid Registration. Please Try Again!",
     "forgotPassword": "Something went wrong!",
-    "resetPassowrd": "Something went wrong!",
+    "resetPassword": "Something went wrong!",
     "confirmEmail": "Something went wrong!",
 
     "paymentConfirmation": "Invalid Payment Process",

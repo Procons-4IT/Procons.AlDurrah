@@ -70,11 +70,13 @@
                                             [(ngModel)]="newUser.Email" #email="ngModel" />
                                     </div>
                                     <div class="form-group">
-                                        <div class="g-recaptcha" data-sitekey="6LdxFzAUAAAAAD37sKPOyMYWdhZLHh-Dmc6SJu5z"></div>
+                                        <re-captcha (captchaResponse)="captchaSubmitted($event)" site_key="6LdxFzAUAAAAAD37sKPOyMYWdhZLHh-Dmc6SJu5z"></re-captcha>
+                                        <span class="help-block" *ngIf="!recaptchaToken">Please Enter Recaptcha </span>
+
                                     </div>
                                     <div class="form-group">
-                                        <input type="submit" value="سجل" [disabled]="!passwordMatch() || !createUserForm.valid" class="btn btn-primary" id="submitRegistrationForm"
-                                        />
+                                        <input type="submit" value="سجل" [disabled]="!passwordMatch() || !createUserForm.valid || !recaptchaToken" class="btn btn-primary"
+                                            id="submitRegistrationForm" />
                                         <a href="#tabLogin" class="btn btn-primary" aria-controls="tabLogin" role="tab" data-toggle="tab">Back</a>
                                     </div>
                                 </form>
@@ -163,35 +165,5 @@
             </div>
         </div>
 
-        <div class="modal fade in active" tabindex="-1" role="dialog" id="modalResetPass">
-            <ngx-loading [show]="resetPassModalLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="غلق"><span aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="modal-body">
-                        <h3>نشئ كلمة مرور جديدة</h3>
-                        <h3>{{resetPassModalText}}</h3>
-                        <form action="#" method="post" id="changePassForm" class="form-primary" (ngSubmit)="ResetPassword(passwordInput.value,confirmPasswordInput.value)">
-                            <div class="form-group required">
-                                <input type="password" class="form-control" id="changepassword" name="changepassword" placeholder="كلمة السر الجديدة" required="true"
-                                    #passwordInput />
-                            </div>
-                            <div class="form-group required">
-                                <input type="password" class="form-control" id="changeconfirmpassword" name="changeconfirmpassword" placeholder="تأكيد كلمة المرور الجديدة"
-                                    required="true" #confirmPasswordInput />
-                            </div>
-                            <span id="helpBlock2" class="help-block" *ngIf="resetPassInputError">{{resetPassInputError}} </span>
-
-                            <div class="form-group">
-                                <input type="submit" value="إرسال" class="btn btn-primary" id="submitChangePassForm" />
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
