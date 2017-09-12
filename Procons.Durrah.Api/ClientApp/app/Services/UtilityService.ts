@@ -7,24 +7,23 @@ import 'rxjs/add/operator/map';
 export class UtilityService {
 
     constructor() { }
-
     //Reusable Helper Methods
     public getKnetUrlProperties(activeRoute: ActivatedRoute) {
         return activeRoute.queryParams.map(x => {
             return {
-                PaymentID: x.PaymentID,
-                Postdate: x.Postdate,
-                Result: x.Result,
-                TranID: x.TranID,
-                Auth: x.Auth
+                PaymentID: x.paymentid,
+                Postdate: x.postdate,
+                Result: x.result,
+                TranID: x.tranid,
+                Auth: x.auth
             }
         });
     }
     public getResetPasswordUrlProperties(activeRoute: ActivatedRoute) {
         return activeRoute.queryParams.map(x => {
             return {
-                Email: x.Email,
-                ValidationId: x.ValidationId
+                Email: x.email,
+                ValidationId: x.validationid
             }
         });
     }

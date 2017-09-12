@@ -232,13 +232,13 @@
             bool creationResult = false;
             try
             {
-                //ServiceLayerProvider instance = ServiceLayerProvider.GetInstance();
-
 
                 base.B1Company.StartTransaction();
                 var salesOrder = GetSalesOrder(trans.PaymentID);
                 if (salesOrder != null)
                 {
+                    var itemnumber = salesOrder.Lines.LineNum;
+                    var itemcode = salesOrder.Lines.ItemCode;
                     Documents oDoc = base.B1Company.GetBusinessObject(BoObjectTypes.oInvoices) as Documents;
                     oDoc.CardCode = salesOrder.CardCode;
                     oDoc.Lines.BaseEntry = salesOrder.Lines.DocEntry;
@@ -345,7 +345,7 @@
         {
             var conn = Factory.DeclareClass<DatabaseHelper<HanaConnection>>();
             double paymentAmount = 0;
-            var result = conn.ExecuteQuery($@"SELECT IFNULL(""U_DownPay"",0) FROM ""{base.databaseName}"".""OADM""");
+            var result = conn.ExecuteQuery($@"SELECT IFNULL(""U_DownPay"",0) AS ""U_DownPay"" FROM ""{base.databaseName}"".""OADM""");
             while (result.Read())
             {
                 paymentAmount = MapField<double>(result["U_DownPay"]);

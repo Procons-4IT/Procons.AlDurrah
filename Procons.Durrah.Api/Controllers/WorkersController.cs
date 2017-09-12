@@ -98,7 +98,6 @@
         [Authorize]
         public HttpResponseMessage CreatePayment([FromBody]Transaction payment)
         {
-
             var result = workersFacade.SavePaymentDetails(payment);
             if (result)
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Transaction failed!!!");

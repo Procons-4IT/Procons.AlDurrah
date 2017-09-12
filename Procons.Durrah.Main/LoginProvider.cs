@@ -218,7 +218,7 @@
             {
                 var ServiceInstance = ServiceLayerProvider.GetInstance();
                 var searchPassword = Utilities.Encrypt(newPassword);
-                var result = ServiceInstance.CurrentServicelayerInstance.PASSRESET.Where(x => x.Code == randomId && x.Name == email).FirstOrDefault();
+                var result = ServiceInstance.CurrentServicelayerInstance.PASSRESET.Where(x => x.Code == randomId.ToUpper() && x.Name == email).FirstOrDefault();
                 if (result != null)
                 {
                     var user = ServiceInstance.CurrentServicelayerInstance.BusinessPartners.Where(x => x.EmailAddress == email).FirstOrDefault();
