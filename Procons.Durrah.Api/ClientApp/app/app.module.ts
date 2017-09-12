@@ -19,6 +19,7 @@ import { CanActivateViaAuthGuard } from "./Services/ActivationGuard";
 import { RouterStateSnapshot } from '@angular/router';
 import { BusyModule } from 'angular2-busy';
 import { LoadingModule } from 'ngx-loading';
+import { ReCaptchaModule } from 'angular2-recaptcha';
 
 import {
     DataTableModule,
@@ -81,7 +82,8 @@ import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
         MultiSelectModule,
         ButtonModule,
         DialogModule,
-        DataGridModule
+        DataGridModule,
+        ReCaptchaModule
     ],
     providers: [CarService,
         CanActivateViaAuthGuard,

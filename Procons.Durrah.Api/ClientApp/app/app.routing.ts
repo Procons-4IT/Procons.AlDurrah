@@ -12,10 +12,10 @@ export class LowerCaseUrlSerializer extends DefaultUrlSerializer {
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
-  { path: 'login', component: LoginComponent },
   { path: 'paymentconfirmation', data: { isPayment: true }, component: HomeComponent },
-  { path: 'resetpassword', data: { isPasswordReset: true }, component: HomeComponent },
   { path: 'confirmemail', data: { isConfirmEmail: true }, component: HomeComponent },
+  { path: 'resetpassword', data: { isPasswordReset: true }, component: HomeComponent },
+  { path: 'login', component: LoginComponent },
   { path: '', pathMatch: 'full', redirectTo: '/home' },
   { path: '**', pathMatch: 'full', redirectTo: '/home' }
 ];

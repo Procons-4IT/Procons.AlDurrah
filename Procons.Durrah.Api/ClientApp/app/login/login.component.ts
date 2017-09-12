@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-
+import { ReCaptchaComponent } from 'angular2-recaptcha';
 import { ResetPasswordParams, CreateNewUserParams } from '../Models/ApiRequestType';
 
 import { ApiService } from '../Services/ApiService';
@@ -11,7 +11,7 @@ import { UtilityService } from '../Services/UtilityService';
 var errorMessages = require('../../errorMessages.json');
 
 declare var $;
-declare var grecaptcha
+
 @Component({
     selector: 'login',
     templateUrl: './login.component.html',
@@ -19,6 +19,7 @@ declare var grecaptcha
 
 })
 export class LoginComponent implements OnInit {
+    @ViewChild(ReCaptchaComponent) captcha: ReCaptchaComponent;
 
     public loading: boolean = false;
     public isLoggedIn: boolean = false;
@@ -33,6 +34,7 @@ export class LoginComponent implements OnInit {
     public resetPassModalText: string = "";
 
 
+    public recaptchaToken = "";
     public confirmPassword = "";
     public newUser: CreateNewUserParams = {
         FirstName: "",
@@ -55,30 +57,23 @@ export class LoginComponent implements OnInit {
         , public activeRouter: ActivatedRoute
         , public utility: UtilityService) { }
     ngOnInit() {
+        let isLoggedIn$ = this.myApi.onUserLoggedIn();
+        this.isLoggedIn = isLoggedIn$.getValue();
+        isLoggedIn$.subscribe(isLoggedIn => {
+            this.isLoggedIn = isLoggedIn;
+        });
 
-        this.handlePasswordResetRoute();
+    }
+
+    GoToRegisterEvent() {
+        // console.log('going to registration form, reseting recaptcha!');
+        // grecaptcha.reset();
     }
     passwordMatch(): boolean {
         return this.confirmPassword === this.newUser.Password;
     }
 
-    handlePasswordResetRoute() {
-        console.log('## Checking if PasswordResetRoute');
 
-        this.activeRouter.data
-            .filter((data, idx) => { return data.isPasswordReset; })
-            .do(x => {
-                $('#modalResetPass').modal('toggle');
-            })
-            .mergeMap(x => { return this.utility.getResetPasswordUrlProperties(this.activeRouter) })
-            .subscribe(x => {
-                console.log('Recieved ResetParams! ', x);
-                this.resetParams.EmailAddress = x.Email;
-                this.resetParams.ValidationId = x.ValidationId;
-            }, onError => {
-                this.resetPassModalText = errorMessages.resetPassowrd;
-            });
-    }
 
 
     Login() {
@@ -121,40 +116,26 @@ export class LoginComponent implements OnInit {
         })
 
     }
-    ResetPassword(password: string, confirmPassword: string) {
-        if (password !== confirmPassword) {
-            this.resetPassInputError = "Error Passwords not matching";
-        } else {
-            this.resetPassModalLoading = true;
-            console.log('Reset Password Unimplemented Called!', password, ' ', confirmPassword);
-            this.resetParams.Password = password;
-            console.log('Reset Password Unimplemented Called!', this.resetParams);
-
-            this.myApi.resetPassword(this.resetParams)
-                .subscribe(isReset => {
-                    this.resetPassModalLoading = false;
-                    if (isReset) {
-                        console.log('## Password was Reset! ');
-                        this.resetPassModalText = 'Password was Reset!';
-                    }
-                }, onError => {
-                    this.resetPassModalLoading = false;
-                    this.resetPassModalText = errorMessages.resetPassword;
-                });
-        }
-    }
     CreateUser() {
-        console.log('### Create User Unimplemented Method! ', this.newUser);
         this.loading = true;
-        this.newUser["CaptchaCode"] = grecaptcha.getResponse();
+        this.newUser["CaptchaCode"] = this.recaptchaToken;
         this.myApi.createNewUser(this.newUser).subscribe(x => {
             this.loading = false;
-
+            this.recaptchaToken = null;
+            this.captcha.reset();
         }, onError => {
             console.log(onError);
             this.loading = false;
             this.myModal.showErrorModal(errorMessages.register);
+            this.recaptchaToken = null;
+            this.captcha.reset();
+
+
         });
+    }
+    captchaSubmitted($event) {
+        console.log('I got the Captcha response!', $event);
+        this.recaptchaToken = $event;
     }
 
     OpenModal() {
