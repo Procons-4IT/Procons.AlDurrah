@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
@@ -14,17 +15,24 @@ export class ApiService {
 
     private config = require('../../config.json');
     private language: string;
-    private userLoggedIn = new Subject<boolean>();
+    private userLoggedIn: BehaviorSubject<boolean>;
+    
+    public resetParams: ResetPasswordParams = {
+        EmailAddress: "",
+        Password: "",
+        ValidationId: ""
+    };
 
     constructor(private http: Http) {
         this.language = navigator.language;
+        this.userLoggedIn = new BehaviorSubject(this.isLoggedIn());
     }
 
     public logOut() {
         this.RemoveSecurityToken();
-        this.alertListenersUserLoggedIn(false);
+        this.alertListenersUserLoggedIn(this.isLoggedIn());
     }
-    
+
     public login(userName: string, password: string): Observable<boolean> {
         let requestBody = `grant_type=password&username=${userName}&password=${password}`;
 
@@ -119,7 +127,7 @@ export class ApiService {
         // });
     }
     public isLoggedIn(): boolean {
-        return this.GetSecurityToken() && true;
+        return !!this.GetSecurityToken();
     }
     public GetSecurityToken(): string {
         // let securityToken: string = '';
@@ -134,7 +142,7 @@ export class ApiService {
     public alertListenersUserLoggedIn(isLoggedIn: boolean) {
         this.userLoggedIn.next(isLoggedIn);
     }
-    public onUserLoggedIn(): Subject<boolean> {
+    public onUserLoggedIn(): BehaviorSubject<boolean> {
         return this.userLoggedIn;
     }
 }
