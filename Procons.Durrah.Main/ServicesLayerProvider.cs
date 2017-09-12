@@ -1,6 +1,7 @@
 ﻿namespace Procons.Durrah.Main
 {
     using Microsoft.Data.OData;
+    using Newtonsoft.Json;
     using Procons.Durrah.Common;
     using Procons.Durrah.Common.Enumerators;
     using Procons.Durrah.Main.B1ServiceLayer.SAPB1;
@@ -9,8 +10,10 @@
     using System.Collections.Generic;
     using System.Data;
     using System.Data.Services.Client;
+    using System.IO;
     using System.Linq;
     using System.Net;
+    using System.Net.Http;
     using System.Net.Security;
     using System.Security.Cryptography.X509Certificates;
     using System.Text;
@@ -1347,7 +1350,48 @@
         {
             return currentServiceContainer.WORKERSUDO.ToList<WORKERS>();
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="url">The name of the Url after http://xxxx/b1s/v1 </param>
+        /// <param name="method">POST, GET, etc...</param>
+        /// <param name="headers">Name and value seperated by a colon</param>
+        /// <returns></returns>
+        public dynamic Execute(string url, HttpMethod method, string jsonBody, params string[] headers)
+        {
+            var request = WebRequest.Create($"{strCurrentServerURL}{url}") as HttpWebRequest;
+            dynamic response = null;
+            request.Headers.Add("Cookie", $"B1SESSION={B1SessionId}");
+            request.ContentType = "application/json";
+            request.Method = method.ToString();
 
+            foreach (string s in headers)
+                request.Headers.Add(s);
+
+            using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+            {
+                if (jsonBody != null)
+                {
+                    streamWriter.Write(jsonBody);
+                    streamWriter.Flush();
+                    streamWriter.Close();
+                }
+
+                using (HttpWebResponse response2 = request.GetResponse() as HttpWebResponse)
+                {
+
+                    if (response2.StatusCode != HttpStatusCode.OK)
+                        throw new Exception(String.Format("Server error (HTTP {0}: {1}).", response2.StatusCode, response2.StatusDescription));
+                    else
+                    {
+                        var sr = new StreamReader(response2.GetResponseStream());
+                        string strsb = sr.ReadToEnd();
+                        response = JsonConvert.DeserializeObject<dynamic>(strsb);
+                    }
+                    return response;
+                }
+            }
+        }
     }
 
     internal class PageLinks

@@ -6,6 +6,7 @@
     using ExpressionBuilder.Generics;
     using ExpressionBuilder.Interfaces;
     using Procons.Durrah.Main.B1ServiceLayer.SAPB1;
+    using SAPB1=Procons.Durrah.Main.B1ServiceLayer.SAPB1;
     using Sap.Data.Hana;
     using SAPbobsCOM;
     using System;
@@ -15,7 +16,11 @@
     using System.Linq;
     using System.Runtime.InteropServices;
     using System.Text;
-
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Net;
+    using System.IO;
+    using Newtonsoft.Json;
 
     public class WorkersProvider : ProviderBase
     {
@@ -24,6 +29,25 @@
             var created = false;
             var _serviceInstance = ServiceLayerProvider.GetInstance();
             var _worker = new WORKERS();
+
+            //var bodyText = @"{""ItemPriceParams"": { ""CardCode"": ""Houssam"", ""ItemCode"": ""DRH0001WRKR""}}";
+            //dynamic responseObject = _serviceInstance.Execute("CompanyService_GetItemPrice", HttpMethod.Post, bodyText);
+
+            dynamic responseObject = _serviceInstance.Execute("CompanyService_GetPathAdmin", HttpMethod.Post, null);
+            var _attachment = new SAPB1.Attachments2();
+            var _attachmentLine = new SAPB1.Attachments2_Line();
+            _attachmentLine.FileName = System.IO.Path.GetFileNameWithoutExtension(@"c:\BoyumInstallerLog.txt"); 
+            _attachmentLine.Override = SAPbobsCOM.BoYesNoEnum.tYES.ToString();
+           _attachmentLine.FileExtension = System.IO.Path.GetExtension(@"c:\BoyumInstallerLog.txt").Substring(1);
+            _attachmentLine.SourcePath = @"/";
+            _attachmentLine.UserID = "1";
+            _attachment.Attachments2_Lines.Add(_attachmentLine);
+            _serviceInstance.CurrentServicelayerInstance.AddToAttachments2(_attachment);
+            BodyOperationParameter[] body = null;
+           var resultTest= _serviceInstance.CurrentServicelayerInstance.Execute<object>(new Uri("https://192.168.1.120:50000/b1s/v1/CompanyService_GetPathAdmin"), "POST", false, body);
+            DataServiceResponse response1 = _serviceInstance.CurrentServicelayerInstance.SaveChanges();
+           
+
             _worker.Code = Guid.NewGuid().ToString();
             _worker.U_Agent = worker.Agent;
             _worker.U_Age = worker.Age;

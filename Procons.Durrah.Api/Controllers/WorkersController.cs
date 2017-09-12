@@ -124,7 +124,6 @@
         }
 
         [HttpPost]
-        [Authorize]
         public IHttpActionResult AddWorker([FromBody]Worker worker)
         {
             var result = workersFacade.CreateWorker(worker);
