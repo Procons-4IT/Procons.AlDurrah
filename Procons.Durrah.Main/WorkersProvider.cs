@@ -286,24 +286,27 @@
                     {
                         var InvoiceNo = base.B1Company.GetNewObjectKey();
                         var oPay = base.B1Company.GetBusinessObject(BoObjectTypes.oIncomingPayments) as Payments;
+                        var paymentAmount = GetDownPaymentAmount();
                         oPay.CardCode = salesOrder.CardCode;
                         oPay.Invoices.DocEntry = Convert.ToInt32(InvoiceNo);
+                        oPay.Invoices.SumApplied = paymentAmount;
+                        oPay.Invoices.InvoiceType = BoRcptInvTypes.it_Invoice;
+                        oPay.DocDate = DateTime.Today;
+                        //TODO: Replace bank account with cach
+                        oPay.TransferSum = paymentAmount;
+                        oPay.TransferAccount = "_SYS00000000035";
 
-                        var test = oDoc.DocTotal;
-                        //oPay.CashSum = oDoc.Lines.UnitPrice * oDoc.Lines.Quantity;
-                        var paymentAmount = GetDownPaymentAmount();
                         oPay.CashSum = paymentAmount;
                         int RetCode1 = oPay.Add();
+
                         if (RetCode1 != 0)
                         {
-                            if (base.B1Company.InTransaction)
-                                base.B1Company.EndTransaction(BoWfTransOpt.wf_RollBack);
+                            base.B1Company.EndTransaction(BoWfTransOpt.wf_RollBack);
                             var err = base.B1Company.GetLastErrorDescription();
                         }
                         else
                         {
-                            if (base.B1Company.InTransaction)
-                                base.B1Company.EndTransaction(BoWfTransOpt.wf_Commit);
+                            base.B1Company.EndTransaction(BoWfTransOpt.wf_Commit);
                             creationResult = true;
                         }
                     }

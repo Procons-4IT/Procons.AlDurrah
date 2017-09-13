@@ -100,9 +100,9 @@
         {
             var result = workersFacade.SavePaymentDetails(payment);
             if (result)
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Transaction failed!!!");
-            else
                 return Request.CreateResponse(HttpStatusCode.OK, "Transaction created successfully!!!");
+            else
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Transaction failed!!!");
         }
 
         [HttpPost]
