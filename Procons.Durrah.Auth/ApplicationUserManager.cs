@@ -13,12 +13,15 @@
 
     public class ApplicationUserManager : UserManager<ApplicationUser>
     {
+        ILoggingService loggerService = null;
         IUserStore<ApplicationUser> _store;
-        LoginFacade loginFacade = Factory.DeclareClass<LoginFacade>();
+        LoginFacade loginFacade = null;
         public ApplicationUserManager(IUserStore<ApplicationUser> store)
             : base(store)
         {
             _store = store;
+            loggerService = new LogService();
+            loginFacade = new LoginFacade(loggerService);
         }
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)

@@ -15,8 +15,17 @@
 
     public class WorkersController : BaseApiController
     {
-        B1Facade b1Facade = Factory.DeclareClass<B1Facade>();
-        WorkersFacade workersFacade = Factory.DeclareClass<WorkersFacade>();
+
+        B1Facade b1Facade = null;
+        WorkersFacade workersFacade = null;
+
+        public WorkersController(ILoggingService _logService)
+        {
+            LoggingService = _logService;
+            workersFacade = new WorkersFacade(LoggingService);
+            b1Facade = new B1Facade(LoggingService);
+        }
+
         public IHttpActionResult GetSearchLookups()
         {
 
@@ -100,7 +109,7 @@
         {
             var result = workersFacade.SavePaymentDetails(payment);
             if (result)
-                return Request.CreateResponse(HttpStatusCode.OK, "Transaction created successfully!!!");
+                return Request.CreateResponse(HttpStatusCode.OK, "Transaction created successfully!!!"); 
             else
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Transaction failed!!!");
         }

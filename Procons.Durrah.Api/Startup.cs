@@ -3,6 +3,7 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.DataHandler.Encoder;
 using Microsoft.Owin.Security.Jwt;
 using Microsoft.Owin.Security.OAuth;
+using Microsoft.Practices.Unity;
 using Newtonsoft.Json.Serialization;
 using Owin;
 using Procons.Durrah.Api.Handlers;
@@ -32,15 +33,16 @@ namespace Procons.Durrah
             HttpConfiguration httpConfig = new HttpConfiguration();
             RouteCollection routes = new RouteCollection();
 
+            ConfigureWebApi(httpConfig);
+
             ConfigureRoutes(RouteTable.Routes);
             ConfigureOAuthTokenGeneration(app);
             ConfigureOAuthTokenConsumption(app);
-
-            ConfigureWebApi(httpConfig);
+      
             app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
             app.UseWebApi(httpConfig);
 
-            B1Facade b1Facade = Factory.DeclareClass<B1Facade>();
+            B1Facade b1Facade = new B1Facade();
             var sessionId = b1Facade.InitializeTables();
         }
 
@@ -81,7 +83,10 @@ namespace Procons.Durrah
 
         private void ConfigureWebApi(HttpConfiguration config)
         {
-            //config.Filters.Add(new ApplicationExceptionFilterAttribute());
+            var container = new UnityContainer();
+            container.RegisterType<ILoggingService, LogService>(new HierarchicalLifetimeManager());
+            config.DependencyResolver = new UnityResolver(container);
+
             config.MessageHandlers.Add(new LanguageMessageHandler());
             config.MapHttpAttributeRoutes();
             config.Routes.MapHttpRoute(

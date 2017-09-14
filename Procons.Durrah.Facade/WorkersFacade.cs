@@ -1,17 +1,17 @@
 ﻿namespace Procons.Durrah.Facade
 {
-    using System.Collections.Generic;
     using Procons.Durrah.Common;
     using Procons.Durrah.Main;
-    using System.Data;
-    using Procons.DataBaseHelper;
-    using System.Linq.Expressions;
-    using Procons.Durrah.Common.Enumerators;
     using Procons.Durrah.Main.B1ServiceLayer.SAPB1;
+    using System.Collections.Generic;
 
     public class WorkersFacade : IFacade
     {
-        WorkersProvider provider { get { return Factory.DeclareClass<WorkersProvider>(); } }
+        public WorkersFacade(ILoggingService _loggingService)
+        {
+            LoggingService = (LogService)_loggingService;
+        }
+        WorkersProvider provider { get { return new WorkersProvider(LoggingService); } }
 
         public bool CreateWorker(Worker worker)
         {

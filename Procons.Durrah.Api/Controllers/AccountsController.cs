@@ -23,9 +23,14 @@
         #region PRIVATE VARIABLES
         EmailService eService = new EmailService();
         IdentityMessage idMessage = new IdentityMessage();
-        LoginFacade loginFacade = Factory.DeclareClass<LoginFacade>();
+        LoginFacade loginFacade = null;
         #endregion
 
+        public AccountsController(ILoggingService _logService)
+        {
+            LoggingService = _logService;
+            loginFacade = new LoginFacade(LoggingService);
+        }
 
         [AllowAnonymous]
         [Route("create")]
@@ -99,7 +104,7 @@
         [Route("reset")]
         public IHttpActionResult ResetPassword([FromBody]PasswordModel model)
         {
-            var loginFacade = Factory.DeclareClass<LoginFacade>();
+            var loginFacade = new LoginFacade(LoggingService);
             var result = loginFacade.ResetPassword(model.Password, model.ValidationId, model.EmailAddress);
             if (result)
                 return Ok();

@@ -19,11 +19,13 @@
         {
             foreach (var lang in request.Headers.AcceptLanguage)
             {
-                if (_supportedLanguages.Contains(lang.Value))
-                {
-                    SetCulture(request, lang.Value);
-                    return true;
-                }
+                //if (_supportedLanguages.Contains(lang.Value))
+                //{
+                //    SetCulture(request, lang.Value);
+                //    return true;
+                //}
+                SetCulture(request, lang.Value);
+                return true;
             }
 
             return false;

@@ -1,10 +1,15 @@
 ﻿namespace Procons.Durrah.Main
 {
+    using Procons.Durrah.Common;
     using System;
     using System.Data.Services.Client;
 
     public class B1Provider : ProviderBase
     {
+        public B1Provider(ILoggingService _loggingService)
+        {
+            LoggingService = (LogService)_loggingService;
+        }
         public string InitializeTables()
         {
             try
@@ -50,15 +55,18 @@
                 base.AddUdo("WORKERSUDO", "WORKERS");
 
                 base.AddTableSL("COUNTRIES", "COUNTRIES", SAPbobsCOM.BoUTBTableType.bott_MasterData);
+                base.AddFieldSL("NAME", "NAME AR", "COUNTRIES", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
                 base.AddUdo("COUNTRIESUDO", "COUNTRIES");
 
                 base.AddTableSL("WORKERTYPES", "WORKERTYPES", SAPbobsCOM.BoUTBTableType.bott_MasterData);
                 base.AddUdo("WORKERTYPESUDO", "WORKERTYPES");
 
                 base.AddTableSL("LANGUAGES", "LANGUAGES", SAPbobsCOM.BoUTBTableType.bott_MasterData);
+                base.AddFieldSL("NAME", "NAME AR", "LANGUAGES", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
                 base.AddUdo("LANGUAGESUDO", "LANGUAGES");
 
                 base.AddTableSL("MARITALSTATUS", "MARITALSTATUS", SAPbobsCOM.BoUTBTableType.bott_MasterData);
+                base.AddFieldSL("NAME", "NAME AR", "MARITALSTATUS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
                 base.AddUdo("MARITALSTATUSUDO", "MARITALSTATUS");
 
                 base.AddTableSL("PASSRESET", "Password Reset", SAPbobsCOM.BoUTBTableType.bott_MasterData);
@@ -68,9 +76,11 @@
                 base.AddUdo("EMAILCONFIRMATION", "EMAILCONFIRMATION");
 
                 base.AddTableSL("EDUCATION", "Education", SAPbobsCOM.BoUTBTableType.bott_MasterData);
+                base.AddFieldSL("NAME", "NAME AR", "EDUCATION", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
                 base.AddUdo("EDUCATION", "EDUCATION");
 
                 base.AddTableSL("RELIGION", "Religion", SAPbobsCOM.BoUTBTableType.bott_MasterData);
+                base.AddFieldSL("NAME", "NAME AR", "RELIGION", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
                 base.AddUdo("RELIGION", "RELIGION");
 
                 instance.CurrentServicelayerInstance.SaveChanges();

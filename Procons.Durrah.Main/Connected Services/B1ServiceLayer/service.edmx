@@ -13235,6 +13235,7 @@
         <Property Name="UpdateDate" Type="Edm.DateTime" />
         <Property Name="UpdateTime" Type="Edm.Int32" />
         <Property Name="DataSource" Type="Edm.String" />
+        <Property Name="U_NAME" Type="Edm.String" />
       </EntityType>
       <ComplexType Name="COUNTRIESParams">
         <Property Name="Code" Type="Edm.String" />
@@ -13259,6 +13260,7 @@
         <Property Name="UpdateDate" Type="Edm.DateTime" />
         <Property Name="UpdateTime" Type="Edm.Int32" />
         <Property Name="DataSource" Type="Edm.String" />
+        <Property Name="U_NAME" Type="Edm.String" />
       </EntityType>
       <ComplexType Name="EDUCATIONParams">
         <Property Name="Code" Type="Edm.String" />
@@ -13301,6 +13303,7 @@
         <Property Name="UpdateDate" Type="Edm.DateTime" />
         <Property Name="UpdateTime" Type="Edm.Int32" />
         <Property Name="DataSource" Type="Edm.String" />
+        <Property Name="U_NAME" Type="Edm.String" />
       </EntityType>
       <ComplexType Name="LANGUAGESParams">
         <Property Name="Code" Type="Edm.String" />
@@ -13322,6 +13325,7 @@
         <Property Name="UpdateDate" Type="Edm.DateTime" />
         <Property Name="UpdateTime" Type="Edm.Int32" />
         <Property Name="DataSource" Type="Edm.String" />
+        <Property Name="U_NAME" Type="Edm.String" />
       </EntityType>
       <ComplexType Name="MARITALSTATUSParams">
         <Property Name="Code" Type="Edm.String" />
@@ -13364,8 +13368,167 @@
         <Property Name="UpdateDate" Type="Edm.DateTime" />
         <Property Name="UpdateTime" Type="Edm.Int32" />
         <Property Name="DataSource" Type="Edm.String" />
+        <Property Name="U_NAME" Type="Edm.String" />
       </EntityType>
       <ComplexType Name="RELIGIONParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="Z_OHLD">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Nullable="false" Type="Edm.String" />
+        <Property Name="U_Z_FRMONTH" Type="Edm.Double" />
+        <Property Name="U_Z_TOMONTH" Type="Edm.Double" />
+        <Property Name="U_Z_DAYS" Type="Edm.Int32" />
+      </EntityType>
+      <ComplexType Name="Z_OHLDParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="Z_PAY_OCON">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Nullable="false" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="Z_PAY_OCONParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="Z_PAY_ODED">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Nullable="false" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="Z_PAY_ODEDParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="Z_PAY_OEAR">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Nullable="false" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="Z_PAY_OEARParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="Z_PAY_OEAR1">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Nullable="false" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="Z_PAY_OEAR1Params">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="Z_PAY_OGLA">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Nullable="false" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="Z_PAY_OGLAParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="Z_PAY_OMED">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Nullable="false" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="Z_PAY_OMEDParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="Z_PAY_OOVT">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Nullable="false" Type="Edm.String" />
+        <Property Name="U_Z_OVTCODE" Type="Edm.String" />
+        <Property Name="U_Z_OVTRATE" Type="Edm.Double" />
+        <Property Name="U_Z_OVTTYPE" Type="Edm.String" />
+        <Property Name="U_Z_GLACC" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="Z_PAY_OOVTParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="Z_PAY_OSBM">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Nullable="false" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="Z_PAY_OSBMParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="Z_PAY_OSHT">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Nullable="false" Type="Edm.String" />
+        <Property Name="U_Z_SCODE" Type="Edm.String" />
+        <Property Name="U_Z_SRATE" Type="Edm.Double" />
+        <Property Name="U_Z_GLACC" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="Z_PAY_OSHTParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="Z_PAY_OSOB">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Nullable="false" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="Z_PAY_OSOBParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="Z_PAY_OTAX">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Nullable="false" Type="Edm.String" />
+        <Property Name="U_Z_SLAP_FROM" Type="Edm.Int32" />
+        <Property Name="U_Z_SLAP_TO" Type="Edm.Int32" />
+      </EntityType>
+      <ComplexType Name="Z_PAY_OTAXParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="Z_PAY_TERMS">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Nullable="false" Type="Edm.String" />
+        <Property Name="U_Z_Code" Type="Edm.String" />
+        <Property Name="U_Z_Name" Type="Edm.String" />
+        <Property Name="U_Z_FrgnName" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="Z_PAY_TERMSParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="Z_WORK">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Nullable="false" Type="Edm.String" />
+        <Property Name="U_Z_YEAR" Type="Edm.Int32" />
+        <Property Name="U_Z_MONTH" Type="Edm.String" />
+        <Property Name="U_Z_DAYS" Type="Edm.Int32" />
+      </EntityType>
+      <ComplexType Name="Z_WORKParams">
         <Property Name="Code" Type="Edm.String" />
       </ComplexType>
       <EntityType Name="WORKERS">
@@ -19396,6 +19559,20 @@
         <EntitySet EntityType="SAPB1.MARITALSTATUS" Name="MARITALSTATUSUDO" />
         <EntitySet EntityType="SAPB1.PASSRESET" Name="PASSRESET" />
         <EntitySet EntityType="SAPB1.RELIGION" Name="RELIGION" />
+        <EntitySet EntityType="SAPB1.Z_OHLD" Name="U_Z_OHLD" />
+        <EntitySet EntityType="SAPB1.Z_PAY_OCON" Name="U_Z_PAY_OCON" />
+        <EntitySet EntityType="SAPB1.Z_PAY_ODED" Name="U_Z_PAY_ODED" />
+        <EntitySet EntityType="SAPB1.Z_PAY_OEAR" Name="U_Z_PAY_OEAR" />
+        <EntitySet EntityType="SAPB1.Z_PAY_OEAR1" Name="U_Z_PAY_OEAR1" />
+        <EntitySet EntityType="SAPB1.Z_PAY_OGLA" Name="U_Z_PAY_OGLA" />
+        <EntitySet EntityType="SAPB1.Z_PAY_OMED" Name="U_Z_PAY_OMED" />
+        <EntitySet EntityType="SAPB1.Z_PAY_OOVT" Name="U_Z_PAY_OOVT" />
+        <EntitySet EntityType="SAPB1.Z_PAY_OSBM" Name="U_Z_PAY_OSBM" />
+        <EntitySet EntityType="SAPB1.Z_PAY_OSHT" Name="U_Z_PAY_OSHT" />
+        <EntitySet EntityType="SAPB1.Z_PAY_OSOB" Name="U_Z_PAY_OSOB" />
+        <EntitySet EntityType="SAPB1.Z_PAY_OTAX" Name="U_Z_PAY_OTAX" />
+        <EntitySet EntityType="SAPB1.Z_PAY_TERMS" Name="U_Z_PAY_TERMS" />
+        <EntitySet EntityType="SAPB1.Z_WORK" Name="U_Z_WORK" />
         <EntitySet EntityType="SAPB1.WORKERS" Name="WORKERSUDO" />
         <EntitySet EntityType="SAPB1.WORKERTYPES" Name="WORKERTYPESUDO" />
         <EntitySet EntityType="SAPB1.B1Session" Name="B1Sessions" />

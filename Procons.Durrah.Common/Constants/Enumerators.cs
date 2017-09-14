@@ -1,4 +1,6 @@
-﻿namespace Procons.Durrah.Common.Enumerators
+﻿using System.ComponentModel;
+
+namespace Procons.Durrah.Common.Enumerators
 {
     public enum AccountTypes
     {
@@ -26,6 +28,14 @@
         PATCH = 1
     }
 
+    public enum Languages
+    {
+        [Description("en")]
+        English,
+        [Description("ar")]
+        Arabic
+    }
+
     //public enum Operation
     //{
     //    EqualTo,
@@ -35,4 +45,5 @@
     //    LessThan,
     //    LessThanOrEqualTo
     //}
+
 }

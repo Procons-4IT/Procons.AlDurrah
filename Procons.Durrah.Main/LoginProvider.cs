@@ -10,63 +10,83 @@
     using System.Runtime.InteropServices;
     public class LoginProvider : ProviderBase
     {
+        public LoginProvider(ILoggingService _loggingService)
+        {
+            LoggingService = (LogService)_loggingService;
+        }
         public ApplicationUser FindUser(string userName, string password)
         {
             ApplicationUser user = null;
-            ServiceLayerProvider loginInstance = new ServiceLayerProvider();
-            loginInstance.Login();
-            var encryptedPassword = Utilities.Encrypt(password);
-            var result = loginInstance.CurrentServicelayerInstance.BusinessPartners.Where(x => x.U_UserName == userName & x.U_Password == encryptedPassword).FirstOrDefault();
-            if (result != null)
+            try
             {
-                user = new ApplicationUser()
+                ServiceLayerProvider loginInstance = new ServiceLayerProvider();
+                loginInstance.Login();
+                var encryptedPassword = Utilities.Encrypt(password);
+                var result = loginInstance.CurrentServicelayerInstance.BusinessPartners.Where(x => x.U_UserName == userName & x.U_Password == encryptedPassword).FirstOrDefault();
+                if (result != null)
                 {
-                    UserName = result.U_UserName,
-                    EmailConfirmed = true,
-                    FirstName = result.CardName,
-                    LastName = result.CardName,
-                    UserType = result.CardType,
-                    CardCode=result.CardCode
-                };
+                    user = new ApplicationUser()
+                    {
+                        UserName = result.U_UserName,
+                        EmailConfirmed = true,
+                        FirstName = result.CardName,
+                        LastName = result.CardName,
+                        UserType = result.CardType,
+                        CardCode = result.CardCode
+                    };
+                }
             }
+            catch (Exception ex)
+            {
+                LoggingService.LogException(ex);
+            }
+ 
             return user;
         }
 
         public List<Worker> GetWorkers([Optional]string agent)
         {
-            var ServiceInstance = ServiceLayerProvider.GetInstance();
-
-            var workers = ServiceInstance.CurrentServicelayerInstance.WORKERSUDO.ToList<WORKERS>();
             List<Worker> workersList = new List<Worker>();
-            foreach (var w in workers)
+            try
             {
-                workersList.Add(
-                    new Worker()
-                    {
-                        Agent = w.U_Agent,
-                        BirthDate = w.U_BirthDate.ToString(),
-                        CivilId = w.U_CivilId,
-                        Code = w.U_ItemCode,
-                        Education = w.U_Education,
-                        Gender = w.U_Gender,
-                        Height = w.U_Height,
-                        Language = w.U_Language,
-                        MaritalStatus = w.U_MaritalStatus,
-                        Nationality = w.U_Nationality,
-                        Passport = w.U_Passport,
-                        PassportExpDate = w.U_PassportExpDate,
-                        PassportIssDate = w.U_PassportPoIssue,
-                        PassportNumber = w.U_PassportNumber,
-                        PassportPoIssue = w.U_PassportPoIssue,
-                        Photo = w.U_Photo,
-                        Religion = w.U_Religion,
-                        SerialNumber = w.U_Serial,
-                        Status = w.U_Status,
-                        Video = w.U_Video,
-                        Weight = w.U_Weight.ToString()
-                    }
-                    );
+                var ServiceInstance = ServiceLayerProvider.GetInstance();
+
+                var workers = ServiceInstance.CurrentServicelayerInstance.WORKERSUDO.ToList<WORKERS>();
+
+                foreach (var w in workers)
+                {
+                    workersList.Add(
+                        new Worker()
+                        {
+                            Agent = w.U_Agent,
+                            BirthDate = w.U_BirthDate.ToString(),
+                            CivilId = w.U_CivilId,
+                            Code = w.U_ItemCode,
+                            Education = w.U_Education,
+                            Gender = w.U_Gender,
+                            Height = w.U_Height,
+                            Language = w.U_Language,
+                            MaritalStatus = w.U_MaritalStatus,
+                            Nationality = w.U_Nationality,
+                            Passport = w.U_Passport,
+                            PassportExpDate = w.U_PassportExpDate,
+                            PassportIssDate = w.U_PassportPoIssue,
+                            PassportNumber = w.U_PassportNumber,
+                            PassportPoIssue = w.U_PassportPoIssue,
+                            Photo = w.U_Photo,
+                            Religion = w.U_Religion,
+                            SerialNumber = w.U_Serial,
+                            Status = w.U_Status,
+                            Video = w.U_Video,
+                            Weight = w.U_Weight.ToString()
+                        }
+                        );
+                }
             }
+            catch(Exception ex)
+            {
+                LoggingService.LogException(ex);
+            }       
             return workersList;
         }
 
@@ -101,6 +121,7 @@
             }
             catch (Exception ex)
             {
+                LoggingService.LogException(ex);
                 identityResult = new AspNet.IdentityResult(ex.Message);
             }
             finally
@@ -159,7 +180,9 @@
             }
             catch (Exception ex)
             {
+                LoggingService.LogException(ex);
                 return string.Empty;
+                
             }
         }
 
@@ -207,6 +230,7 @@
             }
             catch (Exception ex)
             {
+                LoggingService.LogException(ex);
                 return string.Empty;
             }
         }
@@ -236,6 +260,7 @@
             catch (Exception ex)
             {
                 creationResult = false;
+                LoggingService.LogException(ex);
             }
             return creationResult;
         }
@@ -243,12 +268,20 @@
         private int GetSeriesCode()
         {
             int series = 0;
-            var seriesCode = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.SeriesName);
-            var result = dbHelper.ExecuteQuery($"SELECT \"Series\" FROM \"{base.databaseName}\".\"NNM1\" WHERE \"SeriesName\" = '{seriesCode}' ");
-            while (result.Read())
+            try
             {
-                int.TryParse(result["Series"].ToString(), out series);
+                var seriesCode = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.SeriesName);
+                var result = dbHelper.ExecuteQuery($"SELECT \"Series\" FROM \"{base.databaseName}\".\"NNM1\" WHERE \"SeriesName\" = '{seriesCode}' ");
+                while (result.Read())
+                {
+                    int.TryParse(result["Series"].ToString(), out series);
+                }
             }
+            catch(Exception ex)
+            {
+                LoggingService.LogException(ex);
+            }
+
             return series;
         }
     }

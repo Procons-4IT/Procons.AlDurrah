@@ -9,7 +9,7 @@
     using System.Linq;
     using System.Web;
 
-    public abstract class ProviderBase
+    public abstract class ProviderBase : ILogger
     {
         private const string CompanySession = "B1CompanySession";
         protected ServiceLayerProvider instance = new ServiceLayerProvider();
@@ -83,6 +83,23 @@
                 HttpContext.Current.Session.Add(CompanySession, company);
             }
             return company;
+        }
+
+        protected T MapField<T>(object o)
+        {
+            var result = default(T);
+            if (o != DBNull.Value)
+            {
+                if (o.GetType() == typeof(HanaDecimal))
+                    result = (T)Convert.ChangeType(Convert.ToDecimal(o), typeof(T));
+                else if (o.GetType() == typeof(float))
+                    result = (T)Convert.ChangeType(float.Parse(o.ToString()), typeof(T));
+                else
+                    result = (T)Convert.ChangeType(o, typeof(T));
+                return result;
+            }
+            else
+                return default(T);
         }
 
         #region Table Methods
@@ -226,7 +243,7 @@
         /// <param name="validValues">Add the values seperated by comma "," for value and description ex:(Value,Description)</param>
         public void AddFieldSL(string name, string description, string tableName, string fieldType, Nullable<int> size, string mandatory, string subType, bool addedToUDT, string validValue, params string[] validValues)
         {
-           
+
             B1ServiceLayer.SAPB1.UserFieldMD userField = new B1ServiceLayer.SAPB1.UserFieldMD();
             try
             {

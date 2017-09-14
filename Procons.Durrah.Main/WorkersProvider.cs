@@ -5,8 +5,8 @@
     using ExpressionBuilder.Common;
     using ExpressionBuilder.Generics;
     using ExpressionBuilder.Interfaces;
+    using Procons.Durrah.Common.Enumerators;
     using Procons.Durrah.Main.B1ServiceLayer.SAPB1;
-    using SAPB1=Procons.Durrah.Main.B1ServiceLayer.SAPB1;
     using Sap.Data.Hana;
     using SAPbobsCOM;
     using System;
@@ -14,16 +14,18 @@
     using System.Data.Services.Client;
     using System.Data.SqlClient;
     using System.Linq;
-    using System.Runtime.InteropServices;
-    using System.Text;
     using System.Net.Http;
-    using System.Net.Http.Headers;
-    using System.Net;
-    using System.IO;
-    using Newtonsoft.Json;
+    using System.Text;
+    using System.Threading;
+    using SAPB1 = Procons.Durrah.Main.B1ServiceLayer.SAPB1;
 
     public class WorkersProvider : ProviderBase
     {
+        public WorkersProvider(ILoggingService _loggingService)
+        {
+            LoggingService = (LogService)_loggingService;
+        }
+
         public bool CreateWorker(Worker worker)
         {
             var created = false;
@@ -82,7 +84,7 @@
             }
             catch (Exception ex)
             {
-
+                LoggingService.LogException(ex, "WorkersProvider");
             }
             return created;
         }
@@ -155,52 +157,64 @@
 
         public List<Worker> GetWorkers(Catalogue worker)
         {
-            var exp = GetExpressionSql(worker);
-            var databaseBame = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.DatabaseName);
-
             List<Worker> workersList = new List<Worker>();
-            var query = new StringBuilder("SELECT \"A\".\"Code\",\"A\".\"Name\",\"U_ItemCode\",\"U_Serial\",\"U_Agent\",\"U_Age\",\"U_BirthDate\",\"U_Gender\",\"D\".\"Name\" AS \"U_Nationality\",\"R\".\"Name\" AS \"U_Religion\",\"C\".\"Name\" AS \"U_Language\",\"U_Photo\",\"U_Weight\",\"U_Height\",\"E\".\"Name\" AS \"U_Education\",\"U_Passport\",\"U_Video\",\"U_PassportNumber\",\"U_PassportIssDate\",\"U_PassportExpDate\",\"U_PassportPoIssue\",\"U_Price\",\"U_CivilId\",\"U_Status\",");
-            query.Append($"\"B\".\"Name\" AS \"U_MaritalStatus\"");
-            query.Append($" FROM \"{databaseBame}\".\"@WORKERS\" as \"A\"");
-            query.Append($"INNER JOIN \"{databaseBame}\".\"@MARITALSTATUS\" AS \"B\" ON \"A\".\"U_MaritalStatus\" = \"B\".\"Code\"");
-            query.Append($"INNER JOIN \"{databaseBame}\".\"@LANGUAGES\" AS \"C\" ON \"A\".\"U_Language\" = \"C\".\"Code\"");
-            query.Append($"INNER JOIN \"{databaseBame}\".\"@COUNTRIES\" AS \"D\" ON \"A\".\"U_Nationality\" = \"D\".\"Code\"");
-
-            query.Append($"INNER JOIN \"{databaseBame}\".\"@RELIGION\" AS \"R\" ON \"A\".\"U_Religion\" = \"R\".\"Code\"");
-            query.Append($"INNER JOIN \"{databaseBame}\".\"@EDUCATION\" AS \"E\" ON \"A\".\"U_Education\" = \"E\".\"Code\"");
-
-            query.Append(exp);
-            var readerResult = dbHelper.ExecuteQuery(query.ToString());
-
-            while (readerResult.Read())
+            try
             {
-                workersList.Add(
-                    new Worker()
-                    {
-                        Agent = MapField<string>(readerResult["U_Agent"]),
-                        Age = MapField<int>(readerResult["U_Age"]),
-                        BirthDate = MapField<string>(readerResult["U_BirthDate"]),
-                        CivilId = MapField<string>(readerResult["U_CivilId"]),
-                        Code = MapField<string>(readerResult["U_ItemCode"]),
-                        Education = MapField<string>(readerResult["U_Education"]),
-                        Gender = MapField<string>(readerResult["U_Gender"]),
-                        Height = MapField<string>(readerResult["U_Height"]),
-                        Language = MapField<string>(readerResult["U_Language"]),
-                        MaritalStatus = MapField<string>(readerResult["U_MaritalStatus"]),
-                        Nationality = MapField<string>(readerResult["U_Nationality"]),
-                        Passport = MapField<string>(readerResult["U_Passport"]),
-                        PassportExpDate = MapField<string>(readerResult["U_PassportExpDate"]),
-                        PassportIssDate = MapField<string>(readerResult["U_PassportIssDate"]),
-                        PassportNumber = MapField<string>(readerResult["U_PassportNumber"]),
-                        PassportPoIssue = MapField<string>(readerResult["U_PassportPoIssue"]),
-                        Photo = MapField<string>(readerResult["U_Photo"]),
-                        Religion = MapField<string>(readerResult["U_Religion"]),
-                        SerialNumber = MapField<string>(readerResult["U_Serial"]),
-                        Status = MapField<string>(readerResult["U_Status"]),
-                        Video = MapField<string>(readerResult["U_Video"]),
-                        Price = MapField<float>(readerResult["U_Price"]),
-                        Weight = MapField<string>(readerResult["U_Weight"])
-                    });
+                var exp = GetExpressionSql(worker);
+                var databaseBame = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.DatabaseName);
+
+
+                var query = new StringBuilder();
+                query.Append(@"SELECT ""A"".""Code"",""A"".""Name"",""U_ItemCode"",""U_Serial"",""U_Agent"",""U_Age"",");
+                query.Append(@"""U_BirthDate"",""U_Gender"",""D"".""Name"" AS ""U_Nationality"",""D"".""U_NAME"" AS ""U_Nationality_AR"",""R"".""Name"" AS ""U_Religion"",""R"".""U_NAME"" AS ""U_Religion_AR"",");
+                query.Append(@"""C"".""Name"" AS ""U_Language"",""C"".""U_NAME"" AS ""U_Language_AR"",""U_Photo"",""U_Weight"",""U_Height"",""E"".""Name"" AS ""U_Education"",""E"".""U_NAME"" AS ""U_Education_AR"",");
+                query.Append(@"""U_Passport"",""U_Video"",""U_PassportNumber"",""U_PassportIssDate"",""U_PassportExpDate"",""U_PassportPoIssue"",""U_Price"",""U_CivilId"",""U_Status"",");
+                query.Append($@"""B"".""Name"" AS ""U_MaritalStatus"",""B"".""U_NAME"" AS ""U_MaritalStatus_AR""");
+                query.Append($@" FROM ""{databaseBame}"".""@WORKERS"" as ""A""");
+                query.Append($@"INNER JOIN ""{databaseBame}"".""@MARITALSTATUS"" AS ""B"" ON ""A"".""U_MaritalStatus"" = ""B"".""Code""");
+                query.Append($@"INNER JOIN ""{databaseBame}"".""@LANGUAGES"" AS ""C"" ON ""A"".""U_Language"" = ""C"".""Code""");
+                query.Append($@"INNER JOIN ""{databaseBame}"".""@COUNTRIES"" AS ""D"" ON ""A"".""U_Nationality"" = ""D"".""Code""");
+
+                query.Append($@"INNER JOIN ""{databaseBame}"".""@RELIGION"" AS ""R"" ON ""A"".""U_Religion"" = ""R"".""Code""");
+                query.Append($@"INNER JOIN ""{databaseBame}"".""@EDUCATION"" AS ""E"" ON ""A"".""U_Education"" = ""E"".""Code""");
+
+                query.Append(exp);
+                var readerResult = dbHelper.ExecuteQuery(query.ToString());
+
+                while (readerResult.Read())
+                {
+                    workersList.Add(
+                        new Worker()
+                        {
+                            Agent = MapField<string>(readerResult["U_Agent"]),
+                            Age = MapField<int>(readerResult["U_Age"]),
+                            BirthDate = MapField<string>(readerResult["U_BirthDate"]),
+                            CivilId = MapField<string>(readerResult["U_CivilId"]),
+                            Code = MapField<string>(readerResult["U_ItemCode"]),
+                            Education = MapField<string>(readerResult[Utilities.GetLocalizedField("U_Education")]),
+                            Gender = MapField<string>(readerResult["U_Gender"]),
+                            Height = MapField<string>(readerResult["U_Height"]),
+                            Language = MapField<string>(readerResult[Utilities.GetLocalizedField("U_Language")]),
+                            MaritalStatus = MapField<string>(readerResult[Utilities.GetLocalizedField("U_MaritalStatus")]),
+                            Nationality = MapField<string>(readerResult[Utilities.GetLocalizedField("U_Nationality")]),
+                            Passport = MapField<string>(readerResult["U_Passport"]),
+                            PassportExpDate = MapField<string>(readerResult["U_PassportExpDate"]),
+                            PassportIssDate = MapField<string>(readerResult["U_PassportIssDate"]),
+                            PassportNumber = MapField<string>(readerResult["U_PassportNumber"]),
+                            PassportPoIssue = MapField<string>(readerResult["U_PassportPoIssue"]),
+                            Photo = MapField<string>(readerResult["U_Photo"]),
+                            Religion = MapField<string>(readerResult[Utilities.GetLocalizedField("U_Religion")]),
+                            SerialNumber = MapField<string>(readerResult["U_Serial"]),
+                            Status = MapField<string>(readerResult["U_Status"]),
+                            Video = MapField<string>(readerResult["U_Video"]),
+                            Price = MapField<float>(readerResult["U_Price"]),
+                            Weight = MapField<string>(readerResult["U_Weight"])
+                        });
+                }
+            }
+            catch (Exception ex)
+            {
+                LoggingService.LogException(ex, "GetWorkers");
             }
             return workersList;
         }
@@ -246,6 +260,7 @@
             catch (Exception ex)
             {
                 instance.CurrentServicelayerInstance.Detach(salesOrder);
+                LoggingService.LogException(ex, "CreateSalesOrder");
             }
 
             return returnResult;
@@ -280,7 +295,7 @@
                         if (base.B1Company.InTransaction)
                             base.B1Company.EndTransaction(BoWfTransOpt.wf_RollBack);
                         var err = base.B1Company.GetLastErrorDescription();
-
+                        throw new Exception(err);
                     }
                     else
                     {
@@ -303,6 +318,7 @@
                         {
                             base.B1Company.EndTransaction(BoWfTransOpt.wf_RollBack);
                             var err = base.B1Company.GetLastErrorDescription();
+                            throw new Exception(err);
                         }
                         else
                         {
@@ -322,11 +338,19 @@
 
         public Documents GetSalesOrder(string paymentId)
         {
-            var salesOrder = base.B1Company.GetBusinessObject(BoObjectTypes.oOrders) as Documents;
-            var records = base.B1Company.GetBusinessObject(BoObjectTypes.BoRecordset) as Recordset;
-            records.DoQuery(string.Format("SELECT * FROM \"ORDR\" WHERE \"U_PaymentID\"='{0}'", paymentId));
-            salesOrder.Browser.Recordset = records;
-            return salesOrder;
+            try
+            {
+                var salesOrder = base.B1Company.GetBusinessObject(BoObjectTypes.oOrders) as Documents;
+                var records = base.B1Company.GetBusinessObject(BoObjectTypes.BoRecordset) as Recordset;
+                records.DoQuery(string.Format("SELECT * FROM \"ORDR\" WHERE \"U_PaymentID\"='{0}'", paymentId));
+                salesOrder.Browser.Recordset = records;
+                return salesOrder;
+            }
+            catch(Exception ex)
+            {
+                LoggingService.LogException(ex, "GetSalesOrder");
+                return null;
+            }
         }
 
         public List<LookupItem> GetLookupValues<T>()
@@ -362,7 +386,10 @@
                 var lookups = new List<LookupItem>();
                 foreach (dynamic r in list)
                 {
-                    lookups.Add(new LookupItem(r.Name, r.Code));
+                    if (Utilities.GetCurrentLanguage() == Languages.English.GetDescription())
+                        lookups.Add(new LookupItem(r.Name, r.Code));
+                    else
+                        lookups.Add(new LookupItem(r.U_NAME, r.Code));
                 }
                 return lookups;
             }
@@ -370,12 +397,20 @@
 
         public double GetDownPaymentAmount()
         {
-            var conn = Factory.DeclareClass<DatabaseHelper<HanaConnection>>();
             double paymentAmount = 0;
-            var result = conn.ExecuteQuery($@"SELECT IFNULL(""U_DownPay"",0) AS ""U_DownPay"" FROM ""{base.databaseName}"".""OADM""");
-            while (result.Read())
+            try
             {
-                paymentAmount = MapField<double>(result["U_DownPay"]);
+                var conn = Factory.DeclareClass<DatabaseHelper<HanaConnection>>();
+
+                var result = conn.ExecuteQuery($@"SELECT IFNULL(""U_DownPay"",0) AS ""U_DownPay"" FROM ""{base.databaseName}"".""OADM""");
+                while (result.Read())
+                {
+                    paymentAmount = MapField<double>(result["U_DownPay"]);
+                }
+            }
+            catch (Exception ex)
+            {
+                LoggingService.LogException(ex, "GetDownPaymentAmount");
             }
             return paymentAmount;
         }
@@ -526,23 +561,6 @@
             }
             else
                 return null;
-        }
-
-        private T MapField<T>(object o)
-        {
-            var result = default(T);
-            if (o != DBNull.Value)
-            {
-                if (o.GetType() == typeof(HanaDecimal))
-                    result = (T)Convert.ChangeType(Convert.ToDecimal(o), typeof(T));
-                else if (o.GetType() == typeof(float))
-                    result = (T)Convert.ChangeType(float.Parse(o.ToString()), typeof(T));
-                else
-                    result = (T)Convert.ChangeType(o, typeof(T));
-                return result;
-            }
-            else
-                return default(T);
         }
 
         #endregion

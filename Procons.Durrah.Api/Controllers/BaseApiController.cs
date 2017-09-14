@@ -11,6 +11,7 @@
     using System.IO;
     using Newtonsoft.Json;
     using Procons.Durrah.Common.Models;
+    using Procons.Durrah.Common;
 
     public class BaseApiController : ApiController
     {
@@ -18,6 +19,7 @@
         private ModelFactory _modelFactory;
         private ApplicationUserManager _AppUserManager = null;
         private ApplicationRoleManager _AppRoleManager = null;
+        protected ILoggingService LoggingService { get; set; }
        
         protected ApplicationUserManager AppUserManager
         {
@@ -33,10 +35,6 @@
             {
                 return _AppRoleManager ?? Request.GetOwinContext().GetUserManager<ApplicationRoleManager>();
             }
-        }
-
-        public BaseApiController()
-        {
         }
 
         protected ModelFactory TheModelFactory
