@@ -2,6 +2,7 @@ import { OVERLAY_PROVIDERS } from "@angular/material";
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
@@ -20,6 +21,8 @@ import { RouterStateSnapshot } from '@angular/router';
 import { BusyModule } from 'angular2-busy';
 import { LoadingModule } from 'ngx-loading';
 import { ReCaptchaModule } from 'angular2-recaptcha';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import {
     DataTableModule,
@@ -48,6 +51,9 @@ import { GvControlComponent } from './SharedComponents/gv-control/gv-control.com
 import { DataGridModule } from 'primeng/primeng';
 import { ModalModule } from 'ngx-modialog';
 import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
+export function createTranslateLoader(http: HttpClient) {
+    return new TranslateHttpLoader(http, './Assets/i18n/', '.json');
+}
 @NgModule({
     declarations: [
         AppComponent,
@@ -83,7 +89,15 @@ import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
         ButtonModule,
         DialogModule,
         DataGridModule,
-        ReCaptchaModule
+        ReCaptchaModule,
+        HttpClientModule,
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: (createTranslateLoader),
+                deps: [HttpClient]
+            }
+        })
     ],
     providers: [CarService,
         CanActivateViaAuthGuard,
