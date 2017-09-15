@@ -10,10 +10,6 @@
     using System.Runtime.InteropServices;
     public class LoginProvider : ProviderBase
     {
-        public LoginProvider(ILoggingService _loggingService)
-        {
-            LoggingService = (LogService)_loggingService;
-        }
         public ApplicationUser FindUser(string userName, string password)
         {
             ApplicationUser user = null;
@@ -38,7 +34,7 @@
             }
             catch (Exception ex)
             {
-                LoggingService.LogException(ex);
+                Utilities.LogException(ex);
             }
  
             return user;
@@ -85,7 +81,7 @@
             }
             catch(Exception ex)
             {
-                LoggingService.LogException(ex);
+                Utilities.LogException(ex);
             }       
             return workersList;
         }
@@ -121,7 +117,7 @@
             }
             catch (Exception ex)
             {
-                LoggingService.LogException(ex);
+                Utilities.LogException(ex);
                 identityResult = new AspNet.IdentityResult(ex.Message);
             }
             finally
@@ -180,7 +176,7 @@
             }
             catch (Exception ex)
             {
-                LoggingService.LogException(ex);
+                Utilities.LogException(ex);
                 return string.Empty;
                 
             }
@@ -230,7 +226,7 @@
             }
             catch (Exception ex)
             {
-                LoggingService.LogException(ex);
+                Utilities.LogException(ex);
                 return string.Empty;
             }
         }
@@ -260,7 +256,7 @@
             catch (Exception ex)
             {
                 creationResult = false;
-                LoggingService.LogException(ex);
+                Utilities.LogException(ex);
             }
             return creationResult;
         }
@@ -279,7 +275,7 @@
             }
             catch(Exception ex)
             {
-                LoggingService.LogException(ex);
+                Utilities.LogException(ex);
             }
 
             return series;

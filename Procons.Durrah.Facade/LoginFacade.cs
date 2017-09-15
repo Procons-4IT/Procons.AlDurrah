@@ -8,11 +8,7 @@
 
     public class LoginFacade : IFacade
     {
-        public LoginFacade(ILoggingService _loggingService)
-        {
-            LoggingService = (LogService)_loggingService;
-        }
-        LoginProvider provider { get { return new LoginProvider(LoggingService); } }
+        LoginProvider provider { get { return new LoginProvider(); } }
 
         public ApplicationUser FindUser(string userName, string password)
         {   

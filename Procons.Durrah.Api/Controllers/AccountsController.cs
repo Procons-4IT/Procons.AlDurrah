@@ -1,20 +1,17 @@
 ﻿namespace Procons.Durrah.Controllers
 {
     using Microsoft.AspNet.Identity;
+    using Procons.Durrah.Api.Attributes;
+    using Procons.Durrah.Auth;
+    using Procons.Durrah.Common;
+    using Procons.Durrah.Common.Models;
+    using Procons.Durrah.Facade;
+    using Procons.Durrah.Models;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using System.Web.Http;
-    using Procons.Durrah.Api.Attributes;
-    using Procons.Durrah.Auth;
-    using Procons.Durrah.Common;
-    using Procons.Durrah.Models;
-    using Procons.Durrah.Facade;
-    using Procons.Durrah.Common.Models;
-    using System.Web;
-    using Newtonsoft.Json;
-    using System.IO;
 
     [ApplicationExceptionFilter]
     [RoutePrefix("api/accounts")]
@@ -23,14 +20,8 @@
         #region PRIVATE VARIABLES
         EmailService eService = new EmailService();
         IdentityMessage idMessage = new IdentityMessage();
-        LoginFacade loginFacade = null;
+        LoginFacade loginFacade = new LoginFacade();
         #endregion
-
-        public AccountsController(ILoggingService _logService)
-        {
-            LoggingService = _logService;
-            loginFacade = new LoginFacade(LoggingService);
-        }
 
         [AllowAnonymous]
         [Route("create")]
@@ -104,7 +95,7 @@
         [Route("reset")]
         public IHttpActionResult ResetPassword([FromBody]PasswordModel model)
         {
-            var loginFacade = new LoginFacade(LoggingService);
+            var loginFacade = new LoginFacade();
             var result = loginFacade.ResetPassword(model.Password, model.ValidationId, model.EmailAddress);
             if (result)
                 return Ok();

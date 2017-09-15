@@ -6,10 +6,6 @@
 
     public class B1Provider : ProviderBase
     {
-        public B1Provider(ILoggingService _loggingService)
-        {
-            LoggingService = (LogService)_loggingService;
-        }
         public string InitializeTables()
         {
             try

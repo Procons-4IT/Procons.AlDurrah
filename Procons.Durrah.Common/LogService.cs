@@ -11,10 +11,7 @@
     {
         public string TargetName { get; set; }
         private Logger _siteLogger;
-        public static LogService Create()
-        {
-            return new LogService();
-        }
+
         public LogService()
         {
             TargetName = "Durra";
@@ -48,7 +45,7 @@
         }
         public void LogException(Exception ex)
         {
-            LogException(ex, new StackTrace(ex).GetFrame(0).GetMethod().Name);
+            LogException(ex, $"{ new StackTrace(ex).GetFrame(0).GetMethod().Name}: {ex.InnerException}");
         }
     }
 }

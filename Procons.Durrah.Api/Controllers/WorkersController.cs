@@ -16,15 +16,8 @@
     public class WorkersController : BaseApiController
     {
 
-        B1Facade b1Facade = null;
-        WorkersFacade workersFacade = null;
-
-        public WorkersController(ILoggingService _logService)
-        {
-            LoggingService = _logService;
-            workersFacade = new WorkersFacade(LoggingService);
-            b1Facade = new B1Facade(LoggingService);
-        }
+        B1Facade b1Facade = new B1Facade();
+        WorkersFacade workersFacade = new WorkersFacade();
 
         public IHttpActionResult GetSearchLookups()
         {

@@ -21,14 +21,10 @@
 
     public class WorkersProvider : ProviderBase
     {
-        public WorkersProvider(ILoggingService _loggingService)
-        {
-            LoggingService = (LogService)_loggingService;
-        }
-
         public bool CreateWorker(Worker worker)
         {
             var created = false;
+            DataServiceResponse response = null;
             var _serviceInstance = ServiceLayerProvider.GetInstance();
             var _worker = new WORKERS();
 
@@ -78,13 +74,13 @@
             try
             {
                 _serviceInstance.CurrentServicelayerInstance.AddToWORKERSUDO(_worker);
-                DataServiceResponse response = _serviceInstance.CurrentServicelayerInstance.SaveChanges();
+                response = _serviceInstance.CurrentServicelayerInstance.SaveChanges();
                 if (response != null)
                     created = true;
             }
             catch (Exception ex)
             {
-                LoggingService.LogException(ex, "WorkersProvider");
+                Utilities.LogException(ex);
             }
             return created;
         }
@@ -214,7 +210,7 @@
             }
             catch (Exception ex)
             {
-                LoggingService.LogException(ex, "GetWorkers");
+              Utilities.LogException(ex);
             }
             return workersList;
         }
@@ -260,7 +256,7 @@
             catch (Exception ex)
             {
                 instance.CurrentServicelayerInstance.Detach(salesOrder);
-                LoggingService.LogException(ex, "CreateSalesOrder");
+                Utilities.LogException(ex);
             }
 
             return returnResult;
@@ -327,13 +323,13 @@
                         }
                     }
                 }
-                return creationResult;
+              
             }
             catch (Exception ex)
             {
-                throw ex;
+                Utilities.LogException(ex);
             }
-
+            return creationResult;
         }
 
         public Documents GetSalesOrder(string paymentId)
@@ -348,7 +344,7 @@
             }
             catch(Exception ex)
             {
-                LoggingService.LogException(ex, "GetSalesOrder");
+                Utilities.LogException(ex);
                 return null;
             }
         }
@@ -410,7 +406,7 @@
             }
             catch (Exception ex)
             {
-                LoggingService.LogException(ex, "GetDownPaymentAmount");
+                Utilities.LogException(ex);
             }
             return paymentAmount;
         }

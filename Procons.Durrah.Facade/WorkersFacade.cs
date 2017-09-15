@@ -7,11 +7,7 @@
 
     public class WorkersFacade : IFacade
     {
-        public WorkersFacade(ILoggingService _loggingService)
-        {
-            LoggingService = (LogService)_loggingService;
-        }
-        WorkersProvider provider { get { return new WorkersProvider(LoggingService); } }
+        WorkersProvider provider { get { return new WorkersProvider(); } }
 
         public bool CreateWorker(Worker worker)
         {

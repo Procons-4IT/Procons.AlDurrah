@@ -14,7 +14,16 @@
     {
         private static byte[] KEY_64 = { 42, 16, 93, 156, 78, 4, 218, 32 };
         private static byte[] IV_64 = { 55, 103, 246, 79, 36, 99, 167, 3 };
-
+        private static LogService _logService;
+        public static LogService SiteLogService
+        {
+            get
+            {
+                if (_logService == null)
+                    _logService = new LogService();
+                return _logService;
+            }
+        }
         public static string GetConfigurationValue(string key)
         {
             return ConfigurationManager.AppSettings[key];
@@ -90,6 +99,11 @@
                 return $"{fieldName}_AR";
             else
                 return fieldName;
+        }
+
+        public static void LogException(Exception ex)
+        {
+            SiteLogService.LogException(ex);
         }
     }
 }
