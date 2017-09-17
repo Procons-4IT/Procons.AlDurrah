@@ -1,3 +1,62 @@
 {
-    "HELLO": "Hello Moto!"
+    "login": {
+        "usernameP": "اسم المستخدم",
+        "passwordP": "كلمه السر",
+        "confirmPasswordP": "تأكيدكلمة السر",
+        "newPasswordP": "كلمة السر الجديدة",
+        "oldPassworP": "كلمة المرور القديمة",
+        "changePasswordP": "كلمة السر الجديدة",
+        "confirmChangePasswordP": "تأكيد كلمة المرور الجديدة ",
+
+        "firstNameP": "الاسم الاول",
+        "lastNameP": "اسم العائلة",
+        "civilNumbP": "الرقم المدني",
+        "emailP": "البريد الإلكتروني",
+
+        "invalidCivilId": "Civil Id Must be 12 Characters long",
+        "invalidPassword": "Passwords Don't Match",
+        "invalidCaptcha": "Please Enter Recaptcha"
+    },
+    "back": "Back",
+    "submit": "سجل",
+    "send": "إرسال",
+    "logOut": "logOut",
+    "loginB": "دخول",
+    "search": "بحث",
+    "age": "Age",
+    "image": "Image",
+    "video": "Video",
+    "type": "Type",
+    "gender": "Gender",
+    "martialStatus": "الحالة الإجتماعية",
+    "nationality": "الجنسية",
+    "language": "اللغات المتحدث بها",
+    "price": "Price",
+    "education": "Education",
+    "status": "Status",
+    "weight": "Weight",
+    "height": "Height",
+    "agent": "Agent",
+    "religion": "Religion",
+    "work": "الوظيفة",
+    "birthday": "تاريخ الميلاد ",
+    "ok": "Ok",
+    "error": {
+        "default": "Something Went Wrong",
+        "notLoggedIn":"Please Login!",
+        "login": "Login Failed. Pleasre Try Again!",
+        "register": "Invalid Registration. Please Try Again!",
+        "forgotPassword": "Something went wrong!",
+        "resetPassword": "Something went wrong!",
+        "confirmEmail": "Something went wrong!",
+
+        "paymentConfirmation": "Invalid Payment Process",
+
+        "getSearchCriteria": "Something went wrong!",
+        "bookWorker": "Something went wrong!",
+        "getWorkers": "Something went wrong!"
+
+    }
+
+
 }

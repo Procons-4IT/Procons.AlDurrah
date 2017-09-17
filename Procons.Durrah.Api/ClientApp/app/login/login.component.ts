@@ -3,12 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { ReCaptchaComponent } from 'angular2-recaptcha';
 import { ResetPasswordParams, CreateNewUserParams } from '../Models/ApiRequestType';
-
 import { ApiService } from '../Services/ApiService';
 import { ProconsModalSerivce } from '../Services/ProconsModalService';
 import { UtilityService } from '../Services/UtilityService';
 
-var errorMessages = require('../../errorMessages.json');
 
 declare var $;
 
@@ -55,7 +53,8 @@ export class LoginComponent implements OnInit {
         private myApi: ApiService
         , public myModal: ProconsModalSerivce
         , public activeRouter: ActivatedRoute
-        , public utility: UtilityService) { }
+        , public utility: UtilityService
+    ) { }
     ngOnInit() {
         let isLoggedIn$ = this.myApi.onUserLoggedIn();
         this.isLoggedIn = isLoggedIn$.getValue();
@@ -89,7 +88,8 @@ export class LoginComponent implements OnInit {
             })
         }, (error) => {
             this.loading = false;
-            this.myModal.showErrorModal(errorMessages.login);
+            this.myModal.showErrorModal("error.login");
+
         });
 
     }
@@ -111,7 +111,8 @@ export class LoginComponent implements OnInit {
                 this.forgotPassModalError = "Invalid Email";
 
             } else {
-                this.myModal.showErrorModal(errorMessages.forgotPassword);
+                this.myModal.showErrorModal('error.forgotPassword');
+
             }
         })
 
@@ -126,10 +127,9 @@ export class LoginComponent implements OnInit {
         }, onError => {
             console.log(onError);
             this.loading = false;
-            this.myModal.showErrorModal(errorMessages.register);
+            this.myModal.showErrorModal('error.register');
             this.recaptchaToken = null;
             this.captcha.reset();
-
 
         });
     }

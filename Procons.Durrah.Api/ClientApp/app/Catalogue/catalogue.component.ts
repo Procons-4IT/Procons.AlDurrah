@@ -69,7 +69,7 @@ export class CatalogueComponent implements OnInit {
                     console.log('subscription complete!');
                 });
         } else {
-            this.myModal.showErrorModal('Please Login!');
+            this.myModal.showErrorModal('error.notLoggedIn');
         }
     }
 
