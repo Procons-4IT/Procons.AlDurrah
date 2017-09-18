@@ -23,8 +23,8 @@
                     <li><a href="#sectionCatalogue" class="page-scroll">كتالوج الدره</a></li>
                     <li><a href="#sectionServices" class="page-scroll">خدماتنا</a></li>
                     <li><a href="#sectionIntroduction" class="page-scroll"> نبذه عن الشركه</a></li>
-                    <li *ngIf="isLoggedIn"><a (click)="logOut()" class="page-scroll btn btn-default">logOut</a></li>
-                    <li *ngIf="!isLoggedIn"><a href="#sectionLogin" class="page-scroll btn btn-default">دخول</a></li>
+                    <li *ngIf="isLoggedIn"><a (click)="logOut()" class="page-scroll btn btn-default">{{'logOut' | translate }}</a></li>
+                    <li *ngIf="!isLoggedIn"><a href="#sectionLogin" class="page-scroll btn btn-default">{{'loginB' | translate }}</a></li>
                 </ul>
             </nav>
         </div>
