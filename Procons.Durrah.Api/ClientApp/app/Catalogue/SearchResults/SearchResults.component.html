@@ -8,24 +8,24 @@
     <div class="row">
         <div class="col-md-1"></div>
         <div class="col-md-10">
-            <p-dialog header="Video" [(visible)]="showVideoModal">
+            <p-dialog header="{{ 'video' | translate }}" [(visible)]="showVideoModal">
                 <iframe width="480" *ngIf="showVideoModal" height="270" [src]="videoUrl" frameborder="0"> </iframe>
             </p-dialog>
             <p-dataTable [value]="workers" [paginator]="true" rows="15" [responsive]="true">
-                <p-column field="image" header="Image">
+                <p-column field="image" header="{{'image' | translate }}">
                     <ng-template let-worker="rowData" pTemplate="body">
                         <div (click)="GoToProfile(worker)" data-toggle="tab"><img src="{{worker.photo}}" width="80" class="img-thumbnail"></div>
                     </ng-template>
                 </p-column>
-                <p-column field="age" header="Age"></p-column>
-                <p-column field="code" header="Type"></p-column>
-                <p-column field="gender" header="Gender"></p-column>
-                <p-column field="nationality" header="Nationality"></p-column>
-                <p-column field="language" header="Language"></p-column>
-                <p-column field="price" header="Price"></p-column>
-                <p-column field="education" header="Education"></p-column>
+                <p-column field="age" header="{{'age' | translate }}"></p-column>
+                <p-column field="code" header="{{ 'type'| translate }}"></p-column>
+                <p-column field="gender" header="{{'gender' | translate }}"></p-column>
+                <p-column field="nationality" header="{{ 'nationality'| translate }}"></p-column>
+                <p-column field="language" header="{{ 'language' | translate }}"></p-column>
+                <p-column field="price" header="{{ 'price' | translate }}"></p-column>
+                <p-column field="education" header="{{ 'education' | translate }}"></p-column>
                 <!-- Video -->
-                <p-column header="Video" [filter]="false">
+                <p-column header="{{'video'| translate }}" [filter]="false">
                     <!-- [style]="{'text-align': 'center'}" -->
                     <ng-template let-worker="rowData" pTemplate="body">
                         <div (click)="openRequestedPopup(worker.video)" data-toggle="tab" [className]="'glyphicon glyphicon-play-circle icon-large'"></div>
@@ -33,7 +33,7 @@
                     </ng-template>
                 </p-column>
                 <!-- Available -->
-                <p-column header="Status" [filter]="false">
+                <p-column header="{{'status'| translate }}" [filter]="false">
                     <ng-template let-worker="rowData" pTemplate="body">
                         <a (click)="GoToProfile(worker)" data-toggle="tab"><span [ngClass]="GetAvailableCSS(worker)"></span></a>
                     </ng-template>
@@ -42,6 +42,6 @@
         </div>
         <div class="col-md-1"></div>
     </div>
-    <div class="btn btn-default" (click)="GoBack()">Back</div>
+    <div class="btn btn-default" (click)="GoBack()">{{'back' | translate }}</div>
 
 </div>

@@ -4,6 +4,7 @@ import { MenuItem } from 'primeng/primeng';
 import { ContextService } from './Services/ContextService'
 import { UserService } from './Services/UserService'
 import { Router } from '@angular/router'
+import { TranslateService } from '@ngx-translate/core';
 
 import { ApiService } from './Services/ApiService';
 @Component({
@@ -17,11 +18,15 @@ export class AppComponent implements OnInit {
     public isAdmin: boolean;
     public isLoggedIn: boolean = false;
     public menuNode = {};
+
     constructor(private context: ContextService
         , private router: Router
         , private userService: UserService
-        , private myApi: ApiService) {
+        , private myApi: ApiService
+        , private translate: TranslateService) {
 
+        translate.setDefaultLang('ar');
+        translate.use('ar');
         this.context.loginPageFollower.subscribe(value => { this.isLoginPage = value });
     }
 

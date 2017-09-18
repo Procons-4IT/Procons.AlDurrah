@@ -6,7 +6,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/do';
-
+import { TranslateService } from '@ngx-translate/core'
 
 import { ResetPasswordParams } from '../Models/ApiRequestType';
 
@@ -22,7 +22,6 @@ declare var $;
 })
 export class HomeComponent implements OnInit {
 
-  errorMessages = require('../../errorMessages.json');
   public paymentModalText: string = "";
 
   public resetPassModalLoading: boolean = false;
@@ -36,10 +35,12 @@ export class HomeComponent implements OnInit {
   };
 
   public loadingPayment: boolean = false;
-  constructor(public myApi: ApiService
-    , public utility: UtilityService,
+  constructor(public myApi: ApiService,
+    public utility: UtilityService,
     public activeRouter: ActivatedRoute,
-    public router: Router) { }
+    public router: Router,
+    public translate: TranslateService
+  ) { }
 
   ngOnInit() {
     let userLoggedIn$ = this.myApi.onUserLoggedIn();
@@ -119,7 +120,9 @@ export class HomeComponent implements OnInit {
         this.resetParams.EmailAddress = x.Email;
         this.resetParams.ValidationId = x.ValidationId;
       }, onError => {
-        this.resetPassModalText = this.errorMessages.resetPassowrd;
+        this.translate.get('error.resetPassword').subscribe(errorMessage => {
+          this.resetPassModalText = errorMessage;
+        })
       });
   }
 
@@ -143,7 +146,10 @@ export class HomeComponent implements OnInit {
           }
         }, onError => {
           this.resetPassModalLoading = false;
-          this.resetPassModalText = this.errorMessages.resetPassword;
+          this.translate.get('error.resetPassword').subscribe(errorMessage => {
+            this.resetPassModalText = errorMessage;
+          })
+
         });
     }
   }

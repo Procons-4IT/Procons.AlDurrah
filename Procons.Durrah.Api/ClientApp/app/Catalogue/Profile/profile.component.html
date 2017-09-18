@@ -7,40 +7,40 @@
           <table class="table">
             <tbody>
               <tr>
-                <td>تاريخ الميلاد</td>
+                <td>{{'birthday' | translate}}</td>
                 <td>05/05/1987</td>
               </tr>
               <tr>
-                <td>الجنسية</td>
+                <td>{{'nationality' | translate }}</td>
                 <td>{{worker.nationality}}
                   <td>
               </tr>
               <tr>
-                <td>الحالة الإجتماعية</td>
+                <td>{{'martialStatus' | translate}}</td>
                 <td> {{worker.maritalStatus}}</td>
               </tr>
               <tr>
-                <td>اللغات المتحدث بها</td>
+                <td>{{'language' | translate }}</td>
                 <td>{{worker.language}}</td>
               </tr>
               <tr>
-                <td>الوظيفة</td>
+                <td>{{'work' | translate }}</td>
                 <td> {{worker.code}}</td>
               </tr>
               <tr>
-                <td>Religion</td>
+                <td>{{'religion' | translate }}</td>
                 <td> {{worker.religion}}</td>
               </tr>
               <tr>
-                <td>Agent</td>
+                <td>{{'agent' | translate }}</td>
                 <td>{{worker.agent}}</td>
               </tr>
               <tr>
-                <td>Height</td>
+                <td>{{'height' | translate }}</td>
                 <td>{{worker.height}}</td>
               </tr>
               <tr>
-                <td>Weight</td>
+                <td>{{'weight' | translate }}</td>
                 <td>{{worker.weight}}</td>
               </tr>
 
@@ -51,9 +51,9 @@
         <div class="col-sm-6">
           <p><img [src]="worker.photo" class="img-thumbnail img-responsive" width="100%" /></p>
         </div>
-        <p><input type="submit" value="سجل" [disabled]="!worker.status" (click)="Book()" class="btn btn-default" id="bookProfile"
-          /></p>
-        <div class="btn btn-default" (click)="GoBack()">Back</div>
+        <p><input type="submit" value="{{'submit'| translate }}" [disabled]="!worker.status" (click)="Book()" class="btn btn-default"
+            id="bookProfile" /></p>
+        <div class="btn btn-default" (click)="GoBack()">{{'back' | translate }}</div>
       </div>
     </div>
   </div>
