@@ -127,7 +127,7 @@ export class ApiService {
         // });
     }
     public uploadFile(formData) {
-        let url = 'http://localhost:3000/send';
+        let url = 'http://localhost:59822/api/Workers/AddWorker';
         let headers = new Headers();
 
         // headers.append('Content-Type', 'application/x-www-form-urlencoded');

@@ -529,9 +529,12 @@
     <TypeScriptCompile Include="ClientApp\app\Models\Worker.ts" />
     <TypeScriptCompile Include="ClientApp\app\Services\AccountService.ts" />
     <TypeScriptCompile Include="ClientApp\app\Services\ActivationGuard.ts" />
+    <TypeScriptCompile Include="ClientApp\app\Services\ApiService.ts" />
     <TypeScriptCompile Include="ClientApp\app\Services\CarService.ts" />
     <TypeScriptCompile Include="ClientApp\app\Services\ContextService.ts" />
+    <TypeScriptCompile Include="ClientApp\app\Services\ProconsModalService.ts" />
     <TypeScriptCompile Include="ClientApp\app\Services\UserManagementService.ts" />
+    <TypeScriptCompile Include="ClientApp\app\Services\UtilityService.ts" />
     <TypeScriptCompile Include="ClientApp\app\Services\WorkersService.ts" />
     <TypeScriptCompile Include="ClientApp\app\Services\UserService.ts" />
     <TypeScriptCompile Include="ClientApp\app\SharedComponents\gv-control\gv-control.component.ts" />

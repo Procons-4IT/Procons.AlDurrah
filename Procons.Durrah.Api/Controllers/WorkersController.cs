@@ -151,40 +151,40 @@
             {
                 throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
             }
-            //TEST FILE UPLOAD WITH PROPERTIES
-            var test = new CustomMultipartFileStreamProvider();
-            var streamProvider = new CustomMultipartFileStreamProvider();
-            Request.Content.ReadAsMultipartAsync(streamProvider);
-            var fileStream =  streamProvider.Contents[0].ReadAsStreamAsync();
-            var customData = streamProvider.CustomData;
-            //
             string rootPath = HttpContext.Current.Server.MapPath("~/UploadedFiles");
-            var provider = new MultipartFileStreamProvider(rootPath);
+            var provider = new MultipartFormDataStreamProvider(rootPath);
             var task = Request.Content.ReadAsMultipartAsync(provider).
-            ContinueWith(t => {
-                if (t.IsCanceled || t.IsFaulted)
+                ContinueWith<HttpResponseMessage>(t =>
                 {
-                    Request.CreateErrorResponse(HttpStatusCode.InternalServerError, t.Exception);
-                }
-                foreach (MultipartFileData item in provider.FileData)
-                {
-                    try
+                    if (t.IsCanceled || t.IsFaulted)
                     {
-                        string name = item.Headers.ContentDisposition.FileName.Replace("\"", "");
-                        string newFileName = Guid.NewGuid() + Path.GetExtension(name);
-                        File.Move(item.LocalFileName, Path.Combine(rootPath, newFileName));
-                        Uri baseuri = new Uri(Request.RequestUri.AbsoluteUri.Replace(Request.RequestUri.PathAndQuery, string.Empty));
-                        string fileRelativePath = "~/UploadedFiles/" + newFileName;
-                        Uri fileFullPath = new Uri(baseuri, VirtualPathUtility.ToAbsolute(fileRelativePath));
-                        savedFilePath.Add(fileFullPath.ToString());
+                        Request.CreateErrorResponse(HttpStatusCode.InternalServerError, t.Exception);
                     }
-                    catch (Exception ex)
+                    foreach (MultipartFileData item in provider.FileData)
                     {
-                        string message = ex.Message;
+                        try
+                        {
+                            string name = item.Headers.ContentDisposition.FileName.Replace("\"", "");
+                            string newFileName = Guid.NewGuid() + Path.GetExtension(name);
+                            File.Move(item.LocalFileName, Path.Combine(rootPath, newFileName));
+
+                            Uri baseuri = new Uri(Request.RequestUri.AbsoluteUri.Replace(Request.RequestUri.PathAndQuery, string.Empty));
+                            string fileRelativePath = "~/UploadedFiles/" + newFileName;
+                            Uri fileFullPath = new Uri(baseuri, VirtualPathUtility.ToAbsolute(fileRelativePath));
+                            savedFilePath.Add(fileFullPath.ToString());
+                        }
+                        catch (Exception ex)
+                        {
+                            string message = ex.Message;
+                        }
                     }
-                }
-                return Request.CreateResponse(HttpStatusCode.Created, savedFilePath);
-            });
+                    foreach (var keyv in provider.FormData.AllKeys)
+                    {
+                        var test = provider.FormData[keyv];
+                    }
+
+                    return Request.CreateResponse(HttpStatusCode.Created, savedFilePath);
+                });
         }
     }
 
