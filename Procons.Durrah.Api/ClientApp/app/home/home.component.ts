@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router'
 import { Observable, ObservableInput } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -154,7 +154,27 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  @ViewChild('files') el: ElementRef;
 
+  uploadFile() {
+    console.log('click!');
+    let files = this.el.nativeElement.files;
+    if (files && files[0]) {
+      const formData = new FormData();
+      for (var i = 0; i < files.length; i++) {
+        formData.append(files[i].name, files[i]);
+      }
+      formData.append('email','blah')
+      formData.append('name','blahblah')
+
+      console.log('sending FormData', formData);
+      this.myApi.uploadFile(formData).subscribe(x => {
+        console.log('Somethign Happend ! ', formData)
+      }, onError => {
+        console.log('oopsss! ', onError);
+      })
+    }
+  }
 
 
 }
