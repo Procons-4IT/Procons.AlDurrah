@@ -21,7 +21,7 @@
 
     public class WorkersProvider : ProviderBase
     {
-        public bool CreateWorker(Worker worker)
+        public bool CreateWorkerOld(Worker worker)
         {
             var created = false;
             DataServiceResponse response = null;
@@ -30,21 +30,22 @@
 
             //var bodyText = @"{""ItemPriceParams"": { ""CardCode"": ""Houssam"", ""ItemCode"": ""DRH0001WRKR""}}";
             //dynamic responseObject = _serviceInstance.Execute("CompanyService_GetItemPrice", HttpMethod.Post, bodyText);
+            var fileName = CreateAttachment(@"c:\BoyumInstallerLog.txt");
 
-            dynamic responseObject = _serviceInstance.Execute("CompanyService_GetPathAdmin", HttpMethod.Post, null);
-            var _attachment = new SAPB1.Attachments2();
-            var _attachmentLine = new SAPB1.Attachments2_Line();
-            _attachmentLine.FileName = System.IO.Path.GetFileNameWithoutExtension(@"c:\BoyumInstallerLog.txt"); 
-            _attachmentLine.Override = SAPbobsCOM.BoYesNoEnum.tYES.ToString();
-           _attachmentLine.FileExtension = System.IO.Path.GetExtension(@"c:\BoyumInstallerLog.txt").Substring(1);
-            _attachmentLine.SourcePath = @"/";
-            _attachmentLine.UserID = "1";
-            _attachment.Attachments2_Lines.Add(_attachmentLine);
-            _serviceInstance.CurrentServicelayerInstance.AddToAttachments2(_attachment);
-            BodyOperationParameter[] body = null;
-           var resultTest= _serviceInstance.CurrentServicelayerInstance.Execute<object>(new Uri("https://192.168.1.120:50000/b1s/v1/CompanyService_GetPathAdmin"), "POST", false, body);
-            DataServiceResponse response1 = _serviceInstance.CurrentServicelayerInstance.SaveChanges();
-           
+            //dynamic responseObject = _serviceInstance.Execute("CompanyService_GetPathAdmin", HttpMethod.Post, null);
+            //var _attachment = new SAPB1.Attachments2();
+            //var _attachmentLine = new SAPB1.Attachments2_Line();
+            //_attachmentLine.FileName = System.IO.Path.GetFileNameWithoutExtension(@"c:\BoyumInstallerLog.txt");
+            //_attachmentLine.Override = SAPbobsCOM.BoYesNoEnum.tYES.ToString();
+            //_attachmentLine.FileExtension = System.IO.Path.GetExtension(@"c:\BoyumInstallerLog.txt").Substring(1);
+            //_attachmentLine.SourcePath = @"/";
+            //_attachmentLine.UserID = "1";
+            //_attachment.Attachments2_Lines.Add(_attachmentLine);
+            //_serviceInstance.CurrentServicelayerInstance.AddToAttachments2(_attachment);
+            //BodyOperationParameter[] body = null;
+            //var resultTest = _serviceInstance.CurrentServicelayerInstance.Execute<object>(new Uri("https://192.168.1.120:50000/b1s/v1/CompanyService_GetPathAdmin"), "POST", false, body);
+            //DataServiceResponse response1 = _serviceInstance.CurrentServicelayerInstance.SaveChanges();
+
 
             _worker.Code = Guid.NewGuid().ToString();
             _worker.U_Agent = worker.Agent;
@@ -76,6 +77,57 @@
                 _serviceInstance.CurrentServicelayerInstance.AddToWORKERSUDO(_worker);
                 response = _serviceInstance.CurrentServicelayerInstance.SaveChanges();
                 if (response != null)
+                    created = true;
+            }
+            catch (Exception ex)
+            {
+                Utilities.LogException(ex);
+            }
+            return created;
+        }
+        public bool CreateWorker(Worker worker)
+        {
+            var created = false;
+            var workersTable = B1Company.GetBusinessObject(BoObjectTypes.oUserTables) as UserTable;
+
+            try
+            {
+                var attachmentPath = GetAttachmentPath();
+                var passportCopy = CreateAttachment(@"c:\BoyumInstallerLog.txt");
+                var photo = CreateAttachment(@"c:\BoyumInstallerLog.txt");
+
+                workersTable.GetByKey("@WORKERS");
+                workersTable.Code = Guid.NewGuid().ToString();
+                workersTable.UserFields.Fields.Item("U_Agent").Value = worker.Agent;
+                workersTable.UserFields.Fields.Item("U_Age").Value = worker.Agent;
+                workersTable.UserFields.Fields.Item("U_BirthDate").Value = worker.Agent;
+                workersTable.UserFields.Fields.Item("U_CivilId").Value = worker.Agent;
+                workersTable.UserFields.Fields.Item("U_ItemCode").Value = worker.Code;
+                workersTable.UserFields.Fields.Item("U_Education").Value = worker.Education;
+                workersTable.UserFields.Fields.Item("U_Gender").Value = worker.Gender;
+                workersTable.UserFields.Fields.Item("U_Height").Value = worker.Height;
+                workersTable.UserFields.Fields.Item("U_Language").Value = worker.Language;
+                workersTable.UserFields.Fields.Item("U_MaritalStatus").Value = worker.MaritalStatus;
+                workersTable.UserFields.Fields.Item("U_Nationality").Value = worker.Nationality;
+                workersTable.UserFields.Fields.Item("U_Passport").Value =string.Concat(attachmentPath, passportCopy);
+                workersTable.UserFields.Fields.Item("U_PassportPoIssue").Value = worker.PassportPoIssue;
+                workersTable.UserFields.Fields.Item("U_PassportExpDate").Value = worker.PassportExpDate;
+                workersTable.UserFields.Fields.Item("U_PassportNumber").Value = worker.PassportNumber;
+                workersTable.UserFields.Fields.Item("U_Photo").Value = worker.Photo;
+                workersTable.UserFields.Fields.Item("U_Price").Value = worker.Price;
+                workersTable.UserFields.Fields.Item("U_Religion").Value = worker.Religion;
+                workersTable.UserFields.Fields.Item("U_Serial").Value = worker.SerialNumber;
+                workersTable.UserFields.Fields.Item("U_Status").Value = worker.Status;
+                workersTable.UserFields.Fields.Item("U_Video").Value = worker.Video;
+                workersTable.UserFields.Fields.Item("U_Weight").Value = Convert.ToInt32(worker.Weight);
+                var result = workersTable.Add();
+
+                if (result != 0)
+                {
+                    var error = B1Company.GetLastErrorDescription();
+                    throw new Exception(error);
+                }
+                else
                     created = true;
             }
             catch (Exception ex)
@@ -210,12 +262,12 @@
             }
             catch (Exception ex)
             {
-              Utilities.LogException(ex);
+                Utilities.LogException(ex);
             }
             return workersList;
         }
 
-        public double? CreateSalesOrder(Transaction trans,string cardCode)
+        public double? CreateSalesOrder(Transaction trans, string cardCode)
         {
             var instance = ServiceLayerProvider.GetInstance();
             Document salesOrder = new Document();
@@ -243,7 +295,7 @@
                 var worker = instance.CurrentServicelayerInstance.WORKERSUDO.Where(x => x.U_Serial == trans.SerialNumber && x.U_ItemCode == trans.Code).FirstOrDefault();
                 worker.U_Status = "0";
                 instance.CurrentServicelayerInstance.UpdateObject(worker);
-               var resultOrder = instance.CurrentServicelayerInstance.SaveChanges();
+                var resultOrder = instance.CurrentServicelayerInstance.SaveChanges();
 
                 if (null != resultOrder)
                 {
@@ -323,7 +375,7 @@
                         }
                     }
                 }
-              
+
             }
             catch (Exception ex)
             {
@@ -342,7 +394,7 @@
                 salesOrder.Browser.Recordset = records;
                 return salesOrder;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Utilities.LogException(ex);
                 return null;
@@ -557,6 +609,39 @@
             }
             else
                 return null;
+        }
+
+        private string CreateAttachment(string fileName)
+        {
+            SAPbobsCOM.Attachments2 oATT = base.B1Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oAttachments2) as SAPbobsCOM.Attachments2;
+            string FileName = fileName;
+            oATT.Lines.Add();
+            oATT.Lines.FileName = System.IO.Path.GetFileNameWithoutExtension(FileName);
+            oATT.Lines.FileExtension = System.IO.Path.GetExtension(FileName).Substring(1);
+            oATT.Lines.SourcePath = System.IO.Path.GetDirectoryName(FileName);
+            oATT.Lines.Override = SAPbobsCOM.BoYesNoEnum.tYES;
+            if (oATT.Add() == 0)
+                return System.IO.Path.GetFileName(fileName);
+            else
+            {
+                var error = B1Company.GetLastErrorDescription();
+                throw new Exception(error);
+            }
+        }
+
+        private string GetAttachmentPath()
+        {
+            try
+            {
+                SAPbobsCOM.Recordset rec = base.B1Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.BoRecordset) as SAPbobsCOM.Recordset;
+                rec.DoQuery(@"SELECT IFNULL(""AttachPath"",'') FROM ""OADP""");
+                var path = rec.Fields.Item(0).Value.ToString();
+                return path;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
         #endregion

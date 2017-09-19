@@ -4,6 +4,7 @@
     using Procons.Durrah.Main;
     using Procons.Durrah.Main.B1ServiceLayer.SAPB1;
     using System.Collections.Generic;
+    using System.Net.Http;
 
     public class WorkersFacade : IFacade
     {
@@ -26,17 +27,17 @@
             return workersList;
         }
 
-        public double? CreateSalesOrder(Transaction transaction,string cardCode)
+        public double? CreateSalesOrder(Transaction transaction, string cardCode)
         {
             return provider.CreateSalesOrder(transaction, cardCode);
         }
 
         public bool SavePaymentDetails(Transaction trans)
         {
-           return provider.CreateIncomingPayment(trans);
+            return provider.CreateIncomingPayment(trans);
         }
 
-       public List<LookupItem> GetLanguagesLookups()
+        public List<LookupItem> GetLanguagesLookups()
         {
             return provider.GetLookupValues<LANGUAGES>();
         }
@@ -57,5 +58,11 @@
         {
             return provider.GetDownPaymentAmount();
         }
+
+        #region Private Methods
+
+
+
+        #endregion
     }
 }

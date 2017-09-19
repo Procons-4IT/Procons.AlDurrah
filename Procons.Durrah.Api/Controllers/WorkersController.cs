@@ -12,6 +12,9 @@
     using Facade;
     using System.Web;
     using Procons.Durrah.Controllers;
+    using System.IO;
+    using System.Threading.Tasks;
+    using System.Net.Http.Headers;
 
     public class WorkersController : BaseApiController
     {
@@ -24,7 +27,7 @@
 
             Dictionary<string, List<LookupItem>> result = new Dictionary<string, List<LookupItem>>();
             List<LookupItem> languages = workersFacade.GetLanguagesLookups();
-            List<LookupItem> age = new List<LookupItem>() { new LookupItem("18-25", "18-25"), new LookupItem("25-35", "25-35") , new LookupItem("35-45", "35-45") , new LookupItem("45-55", "45-55") };
+            List<LookupItem> age = new List<LookupItem>() { new LookupItem("18-25", "18-25"), new LookupItem("25-35", "25-35"), new LookupItem("35-45", "35-45"), new LookupItem("45-55", "45-55") };
             List<LookupItem> nationality = workersFacade.GetCountriesLookups();
             List<LookupItem> gender = new List<LookupItem>() { new LookupItem("Male", "M"), new LookupItem("Female", "F") };
             List<LookupItem> maritalStatus = workersFacade.GetMaritalStatusLookups();
@@ -102,7 +105,7 @@
         {
             var result = workersFacade.SavePaymentDetails(payment);
             if (result)
-                return Request.CreateResponse(HttpStatusCode.OK, "Transaction created successfully!!!"); 
+                return Request.CreateResponse(HttpStatusCode.OK, "Transaction created successfully!!!");
             else
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Transaction failed!!!");
         }
@@ -126,10 +129,12 @@
         }
 
         [HttpPost]
-        public IHttpActionResult AddWorker([FromBody]Worker worker)
+        public IHttpActionResult AddWorker()
         {
-            var result = workersFacade.CreateWorker(worker);
-            return Ok(result);
+            SaveFile();
+            return Ok();
+            //var result = workersFacade.CreateWorker(worker);
+            //return Ok(result);
         }
 
         [HttpPost]
@@ -137,6 +142,90 @@
         public IHttpActionResult DeleteWorker(string code)
         {
             return Ok();
+        }
+
+        public void SaveFile()
+        {
+            List<string> savedFilePath = new List<string>();
+            if (!Request.Content.IsMimeMultipartContent())
+            {
+                throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
+            }
+            //TEST FILE UPLOAD WITH PROPERTIES
+            var test = new CustomMultipartFileStreamProvider();
+            var streamProvider = new CustomMultipartFileStreamProvider();
+            Request.Content.ReadAsMultipartAsync(streamProvider);
+            var fileStream =  streamProvider.Contents[0].ReadAsStreamAsync();
+            var customData = streamProvider.CustomData;
+            //
+            string rootPath = HttpContext.Current.Server.MapPath("~/UploadedFiles");
+            var provider = new MultipartFileStreamProvider(rootPath);
+            var task = Request.Content.ReadAsMultipartAsync(provider).
+            ContinueWith(t => {
+                if (t.IsCanceled || t.IsFaulted)
+                {
+                    Request.CreateErrorResponse(HttpStatusCode.InternalServerError, t.Exception);
+                }
+                foreach (MultipartFileData item in provider.FileData)
+                {
+                    try
+                    {
+                        string name = item.Headers.ContentDisposition.FileName.Replace("\"", "");
+                        string newFileName = Guid.NewGuid() + Path.GetExtension(name);
+                        File.Move(item.LocalFileName, Path.Combine(rootPath, newFileName));
+                        Uri baseuri = new Uri(Request.RequestUri.AbsoluteUri.Replace(Request.RequestUri.PathAndQuery, string.Empty));
+                        string fileRelativePath = "~/UploadedFiles/" + newFileName;
+                        Uri fileFullPath = new Uri(baseuri, VirtualPathUtility.ToAbsolute(fileRelativePath));
+                        savedFilePath.Add(fileFullPath.ToString());
+                    }
+                    catch (Exception ex)
+                    {
+                        string message = ex.Message;
+                    }
+                }
+                return Request.CreateResponse(HttpStatusCode.Created, savedFilePath);
+            });
+        }
+    }
+
+    class MyCustomData
+    {
+        public int Foo { get; set; }
+        public string Bar { get; set; }
+    }
+
+    class CustomMultipartFileStreamProvider : MultipartMemoryStreamProvider
+    {
+        public List<MyCustomData> CustomData { get; set; }
+
+        public CustomMultipartFileStreamProvider()
+        {
+            CustomData = new List<MyCustomData>();
+        }
+
+        public override Task ExecutePostProcessingAsync()
+        {
+            foreach (var file in Contents)
+            {
+                var parameters = file.Headers.ContentDisposition.Parameters;
+                var data = new MyCustomData
+                {
+                    Foo = int.Parse(GetNameHeaderValue(parameters, "Foo")),
+                    Bar = GetNameHeaderValue(parameters, "Bar"),
+                };
+
+                CustomData.Add(data);
+            }
+
+            return base.ExecutePostProcessingAsync();
+        }
+
+        private static string GetNameHeaderValue(ICollection<NameValueHeaderValue> headerValues, string name)
+        {
+            var nameValueHeader = headerValues.FirstOrDefault(
+                x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+
+            return nameValueHeader != null ? nameValueHeader.Value : null;
         }
     }
 }

@@ -15,6 +15,7 @@ using System;
 using System.Configuration;
 using System.Linq;
 using System.Net.Http.Formatting;
+using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -86,7 +87,7 @@ namespace Procons.Durrah
             var container = new UnityContainer();
             container.RegisterType<ILoggingService, LogService>(new HierarchicalLifetimeManager());
             config.DependencyResolver = new UnityResolver(container);
-
+            config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("multipart/form-data"));
             config.MessageHandlers.Add(new LanguageMessageHandler());
             config.MapHttpAttributeRoutes();
             config.Routes.MapHttpRoute(
