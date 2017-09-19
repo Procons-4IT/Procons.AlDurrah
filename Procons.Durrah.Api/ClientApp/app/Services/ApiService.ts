@@ -126,6 +126,18 @@ export class ApiService {
 
         // });
     }
+    public uploadFile(formData) {
+        let url = 'http://localhost:3000/send';
+        let headers = new Headers();
+
+        // headers.append('Content-Type', 'application/x-www-form-urlencoded');
+        // headers.append("Content-Type", 'application/json');
+        // headers.append("accept-language", this.language);
+        // let options: RequestOptions = new RequestOptions({ headers: headers });
+        return this.http.post(url, formData);
+
+    }
+
     public isLoggedIn(): boolean {
         return !!this.GetSecurityToken();
     }
