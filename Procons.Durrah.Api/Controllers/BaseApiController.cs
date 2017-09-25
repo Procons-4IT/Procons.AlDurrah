@@ -4,6 +4,7 @@
     using Microsoft.AspNet.Identity.Owin;
     using System.Net.Http;
     using System.Web;
+    using System.Linq;
     using System.Web.Http;
     using Procons.Durrah.Auth;
     using Procons.Durrah.Models;
@@ -12,10 +13,11 @@
     using Newtonsoft.Json;
     using Procons.Durrah.Common.Models;
     using Procons.Durrah.Common;
+    using System.Security.Claims;
+    using System;
 
     public class BaseApiController : ApiController
     {
-
         private ModelFactory _modelFactory;
         private ApplicationUserManager _AppUserManager = null;
         private ApplicationRoleManager _AppRoleManager = null;
@@ -108,6 +110,30 @@
                 captchaResult = true;
             }
             return captchaResult;
+        }
+
+        protected string GetCurrentUserCardCode()
+        {
+            var claims = ((ClaimsIdentity)User.Identity).Claims;
+            var cardCode = string.Empty;
+            if (claims.Count() != 0)
+                cardCode = claims.Where(x => x.Type == Common.Constants.ServiceLayer.CardCode).FirstOrDefault().Value;
+            return cardCode;
+        }
+
+        protected T MapField<T>(object o)
+        {
+            var result = default(T);
+            if (o != DBNull.Value)
+            {
+                if (o.GetType() == typeof(float))
+                    result = (T)Convert.ChangeType(float.Parse(o.ToString()), typeof(T));
+                else
+                    result = (T)Convert.ChangeType(o, typeof(T));
+                return result;
+            }
+            else
+                return default(T);
         }
     }
 }

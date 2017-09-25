@@ -475,6 +475,7 @@
     <Compile Include="Controllers\AccountsController.cs" />
     <Compile Include="Controllers\BaseApiController.cs" />
     <Compile Include="Controllers\ClaimsController.cs" />
+    <Compile Include="Controllers\HanaDecimal.cs" />
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Attributes\ClaimsAuthorizationAttribute.cs" />

@@ -15,6 +15,7 @@
     using System.IO;
     using System.Threading.Tasks;
     using System.Net.Http.Headers;
+    using System.Collections.Specialized;
 
     public class WorkersController : BaseApiController
     {
@@ -131,6 +132,7 @@
         [HttpPost]
         public IHttpActionResult AddWorker()
         {
+            var cardCode = GetCurrentUserCardCode();
             SaveFile();
             return Ok();
             //var result = workersFacade.CreateWorker(worker);
@@ -144,14 +146,22 @@
             return Ok();
         }
 
-        public void SaveFile()
+        #region Private Methods
+        
+        private void SaveFile()
         {
-            List<string> savedFilePath = new List<string>();
+            var worker = new Worker();
+            var savedFilePath = new List<string>();
+
             if (!Request.Content.IsMimeMultipartContent())
             {
                 throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
             }
+
             string rootPath = HttpContext.Current.Server.MapPath("~/UploadedFiles");
+            if (!Directory.Exists(rootPath))
+                Directory.CreateDirectory(rootPath);
+
             var provider = new MultipartFormDataStreamProvider(rootPath);
             var task = Request.Content.ReadAsMultipartAsync(provider).
                 ContinueWith<HttpResponseMessage>(t =>
@@ -167,7 +177,6 @@
                             string name = item.Headers.ContentDisposition.FileName.Replace("\"", "");
                             string newFileName = Guid.NewGuid() + Path.GetExtension(name);
                             File.Move(item.LocalFileName, Path.Combine(rootPath, newFileName));
-
                             Uri baseuri = new Uri(Request.RequestUri.AbsoluteUri.Replace(Request.RequestUri.PathAndQuery, string.Empty));
                             string fileRelativePath = "~/UploadedFiles/" + newFileName;
                             Uri fileFullPath = new Uri(baseuri, VirtualPathUtility.ToAbsolute(fileRelativePath));
@@ -180,52 +189,65 @@
                     }
                     foreach (var keyv in provider.FormData.AllKeys)
                     {
-                        var test = provider.FormData[keyv];
+                        //worker.Age = MapField<int>(provider.FormData["Age"]);
+                        //worker.Agent = GetCurrentUserCardCode(); 
+                        //worker.BirthDate = MapField<string>(provider.FormData["Age"]);
+                        //worker.CivilId = MapField<string>(provider.FormData["CivilId"]);
+                        //worker.Code = MapField<string>(provider.FormData["Code"]);
+                        //worker.Education = MapField<string>(provider.FormData["Education"]);
+                        //worker.Gender = MapField<string>(provider.FormData["Gender"]);
+                        //worker.Height = MapField<string>(provider.FormData["Height"]);
+                        //worker.Language = MapField<string>(provider.FormData["Language"]);
+                        //worker.MaritalStatus = MapField<string>(provider.FormData["MaritalStatus"]);
+                        //worker.Nationality = MapField<string>(provider.FormData["Nationality"]);
+                        ////worker.Passport = MapField<string>(provider.FormData["Age"]);
+                        //worker.PassportExpDate = MapField<string>(provider.FormData["PassportExpDate"]);
+                        //worker.PassportIssDate = MapField<string>(provider.FormData["PassportIssDate"]);
+                        //worker.PassportNumber = MapField<string>(provider.FormData["PassportNumber"]);
+                        //worker.Photo = MapField<string>(provider.FormData["PassportExpDate"]);
+                        ////worker.Price = MapField<string>(provider.FormData["PassportExpDate"]);
+                        ////worker.Photo= MapField<string>(provider.FormData["PassportExpDate"]);
+                        //worker.Religion = MapField<string>(provider.FormData["Religion"]);
+                        //worker.SerialNumber = MapField<string>(provider.FormData["PassportExpDate"]);
+                        //worker.Status = "1";
+                        //worker.SerialNumber = MapField<string>(provider.FormData["CivilId"]);
+                        //worker.Video = MapField<string>(provider.FormData["Video"]);
+                        //worker.Height = MapField<string>(provider.FormData["Video"]);
+                        //worker.Weight= MapField<string>(provider.FormData["Video"]);
                     }
+
+                    PopulateWorker(provider, ref worker);
 
                     return Request.CreateResponse(HttpStatusCode.Created, savedFilePath);
                 });
         }
-    }
 
-    class MyCustomData
-    {
-        public int Foo { get; set; }
-        public string Bar { get; set; }
-    }
-
-    class CustomMultipartFileStreamProvider : MultipartMemoryStreamProvider
-    {
-        public List<MyCustomData> CustomData { get; set; }
-
-        public CustomMultipartFileStreamProvider()
+        private void PopulateWorker(MultipartFormDataStreamProvider provider, ref Worker worker)
         {
-            CustomData = new List<MyCustomData>();
+            worker.Age = MapField<int>(provider.FormData["Age"]);
+            worker.Agent = GetCurrentUserCardCode();
+            worker.BirthDate = MapField<string>(provider.FormData["BirthDate"]);
+            worker.CivilId = MapField<string>(provider.FormData["CivilId"]);
+            worker.Code = MapField<string>(provider.FormData["Code"]);
+            worker.Education = MapField<string>(provider.FormData["Education"]);
+            worker.Gender = MapField<string>(provider.FormData["Gender"]);
+            worker.Language = MapField<string>(provider.FormData["Language"]);
+            worker.MaritalStatus = MapField<string>(provider.FormData["MaritalStatus"]);
+            worker.Nationality = MapField<string>(provider.FormData["Nationality"]);
+            //worker.Price = MapField<string>(provider.FormData["PassportExpDate"]);
+            //worker.Photo= MapField<string>(provider.FormData["PassportExpDate"]);
+            //worker.Passport = MapField<string>(provider.FormData["Age"]);
+            worker.PassportExpDate = MapField<string>(provider.FormData["PassportExpDate"]);
+            worker.PassportIssDate = MapField<string>(provider.FormData["PassportIssDate"]);
+            worker.PassportNumber = MapField<string>(provider.FormData["PassportNumber"]);
+            worker.Religion = MapField<string>(provider.FormData["Religion"]);
+            worker.Status = "1";
+            worker.SerialNumber = MapField<string>(provider.FormData["CivilId"]);
+            worker.Video = MapField<string>(provider.FormData["Video"]);
+            worker.Height = MapField<string>(provider.FormData["Height"]);
+            worker.Weight = MapField<string>(provider.FormData["Weight"]);
         }
 
-        public override Task ExecutePostProcessingAsync()
-        {
-            foreach (var file in Contents)
-            {
-                var parameters = file.Headers.ContentDisposition.Parameters;
-                var data = new MyCustomData
-                {
-                    Foo = int.Parse(GetNameHeaderValue(parameters, "Foo")),
-                    Bar = GetNameHeaderValue(parameters, "Bar"),
-                };
-
-                CustomData.Add(data);
-            }
-
-            return base.ExecutePostProcessingAsync();
-        }
-
-        private static string GetNameHeaderValue(ICollection<NameValueHeaderValue> headerValues, string name)
-        {
-            var nameValueHeader = headerValues.FirstOrDefault(
-                x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-
-            return nameValueHeader != null ? nameValueHeader.Value : null;
-        }
+        #endregion
     }
 }
