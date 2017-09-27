@@ -1,0 +1,57 @@
+<section role="main" class="main-container subpage">
+
+    <div class="section section-overlay section-full-width" id="sectionCatalogue2">
+        <div class="container">
+            <div class="section-content">
+                <div class="content-wrapper">
+                    <div class="tab-content">
+                        <div role="tabpanel">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h2 class="text-center">Uploaded Profiles</h2>
+                                    <div class="actions">
+                                        <a href="./profile2.html" class="btn btn-default">View Profiles</a>
+                                        <a href="./profileadd.html" class="btn btn-default">+ Add Profile</a>
+                                    </div>
+                                    <div class="row">
+                                        <div *ngFor="let worker  of workers;let i =index" class="col-sm-6">
+                                            <div class="box profile-box clearfix">
+                                                <div class="profile-main">
+                                                    <div class="profile-thumb">
+                                                        <img src="/Assets/src/app/images/profiles/test.jpg" class="img-responsive">
+                                                    </div>
+                                                    <h3 class="h5">Aaliyah Al Soufi {{i+1}}</h3>
+                                                    <div class="datas">
+                                                        <div><span class="icon icon-ed-kg icon-fw"></span> 56kg</div>
+                                                        <div><span class="icon icon-ed-height icon-fw"></span> 1m62</div>
+                                                        <div>available</div>
+                                                    </div>
+                                                </div>
+                                                <div class="profile-actions">
+                                                    <a href="./profileedit.html">Edit</a>
+                                                    <div class="checkbox-custom">
+                                                        <label>
+                                            <input type="checkbox" class="form-control" checked="checked" />
+                                            <span class="icon icon-ed-check icon-fw"></span>
+                                          </label>
+                                                    </div>
+                                                    <a href="#">Delete</a>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
