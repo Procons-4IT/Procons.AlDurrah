@@ -88,47 +88,42 @@
         public bool CreateWorker(Worker worker)
         {
             var created = false;
-            var workersTable = B1Company.GetBusinessObject(BoObjectTypes.oUserTables) as UserTable;
 
             try
             {
                 var attachmentPath = GetAttachmentPath();
-                var passportCopy = CreateAttachment(@"c:\BoyumInstallerLog.txt");
-                var photo = CreateAttachment(@"c:\BoyumInstallerLog.txt");
+                var passportCopy = worker.Passport != null && worker.Passport != string.Empty ? CreateAttachment(worker.Passport) : worker.Passport;
+                var photo = worker.Photo != null && worker.Photo != string.Empty ? CreateAttachment(worker.Photo) : worker.Photo;
 
-                workersTable.GetByKey("@WORKERS");
-                workersTable.Code = Guid.NewGuid().ToString();
-                workersTable.UserFields.Fields.Item("U_Agent").Value = worker.Agent;
-                workersTable.UserFields.Fields.Item("U_Age").Value = worker.Agent;
-                workersTable.UserFields.Fields.Item("U_BirthDate").Value = worker.Agent;
-                workersTable.UserFields.Fields.Item("U_CivilId").Value = worker.Agent;
-                workersTable.UserFields.Fields.Item("U_ItemCode").Value = worker.Code;
-                workersTable.UserFields.Fields.Item("U_Education").Value = worker.Education;
-                workersTable.UserFields.Fields.Item("U_Gender").Value = worker.Gender;
-                workersTable.UserFields.Fields.Item("U_Height").Value = worker.Height;
-                workersTable.UserFields.Fields.Item("U_Language").Value = worker.Language;
-                workersTable.UserFields.Fields.Item("U_MaritalStatus").Value = worker.MaritalStatus;
-                workersTable.UserFields.Fields.Item("U_Nationality").Value = worker.Nationality;
-                workersTable.UserFields.Fields.Item("U_Passport").Value =string.Concat(attachmentPath, passportCopy);
-                workersTable.UserFields.Fields.Item("U_PassportPoIssue").Value = worker.PassportPoIssue;
-                workersTable.UserFields.Fields.Item("U_PassportExpDate").Value = worker.PassportExpDate;
-                workersTable.UserFields.Fields.Item("U_PassportNumber").Value = worker.PassportNumber;
-                workersTable.UserFields.Fields.Item("U_Photo").Value = worker.Photo;
-                workersTable.UserFields.Fields.Item("U_Price").Value = worker.Price;
-                workersTable.UserFields.Fields.Item("U_Religion").Value = worker.Religion;
-                workersTable.UserFields.Fields.Item("U_Serial").Value = worker.SerialNumber;
-                workersTable.UserFields.Fields.Item("U_Status").Value = worker.Status;
-                workersTable.UserFields.Fields.Item("U_Video").Value = worker.Video;
-                workersTable.UserFields.Fields.Item("U_Weight").Value = Convert.ToInt32(worker.Weight);
-                var result = workersTable.Add();
+                var sCmp = B1Company.GetCompanyService();
+                var oGeneralService = sCmp.GetGeneralService("WORKERSUDO");
 
-                if (result != 0)
-                {
-                    var error = B1Company.GetLastErrorDescription();
-                    throw new Exception(error);
-                }
-                else
-                    created = true;
+                var oGeneralData = oGeneralService.GetDataInterface(GeneralServiceDataInterfaces.gsGeneralData) as GeneralData;
+                oGeneralData.SetProperty("Code", Guid.NewGuid().ToString());
+                oGeneralData.SetProperty("U_Agent", worker.Agent);
+                oGeneralData.SetProperty("U_Age", worker.Age);
+                oGeneralData.SetProperty("U_BirthDate",worker.BirthDate);
+                oGeneralData.SetProperty("U_CivilId", worker.CivilId);
+                oGeneralData.SetProperty("U_ItemCode", worker.Code);
+                oGeneralData.SetProperty("U_Education", worker.Education);
+                oGeneralData.SetProperty("U_Gender", worker.Gender);
+                oGeneralData.SetProperty("U_Height", worker.Height);
+                oGeneralData.SetProperty("U_Language", worker.Language);
+                oGeneralData.SetProperty("U_MaritalStatus", worker.MaritalStatus);
+                oGeneralData.SetProperty("U_Nationality", worker.Nationality);
+                oGeneralData.SetProperty("U_Passport", string.Concat(attachmentPath, passportCopy));
+                oGeneralData.SetProperty("U_PassportPoIssue", worker.PassportIssDate);
+                oGeneralData.SetProperty("U_PassportExpDate", worker.PassportExpDate);
+                oGeneralData.SetProperty("U_PassportNumber", worker.PassportNumber);
+                oGeneralData.SetProperty("U_Photo", string.Concat(attachmentPath, photo));
+                oGeneralData.SetProperty("U_Religion", worker.Religion);
+                oGeneralData.SetProperty("U_Serial", worker.SerialNumber);
+                oGeneralData.SetProperty("U_Status", worker.Status);
+                oGeneralData.SetProperty("U_Video", worker.Video);
+                oGeneralData.SetProperty("U_Weight", worker.Weight);
+
+                oGeneralService.Add(oGeneralData);
+                created = true;
             }
             catch (Exception ex)
             {
@@ -620,7 +615,7 @@
             oATT.Lines.FileExtension = System.IO.Path.GetExtension(FileName).Substring(1);
             oATT.Lines.SourcePath = System.IO.Path.GetDirectoryName(FileName);
             oATT.Lines.Override = SAPbobsCOM.BoYesNoEnum.tYES;
-            if (oATT.Add() == 0)
+            if (oATT.Add() != 0)
                 return System.IO.Path.GetFileName(fileName);
             else
             {

@@ -192,41 +192,47 @@
 
                  return Request.CreateResponse(HttpStatusCode.Created, worker);
              });
-            //var task = Request.Content.ReadAsMultipartAsync(provider).
-            //    ContinueWith<HttpResponseMessage>(t =>
-            //    {
-            //        if (t.IsCanceled || t.IsFaulted)
-            //        {
-            //            Request.CreateErrorResponse(HttpStatusCode.InternalServerError, t.Exception);
-            //        }
-            //        foreach (MultipartFileData item in provider.FileData)
-            //        {
-            //            try
-            //            {
-            //                string name = item.Headers.ContentDisposition.FileName.Replace("\"", "");
-            //                string newFileName = Guid.NewGuid() + Path.GetExtension(name);
-            //                File.Move(item.LocalFileName, Path.Combine(rootPath, newFileName));
-            //                Uri baseuri = new Uri(Request.RequestUri.AbsoluteUri.Replace(Request.RequestUri.PathAndQuery, string.Empty));
-            //                string fileRelativePath = "~/UploadedFiles/" + newFileName;
-            //                Uri fileFullPath = new Uri(baseuri, VirtualPathUtility.ToAbsolute(fileRelativePath));
-            //                savedFilePath.Add(fileFullPath.ToString());
-            //            }
-            //            catch (Exception ex)
-            //            {
-            //                string message = ex.Message;
-            //            }
-            //        }
+            return worker;
+        }
 
-            //        //foreach (var keyv in provider.FormData.AllKeys)
-            //        //{
+        private Worker SaveFileNew()
+        {
+            var worker = new Worker();
+            if (!Request.Content.IsMimeMultipartContent())
+            {
+                throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
+            }
 
-            //        //}
+            string rootPath = HttpContext.Current.Server.MapPath("~/UploadedFiles");
+            if (!Directory.Exists(rootPath))
+                Directory.CreateDirectory(rootPath);
 
-            //        PopulateWorker(provider, ref worker);
+            var provider = new MultipartFormDataStreamProvider(rootPath);
+            Task<MultipartFormDataStreamProvider> task =  Request.Content.ReadAsMultipartAsync(provider);
+            task.RunSynchronously();
 
-            //        return Request.CreateResponse(HttpStatusCode.Created, savedFilePath);
-            //    });
-            //Task.WaitAll(task);
+            foreach (MultipartFileData item in provider.FileData)
+            {
+                try
+                {
+                    string name = item.Headers.ContentDisposition.FileName.Replace("\"", "");
+                    string newFileName = string.Concat(Guid.NewGuid(), Path.GetExtension(name));
+                    File.Move(item.LocalFileName, Path.Combine(rootPath, newFileName));
+                    Uri baseuri = new Uri(Request.RequestUri.AbsoluteUri.Replace(Request.RequestUri.PathAndQuery, string.Empty));
+                    string fileRelativePath = string.Concat("~/UploadedFiles/", newFileName);
+                    Uri fileFullPath = new Uri(baseuri, VirtualPathUtility.ToAbsolute(fileRelativePath));
+                    if (item.Headers.ContentDisposition.Name.Trim('"').Equals("Photo"))
+                        worker.Photo = fileRelativePath;
+                    else
+                        worker.Passport = fileRelativePath;
+                }
+                catch (Exception ex)
+                {
+                    string message = ex.Message;
+                }
+            }
+
+            PopulateWorker(provider, ref worker);
             return worker;
         }
 
