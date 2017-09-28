@@ -13,6 +13,7 @@
     using System.Collections.Generic;
     using System.Data.Services.Client;
     using System.Data.SqlClient;
+    using System.IO;
     using System.Linq;
     using System.Net.Http;
     using System.Text;
@@ -613,9 +614,9 @@
             oATT.Lines.Add();
             oATT.Lines.FileName = System.IO.Path.GetFileNameWithoutExtension(FileName);
             oATT.Lines.FileExtension = System.IO.Path.GetExtension(FileName).Substring(1);
-            oATT.Lines.SourcePath = System.IO.Path.GetDirectoryName(FileName);
+            oATT.Lines.SourcePath = Path.GetDirectoryName( System.Web.Hosting.HostingEnvironment.MapPath(FileName));// System.IO.Path.GetDirectoryName(FileName);
             oATT.Lines.Override = SAPbobsCOM.BoYesNoEnum.tYES;
-            if (oATT.Add() != 0)
+            if (oATT.Add() == 0)
                 return System.IO.Path.GetFileName(fileName);
             else
             {
