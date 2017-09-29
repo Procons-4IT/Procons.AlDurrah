@@ -14,7 +14,7 @@ import { searchFormComponent } from './Catalogue/SearchForm/SearchForm.component
 import { profileComponent } from './Catalogue/Profile/profile.component';
 import { WorkerMangmentComponent } from './worker-managment/worker-managment.component';
 import { ViewProfilesComponent } from './worker-managment/view-profiles/view-profiles.component';
-
+import { AddProfileComponent } from './worker-managment/add-profile/add-profile.component';
 import { RecipeDetailComponent } from './recipes/recipe-detail/recipe-detail.component';
 import { RecipeItemComponent } from './recipes/recipe-list/recipe-item/recipe-item.component';
 import { RoutingModule, routingComponents, } from './app.routing';
@@ -72,7 +72,8 @@ export function createTranslateLoader(http: HttpClient) {
         LoginComponent,
         GvControlComponent,
         WorkerMangmentComponent,
-        ViewProfilesComponent
+        ViewProfilesComponent,
+        AddProfileComponent
     ],
     imports: [
         BootstrapModalModule,

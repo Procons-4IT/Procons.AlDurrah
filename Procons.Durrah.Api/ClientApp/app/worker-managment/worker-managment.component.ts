@@ -7,15 +7,24 @@ import { Worker } from "../Models/Worker";
     styles: ["./worker-managment.component.css"]
 })
 export class WorkerMangmentComponent {
+
     state = {
-        showProfiles: true,
+        showProfiles: false,
+        showWorkerManagment: false,
+        showAddProfile: true,
         workers: Array(7)
     }
+
     constructor() {
         console.log('render the page!');
     }
 
-    showProfiles(){
+    showProfiles() {
+        this.state.showWorkerManagment = false;
         this.state.showProfiles = true;
+    }
+
+    showAddWorker() {
+        console.log('do some state managment logic');
     }
 }
