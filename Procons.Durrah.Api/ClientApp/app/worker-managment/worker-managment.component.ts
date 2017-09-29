@@ -7,8 +7,15 @@ import { Worker } from "../Models/Worker";
     styles: ["./worker-managment.component.css"]
 })
 export class WorkerMangmentComponent {
-    workers: any[] = Array(7);
+    state = {
+        showProfiles: true,
+        workers: Array(7)
+    }
     constructor() {
         console.log('render the page!');
+    }
+
+    showProfiles(){
+        this.state.showProfiles = true;
     }
 }

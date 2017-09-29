@@ -1,4 +1,4 @@
-<section role="main" class="main-container subpage">
+<section role="main" class="main-container subpage" *ngIf="!state.showProfiles">
 
     <div class="section section-overlay section-full-width" id="sectionCatalogue2">
         <div class="container">
@@ -10,11 +10,11 @@
                                 <div class="col-xs-12">
                                     <h2 class="text-center">Uploaded Profiles</h2>
                                     <div class="actions">
-                                        <a href="./profile2.html" class="btn btn-default">View Profiles</a>
+                                        <button (click)="showProfiles();" class="btn btn-default">View Profiles</button>
                                         <a href="./profileadd.html" class="btn btn-default">+ Add Profile</a>
                                     </div>
                                     <div class="row">
-                                        <div *ngFor="let worker  of workers;let i =index" class="col-sm-6">
+                                        <div *ngFor="let worker  of state.workers;let i =index" class="col-sm-6">
                                             <div class="box profile-box clearfix">
                                                 <div class="profile-main">
                                                     <div class="profile-thumb">
@@ -55,3 +55,4 @@
     </div>
 
 </section>
+<view-profiles *ngIf="state.showProfiles"></view-profiles>
