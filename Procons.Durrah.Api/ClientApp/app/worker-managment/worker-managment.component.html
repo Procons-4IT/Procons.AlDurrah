@@ -1,59 +1,59 @@
-<section role="main" class="main-container subpage" *ngIf="state.showWorkerManagment">
+<!-- <section role="main" class="main-container subpage" *ngIf="state.showWorkerManagment"> -->
 
-    <div class="section section-overlay section-full-width" id="sectionCatalogue2">
-        <div class="container">
-            <div class="section-content">
-                <div class="content-wrapper">
-                    <div class="tab-content">
-                        <div role="tabpanel">
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <h2 class="text-center">Uploaded Profiles</h2>
-                                    <div class="actions">
-                                        <button (click)="showProfiles();" class="btn btn-default">View Profiles</button>
-                                        <a href="./profileadd.html" class="btn btn-default">+ Add Profile</a>
-                                    </div>
-                                    <div class="row">
-                                        <div *ngFor="let worker  of state.workers;let i =index" class="col-sm-6">
-                                            <div class="box profile-box clearfix">
-                                                <div class="profile-main">
-                                                    <div class="profile-thumb">
-                                                        <img src="/Assets/src/app/images/profiles/test.jpg" class="img-responsive">
-                                                    </div>
-                                                    <h3 class="h5">Aaliyah Al Soufi {{i+1}}</h3>
-                                                    <div class="datas">
-                                                        <div><span class="icon icon-ed-kg icon-fw"></span> 56kg</div>
-                                                        <div><span class="icon icon-ed-height icon-fw"></span> 1m62</div>
-                                                        <div>available</div>
-                                                    </div>
+<div class="section section-overlay section-full-width" id="sectionCatalogue2" *ngIf="state.showWorkerManagment">
+    <div class="container">
+        <div class="section-content">
+            <div class="content-wrapper">
+                <div class="tab-content">
+                    <div role="tabpanel">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <h2 class="text-center">Uploaded Profiles</h2>
+                                <div class="actions">
+                                    <button (click)="ShowProfiles();" class="btn btn-default">View Profiles</button>
+                                    <a (click)="ShowAddWorker();" class="btn btn-default">+ Add Profile</a>
+                                </div>
+                                <div class="row">
+                                    <div *ngFor="let worker  of state.workers;let i =index" class="col-sm-6">
+                                        <div class="box profile-box clearfix">
+                                            <div class="profile-main">
+                                                <div class="profile-thumb">
+                                                    <img src="/Assets/src/app/images/profiles/test.jpg" class="img-responsive">
                                                 </div>
-                                                <div class="profile-actions">
-                                                    <a href="./profileedit.html">Edit</a>
-                                                    <div class="checkbox-custom">
-                                                        <label>
+                                                <h3 class="h5">Aaliyah Al Soufi {{worker.name}} </h3>
+                                                <div class="datas">
+                                                    <div><span class="icon icon-ed-kg icon-fw"></span> 56kg</div>
+                                                    <div><span class="icon icon-ed-height icon-fw"></span> 1m62</div>
+                                                    <div>available</div>
+                                                </div>
+                                            </div>
+                                            <div class="profile-actions">
+                                                <a (click)="ShowEditWorker(worker)">Edit</a>
+                                                <div class="checkbox-custom">
+                                                    <label>
                                             <input type="checkbox" class="form-control" checked="checked" />
                                             <span class="icon icon-ed-check icon-fw"></span>
                                           </label>
-                                                    </div>
-                                                    <a href="#">Delete</a>
                                                 </div>
+                                                <a (click)="Delete(worker,i)">Delete</a>
                                             </div>
-
-
                                         </div>
-                                    </div>
 
+
+                                    </div>
                                 </div>
+
                             </div>
                         </div>
-
                     </div>
 
                 </div>
+
             </div>
         </div>
     </div>
+</div>
 
-</section>
-<view-profiles *ngIf="state.showProfiles"></view-profiles>
-<add-profile *ngIf="state.showAddProfile"></add-profile>
+<!-- </section> -->
+<view-profiles [workers]="state.workers" (onBack)="ShowWorkerManagment()" *ngIf="state.showProfiles"></view-profiles>
+<add-profile (onBack)="ShowWorkerManagment()" [worker]="state.selectedWorker" *ngIf="state.showAddProfile"></add-profile>

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input, EventEmitter, Output } from '@angular/core';
+
 import { Worker } from "../../Models/Worker";
 
 @Component({
@@ -7,14 +8,12 @@ import { Worker } from "../../Models/Worker";
     styles: ["./view-profiles.component.css"]
 })
 export class ViewProfilesComponent {
-    state = {
-        workers: Array(7)
-    }
-    constructor() {
-        console.log('render the page!');
-    }
-    
-    back(){
-        console.log('click me baby one more time!');
+    @Input() workers: Worker[]
+    @Output() onBack = new EventEmitter<any>();
+
+    constructor() {}
+
+    back() {
+        this.onBack.emit();
     }
 }

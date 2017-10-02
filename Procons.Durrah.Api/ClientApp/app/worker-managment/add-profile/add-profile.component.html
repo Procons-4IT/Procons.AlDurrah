@@ -1,130 +1,130 @@
-<section role="main" class="main-container subpage">
+<!-- <section role="main" class="main-container subpage"> -->
 
-  <div class="section section-overlay section-full-width full-height" id="sectionCatalogue2">
-    <div class="container">
-      <div class="section-content">
-        <div class="content-wrapper">
-          <div class="tab-content">
-            <div role="tabpanel">
-              <div class="row">
-                <div class="col-xs-12">
-                  <h2 class="text-center"><span class="icon icon-ed-search icon-3x"></span> Add Profile</h2>
-                  <form action="./profilesaved.html" method="post" id="profileEditForm" class="form-default has-upload">
-                    <div class="row">
-                      <div class="col-sm-6">
-                        <div class="form-group">
-                          <input type="text" class="form-control" placeholder="Date of Birth" />
-                        </div>
+<div class="section section-overlay section-full-width full-height" id="sectionCatalogue2">
+  <div class="container">
+    <div class="section-content">
+      <div class="content-wrapper">
+        <div class="tab-content">
+          <div role="tabpanel">
+            <div class="row">
+              <div class="col-xs-12">
+                <h2 class="text-center"><span class="icon icon-ed-search icon-3x"></span> {{state.title}}</h2>
+                <form action="./profilesaved.html" method="post" id="profileEditForm" class="form-default has-upload">
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <input type="text" class="form-control" name="name" [(ngModel)]="state.worker.name" />
+                      </div>
 
-                        <div class="form-group">
-                          <select class="form-control">
+                      <div class="form-group">
+                        <select class="form-control">
                                   <option>Gender</option>
                                 </select>
-                        </div>
+                      </div>
 
-                        <div class="form-group">
-                          <select class="form-control">
+                      <div class="form-group">
+                        <select class="form-control">
                                   <option>Nationality</option>
                                 </select>
-                        </div>
+                      </div>
 
-                        <div class="form-group">
-                          <select class="form-control">
+                      <div class="form-group">
+                        <select class="form-control">
                                   <option>Religion</option>
                                 </select>
-                        </div>
+                      </div>
 
-                        <div class="form-group">
-                          <select class="form-control">
+                      <div class="form-group">
+                        <select class="form-control">
                                   <option>Marital Status</option>
                                 </select>
-                        </div>
+                      </div>
 
-                        <div class="form-group">
-                          <select class="form-control">
+                      <div class="form-group">
+                        <select class="form-control">
                                   <option>Language</option>
                                 </select>
-                        </div>
-
-                        <div class="form-group">
-                          <input type="text" class="form-control input-fake" placeholder="Photo" />
-                          <input type="file" name="photo" id="photo" class="form-control input-file" placeholder="Photo" />
-                          <label for="photo"><span class="text">File Upload</span> <span class="icon icon-angle-down icon-xs"></span></label>
-                        </div>
-
-                        <div class="form-group">
-                          <input type="text" class="form-control" placeholder="Weight" />
-                        </div>
-
-                        <div class="form-group">
-                          <input type="text" class="form-control" placeholder="Height" />
-                        </div>
-
                       </div>
-                      <div class="col-sm-6">
 
-                        <div class="form-group">
-                          <select class="form-control">
+                      <div class="form-group">
+                        <input type="text" class="form-control input-fake" placeholder="Photo" />
+                        <input type="file" name="photo" id="photo" class="form-control input-file" placeholder="Photo" />
+                        <label for="photo"><span class="text">File Upload</span> <span class="icon icon-angle-down icon-xs"></span></label>
+                      </div>
+
+                      <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Weight" />
+                      </div>
+
+                      <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Height" />
+                      </div>
+
+                    </div>
+                    <div class="col-sm-6">
+
+                      <div class="form-group">
+                        <select class="form-control">
                                   <option>Education</option>
                                 </select>
-                        </div>
+                      </div>
 
-                        <div class="form-group">
-                          <input type="text" class="form-control input-fake" placeholder="Photo" />
-                          <input type="file" name="passport" id="passport" class="form-control input-file" placeholder="Passport" />
-                          <label for="passport"><span class="text">File Upload</span> <span class="icon icon-angle-down icon-xs"></span></label>
-                        </div>
+                      <div class="form-group">
+                        <input type="text" class="form-control input-fake" placeholder="Photo" />
+                        <input type="file" name="passport" id="passport" class="form-control input-file" placeholder="Passport" />
+                        <label for="passport"><span class="text">File Upload</span> <span class="icon icon-angle-down icon-xs"></span></label>
+                      </div>
 
-                        <div class="form-group">
-                          <input type="text" class="form-control" placeholder="http://Video Link" />
-                        </div>
+                      <div class="form-group">
+                        <input type="text" class="form-control" placeholder="http://Video Link" />
+                      </div>
 
-                        <div class="form-group">
-                          <input type="text" class="form-control" placeholder="Passport Number" />
-                        </div>
+                      <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Passport Number" />
+                      </div>
 
-                        <div class="form-group">
-                          <input type="text" class="form-control" placeholder="Passport Issue Date" />
-                        </div>
+                      <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Passport Issue Date" />
+                      </div>
 
-                        <div class="form-group">
-                          <input type="text" class="form-control" placeholder="Passport Place of Issue" />
-                        </div>
+                      <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Passport Place of Issue" />
+                      </div>
 
-                        <div class="form-group">
-                          <input type="text" class="form-control" placeholder="Passport Date of Expiry" />
-                        </div>
+                      <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Passport Date of Expiry" />
+                      </div>
 
-                        <div class="form-group">
-                          <select class="form-control">
+                      <div class="form-group">
+                        <select class="form-control">
                                   <option>Type</option>
                                 </select>
-                        </div>
-
-                        <div class="form-group">
-                          <input type="text" class="form-control" placeholder="Civil ID" />
-                        </div>
-
                       </div>
-                    </div>
 
-                    <div class="form-group text-right">
-                      <input type="submit" value="Save" class="btn btn-default" id="" />
-                    </div>
-                    <div class="form-group text-right">
-                      <div class="btn btn-default" (click)="back()">{{'back' | translate }}</div>
-                    </div>
-                  </form>
+                      <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Civil ID" />
+                      </div>
 
-                </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group text-right">
+                    <input type="submit" value="Save" class="btn btn-default" id="" />
+                  </div>
+                  <div class="form-group text-right">
+                    <div class="btn btn-default" (click)="back()">{{'back' | translate }}</div>
+                  </div>
+                </form>
+
               </div>
             </div>
-
           </div>
 
         </div>
+
       </div>
     </div>
   </div>
+</div>
 
-</section>
+<!-- </section> -->

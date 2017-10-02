@@ -1,4 +1,4 @@
-<section role="main" class="main-container subpage">
+<!-- <section role="main" class="main-container subpage"> -->
     
           <div class="section section-overlay section-full-width full-height" id="">
             <div class="container">
@@ -11,7 +11,7 @@
     
                           <!-- Wrapper for slides -->
                           <div class="carousel-inner">
-                            <div  *ngFor="let worker of state.workers;let i = index" class="item {{i === 0? 'active':''}} ">
+                            <div  *ngFor="let worker of workers;let i = index" class="item {{i === 0? 'active':''}} ">
                               <div class="box profile-box clearfix">
                                 <div class="profile-main">
                                   <div class="profile-thumb">
@@ -20,7 +20,7 @@
                                   <div class="datas">
                                     <div class="profile-data">
                                         <div class="row">
-                                            <div class="col-sm-6"><h3 class="h5">Aaliyah Al Soufi {{i+1}}</h3></div>
+                                            <div class="col-sm-6"><h3 class="h5">Aaliyah Al Soufi {{worker.name}}</h3></div>
                                             <div class="col-sm-6"><small>15 November 1986</small></div>
                                         </div>
                                         <hr />
@@ -78,5 +78,5 @@
             </div>
           </div>
     
-        </section>
+        <!-- </section> -->
     

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { Worker } from "../../Models/Worker";
 
 @Component({
@@ -6,15 +6,28 @@ import { Worker } from "../../Models/Worker";
     templateUrl: "./add-profile.component.html",
     styles: ["./add-profile.component.css"]
 })
-export class AddProfileComponent {
+export class AddProfileComponent implements OnInit {
+    @Input() worker;
+    @Output() onBack = new EventEmitter<any>();
+
     state = {
-        workers: Array(7)
+        isAddMode: true,
+        title: "Add Profile",
+        worker: {}
     }
     constructor() {
-        console.log('render the page!');
     }
-    
-    back(){
-        console.log('click me baby one more time!');
+
+    ngOnInit(): void {
+        console.log('add-profile: ', this.worker);
+        if (this.worker) {
+            this.state.isAddMode = false;
+            this.state.title = "Edit Profile"
+            this.state.worker = Object.assign({}, this.worker);
+        }
+    }
+
+    back() {
+        this.onBack.emit();
     }
 }
