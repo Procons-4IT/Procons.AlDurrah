@@ -28,14 +28,14 @@
         {
             _oCompany = new Company();
             int checkConnected = -1;
-            string sapServer = "saphana:30015";
+            string sapServer = "devhana:30015";
             string companyDB = "ADSC_LIVE";
             string dbUsername = "SYSTEM";
             string dbPassword = "Pr0c0ns41t";
             string sapUsername = "manager";
             string sapPassword = "4321";
             string dbServerType = "Hana";
-            string sapLicense = "saphana:40000";
+            string sapLicense = "devhana:40000";
 
             _oCompany.Server = sapServer;
             _oCompany.SLDServer = sapLicense;
@@ -80,7 +80,8 @@
             else
             {
                 company = ConnectCompany();
-                HttpContext.Current.Session.Add(CompanySession, company);
+                if (HttpContext.Current != null)
+                    HttpContext.Current.Session.Add(CompanySession, company);
             }
             return company;
         }

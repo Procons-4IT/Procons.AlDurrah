@@ -130,13 +130,12 @@
         }
 
         [HttpPost]
-        public IHttpActionResult AddWorker()
+        public async Task<IHttpActionResult> AddWorker()
         {
             var cardCode = GetCurrentUserCardCode();
-            SaveFile();
-            return Ok();
-            //var result = workersFacade.CreateWorker(worker);
-            //return Ok(result);
+            var worker = await SaveFile();
+            var result = workersFacade.CreateWorker(worker);
+            return Ok(result);
         }
 
         [HttpPost]
@@ -147,12 +146,10 @@
         }
 
         #region Private Methods
-        
-        private void SaveFile()
+
+        private async Task<Worker> SaveFile()
         {
             var worker = new Worker();
-            var savedFilePath = new List<string>();
-
             if (!Request.Content.IsMimeMultipartContent())
             {
                 throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
@@ -163,63 +160,80 @@
                 Directory.CreateDirectory(rootPath);
 
             var provider = new MultipartFormDataStreamProvider(rootPath);
-            var task = Request.Content.ReadAsMultipartAsync(provider).
-                ContinueWith<HttpResponseMessage>(t =>
+            var task = await Request.Content.ReadAsMultipartAsync(provider).
+            ContinueWith<HttpResponseMessage>(t =>
+             {
+                 if (t.IsCanceled || t.IsFaulted)
+                 {
+                     Request.CreateErrorResponse(HttpStatusCode.InternalServerError, t.Exception);
+                 }
+                 foreach (MultipartFileData item in provider.FileData)
+                 {
+                     try
+                     {
+                         string name = item.Headers.ContentDisposition.FileName.Replace("\"", "");
+                         string newFileName = string.Concat(Guid.NewGuid(), Path.GetExtension(name));
+                         File.Move(item.LocalFileName, Path.Combine(rootPath, newFileName));
+                         Uri baseuri = new Uri(Request.RequestUri.AbsoluteUri.Replace(Request.RequestUri.PathAndQuery, string.Empty));
+                         string fileRelativePath = string.Concat("~/UploadedFiles/", newFileName);
+                         Uri fileFullPath = new Uri(baseuri, VirtualPathUtility.ToAbsolute(fileRelativePath));
+                         if (item.Headers.ContentDisposition.Name.Trim('"').Equals("Photo"))
+                             worker.Photo = fileRelativePath;
+                         else
+                             worker.Passport = fileRelativePath;
+                     }
+                     catch (Exception ex)
+                     {
+                         string message = ex.Message;
+                     }
+                 }
+
+                 PopulateWorker(provider, ref worker);
+
+                 return Request.CreateResponse(HttpStatusCode.Created, worker);
+             });
+            return worker;
+        }
+
+        private Worker SaveFileNew()
+        {
+            var worker = new Worker();
+            if (!Request.Content.IsMimeMultipartContent())
+            {
+                throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
+            }
+
+            string rootPath = HttpContext.Current.Server.MapPath("~/UploadedFiles");
+            if (!Directory.Exists(rootPath))
+                Directory.CreateDirectory(rootPath);
+
+            var provider = new MultipartFormDataStreamProvider(rootPath);
+            Task<MultipartFormDataStreamProvider> task =  Request.Content.ReadAsMultipartAsync(provider);
+            task.RunSynchronously();
+
+            foreach (MultipartFileData item in provider.FileData)
+            {
+                try
                 {
-                    if (t.IsCanceled || t.IsFaulted)
-                    {
-                        Request.CreateErrorResponse(HttpStatusCode.InternalServerError, t.Exception);
-                    }
-                    foreach (MultipartFileData item in provider.FileData)
-                    {
-                        try
-                        {
-                            string name = item.Headers.ContentDisposition.FileName.Replace("\"", "");
-                            string newFileName = Guid.NewGuid() + Path.GetExtension(name);
-                            File.Move(item.LocalFileName, Path.Combine(rootPath, newFileName));
-                            Uri baseuri = new Uri(Request.RequestUri.AbsoluteUri.Replace(Request.RequestUri.PathAndQuery, string.Empty));
-                            string fileRelativePath = "~/UploadedFiles/" + newFileName;
-                            Uri fileFullPath = new Uri(baseuri, VirtualPathUtility.ToAbsolute(fileRelativePath));
-                            savedFilePath.Add(fileFullPath.ToString());
-                        }
-                        catch (Exception ex)
-                        {
-                            string message = ex.Message;
-                        }
-                    }
-                    foreach (var keyv in provider.FormData.AllKeys)
-                    {
-                        //worker.Age = MapField<int>(provider.FormData["Age"]);
-                        //worker.Agent = GetCurrentUserCardCode(); 
-                        //worker.BirthDate = MapField<string>(provider.FormData["Age"]);
-                        //worker.CivilId = MapField<string>(provider.FormData["CivilId"]);
-                        //worker.Code = MapField<string>(provider.FormData["Code"]);
-                        //worker.Education = MapField<string>(provider.FormData["Education"]);
-                        //worker.Gender = MapField<string>(provider.FormData["Gender"]);
-                        //worker.Height = MapField<string>(provider.FormData["Height"]);
-                        //worker.Language = MapField<string>(provider.FormData["Language"]);
-                        //worker.MaritalStatus = MapField<string>(provider.FormData["MaritalStatus"]);
-                        //worker.Nationality = MapField<string>(provider.FormData["Nationality"]);
-                        ////worker.Passport = MapField<string>(provider.FormData["Age"]);
-                        //worker.PassportExpDate = MapField<string>(provider.FormData["PassportExpDate"]);
-                        //worker.PassportIssDate = MapField<string>(provider.FormData["PassportIssDate"]);
-                        //worker.PassportNumber = MapField<string>(provider.FormData["PassportNumber"]);
-                        //worker.Photo = MapField<string>(provider.FormData["PassportExpDate"]);
-                        ////worker.Price = MapField<string>(provider.FormData["PassportExpDate"]);
-                        ////worker.Photo= MapField<string>(provider.FormData["PassportExpDate"]);
-                        //worker.Religion = MapField<string>(provider.FormData["Religion"]);
-                        //worker.SerialNumber = MapField<string>(provider.FormData["PassportExpDate"]);
-                        //worker.Status = "1";
-                        //worker.SerialNumber = MapField<string>(provider.FormData["CivilId"]);
-                        //worker.Video = MapField<string>(provider.FormData["Video"]);
-                        //worker.Height = MapField<string>(provider.FormData["Video"]);
-                        //worker.Weight= MapField<string>(provider.FormData["Video"]);
-                    }
+                    string name = item.Headers.ContentDisposition.FileName.Replace("\"", "");
+                    string newFileName = string.Concat(Guid.NewGuid(), Path.GetExtension(name));
+                    File.Move(item.LocalFileName, Path.Combine(rootPath, newFileName));
+                    Uri baseuri = new Uri(Request.RequestUri.AbsoluteUri.Replace(Request.RequestUri.PathAndQuery, string.Empty));
+                    string fileRelativePath = string.Concat("~/UploadedFiles/", newFileName);
+                    Uri fileFullPath = new Uri(baseuri, VirtualPathUtility.ToAbsolute(fileRelativePath));
+                    if (item.Headers.ContentDisposition.Name.Trim('"').Equals("Photo"))
+                        worker.Photo = fileRelativePath;
+                    else
+                        worker.Passport = fileRelativePath;
+                }
+                catch (Exception ex)
+                {
+                    string message = ex.Message;
+                }
+            }
 
-                    PopulateWorker(provider, ref worker);
-
-                    return Request.CreateResponse(HttpStatusCode.Created, savedFilePath);
-                });
+            PopulateWorker(provider, ref worker);
+            return worker;
         }
 
         private void PopulateWorker(MultipartFormDataStreamProvider provider, ref Worker worker)
