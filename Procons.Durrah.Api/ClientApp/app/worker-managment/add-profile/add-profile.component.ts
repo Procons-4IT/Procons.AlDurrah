@@ -10,7 +10,7 @@ export class AddProfileComponent implements OnInit {
     @Input() worker;
     @Output() onBack = new EventEmitter<any>();
 
-    state = {
+    state: any = {
         isAddMode: true,
         title: "Add Profile",
         worker: {}
