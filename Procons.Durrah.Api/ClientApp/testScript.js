@@ -1,3 +1,0 @@
-function TestMe(){
-	alert('Succeed');
-}

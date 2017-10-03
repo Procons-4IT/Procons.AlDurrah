@@ -6,15 +6,13 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
-import { RecipesComponent } from './recipes/recipes.component';
-import { RecipeListComponent } from './recipes/recipe-list/recipe-list.component';
 import { CatalogueComponent } from './Catalogue/catalogue.component';
 import { SearchResultsComponent } from './Catalogue/SearchResults/SearchResults.component';
 import { searchFormComponent } from './Catalogue/SearchForm/SearchForm.component';
 import { profileComponent } from './Catalogue/Profile/profile.component';
-
-import { RecipeDetailComponent } from './recipes/recipe-detail/recipe-detail.component';
-import { RecipeItemComponent } from './recipes/recipe-list/recipe-item/recipe-item.component';
+import { WorkerMangmentComponent } from './worker-managment/worker-managment.component';
+import { ViewProfilesComponent } from './worker-managment/view-profiles/view-profiles.component';
+import { AddProfileComponent } from './worker-managment/add-profile/add-profile.component';
 import { RoutingModule, routingComponents, } from './app.routing';
 import { CanActivateViaAuthGuard } from "./Services/ActivationGuard";
 import { RouterStateSnapshot } from '@angular/router';
@@ -47,7 +45,6 @@ import { ContextService } from './Services/ContextService';
 
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
-import { GvControlComponent } from './SharedComponents/gv-control/gv-control.component';
 import { DataGridModule } from 'primeng/primeng';
 import { ModalModule } from 'ngx-modialog';
 import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
@@ -61,14 +58,12 @@ export function createTranslateLoader(http: HttpClient) {
         SearchResultsComponent,
         searchFormComponent,
         profileComponent,
-        RecipesComponent,
-        RecipeListComponent,
-        RecipeDetailComponent,
-        RecipeItemComponent,
         routingComponents,
         HomeComponent,
         LoginComponent,
-        GvControlComponent
+        WorkerMangmentComponent,
+        ViewProfilesComponent,
+        AddProfileComponent
     ],
     imports: [
         BootstrapModalModule,

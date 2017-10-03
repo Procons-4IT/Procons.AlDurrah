@@ -1,0 +1,82 @@
+<!-- <section role="main" class="main-container subpage"> -->
+    
+          <div class="section section-overlay section-full-width full-height" id="">
+            <div class="container">
+             <div class="section-content">
+                <div class="content-wrapper">
+                   <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane fade in active" id="tabProfile2">
+    
+                      <div id="profileCarousel" class="carousel data-ride='carousel'">
+    
+                          <!-- Wrapper for slides -->
+                          <div class="carousel-inner">
+                            <div  *ngFor="let worker of workers;let i = index" class="item {{i === 0? 'active':''}} ">
+                              <div class="box profile-box clearfix">
+                                <div class="profile-main">
+                                  <div class="profile-thumb">
+                                    <img src="/Assets/src/app/images/profiles/test.jpg" class="img-responsive">
+                                  </div>
+                                  <div class="datas">
+                                    <div class="profile-data">
+                                        <div class="row">
+                                            <div class="col-sm-6"><h3 class="h5">Aaliyah Al Soufi {{worker.name}}</h3></div>
+                                            <div class="col-sm-6"><small>15 November 1986</small></div>
+                                        </div>
+                                        <hr />
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                              <ul class="list-unstyled">
+                                                <li>Female</li>
+                                                <li>United Kingdom</li>
+                                                <li>University of London</li>
+                                                <li>Type</li>
+                                                <li>English</li>
+                                                <li>Buddhism</li>
+                                                <li>Married</li>
+                                                <li><span class="icon icon-ed-kg icon-fw"></span> 56kg</li>
+                                              </ul>
+                                            </div>
+                                            <div class="col-sm-6">
+                                              <ul class="list-unstyled">
+                                                <li><a href="https://vimeo.com/23380103">https://vimeo.com/23380103</a></li>
+                                                <li>Passport Copy <a href="#"><small>Download</small></a></li>
+                                                <li>Passport Number: <strong>DU15678653</strong></li>
+                                                <li>Passport Expiry Date: <strong>22/15/2040</strong></li>
+                                                <li>Passport Issue Date: <strong>22/15/2020</strong></li>
+                                                <li>Passport Place of Issue: <strong>London</strong></li>
+                                                <li>Civil ID: <strong>UK468784654</strong></li>
+                                                <li><span class="icon icon-ed-height icon-fw"></span> 1m52</li>
+                                              </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+   
+                          </div>
+    
+                          <!-- Left and right controls -->
+                          <a class="left carousel-control" href="#profileCarousel" data-slide="prev">
+                            <span class="icon icon-ed-arrow-left"></span>
+                            <span class="sr-only">Previous</span>
+                          </a>
+                          <a class="right carousel-control" href="#profileCarousel" data-slide="next">
+                            <span class="icon icon-ed-arrow-right"></span>
+                            <span class="sr-only">Next</span>
+                          </a>
+                        </div>
+    
+                    </div>
+                    <div class="btn btn-default" (click)="back()">{{'back' | translate }}</div>
+                  </div>
+    
+                </div>
+              </div>
+            </div>
+          </div>
+    
+        <!-- </section> -->
+    
