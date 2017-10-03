@@ -100,7 +100,7 @@
                 var oGeneralService = sCmp.GetGeneralService("WORKERSUDO");
 
                 var oGeneralData = oGeneralService.GetDataInterface(GeneralServiceDataInterfaces.gsGeneralData) as GeneralData;
-                oGeneralData.SetProperty("Code", Guid.NewGuid().ToString());
+                oGeneralData.SetProperty("Code", worker.CivilId);
                 oGeneralData.SetProperty("U_Agent", worker.Agent);
                 oGeneralData.SetProperty("U_Age", worker.Age);
                 oGeneralData.SetProperty("U_BirthDate",worker.BirthDate);
@@ -124,6 +124,56 @@
                 oGeneralData.SetProperty("U_Weight", worker.Weight);
 
                 oGeneralService.Add(oGeneralData);
+                created = true;
+            }
+            catch (Exception ex)
+            {
+                Utilities.LogException(ex);
+            }
+            return created;
+        }
+
+        public bool UpdateWorker(Worker worker)
+        {
+            var created = false;
+
+            try
+            {
+                var attachmentPath = GetAttachmentPath();
+                var passportCopy = worker.Passport != null && worker.Passport != string.Empty ? CreateAttachment(worker.Passport) : worker.Passport;
+                var photo = worker.Photo != null && worker.Photo != string.Empty ? CreateAttachment(worker.Photo) : worker.Photo;
+
+                var sCmp = B1Company.GetCompanyService();
+                var oGeneralService = sCmp.GetGeneralService("WORKERSUDO");
+
+                GeneralDataParams oParams = oGeneralService.GetDataInterface(GeneralServiceDataInterfaces.gsGeneralDataParams) as GeneralDataParams;
+                oParams.SetProperty("Code", worker.CivilId);
+                var oGeneralData= oGeneralService.GetByParams(oParams);
+
+                oGeneralData.SetProperty("Code", Guid.NewGuid().ToString());
+                oGeneralData.SetProperty("U_Agent", "Wissam");
+                oGeneralData.SetProperty("U_Age", worker.Age);
+                oGeneralData.SetProperty("U_BirthDate", worker.BirthDate);
+                oGeneralData.SetProperty("U_CivilId", worker.CivilId);
+                oGeneralData.SetProperty("U_ItemCode", worker.Code);
+                oGeneralData.SetProperty("U_Education", worker.Education);
+                oGeneralData.SetProperty("U_Gender", worker.Gender);
+                oGeneralData.SetProperty("U_Height", worker.Height);
+                oGeneralData.SetProperty("U_Language", worker.Language);
+                oGeneralData.SetProperty("U_MaritalStatus", worker.MaritalStatus);
+                oGeneralData.SetProperty("U_Nationality", worker.Nationality);
+                oGeneralData.SetProperty("U_Passport", string.Concat(attachmentPath, passportCopy));
+                oGeneralData.SetProperty("U_PassportPoIssue", worker.PassportIssDate);
+                oGeneralData.SetProperty("U_PassportExpDate", worker.PassportExpDate);
+                oGeneralData.SetProperty("U_PassportNumber", worker.PassportNumber);
+                oGeneralData.SetProperty("U_Photo", string.Concat(attachmentPath, photo));
+                oGeneralData.SetProperty("U_Religion", worker.Religion);
+                oGeneralData.SetProperty("U_Serial", worker.SerialNumber);
+                oGeneralData.SetProperty("U_Status", worker.Status);
+                oGeneralData.SetProperty("U_Video", worker.Video);
+                oGeneralData.SetProperty("U_Weight", worker.Weight);
+
+                oGeneralService.Update(oGeneralData);
                 created = true;
             }
             catch (Exception ex)
@@ -215,12 +265,12 @@
                 query.Append(@"""U_Passport"",""U_Video"",""U_PassportNumber"",""U_PassportIssDate"",""U_PassportExpDate"",""U_PassportPoIssue"",""U_Price"",""U_CivilId"",""U_Status"",");
                 query.Append($@"""B"".""Name"" AS ""U_MaritalStatus"",""B"".""U_NAME"" AS ""U_MaritalStatus_AR""");
                 query.Append($@" FROM ""{databaseBame}"".""@WORKERS"" as ""A""");
-                query.Append($@"INNER JOIN ""{databaseBame}"".""@MARITALSTATUS"" AS ""B"" ON ""A"".""U_MaritalStatus"" = ""B"".""Code""");
-                query.Append($@"INNER JOIN ""{databaseBame}"".""@LANGUAGES"" AS ""C"" ON ""A"".""U_Language"" = ""C"".""Code""");
-                query.Append($@"INNER JOIN ""{databaseBame}"".""@COUNTRIES"" AS ""D"" ON ""A"".""U_Nationality"" = ""D"".""Code""");
+                query.Append($@" INNER JOIN ""{databaseBame}"".""@MARITALSTATUS"" AS ""B"" ON ""A"".""U_MaritalStatus"" = ""B"".""Code""");
+                query.Append($@" INNER JOIN ""{databaseBame}"".""@LANGUAGES"" AS ""C"" ON ""A"".""U_Language"" = ""C"".""Code""");
+                query.Append($@" INNER JOIN ""{databaseBame}"".""@COUNTRIES"" AS ""D"" ON ""A"".""U_Nationality"" = ""D"".""Code""");
 
-                query.Append($@"INNER JOIN ""{databaseBame}"".""@RELIGION"" AS ""R"" ON ""A"".""U_Religion"" = ""R"".""Code""");
-                query.Append($@"INNER JOIN ""{databaseBame}"".""@EDUCATION"" AS ""E"" ON ""A"".""U_Education"" = ""E"".""Code""");
+                query.Append($@" INNER JOIN ""{databaseBame}"".""@RELIGION"" AS ""R"" ON ""A"".""U_Religion"" = ""R"".""Code""");
+                query.Append($@" INNER JOIN ""{databaseBame}"".""@EDUCATION"" AS ""E"" ON ""A"".""U_Education"" = ""E"".""Code""");
 
                 query.Append(exp);
                 var readerResult = dbHelper.ExecuteQuery(query.ToString());
@@ -421,6 +471,11 @@
             {
                 var results = _serviceInstance.CurrentServicelayerInstance.WORKERTYPESUDO.ToList<WORKERTYPES>();
                 return GetLookups<WORKERTYPES>(results);
+            }
+            else if (typeof(T) == typeof(Item))
+            {
+                var results = _serviceInstance.CurrentServicelayerInstance.Items.Select(x => new LookupItem(x.ItemName, x.ItemCode)).ToList();
+                return results;
             }
             else
                 return null;

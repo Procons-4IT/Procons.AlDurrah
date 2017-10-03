@@ -15,6 +15,11 @@
             return provider.CreateWorker(worker);
         }
 
+        public bool UpdateWorker(Worker worker)
+        {
+            return provider.UpdateWorker(worker);
+        }
+
         public bool DeleteWorker(string id)
         {
             return provider.DeleteWorker(id);
@@ -51,9 +56,8 @@
         }
         public List<LookupItem> GetWorkersTypesLookups()
         {
-            return provider.GetLookupValues<WORKERTYPES>();
+            return provider.GetLookupValues<Item>();
         }
-
         public double GetDownPaymentAmount()
         {
             return provider.GetDownPaymentAmount();

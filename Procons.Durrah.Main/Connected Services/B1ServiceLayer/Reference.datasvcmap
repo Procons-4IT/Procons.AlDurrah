@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="4d7a5373-4740-4d52-9603-31d5c1d34aab" xmlns="urn:schemas-microsoft-com:xml-dataservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="267c5214-8b79-4668-ab14-37d64c800ed6" xmlns="urn:schemas-microsoft-com:xml-dataservicemap">
   <MetadataSources>
-    <MetadataSource Address="https://192.168.1.120:50000/b1s/v1/$metadata" Protocol="http" SourceId="1" />
+    <MetadataSource Address="https://devhana:50000/b1s/v1/$metadata" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="service.edmx" MetadataType="Edmx" ID="2d5699ad-28d8-4903-8ae4-d749f5a290d9" SourceId="1" SourceUrl="https://192.168.1.120:50000/b1s/v1/$metadata" />
+    <MetadataFile FileName="service.edmx" MetadataType="Edmx" ID="109d487e-f6aa-4115-9afa-ae3b58793d79" SourceId="1" SourceUrl="https://devhana:50000/b1s/v1/$metadata" />
   </Metadata>
   <Extensions />
   <Parameters>

@@ -138,6 +138,14 @@
             return Ok(result);
         }
 
+        public async Task<IHttpActionResult> UpdateWorker([FromBody]Worker worker)
+        {
+            //var cardCode = GetCurrentUserCardCode();
+            //var worker = await SaveFile();
+            var result = workersFacade.UpdateWorker(worker);
+            return Ok(result);
+        }
+
         [HttpPost]
         [Authorize]
         public IHttpActionResult DeleteWorker(string code)
@@ -172,7 +180,8 @@
                      try
                      {
                          string name = item.Headers.ContentDisposition.FileName.Replace("\"", "");
-                         string newFileName = string.Concat(Guid.NewGuid(), Path.GetExtension(name));
+                         var nameWithoutExtention = Path.GetFileNameWithoutExtension(name);
+                         string newFileName = $"{nameWithoutExtention}.{Guid.NewGuid()}{Path.GetExtension(name)}";
                          File.Move(item.LocalFileName, Path.Combine(rootPath, newFileName));
                          Uri baseuri = new Uri(Request.RequestUri.AbsoluteUri.Replace(Request.RequestUri.PathAndQuery, string.Empty));
                          string fileRelativePath = string.Concat("~/UploadedFiles/", newFileName);
