@@ -6,6 +6,7 @@
         {
             public const string HanaSessionId = "HanaSessionId";
             public const string UserName = "UserName";
+            public const string Email = "Email";
             public const string Password = "Password";
             public const string CompanyDB = "CompanyDB";
             public const string CardCode = "CardCode";

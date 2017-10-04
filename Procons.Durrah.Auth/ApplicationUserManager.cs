@@ -70,6 +70,7 @@
         {
             ClaimsIdentity _claimsIdentity = new ClaimsIdentity();
             _claimsIdentity.AddClaim(new Claim(Common.Constants.ServiceLayer.UserName, user.UserName));
+            _claimsIdentity.AddClaim(new Claim(Common.Constants.ServiceLayer.Email, user.Email));
             _claimsIdentity.AddClaim(new Claim("Type", user.UserType));
             _claimsIdentity.AddClaim(new Claim(Common.Constants.ServiceLayer.CardCode, user.CardCode));
             return Task.FromResult(_claimsIdentity);

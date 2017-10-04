@@ -193,7 +193,6 @@
     <Content Include="Assets\src\app\images\bg_s_catalogue.png" />
     <Content Include="Assets\src\app\images\bg_s_intro.jpg" />
     <Content Include="Assets\src\app\images\bg_s_landing.jpg" />
-    <Content Include="Assets\src\app\images\bg_s_landing.jpg.2017_08_04_16_36_59.0.svg" />
     <Content Include="Assets\src\app\images\bg_s_message.jpg" />
     <Content Include="Assets\src\app\images\bg_s_services.jpg" />
     <Content Include="Assets\src\app\images\bg_s_story.jpg" />
@@ -225,7 +224,6 @@
     <Content Include="Assets\src\app\images\slide_02.jpg" />
     <Content Include="Assets\src\app\images\slide_03.jpg" />
     <Content Include="Assets\src\app\images\slide_04.jpg" />
-    <Content Include="Assets\src\app\images\_overlay_bg.png" />
     <Content Include="Assets\src\app\js\animate.js" />
     <Content Include="Assets\src\app\js\catalogue.js" />
     <Content Include="Assets\src\app\js\login.js" />
@@ -257,8 +255,6 @@
     <Content Include="ClientApp\app\home\home.component.html" />
     <Content Include="ClientApp\app\login\login.component.css" />
     <Content Include="ClientApp\app\login\login.component.html" />
-    <Content Include="ClientApp\app\SharedComponents\gv-control\gv-control.component.css" />
-    <Content Include="ClientApp\app\SharedComponents\gv-control\gv-control.component.html" />
     <Content Include="ClientApp\Assets\font-awesome-4.7.0\css\font-awesome.css" />
     <Content Include="ClientApp\Assets\font-awesome-4.7.0\css\font-awesome.min.css" />
     <Content Include="ClientApp\Assets\font-awesome-4.7.0\fonts\fontawesome-webfont.svg" />
@@ -269,7 +265,6 @@
     <Content Include="ClientApp\Assets\src\app\images\bg_s_catalogue.png" />
     <Content Include="ClientApp\Assets\src\app\images\bg_s_intro.jpg" />
     <Content Include="ClientApp\Assets\src\app\images\bg_s_landing.jpg" />
-    <Content Include="ClientApp\Assets\src\app\images\bg_s_landing.jpg.2017_08_04_16_36_59.0.svg" />
     <Content Include="ClientApp\Assets\src\app\images\bg_s_message.jpg" />
     <Content Include="ClientApp\Assets\src\app\images\bg_s_services.jpg" />
     <Content Include="ClientApp\Assets\src\app\images\bg_s_story.jpg" />
@@ -301,7 +296,6 @@
     <Content Include="ClientApp\Assets\src\app\images\slide_02.jpg" />
     <Content Include="ClientApp\Assets\src\app\images\slide_03.jpg" />
     <Content Include="ClientApp\Assets\src\app\images\slide_04.jpg" />
-    <Content Include="ClientApp\Assets\src\app\images\_overlay_bg.png" />
     <Content Include="ClientApp\Assets\src\app\index.html" />
     <Content Include="ClientApp\Assets\src\app\js\animate.js" />
     <Content Include="ClientApp\Assets\src\app\js\catalogue.js" />
@@ -509,6 +503,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ClientApp\app\SharedComponents\" />
     <Folder Include="dist\" />
     <Folder Include="Views\Workers\" />
   </ItemGroup>
@@ -538,7 +533,6 @@
     <TypeScriptCompile Include="ClientApp\app\Services\UtilityService.ts" />
     <TypeScriptCompile Include="ClientApp\app\Services\WorkersService.ts" />
     <TypeScriptCompile Include="ClientApp\app\Services\UserService.ts" />
-    <TypeScriptCompile Include="ClientApp\app\SharedComponents\gv-control\gv-control.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\shared\ingredient.model.ts" />
     <TypeScriptCompile Include="ClientApp\bootclient.ts" />
     <TypeScriptCompile Include="ClientApp\polyfills.ts" />

@@ -17,9 +17,7 @@
     [RoutePrefix("api/accounts")]
     public class AccountsController : BaseApiController
     {
-        #region PRIVATE VARIABLES
-        EmailService eService = new EmailService();
-        IdentityMessage idMessage = new IdentityMessage();
+        #region PRIVATE VARIABLES  
         LoginFacade loginFacade = new LoginFacade();
         #endregion
 
@@ -46,7 +44,7 @@
                 {
                     var messageBody = $"Click on the following link to confirm your email <a href=\"{baseUrl}/ConfirmEmail?ValidationId={result}&Email={user.Email}\">here</a>";
                     idMessage.Body = messageBody;
-                    eService.SendAsync(idMessage);
+                    emailService.SendAsync(idMessage);
                     return Ok("Confirmation email sent...");
                 }
                 else
@@ -117,7 +115,7 @@
             {
                 var messageBody = $"Click on the following link to change your password <a href=\"{baseUrl}/ResetPassword?ValidationId={result}&Email={model.EmailAddress}\">here</a>";
                 idMessage.Body = messageBody;
-                eService.SendAsync(idMessage);
+                emailService.SendAsync(idMessage);
                 return Ok();
             }
 

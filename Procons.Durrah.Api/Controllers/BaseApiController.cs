@@ -22,7 +22,9 @@
         private ApplicationUserManager _AppUserManager = null;
         private ApplicationRoleManager _AppRoleManager = null;
         protected ILoggingService LoggingService { get; set; }
-       
+        protected EmailService emailService = new EmailService();
+
+        protected IdentityMessage idMessage = new IdentityMessage();
         protected ApplicationUserManager AppUserManager
         {
             get
@@ -119,6 +121,15 @@
             if (claims.Count() != 0)
                 cardCode = claims.Where(x => x.Type == Common.Constants.ServiceLayer.CardCode).FirstOrDefault().Value;
             return cardCode;
+        }
+
+        protected string GetCurrentUserEmail()
+        {
+            var claims = ((ClaimsIdentity)User.Identity).Claims;
+            var email = string.Empty;
+            if (claims.Count() != 0)
+                email = claims.Where(x => x.Type == Common.Constants.ServiceLayer.Email).FirstOrDefault().Value;
+            return email;
         }
 
         protected T MapField<T>(object o)

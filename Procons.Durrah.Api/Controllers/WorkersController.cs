@@ -64,11 +64,6 @@
             payment.TrackId = transaction.TrackID;
             payment.ResourcePath = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.ResourcePath);
             payment.Alias = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.Alias); ;
-            payment.Udf1 = "User Defined Field 1";
-            payment.Udf2 = "User Defined Field 2";
-            payment.Udf3 = "User Defined Field 3";
-            payment.Udf4 = "User Defined Field 4";
-            payment.Udf5 = "User Defined Field 5";
 
             TransVal = payment.PerformInitTransaction();
             varRawResponse = payment.RawResponse;
@@ -104,6 +99,12 @@
         [Authorize]
         public HttpResponseMessage CreatePayment([FromBody]Transaction payment)
         {
+            idMessage.Destination = base.GetCurrentUserEmail();
+            idMessage.Subject = "Transaction Completed";
+            var messageBody = $"A transaction has been successfully submitted with the following informaiton:processed with the following ";
+            idMessage.Body = messageBody;
+            emailService.SendAsync(idMessage);
+
             var result = workersFacade.SavePaymentDetails(payment);
             if (result)
                 return Request.CreateResponse(HttpStatusCode.OK, "Transaction created successfully!!!");
@@ -142,7 +143,7 @@
         {
             //var cardCode = GetCurrentUserCardCode();
             //var worker = await SaveFile();
-            var result = workersFacade.UpdateWorker(worker);
+            var result =  workersFacade.UpdateWorker(worker);
             return Ok(result);
         }
 
