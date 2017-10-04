@@ -9,10 +9,11 @@ import { Worker } from "../Models/Worker";
 })
 export class WorkerMangmentComponent {
 
+    //Temp Show the Add Profile Modal
     state = {
         showProfiles: false,
-        showWorkerManagment: true,
-        showAddProfile: false,
+        showWorkerManagment: false,
+        showAddProfile: true,
         workers: Array.from({ length: 7 }, (_, idx) => { return { name: idx++ } }),
         selectedWorker: null
     }
