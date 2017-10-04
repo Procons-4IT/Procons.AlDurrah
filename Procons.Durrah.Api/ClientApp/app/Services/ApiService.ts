@@ -142,9 +142,6 @@ export class ApiService {
         return !!this.GetSecurityToken();
     }
     public GetSecurityToken(): string {
-        // let securityToken: string = '';
-        // securityToken = 'bearer ' + sessionStorage.getItem('SecurityToken');
-        // return securityToken
         return sessionStorage.getItem('SecurityToken');
     }
     public RemoveSecurityToken(): void {
