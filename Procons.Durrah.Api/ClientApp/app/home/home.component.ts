@@ -154,43 +154,7 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  @ViewChild('files') el: ElementRef;
 
-  uploadFile() {
-    console.log('click!');
-    let files = this.el.nativeElement.files;
-    if (files && files[0]) {
-      const formData = new FormData();
-      for (var i = 0; i < files.length; i++) {
-          formData.append("Photo", files[i], files[i].name);
-          formData.append("Passport", files[i], files[i].name);
-      }
-      formData.append('Age', '43');
-      formData.append('BirthDate', '01-01-2000');
-      formData.append('CivilId', '124542154215');
-      formData.append('Code', 'code');
-      formData.append('Education', '1');
-      formData.append('Gender', '1');
-      formData.append('Height', '180');
-      formData.append('Language', '1');
-      formData.append('MaritalStatus', '1');
-      formData.append('Nationality', '1');
-      formData.append('PassportExpDate', '01-01-2000');
-      formData.append('PassportIssDate', '01-01-2000');
-      formData.append('PassportNumber', '01-01-2000');
-      formData.append('Religion', '1');
-      formData.append('Video', '01-01-2000');
-      formData.append('BirthDate', '01-01-2000');
-      formData.append('Weight', '80');
-
-      console.log('sending FormData', formData);
-      this.myApi.uploadFile(formData).subscribe(x => {
-        console.log('Somethign Happend ! ', formData)
-      }, onError => {
-        console.log('oopsss! ', onError);
-      })
-    }
-  }
 
 
 }
