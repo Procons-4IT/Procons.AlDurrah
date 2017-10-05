@@ -3,12 +3,15 @@
     using NLog;
     using Procons.Durrah.Common.Enumerators;
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Configuration;
     using System.IO;
     using System.Linq;
     using System.Security.Cryptography;
+    using System.Text;
     using System.Threading;
+    using System.Web;
 
     public static class Utilities
     {
@@ -104,6 +107,30 @@
         public static void LogException(Exception ex)
         {
             SiteLogService.LogException(ex);
+        }
+
+        public static string GetResourceValue(string key)
+        {
+            var resourceValue = string.Empty;
+            try
+            {
+                resourceValue= HttpContext.GetGlobalResourceObject("Resource", key).ToString();
+            }
+            catch(Exception ex)
+            {
+                LogException(ex);
+            }
+            return resourceValue;
+        }
+
+        public static string GetMessageBody(this string Message, Dictionary<string,string> tokens)
+        {
+            StringBuilder content = new StringBuilder(Message);
+            foreach(KeyValuePair<string, string> k in tokens)
+            {
+                content = content.Replace($"[[{k.Key}]]", k.Value);
+            }
+            return content.ToString();
         }
     }
 }

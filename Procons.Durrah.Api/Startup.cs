@@ -59,7 +59,7 @@ namespace Procons.Durrah
                 AccessTokenExpireTimeSpan = TimeSpan.FromDays(1),
                 Provider = new ApplicationOAuthProvider(),
                 AccessTokenFormat = new ApplicationJwtFormat("self")
-            };
+            };      
             app.UseOAuthAuthorizationServer(OAuthServerOptions);
         }
 

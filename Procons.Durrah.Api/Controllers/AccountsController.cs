@@ -38,14 +38,20 @@
             else
             {
                 idMessage.Destination = user.Email;
-                idMessage.Subject = "Durra Confirmation Email";
+                idMessage.Subject = Utilities.GetResourceValue(Common.Constants.Resources.DurraEmailConfirmation);
                 var result = loginFacade.GenerateCofnirmationToken(user.Email);
+
+                var tokens = new Dictionary<string, string>();
+                tokens.Add(Common.Constants.EmailKeys.BaseUrl, baseUrl);
+                tokens.Add(Common.Constants.EmailKeys.Result, result);
+                tokens.Add(Common.Constants.EmailKeys.Email, user.Email);
+
                 if (result != string.Empty)
                 {
-                    var messageBody = $"Click on the following link to confirm your email <a href=\"{baseUrl}/ConfirmEmail?ValidationId={result}&Email={user.Email}\">here</a>";
+                    var messageBody = Utilities.GetResourceValue(Common.Constants.Resources.ConfirmationBody).GetMessageBody(tokens);
                     idMessage.Body = messageBody;
                     emailService.SendAsync(idMessage);
-                    return Ok("Confirmation email sent...");
+                    return Ok(Utilities.GetResourceValue(Common.Constants.Resources.ConfirmationSent));
                 }
                 else
                     return NotFound();
@@ -109,11 +115,16 @@
             var baseUrl = Request.RequestUri.GetLeftPart(UriPartial.Authority);
 
             idMessage.Destination = model.EmailAddress;
-            idMessage.Subject = "Durra Password Reset";
+            idMessage.Subject = Utilities.GetResourceValue(Common.Constants.Resources.DurraPasswordReset);
             var result = loginFacade.ResetRequest(model.EmailAddress);
             if (result != string.Empty)
             {
-                var messageBody = $"Click on the following link to change your password <a href=\"{baseUrl}/ResetPassword?ValidationId={result}&Email={model.EmailAddress}\">here</a>";
+                var tokens = new Dictionary<string, string>();
+                tokens.Add(Common.Constants.EmailKeys.BaseUrl, baseUrl);
+                tokens.Add(Common.Constants.EmailKeys.Result, result);
+                tokens.Add(Common.Constants.EmailKeys.Email, model.EmailAddress);
+
+                var messageBody = Utilities.GetResourceValue(Common.Constants.Resources.PasswordResetBody).GetMessageBody(tokens);
                 idMessage.Body = messageBody;
                 emailService.SendAsync(idMessage);
                 return Ok();

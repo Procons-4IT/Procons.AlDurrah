@@ -29,7 +29,34 @@
             public const string MailUid = "MailUid";
             public const string MailPwd = "MailPwd";
             public const string MailSSl = "MailSSl";
-            public const string MailPort = "MailPort"; 
+            public const string MailPort = "MailPort";
+        }
+        public struct Resources
+        {
+            public const string Transaction_Completed = "Transaction_Completed";
+            public const string KnetEmailConfirmation = "KnetEmailConfirmation";
+            public const string Successfull_Transaction = "Successfull_Transaction";
+            public const string Failed_Transaction = "Failed_Transaction";
+            public const string ConfirmationSent = "ConfirmationSent";
+            public const string DurraEmailConfirmation = "DurraEmailConfirmation";
+            public const string ConfirmationBody = "ConfirmationBody";
+            public const string PasswordResetBody = "PasswordResetBody";
+            public const string DurraPasswordReset = "DurraPasswordReset"; 
+        }
+        public struct KNET
+        {
+            public const string TransactionDate = "TransactionDate";
+            public const string TransactionAmount = "TransactionAmount";
+            public const string ReferenceID = "ReferenceID";
+            public const string PaymentID = "PaymentID";
+            public const string MerchantTrackID = "MerchantTrackID";
+        }
+
+        public struct EmailKeys
+        {
+            public const string Email = "Email";
+            public const string Result = "Result";
+            public const string BaseUrl = "BaseUrl";
         }
     }
 }
