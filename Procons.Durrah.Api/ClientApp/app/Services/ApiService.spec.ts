@@ -55,7 +55,9 @@ describe('MyApiService', () => {
             PaymentID: "someId",
             Postdate: "someDate",
             Result: "SomeResult",
-            TranID: "ID"
+            TranID: "ID",
+            Ref: "SomeRef",
+            TrackID: "SomeTrack"
         };
 
         service.createIncomingPayment(knetPayment).subscribe(url => {
