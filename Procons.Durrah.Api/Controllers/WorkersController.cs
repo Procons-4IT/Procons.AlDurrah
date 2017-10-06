@@ -74,6 +74,7 @@
 
             if (TransVal != 0)
             {
+                Utilities.LogException(varErrorMsg);
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "/Error");
             }
             else
@@ -98,24 +99,32 @@
         [Authorize]
         public HttpResponseMessage CreatePayment([FromBody]Transaction payment)
         {
-            var tokens = new Dictionary<string, string>();
-            tokens.Add(Constants.KNET.MerchantTrackID, payment.TrackID);
-            tokens.Add(Constants.KNET.PaymentID, payment.PaymentID);
-            tokens.Add(Constants.KNET.ReferenceID, payment.Ref);
-            tokens.Add(Constants.KNET.TransactionAmount, payment.Amount);
-            tokens.Add(Constants.KNET.TransactionDate, payment.PostDate);
+            var paymentAmount = workersFacade.GetDownPaymentAmount().ToString();
+            payment.Amount = paymentAmount;
+            if (payment.Result == "captured")
+            {
+                var tokens = new Dictionary<string, string>();
+                tokens.Add(Constants.KNET.MerchantTrackID, payment.TrackID);
+                tokens.Add(Constants.KNET.PaymentID, payment.PaymentID);
+                tokens.Add(Constants.KNET.ReferenceID, payment.Ref);
+                tokens.Add(Constants.KNET.TransactionAmount, payment.Amount);
+                tokens.Add(Constants.KNET.TransactionDate, payment.PostDate);
 
-            idMessage.Destination = base.GetCurrentUserEmail();
-            idMessage.Subject = Utilities.GetResourceValue(Constants.Resources.Transaction_Completed);
-            var messageBody = Utilities.GetResourceValue(Constants.Resources.KnetEmailConfirmation).GetMessageBody(tokens);
-            idMessage.Body = messageBody;
-            emailService.SendAsync(idMessage);
+                idMessage.Destination = base.GetCurrentUserEmail();
+                idMessage.Subject = Utilities.GetResourceValue(Constants.Resources.Transaction_Completed);
+                var messageBody = Utilities.GetResourceValue(Constants.Resources.KnetEmailConfirmation).GetMessageBody(tokens);
+                idMessage.Body = messageBody;
+                emailService.SendAsync(idMessage);
 
-            var result = workersFacade.SavePaymentDetails(payment);
-            if (result)
-                return Request.CreateResponse(HttpStatusCode.OK, Utilities.GetResourceValue(Constants.Resources.Successfull_Transaction));
+                var result = workersFacade.SavePaymentDetails(payment);
+                if (result)
+                    return Request.CreateResponse(HttpStatusCode.OK, Utilities.GetResourceValue(Constants.Resources.Successfull_Transaction));
+                else
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, Utilities.GetResourceValue(Constants.Resources.Failed_Transaction));
+            }
             else
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, Utilities.GetResourceValue(Constants.Resources.Failed_Transaction));
+
         }
 
         [HttpPost]

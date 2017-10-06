@@ -109,6 +109,11 @@
             SiteLogService.LogException(ex);
         }
 
+        public static void LogException(string ex)
+        {
+            SiteLogService.LogException(new Exception(ex));
+        }
+
         public static string GetResourceValue(string key)
         {
             var resourceValue = string.Empty;
