@@ -15,7 +15,9 @@ export class UtilityService {
                 Postdate: x.postdate,
                 Result: x.result,
                 TranID: x.tranid,
-                Auth: x.auth
+                Auth: x.auth,
+                Ref: x.ref,
+                TrackID: x.trackid
             }
         });
     }

@@ -3,7 +3,9 @@ export interface KnetPayment {
     Postdate: any,
     Result: string,
     TranID: string,
-    Auth: string
+    Auth: string,
+    Ref: string,
+    TrackID: string
 }
 export interface PaymentRedirectParams {
     SerialNumber: string,

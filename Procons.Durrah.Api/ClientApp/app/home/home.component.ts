@@ -8,7 +8,7 @@ import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/do';
 import { TranslateService } from '@ngx-translate/core'
 
-import { ResetPasswordParams } from '../Models/ApiRequestType';
+import { ResetPasswordParams, KnetPayment } from '../Models/ApiRequestType';
 
 import { ApiService } from '../Services/ApiService';
 import { UtilityService } from '../Services/UtilityService';
@@ -23,6 +23,16 @@ declare var $;
 export class HomeComponent implements OnInit {
 
   public paymentModalText: string = "";
+  public paymentParams: KnetPayment = {
+    PaymentID: "",
+    Postdate: "",
+    Result: "",
+    TranID: "",
+    Auth: "",
+    Ref: "",
+    TrackID: ""
+  };
+  public amount: string;
 
   public resetPassModalLoading: boolean = false;
   public resetPassInputError: string = "";
@@ -82,6 +92,8 @@ export class HomeComponent implements OnInit {
       });
 
   }
+  // Ex.http://localhost:4200/paymentid=1394338331172790&result=not%20captured&postdate=1006&tranid=7630570331172790&auth=&ref=727911110230&trackid=9670186
+
   handlePaymentRoute() {
     console.log('## Checking if PaymentRoute');
 
@@ -94,11 +106,13 @@ export class HomeComponent implements OnInit {
 
       })
       .mergeMap(x => { return this.utility.getKnetUrlProperties(this.activeRouter) })
+      .do(x => { this.paymentParams = x; })
       .mergeMap(params => { return this.myApi.createIncomingPayment(params) })
       .subscribe(x => {
         console.log('Recieved X', x);
         this.loadingPayment = false;
-        this.paymentModalText = x;
+        this.paymentModalText = x.udF1;
+        this.amount = x && x.amount;
       }, onError => {
         this.loadingPayment = false;
         this.paymentModalText = 'Something Went Wrong!'
@@ -122,7 +136,7 @@ export class HomeComponent implements OnInit {
       }, onError => {
         this.translate.get('error.resetPassword').subscribe(errorMessage => {
           this.resetPassModalText = errorMessage;
-        })
+        });
       });
   }
 

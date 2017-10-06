@@ -75,7 +75,7 @@ export class ApiService {
     }
 
 
-    public createIncomingPayment(payment: KnetPayment): Observable<string> {
+    public createIncomingPayment(payment: KnetPayment): Observable<any> {
         return this.httpPostHelper(this.config.incomingPaymentUrl, payment)
             .map(response => {
                 return response.json();
