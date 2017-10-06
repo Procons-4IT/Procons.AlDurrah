@@ -1,4 +1,3 @@
-import { OVERLAY_PROVIDERS } from "@angular/material";
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -101,7 +100,6 @@ export function createTranslateLoader(http: HttpClient) {
         UtilityService,
         AccountService,
         UserService,
-        OVERLAY_PROVIDERS,
         ProconsModalSerivce],
 
     bootstrap: [AppComponent]
