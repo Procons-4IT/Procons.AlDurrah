@@ -146,6 +146,9 @@ Merchant track ID: [[MerchantTrackID]] \n</value>
   <data name="Successfull_Transaction" xml:space="preserve">
     <value>Transaction created successfully!!!</value>
   </data>
+  <data name="Transaction_Cancelled" xml:space="preserve">
+    <value>Transaction Cancelled !</value>
+  </data>
   <data name="Transaction_Completed" xml:space="preserve">
     <value>Transaction Completed</value>
   </data>

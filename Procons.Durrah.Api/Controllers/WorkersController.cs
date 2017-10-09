@@ -152,7 +152,7 @@
 
         [HttpPost]
         [Authorize]
-        public HttpResponseMessage CreatePayment([FromBody]Transaction payment)
+        public IHttpActionResult CreatePayment([FromBody]Transaction payment)
         {
             var paymentAmount = workersFacade.GetDownPaymentAmount().ToString();
             payment.Amount = paymentAmount;
@@ -172,14 +172,31 @@
                 idMessage.Body = messageBody;
                 emailService.SendAsync(idMessage);
                 var result = workersFacade.SavePaymentDetails(payment);
-                if (result)
-                    return Request.CreateResponse(HttpStatusCode.OK, Utilities.GetResourceValue(Constants.Resources.Successfull_Transaction));
+
+                if (result != null)
+                {
+                    payment.UDF1 = Utilities.GetResourceValue(Constants.Resources.Successfull_Transaction);
+                    return Ok(payment);
+                }
+
                 else
-                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, Utilities.GetResourceValue(Constants.Resources.Failed_Transaction));
+                {
+                    payment.UDF1 = Utilities.GetResourceValue(Constants.Resources.Failed_Transaction);
+                    var paymentString = Newtonsoft.Json.JsonConvert.SerializeObject(payment);
+                    return InternalServerError(new Exception(paymentString));
+                }
+            }
+            else if (payment.Result == "canceled")
+            {
+                payment.UDF1 = Utilities.GetResourceValue(Constants.Resources.Transaction_Cancelled);
+                return Ok(payment);
             }
             else
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, Utilities.GetResourceValue(Constants.Resources.Failed_Transaction));
-
+            {
+                payment.UDF1 = Utilities.GetResourceValue(Constants.Resources.Failed_Transaction);
+                var paymentString = Newtonsoft.Json.JsonConvert.SerializeObject(payment);
+                return InternalServerError(new Exception(paymentString));
+            }
         }
 
         [HttpPost]

@@ -138,6 +138,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Transaction Cancelled !.
+        /// </summary>
+        internal static string Transaction_Cancelled {
+            get {
+                return ResourceManager.GetString("Transaction_Cancelled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Transaction Completed.
         /// </summary>
         internal static string Transaction_Completed {

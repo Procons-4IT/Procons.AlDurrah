@@ -43,6 +43,7 @@
             public const string KnetEmailConfirmation = "KnetEmailConfirmation";
             public const string Successfull_Transaction = "Successfull_Transaction";
             public const string Failed_Transaction = "Failed_Transaction";
+            public const string Transaction_Cancelled = "Transaction Cancelled!";
             public const string ConfirmationSent = "ConfirmationSent";
             public const string DurraEmailConfirmation = "DurraEmailConfirmation";
             public const string ConfirmationBody = "ConfirmationBody";

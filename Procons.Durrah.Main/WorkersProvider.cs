@@ -360,12 +360,12 @@
             return returnResult;
         }
 
-        public bool CreateIncomingPayment(Transaction trans)
+        public Transaction CreateIncomingPayment(Transaction trans)
         {
-            bool creationResult = false;
+
+            Transaction creationResult = null;
             try
             {
-
                 base.B1Company.StartTransaction();
                 var salesOrder = GetSalesOrder(trans.PaymentID);
                 if (salesOrder != null)
@@ -396,6 +396,7 @@
                         var InvoiceNo = base.B1Company.GetNewObjectKey();
                         var oPay = base.B1Company.GetBusinessObject(BoObjectTypes.oIncomingPayments) as Payments;
                         var paymentAmount = GetDownPaymentAmount();
+                        trans.Amount = paymentAmount.ToString();
                         oPay.CardCode = salesOrder.CardCode;
                         oPay.Invoices.DocEntry = Convert.ToInt32(InvoiceNo);
                         oPay.Invoices.SumApplied = paymentAmount;
@@ -417,8 +418,9 @@
                         else
                         {
                             base.B1Company.EndTransaction(BoWfTransOpt.wf_Commit);
-                            creationResult = true;
+                            creationResult = trans;
                         }
+
                     }
                 }
 

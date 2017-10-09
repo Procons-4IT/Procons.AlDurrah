@@ -37,7 +37,7 @@
             return provider.CreateSalesOrder(transaction, cardCode);
         }
 
-        public bool SavePaymentDetails(Transaction trans)
+        public Transaction SavePaymentDetails(Transaction trans)
         {
             return provider.CreateIncomingPayment(trans);
         }
