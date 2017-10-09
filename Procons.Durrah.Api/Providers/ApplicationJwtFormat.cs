@@ -2,6 +2,7 @@
 {
     using Microsoft.Owin.Security;
     using Microsoft.Owin.Security.DataHandler.Encoder;
+    using Procons.Durrah.Common;
     using System;
     using System.Configuration;
     using System.IdentityModel.Tokens;
@@ -24,8 +25,8 @@
                 throw new ArgumentNullException("data");
             }
 
-            string audienceId = ConfigurationManager.AppSettings["as:AudienceId"];
-            string symmetricKeyAsBase64 = ConfigurationManager.AppSettings["as:AudienceSecret"];
+            string audienceId = Utilities.GetConfigurationValue("as:AudienceId");
+            string symmetricKeyAsBase64 = Utilities.GetConfigurationValue("as:AudienceSecret");
             var keyByteArray = TextEncodings.Base64Url.Decode(symmetricKeyAsBase64);
             var signingKey = new HmacSigningCredentials(keyByteArray);
             var issued = data.Properties.IssuedUtc;        

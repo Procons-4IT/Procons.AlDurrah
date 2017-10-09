@@ -13,6 +13,9 @@
         }
         public struct ConfigurationKeys
         {
+            public const string SapServer = "SapServer";
+            public const string SLDServer = "SLDServer";
+
             public const string UserName = "UserName";
             public const string Password = "Password";
             public const string DatabaseName = "DatabaseName";
@@ -30,6 +33,9 @@
             public const string MailPwd = "MailPwd";
             public const string MailSSl = "MailSSl";
             public const string MailPort = "MailPort";
+
+            public const string GoogleCaptchaUrl = "google:Url";
+            public const string GoogleCaptchaSecretKey = "google:SecretKey";
         }
         public struct Resources
         {

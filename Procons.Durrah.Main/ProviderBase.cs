@@ -28,26 +28,18 @@
         {
             _oCompany = new Company();
             int checkConnected = -1;
-            string sapServer = "devhana:30015";
-            string companyDB = "ADSC_LIVE";
+            string sapServer = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.SapServer);
+            string companyDB = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.DatabaseName);
             string dbUsername = "SYSTEM";
             string dbPassword = "Pr0c0ns41t";
-            string sapUsername = "manager";
-            string sapPassword = "4321";
-            string dbServerType = "Hana";
-            string sapLicense = "devhana:40000";
+            string sapUsername = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.UserName);
+            string sapPassword = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.Password);
+            string sapLicense = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.SLDServer);
 
             _oCompany.Server = sapServer;
             _oCompany.SLDServer = sapLicense;
+            _oCompany.DbServerType = SAPbobsCOM.BoDataServerTypes.dst_HANADB;
 
-            switch (dbServerType)
-            {
-                case "2005": _oCompany.DbServerType = SAPbobsCOM.BoDataServerTypes.dst_MSSQL2005; break;
-                case "2008": _oCompany.DbServerType = SAPbobsCOM.BoDataServerTypes.dst_MSSQL2008; break;
-                case "2012": _oCompany.DbServerType = SAPbobsCOM.BoDataServerTypes.dst_MSSQL2012; break;
-                case "2014": _oCompany.DbServerType = SAPbobsCOM.BoDataServerTypes.dst_MSSQL2014; break;
-                default: _oCompany.DbServerType = SAPbobsCOM.BoDataServerTypes.dst_HANADB; break;
-            }
 
             _oCompany.CompanyDB = companyDB;
             _oCompany.DbUserName = dbUsername;

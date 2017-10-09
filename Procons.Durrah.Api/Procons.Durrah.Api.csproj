@@ -28,6 +28,7 @@
     <SccProvider>SAK</SccProvider>
     <TypeScriptToolsVersion>2.3</TypeScriptToolsVersion>
     <Use64BitIISExpress />
+    <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -135,6 +136,8 @@
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.3\lib\net45\System.Web.Cors.dll</HintPath>
@@ -432,6 +435,13 @@
     <Content Include="ClientApp\Assets\src\app\New folder\search.html" />
     <Content Include="ClientApp\Assets\src\app\New folder\searchresult.html" />
     <Content Include="ClientApp\favicon.ico" />
+    <None Include="Connected Services\KnetService\KnetService.disco" />
+    <None Include="Connected Services\KnetService\configuration91.svcinfo" />
+    <None Include="Connected Services\KnetService\configuration.svcinfo" />
+    <None Include="Connected Services\KnetService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <Content Include="helpers.js" />
     <Content Include="packages.config" />
     <Content Include="package.json" />
@@ -484,6 +494,17 @@
     <Content Include="ClientApp\Assets\src\app\fonts\icomoon.eot" />
     <Content Include="ClientApp\Assets\src\app\fonts\icomoon.ttf" />
     <Content Include="ClientApp\Assets\src\app\fonts\icomoon.woff" />
+    <Content Include="Properties\DataSources\Procons.Durrah.Common.Transaction.datasource" />
+    <None Include="Connected Services\KnetService\KnetService.wsdl" />
+    <None Include="Connected Services\KnetService\KnetService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\KnetService\KnetService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\KnetService\KnetService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Views\Main\Index.cshtml" />
     <Content Include="tsconfig.json" />
@@ -517,6 +538,11 @@
       <DependentUpon>Resource.resx</DependentUpon>
     </Compile>
     <Compile Include="Attributes\ExceptionFilterAttribute.cs" />
+    <Compile Include="Connected Services\KnetService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\AccountsController.cs" />
     <Compile Include="Controllers\BaseApiController.cs" />
     <Compile Include="Controllers\ClaimsController.cs" />
@@ -608,6 +634,9 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Resource.ar.designer.cs</LastGenOutput>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\KnetService\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

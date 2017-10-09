@@ -45,7 +45,8 @@
         }
         public void LogException(Exception ex)
         {
-            LogException(ex, $"{ new StackTrace(ex).GetFrame(0).GetMethod().Name}: {ex.InnerException}");
+            //LogException(ex, $"{ new StackTrace(ex).GetFrame(0).GetMethod().Name}: {ex.InnerException}");
+            LogException(ex, $"Error: {ex.InnerException}");
         }
     }
 }

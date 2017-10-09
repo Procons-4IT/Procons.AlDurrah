@@ -80,8 +80,8 @@
         public bool GoogleReCaptcha(string gRecaptchaResponse)
         {
             bool captchaResult = false;
-            string urlToPost = "https://www.google.com/recaptcha/api/siteverify";
-            string secretKey = "6LdxFzAUAAAAAGS5UvbX5fr_fzl7712hlQ9yN4O7"; 
+            string urlToPost = Utilities.GetConfigurationValue(Common.Constants.ConfigurationKeys.GoogleCaptchaUrl);
+            string secretKey = Utilities.GetConfigurationValue(Common.Constants.ConfigurationKeys.GoogleCaptchaSecretKey); 
             var postData = "secret=" + secretKey + "&response=" + gRecaptchaResponse;
 
             // send post data

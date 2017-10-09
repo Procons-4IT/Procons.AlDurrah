@@ -18,6 +18,6 @@
         public string UDF3 { get; set; }
         public string UDF4 { get; set; }
         public string UDF5 { get; set; }
-
+        public string PaymentPage { get; set; }
     }
 }

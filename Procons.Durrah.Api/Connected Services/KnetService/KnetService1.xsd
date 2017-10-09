@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Procons.Durrah.Common" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Procons.Durrah.Common" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="Transaction">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Amount" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Auth" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CardCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PaymentID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PaymentPage" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PostDate" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Ref" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Result" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SerialNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TrackID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TranID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UDF1" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UDF2" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UDF3" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UDF4" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UDF5" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Transaction" nillable="true" type="tns:Transaction" />
+</xs:schema>

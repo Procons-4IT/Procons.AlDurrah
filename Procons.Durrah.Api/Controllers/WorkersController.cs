@@ -16,6 +16,7 @@
     using System.Threading.Tasks;
     using System.Net.Http.Headers;
     using System.Collections.Specialized;
+    using System.Diagnostics;
 
     public class WorkersController : BaseApiController
     {
@@ -44,8 +45,10 @@
 
         [Authorize]
         [HttpPost]
-        public HttpResponseMessage CallKnetGateway([FromBody]Transaction transaction)
+        public HttpResponseMessage CallKnetGatewayOld([FromBody]Transaction transaction)
         {
+            KnetService.KnetServiceClient knetSvc = new KnetService.KnetServiceClient();
+            var returnedTrans = knetSvc.CallKnetGateway(transaction);
             short TransVal;
             string varPaymentID, varPaymentPage, varErrorMsg, varRawResponse;
 
@@ -89,6 +92,58 @@
         }
 
         [Authorize]
+        [HttpPost]
+        public HttpResponseMessage CallKnetGateway([FromBody]Transaction transaction)
+        {
+            Transaction returnedTrans = null;
+            IEnumerable<Claim> claims;
+            var cardCode = string.Empty;
+
+            Utilities.LogException("Start");
+            KnetService.KnetServiceClient knetSvc = new KnetService.KnetServiceClient();
+            transaction.Amount = workersFacade.GetDownPaymentAmount().ToString();
+            try
+            {
+                returnedTrans = knetSvc.CallKnetGateway(transaction);
+            }
+            catch(Exception ex)
+            {
+                Utilities.LogException(ex);
+            }
+             
+            knetSvc.Close();
+
+            try
+            {
+                claims = ((ClaimsIdentity)User.Identity).Claims;
+                cardCode = claims.Where(x => x.Type == Constants.ServiceLayer.CardCode).FirstOrDefault().Value;
+            }
+            catch(Exception ex)
+            {
+                
+                Utilities.LogException(ex.Message);
+            }
+
+
+            if (returnedTrans == null)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "/Error");
+            }
+            else
+            {
+                transaction.PaymentID = returnedTrans.PaymentID;
+                transaction.TrackID = returnedTrans.TrackID;
+                transaction.TranID = returnedTrans.TranID;
+                var result = workersFacade.CreateSalesOrder(transaction, cardCode);
+                if (result == double.MinValue)
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "/Error");
+                else
+                    return Request.CreateResponse(HttpStatusCode.OK, returnedTrans.PaymentPage + "?PaymentID=" + returnedTrans.PaymentID);
+            }
+            
+        }
+
+        [Authorize]
         public IHttpActionResult GetDownPaymentAmount()
         {
             workersFacade.GetDownPaymentAmount();
@@ -103,6 +158,7 @@
             payment.Amount = paymentAmount;
             if (payment.Result == "captured")
             {
+                Utilities.LogException($"Captured Code {payment.Code}");
                 var tokens = new Dictionary<string, string>();
                 tokens.Add(Constants.KNET.MerchantTrackID, payment.TrackID);
                 tokens.Add(Constants.KNET.PaymentID, payment.PaymentID);
@@ -115,7 +171,6 @@
                 var messageBody = Utilities.GetResourceValue(Constants.Resources.KnetEmailConfirmation).GetMessageBody(tokens);
                 idMessage.Body = messageBody;
                 emailService.SendAsync(idMessage);
-
                 var result = workersFacade.SavePaymentDetails(payment);
                 if (result)
                     return Request.CreateResponse(HttpStatusCode.OK, Utilities.GetResourceValue(Constants.Resources.Successfull_Transaction));
