@@ -15,7 +15,7 @@
         {
             public const string SapServer = "SapServer";
             public const string SLDServer = "SLDServer";
-
+            public const string BaseUrl = "BaseUrl";
             public const string UserName = "UserName";
             public const string Password = "Password";
             public const string DatabaseName = "DatabaseName";
@@ -53,6 +53,7 @@
         public struct KNET
         {
             public const string TransactionDate = "TransactionDate";
+            public const string ItemCode = "ItemCode";
             public const string TransactionAmount = "TransactionAmount";
             public const string ReferenceID = "ReferenceID";
             public const string PaymentID = "PaymentID";

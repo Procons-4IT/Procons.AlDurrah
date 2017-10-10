@@ -1,5 +1,5 @@
 {
-  "baseUrl": "http://dev.procons-scloud.com",
+  "baseUrl": "https://dev.procons-scloud.com",
   "getSearchCriteriaUrl": "/api/Workers/GetSearchLookups",
   "getWorkersUrl": "/api/Workers/GetWorkers",
   "knetUrl": "/api/Workers/CallKnetGateway",

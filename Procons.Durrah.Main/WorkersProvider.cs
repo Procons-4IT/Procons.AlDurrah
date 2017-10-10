@@ -515,6 +515,28 @@
             }
             return paymentAmount;
         }
+        public string GetItemCodeByPaymentId(string paymentId)
+        {
+            string itemCode = string.Empty;
+            try
+            {
+                var conn = Factory.DeclareClass<DatabaseHelper<HanaConnection>>();
+               StringBuilder query=new StringBuilder($@" SELECT IFNULL(""ItemCode"",'') AS ""ItemCode""");
+                query.Append($@" FROM ""{base.databaseName}"".""RDR1"" T INNER JOIN ""{base.databaseName}"".""ORDR"" T1 ON T.""DocEntry"" = T1.""DocEntry""");
+                query.Append($@" WHERE ""U_PaymentID"" = '{paymentId}'");
+
+                var result = conn.ExecuteQuery(query.ToString());
+                while (result.Read())
+                {
+                    itemCode = MapField<string>(result["ItemCode"]);
+                }
+            }
+            catch (Exception ex)
+            {
+                Utilities.LogException(ex);
+            }
+            return itemCode;
+        }
 
         #region PRIVATE METHODS
         private Filter<WORKERS> GetExpression(Catalogue wrk)

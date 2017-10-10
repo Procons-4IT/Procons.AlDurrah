@@ -1,11 +1,8 @@
-﻿
-using Common=Procons.Durrah.Common;
-namespace Procons.Durrah.Auth
+﻿namespace Procons.Durrah.Auth
 {
-    using System;
-    using System.Threading.Tasks;
     using Microsoft.AspNet.Identity;
     using Procons.Durrah.Common;
+    using System;
 
     //public class EmailService : IIdentityMessageService
     public class EmailService 
@@ -28,8 +25,6 @@ namespace Procons.Durrah.Auth
             SmtpServer.Port =Convert.ToInt32( Utilities.GetConfigurationValue(Common.Constants.ConfigurationKeys.MailPort));
             SmtpServer.EnableSsl = true;
             SmtpServer.Send(message);
-        }
-
-       
+        }     
     }
 }

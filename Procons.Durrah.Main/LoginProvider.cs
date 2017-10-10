@@ -127,38 +127,6 @@
                 oDoc.ReleaseObject();
             }
 
-
-
-            //ServiceLayerProvider slInstance = new ServiceLayerProvider();
-            //slInstance.Login();
-
-            //var businessPartner = new BusinessPartner();
-            //try
-            //{
-            //    var password = Utilities.Encrypt(user.Password);
-
-            //    businessPartner.CardType = "C";
-            //    businessPartner.Series = GetSeriesCode();
-            //    businessPartner.CardName = $"{user.FirstName} {user.LastName}";
-            //    businessPartner.U_Password = password;
-            //    businessPartner.U_UserName = user.UserName;
-            //    businessPartner.EmailAddress = user.Email;
-
-            //    //instance.Login();
-            //    //ServiceInstance = ServiceLayerProvider.GetInstance();
-
-            //    slInstance.CurrentServicelayerInstance.AddToBusinessPartners(businessPartner);
-            //    var result = slInstance.CurrentServicelayerInstance.SaveChanges();
-
-            //    if (result != null)
-            //        identityResult = new AspNet.IdentityResult();
-            //}
-            //catch (Exception ex)
-            //{
-            //    slInstance.CurrentServicelayerInstance.Detach(businessPartner);
-            //    identityResult = new AspNet.IdentityResult(ex.Message);
-
-            //}
             return identityResult;
         }
 

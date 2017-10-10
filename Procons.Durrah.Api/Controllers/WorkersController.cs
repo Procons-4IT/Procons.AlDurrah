@@ -99,31 +99,22 @@
             IEnumerable<Claim> claims;
             var cardCode = string.Empty;
 
-            Utilities.LogException("Start");
-            KnetService.KnetServiceClient knetSvc = new KnetService.KnetServiceClient();
+            var knetSvc = new KnetService.KnetServiceClient();
             transaction.Amount = workersFacade.GetDownPaymentAmount().ToString();
             try
             {
                 returnedTrans = knetSvc.CallKnetGateway(transaction);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Utilities.LogException(ex);
             }
-             
+
             knetSvc.Close();
 
-            try
-            {
-                claims = ((ClaimsIdentity)User.Identity).Claims;
-                cardCode = claims.Where(x => x.Type == Constants.ServiceLayer.CardCode).FirstOrDefault().Value;
-            }
-            catch(Exception ex)
-            {
-                
-                Utilities.LogException(ex.Message);
-            }
 
+            claims = ((ClaimsIdentity)User.Identity).Claims;
+            cardCode = claims.Where(x => x.Type == Constants.ServiceLayer.CardCode).FirstOrDefault().Value;
 
             if (returnedTrans == null)
             {
@@ -140,7 +131,7 @@
                 else
                     return Request.CreateResponse(HttpStatusCode.OK, returnedTrans.PaymentPage + "?PaymentID=" + returnedTrans.PaymentID);
             }
-            
+
         }
 
         [Authorize]
@@ -155,16 +146,20 @@
         public IHttpActionResult CreatePayment([FromBody]Transaction payment)
         {
             var paymentAmount = workersFacade.GetDownPaymentAmount().ToString();
+           
+
             payment.Amount = paymentAmount;
             if (payment.Result == "captured")
             {
+                var itemCode = workersFacade.GetItemCodeByPaymentId(payment.PaymentID);
+
                 Utilities.LogException($"Captured Code {payment.Code}");
                 var tokens = new Dictionary<string, string>();
                 tokens.Add(Constants.KNET.MerchantTrackID, payment.TrackID);
                 tokens.Add(Constants.KNET.PaymentID, payment.PaymentID);
                 tokens.Add(Constants.KNET.ReferenceID, payment.Ref);
                 tokens.Add(Constants.KNET.TransactionAmount, payment.Amount);
-                tokens.Add(Constants.KNET.TransactionDate, payment.PostDate);
+                tokens.Add(Constants.KNET.ItemCode, itemCode);
 
                 idMessage.Destination = base.GetCurrentUserEmail();
                 idMessage.Subject = Utilities.GetResourceValue(Constants.Resources.Transaction_Completed);

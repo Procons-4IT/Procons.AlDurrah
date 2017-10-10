@@ -63,6 +63,11 @@
             return provider.GetDownPaymentAmount();
         }
 
+        public string GetItemCodeByPaymentId(string PaymentId)
+        {
+            return provider.GetItemCodeByPaymentId(PaymentId);
+        }
+
         #region Private Methods
 
 

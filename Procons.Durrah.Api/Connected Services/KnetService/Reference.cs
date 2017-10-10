@@ -20,12 +20,6 @@ namespace Procons.Durrah.Api.KnetService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IKnetService/CallKnetGateway", ReplyAction="http://tempuri.org/IKnetService/CallKnetGatewayResponse")]
         System.Threading.Tasks.Task<Procons.Durrah.Common.Transaction> CallKnetGatewayAsync(Procons.Durrah.Common.Transaction transaction);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IKnetService/GetData", ReplyAction="http://tempuri.org/IKnetService/GetDataResponse")]
-        string GetData();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IKnetService/GetData", ReplyAction="http://tempuri.org/IKnetService/GetDataResponse")]
-        System.Threading.Tasks.Task<string> GetDataAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -61,14 +55,6 @@ namespace Procons.Durrah.Api.KnetService {
         
         public System.Threading.Tasks.Task<Procons.Durrah.Common.Transaction> CallKnetGatewayAsync(Procons.Durrah.Common.Transaction transaction) {
             return base.Channel.CallKnetGatewayAsync(transaction);
-        }
-        
-        public string GetData() {
-            return base.Channel.GetData();
-        }
-        
-        public System.Threading.Tasks.Task<string> GetDataAsync() {
-            return base.Channel.GetDataAsync();
         }
     }
 }

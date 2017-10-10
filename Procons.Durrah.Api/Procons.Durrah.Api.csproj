@@ -586,7 +586,6 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\app\app.component.ts" />
-    <TypeScriptCompile Include="ClientApp\app\app.componentBase.ts" />
     <TypeScriptCompile Include="ClientApp\app\app.module.ts" />
     <TypeScriptCompile Include="ClientApp\app\app.routing.ts" />
     <TypeScriptCompile Include="ClientApp\app\Catalogue\catalogue.component.ts" />

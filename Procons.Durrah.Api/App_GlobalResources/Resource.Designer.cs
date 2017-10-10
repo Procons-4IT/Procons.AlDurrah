@@ -106,12 +106,19 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A transaction has been successfully submitted with the following informaiton: \n
-        ///Date/time : [[TransactionDate]] \n
-        ///Amount: [[TransactionAmount]] \n
-        ///Reference ID: [[ReferenceID]] \n
-        ///Payment ID: [[PaymentID]] \n
-        ///Merchant track ID: [[MerchantTrackID]] \n.
+        ///   Looks up a localized string similar to &lt;html&gt;
+        ///	&lt;body&gt;
+        ///		&lt;p&gt;
+        ///		  A transaction has been successfully submitted with the following informaiton: 
+        ///		  &lt;div&gt;Item Code : [[ItemCode]] &lt;div&gt;
+        ///		  &lt;div&gt;Amount: [[TransactionAmount]] KWD&lt;div&gt; 
+        ///		  &lt;div&gt;Reference ID: [[ReferenceID]]&lt;div&gt; 
+        ///		  &lt;div&gt;Payment ID: [[PaymentID]] &lt;div&gt; 
+        ///		  &lt;div&gt;Merchant track ID: [[MerchantTrackID]] &lt;div&gt; 
+        ///&lt;div&gt;For help please contact: 00989987655&lt;/div&gt;
+        ///		&lt;/p&gt;
+        ///	&lt;body&gt;
+        ///&lt;/html&gt;.
         /// </summary>
         internal static string KnetEmailConfirmation {
             get {

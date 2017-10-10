@@ -30,7 +30,8 @@
             
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            var baseUrl = Request.RequestUri.GetLeftPart(UriPartial.Authority);
+            //var baseUrl = Request.RequestUri.GetLeftPart(UriPartial.Authority);
+            var baseUrl = Utilities.GetConfigurationValue(Common.Constants.ConfigurationKeys.BaseUrl);
             IdentityResult addUserResult = await this.AppUserManager.CreateAsync(user);
 
             if (!addUserResult.Succeeded)
@@ -112,8 +113,8 @@
         [Route("resetrequest")]
         public IHttpActionResult RequestReset([FromBody]PasswordModel model)
         {
-            var baseUrl = Request.RequestUri.GetLeftPart(UriPartial.Authority);
-
+            //var baseUrl = Request.RequestUri.GetLeftPart(UriPartial.Authority);
+            var baseUrl = Utilities.GetConfigurationValue(Common.Constants.ConfigurationKeys.BaseUrl);
             idMessage.Destination = model.EmailAddress;
             idMessage.Subject = Utilities.GetResourceValue(Common.Constants.Resources.DurraPasswordReset);
             var result = loginFacade.ResetRequest(model.EmailAddress);
