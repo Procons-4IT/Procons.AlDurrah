@@ -65,7 +65,7 @@ export class LoginComponent implements OnInit {
     }
 
     GoToRegisterEvent() {
-        // console.log('going to registration form, reseting recaptcha!');
+        // 
         // grecaptcha.reset();
     }
     passwordMatch(): boolean {
@@ -76,7 +76,7 @@ export class LoginComponent implements OnInit {
 
 
     Login() {
-        console.log('Logging in with userName: ', this.newUser.UserName, ' password: ', '####');
+        
         this.loading = true;
 
         this.myApi.login(this.newUser.UserName, this.newUser.Password).subscribe(isLoggedIn => {
@@ -94,7 +94,7 @@ export class LoginComponent implements OnInit {
 
     }
     ForgotPassword(email: string) {
-        console.log('### Sending ForgotPassword Request for email ', email);
+        
         this.forgotPassModalError = "";
         this.forgotPassModalLoading = true;
         this.myApi.forgotPassword(email).subscribe(isSuccesful => {
@@ -125,7 +125,7 @@ export class LoginComponent implements OnInit {
             this.recaptchaToken = null;
             this.captcha.reset();
         }, onError => {
-            console.log(onError);
+            
             this.loading = false;
             this.myModal.showErrorModal('error.register');
             this.recaptchaToken = null;
@@ -134,7 +134,7 @@ export class LoginComponent implements OnInit {
         });
     }
     captchaSubmitted($event) {
-        console.log('I got the Captcha response!', $event);
+        
         this.recaptchaToken = $event;
     }
 
