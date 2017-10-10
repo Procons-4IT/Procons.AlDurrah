@@ -70,7 +70,7 @@ export class HomeComponent implements OnInit {
 
 
   handleConfirmEmailRoute() {
-    console.log('## Checking if ConfirmEmailRoute');
+    
 
     this.activeRouter.data
       .filter((data, idx) => { return data.isConfirmEmail; })
@@ -83,7 +83,7 @@ export class HomeComponent implements OnInit {
       .mergeMap(x => { return this.utility.getResetPasswordUrlProperties(this.activeRouter) })
       .mergeMap(params => { return this.myApi.confirmEmail(params) })
       .subscribe(x => {
-        console.log('Recieved X', x);
+        
         this.loadingPayment = false;
         if (x) {
           this.paymentModalText = 'Email Confirmed!';
@@ -101,7 +101,7 @@ export class HomeComponent implements OnInit {
   //Ex. http://localhost:4200/paymentconfirmation?paymentid=5904845091172790&result=not%20captured&postdate=1006&tranid=2624949101172790&auth=&ref=727911110228&trackid=6358289
 
   handlePaymentRoute() {
-    console.log('## Checking if PaymentRoute');
+    
 
     this.activeRouter.data
       .filter((data, idx) => { return data.isPayment; })
@@ -115,7 +115,7 @@ export class HomeComponent implements OnInit {
       .do(x => { this.paymentParams = x; })
       .mergeMap(params => { return this.myApi.createIncomingPayment(params) })
       .subscribe(x => {
-        console.log('Recieved X', x);
+        
         this.loadingPayment = false;
         this.paymentModalText = x.udF1;
         this.amount = x && x.amount;
@@ -127,7 +127,7 @@ export class HomeComponent implements OnInit {
   }
 
   handlePasswordResetRoute() {
-    console.log('## Checking if PasswordResetRoute');
+    
 
     this.activeRouter.data
       .filter((data, idx) => { return data.isPasswordReset; })
@@ -136,7 +136,7 @@ export class HomeComponent implements OnInit {
       })
       .mergeMap(x => { return this.utility.getResetPasswordUrlProperties(this.activeRouter) })
       .subscribe(x => {
-        console.log('Recieved ResetParams! ', x);
+        
         this.resetParams.EmailAddress = x.Email;
         this.resetParams.ValidationId = x.ValidationId;
       }, onError => {
@@ -157,7 +157,7 @@ export class HomeComponent implements OnInit {
         .subscribe(isReset => {
           this.resetPassModalLoading = false;
           if (isReset) {
-            console.log('## Password was Reset! ');
+            
             this.resetPassModalText = 'Password was Reset!';
             setTimeout(x => {
               this.router.navigate(['/home']);

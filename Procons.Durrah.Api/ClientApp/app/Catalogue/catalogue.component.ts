@@ -66,7 +66,7 @@ export class CatalogueComponent implements OnInit {
                     this.myModal.showErrorModal();
                 }, () => {
                     this.loading = false;
-                    console.log('subscription complete!');
+                    
                 });
         } else {
             this.myModal.showErrorModal('error.notLoggedIn');
@@ -74,7 +74,7 @@ export class CatalogueComponent implements OnInit {
     }
 
     GoToResults(workerFilter: Worker) {
-        console.log('Search-Filter ', workerFilter);
+        
         this.loading = true;
         this.myApi.getAllWorkers(workerFilter).subscribe(workers => {
             this.loading = false
@@ -83,7 +83,7 @@ export class CatalogueComponent implements OnInit {
             this.showSearchResultTable = true;
         }
             , onError => {
-                console.log('error ', onError);
+                
                 this.loading = false;
                 this.myModal.showErrorModal();
             });
@@ -92,7 +92,7 @@ export class CatalogueComponent implements OnInit {
 
 
     GoToProfile(event: Worker) {
-        console.log('selected Worker: ', event);
+        
         this.selectedWorker = event;
         this.showSearchResultTable = false;
         this.showProfile = true;
@@ -104,12 +104,12 @@ export class CatalogueComponent implements OnInit {
 
     GetLookups() {
         this.myApi.getSearchCriteriaParameters().subscribe(searchCriteriaParams => {
-            console.log('look up values ', searchCriteriaParams);
+            
         });
     }
     Book(onBook: Boolean) {
         var selectedWorker = this.selectedWorker;
-        console.log('calling knetPayment! for worker ', selectedWorker);
+        
         var paymentInformation = { SerialNumber: selectedWorker.serialNumber, CardCode: selectedWorker.agent, Amount: "100", Code: selectedWorker.code }
         this.loading = true;
         this.myApi.knetPaymentRedirectUrl(paymentInformation)

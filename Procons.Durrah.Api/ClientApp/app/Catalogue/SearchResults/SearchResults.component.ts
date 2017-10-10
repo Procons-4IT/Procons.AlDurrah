@@ -20,13 +20,13 @@ export class SearchResultsComponent implements OnInit {
   constructor(public sanitizer: DomSanitizer, public myModal: ProconsModalSerivce) { }
 
   ngOnInit() {
-    console.log('SearchResultsComponent Loaded! ', this.workers);
+    
   }
   GoBack() {
     this.onBack.emit();
   }
   GoToProfile(selectedWorker: Worker) {
-    console.log('[captured] GoToProfile!: ', selectedWorker);
+    
     this.onSelectedWorker.emit(selectedWorker);
   }
   GetAvailableCSS(worker: Worker) {
@@ -38,7 +38,7 @@ export class SearchResultsComponent implements OnInit {
     };
   }
   public openRequestedPopup(url) {
-    console.log('opening url ', url);
+    
     this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
     this.showVideoModal = true;
   }

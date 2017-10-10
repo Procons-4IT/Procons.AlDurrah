@@ -50,7 +50,7 @@ export class ApiService {
         return this.httpPostHelper(this.config.loginUrl, requestBody).map(response => {
             if (response.status == 200) {
                 var token = response.json();
-                console.log(token);
+                
                 sessionStorage.setItem(this.KEYS.SecurityToken, token.access_token);
                 sessionStorage.setItem(this.KEYS.SecurityTokenExpiryDate, token['expires_in']);
                 sessionStorage.setItem(this.KEYS.UserType, token.UserType);
@@ -99,11 +99,11 @@ export class ApiService {
             .map(response => { return response.json(); })
     }
     public getAllWorkers(optionalFilterCritera: WorkerFilterParams | object): Observable<Worker[]> {
-        console.log('Getting All the Workers');
+        
         var actualData = this.httpPostHelper(this.config.getWorkersUrl, optionalFilterCritera)
             .map(response => {
                 var data: any[] = response.json();
-                console.log('[server-worker data] ', data);
+                
                 return data;
             });
         return actualData;
