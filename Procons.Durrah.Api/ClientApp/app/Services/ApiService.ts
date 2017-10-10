@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/catch';
 
@@ -12,11 +13,18 @@ import { WorkerFilterParams, ConfirmEmailParams, PaymentRedirectParams, KnetPaym
 import { Worker } from '../Models/Worker';
 @Injectable()
 export class ApiService {
+    KEYS = {
+        SecurityToken: "SecurityToken",
+        SecurityTokenExpiryDate: "SecurityTokenExpiryDate",
+        UserType: "UserType"
+    }
 
     private config = require('../../config.json');
     private language: string;
     private userLoggedIn: BehaviorSubject<boolean>;
+    private userTypeLogIn: Observable<string>;
     
+
     public resetParams: ResetPasswordParams = {
         EmailAddress: "",
         Password: "",
@@ -26,6 +34,9 @@ export class ApiService {
     constructor(private http: Http) {
         this.language = navigator.language;
         this.userLoggedIn = new BehaviorSubject(this.isLoggedIn());
+        this.userTypeLogIn = this.userLoggedIn.filter(x=>x).map(x=>{
+            return this.GetUserType();
+        });
     }
 
     public logOut() {
@@ -40,8 +51,10 @@ export class ApiService {
             if (response.status == 200) {
                 var token = response.json();
                 console.log(token);
-                sessionStorage.setItem("SecurityToken", token.access_token);
-                sessionStorage.setItem("SecurityTokenExpiryDate", token['expires_in']);
+                sessionStorage.setItem(this.KEYS.SecurityToken, token.access_token);
+                sessionStorage.setItem(this.KEYS.SecurityTokenExpiryDate, token['expires_in']);
+                sessionStorage.setItem(this.KEYS.UserType, token.UserType);
+
                 return true;
             } else
                 return false;
@@ -141,11 +154,14 @@ export class ApiService {
     public isLoggedIn(): boolean {
         return !!this.GetSecurityToken();
     }
+    public GetUserType(): string {
+        return sessionStorage.getItem(this.KEYS.UserType);
+    }
     public GetSecurityToken(): string {
-        return sessionStorage.getItem('SecurityToken');
+        return sessionStorage.getItem(this.KEYS.SecurityToken);
     }
     public RemoveSecurityToken(): void {
-        sessionStorage.removeItem('SecurityToken');
+        sessionStorage.removeItem(this.KEYS.SecurityToken);
     }
 
     public alertListenersUserLoggedIn(isLoggedIn: boolean) {
@@ -153,5 +169,8 @@ export class ApiService {
     }
     public onUserLoggedIn(): BehaviorSubject<boolean> {
         return this.userLoggedIn;
+    }
+    public onUserTypeLoggedIn(): Observable<string>{
+        return this.userTypeLogIn;
     }
 }

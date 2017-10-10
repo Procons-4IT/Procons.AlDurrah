@@ -145,7 +145,7 @@
 </div>
 
 <app-catalogue> </app-catalogue>
-<worker-managment></worker-managment>
+<worker-managment *ngIf="isLoggedIn && logInType === 'cSupplier'"></worker-managment>
 
 <div class="section" id="sectionWebshop">
   <div class="container">

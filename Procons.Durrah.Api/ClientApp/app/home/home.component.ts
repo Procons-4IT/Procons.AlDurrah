@@ -22,6 +22,9 @@ declare var $;
 })
 export class HomeComponent implements OnInit {
 
+  isLoggedIn = false;
+  logInType = '';
+
   public paymentModalText: string = "";
   public paymentParams: KnetPayment = {
     PaymentID: "",
@@ -53,10 +56,12 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    let userLoggedIn$ = this.myApi.onUserLoggedIn();
-    console.log('user init state ', userLoggedIn$.getValue());
-    userLoggedIn$.subscribe(isLoggedIn => {
-      console.log('user state', isLoggedIn);
+    this.myApi.onUserLoggedIn()
+      .subscribe(isLoggedIn => {
+        this.isLoggedIn = isLoggedIn;
+      });
+    this.myApi.onUserTypeLoggedIn().subscribe(loginType=>{
+      this.logInType = loginType;
     });
     this.handlePaymentRoute();
     this.handleConfirmEmailRoute();
@@ -93,6 +98,7 @@ export class HomeComponent implements OnInit {
 
   }
   // Ex.http://localhost:4200/paymentid=1394338331172790&result=not%20captured&postdate=1006&tranid=7630570331172790&auth=&ref=727911110230&trackid=9670186
+  //Ex. http://localhost:4200/paymentconfirmation?paymentid=5904845091172790&result=not%20captured&postdate=1006&tranid=2624949101172790&auth=&ref=727911110228&trackid=6358289
 
   handlePaymentRoute() {
     console.log('## Checking if PaymentRoute');

@@ -11,9 +11,9 @@ export class WorkerMangmentComponent {
 
     //Temp Show the Add Profile Modal
     state = {
+        showWorkerManagment: true,
         showProfiles: false,
-        showWorkerManagment: false,
-        showAddProfile: true,
+        showAddProfile: false,
         workers: Array.from({ length: 7 }, (_, idx) => { return { name: idx++ } }),
         selectedWorker: null
     }
