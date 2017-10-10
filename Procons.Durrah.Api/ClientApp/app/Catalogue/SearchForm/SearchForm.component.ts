@@ -19,7 +19,7 @@ export class searchFormComponent implements OnInit {
     constructor() { }
 
     ngOnInit() {
-        console.log('Init SearchForm Component, ', this.searchCriteriaParams);
+        
     }
 
     GotoResults(workType, age, sex, nationality, maritalStatus, language) {
@@ -35,7 +35,7 @@ export class searchFormComponent implements OnInit {
                 }
             }
         }
-        console.log('captured searchFilter ', workerFilterParams);
+        
         this.onSearchFilterCriteria.emit(workerFilterParams);
     }
 }

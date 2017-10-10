@@ -16,7 +16,7 @@ export class profileComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log('Loaded Profile Component with Worker ', this.worker);
+    
   }
 
   GoBack() {

@@ -22,7 +22,7 @@ export class AddProfileComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        console.log('add-profile: ', this.worker);
+        
         if (this.worker) {
             this.state.isAddMode = false;
             this.state.title = "Edit Profile"
@@ -37,7 +37,7 @@ export class AddProfileComponent implements OnInit {
         this.onBack.emit();
     }
     addWorker(photoInput: any, passInput: any) {
-        console.log('click!');
+        
         let photoFile = photoInput.files;
         let passportFile = passInput.files;
 
@@ -62,11 +62,11 @@ export class AddProfileComponent implements OnInit {
             formData.append('CivilId', this.state.worker.civilId);
             //type Missing ? is it code
 
-            console.log('sending FormData', formData);
+            
             this.myApi.uploadFile(formData).subscribe(x => {
                 console.log('Somethign Happend ! ', formData)
             }, onError => {
-                console.log('oopsss! ', onError);
+                
             });
 
         } else {
@@ -76,7 +76,7 @@ export class AddProfileComponent implements OnInit {
     }
 
     originalUploadFile(elFiles: ElementRef) {
-        console.log('click!');
+        
         let files = elFiles.nativeElement.files;
         if (files && files[0]) {
             const formData = new FormData();
@@ -103,11 +103,11 @@ export class AddProfileComponent implements OnInit {
             formData.append('Age', '43'); //This is not needed
             formData.append('Code', 'code');
 
-            console.log('sending FormData', formData);
+            
             this.myApi.uploadFile(formData).subscribe(x => {
                 console.log('Somethign Happend ! ', formData)
             }, onError => {
-                console.log('oopsss! ', onError);
+                
             });
         }
     }
