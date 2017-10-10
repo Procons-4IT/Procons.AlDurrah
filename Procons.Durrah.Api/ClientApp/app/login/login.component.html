@@ -73,7 +73,7 @@
                                             required="true" [(ngModel)]="newUser.Email" #email="ngModel" />
                                     </div>
                                     <div class="form-group">
-                                        <re-captcha (captchaResponse)="captchaSubmitted($event)" site_key="6LdxFzAUAAAAAD37sKPOyMYWdhZLHh-Dmc6SJu5z"></re-captcha>
+                                        <re-captcha (captchaResponse)="captchaSubmitted($event)" site_key="6LfQ0jMUAAAAAIjaj2GJWeXajhX3GmCeYKTiYBRw"></re-captcha>
                                         <span class="help-block" *ngIf="!recaptchaToken"> {{'login.invalidCaptcha' | translate }}</span>
 
                                     </div>
