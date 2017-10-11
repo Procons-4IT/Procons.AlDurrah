@@ -76,7 +76,7 @@ export class LoginComponent implements OnInit {
 
 
     Login() {
-        
+
         this.loading = true;
 
         this.myApi.login(this.newUser.UserName, this.newUser.Password).subscribe(isLoggedIn => {
@@ -87,32 +87,37 @@ export class LoginComponent implements OnInit {
                 this.isLoggedIn = x;
             })
         }, (errorMessage) => {
-            console.log('login error ',errorMessage);
+            console.log('login error ', errorMessage);
             this.loading = false;
-            this.myModal.showErrorModal(errorMessage,false);
+            this.myModal.showErrorModal(errorMessage, false);
         });
 
     }
     ForgotPassword(email: string) {
-        
+
         this.forgotPassModalError = "";
         this.forgotPassModalLoading = true;
         this.myApi.forgotPassword(email).subscribe(isSuccesful => {
             this.forgotPassModalLoading = false;
             $('#myModal').modal('toggle')
             this.showForgotPasswordModal = false;
-            this.forgotPassModalText = "Reset Has Been Sent!";
+            this.forgotPassModalText = "error.forgotPassword-200";
 
 
         }, onError => {
             this.forgotPassModalLoading = false;
 
             if (onError.status == '404') {
-                this.forgotPassModalError = "Invalid Email";
+                this.forgotPassModalError = "error.forgotPassword-404";
 
             } else {
-                this.myModal.showErrorModal('error.forgotPassword');
-
+                let errorObject = onError.json();
+                let errorMessage = errorObject.message;
+                if (errorMessage) {
+                    this.myModal.showErrorModal(errorMessage, false);
+                } else {
+                    this.myModal.showErrorModal('error.forgotPassword');
+                }
             }
         })
 
@@ -125,7 +130,7 @@ export class LoginComponent implements OnInit {
             this.recaptchaToken = null;
             this.captcha.reset();
         }, onError => {
-            
+
             this.loading = false;
             this.myModal.showErrorModal('error.register');
             this.recaptchaToken = null;
@@ -134,7 +139,7 @@ export class LoginComponent implements OnInit {
         });
     }
     captchaSubmitted($event) {
-        
+
         this.recaptchaToken = $event;
     }
 

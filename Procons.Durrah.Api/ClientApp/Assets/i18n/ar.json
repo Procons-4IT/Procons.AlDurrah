@@ -47,6 +47,8 @@
         "login": "Login Failed. Pleasre Try Again!",
         "register": "Invalid Registration. Please Try Again!",
         "forgotPassword": "Something went wrong!",
+        "forgotPassword-200": "Reset Has Been Sent!",
+        "forgotPassword-404": "Invalid Email",
         "resetPassword": "Something went wrong!",
         "confirmEmail": "Something went wrong!",
 
