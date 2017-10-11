@@ -155,7 +155,7 @@
                     </div>
                     <div class="modal-body">
                         <h4 *ngIf="!forgotPassModalText">ملء البريد الإلكتروني المسجل</h4>
-                        <h3>{{forgotPassModalText}}</h3>
+                        <h3>{{forgotPassModalText | translate}}</h3>
 
                         <form action="#" method="post" id="forgotPassForm" *ngIf="!forgotPassModalText
                                            " (ngSubmit)="ForgotPassword(emailInput.value)">

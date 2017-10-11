@@ -3,10 +3,12 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/catch';
+
 
 import { Injectable, OnDestroy } from '@angular/core';
 import { WorkerFilterParams, ConfirmEmailParams, PaymentRedirectParams, KnetPayment, SearchCriteriaParams, ResetPasswordParams, CreateNewUserParams } from '../Models/ApiRequestType';
@@ -22,8 +24,8 @@ export class ApiService {
     private config = require('../../config.json');
     private language: string;
     private userLoggedIn: BehaviorSubject<boolean>;
-    private userTypeLogIn: Observable<string>;
-    
+    private userTypeLogIn: BehaviorSubject<string>;
+
 
     public resetParams: ResetPasswordParams = {
         EmailAddress: "",
@@ -34,7 +36,7 @@ export class ApiService {
     constructor(private http: Http) {
         this.language = navigator.language;
         this.userLoggedIn = new BehaviorSubject(this.isLoggedIn());
-        this.userTypeLogIn = this.userLoggedIn.filter(x=>x).map(x=>{
+        this.userTypeLogIn = (this.userLoggedIn as any).filter(x => x).map(x => {
             return this.GetUserType();
         });
     }
@@ -44,13 +46,14 @@ export class ApiService {
         this.alertListenersUserLoggedIn(this.isLoggedIn());
     }
 
-    public login(userName: string, password: string): Observable<boolean> {
+    public login(userName: string, password: string): Observable<any> {
         let requestBody = `grant_type=password&username=${userName}&password=${password}`;
 
         return this.httpPostHelper(this.config.loginUrl, requestBody).map(response => {
+            console.log('I was called!  ');
             if (response.status == 200) {
                 var token = response.json();
-                
+
                 sessionStorage.setItem(this.KEYS.SecurityToken, token.access_token);
                 sessionStorage.setItem(this.KEYS.SecurityTokenExpiryDate, token['expires_in']);
                 sessionStorage.setItem(this.KEYS.UserType, token.UserType);
@@ -58,7 +61,14 @@ export class ApiService {
                 return true;
             } else
                 return false;
-        }).do(x => { this.alertListenersUserLoggedIn(true) });
+        })
+            .catch(error => {
+                let errorObject: any = error.json && error.json();
+                let errorMessage: string =  errorObject.error_description || "something went wrong";
+                return Observable.throw(errorMessage);
+            })
+            .do(x => { this.alertListenersUserLoggedIn(true) });
+
     }
     public forgotPassword(email: string): Observable<any> {
         var requestBody = { EmailAddress: email };;
@@ -99,11 +109,11 @@ export class ApiService {
             .map(response => { return response.json(); })
     }
     public getAllWorkers(optionalFilterCritera: WorkerFilterParams | object): Observable<Worker[]> {
-        
+
         var actualData = this.httpPostHelper(this.config.getWorkersUrl, optionalFilterCritera)
             .map(response => {
                 var data: any[] = response.json();
-                
+
                 return data;
             });
         return actualData;
@@ -170,7 +180,7 @@ export class ApiService {
     public onUserLoggedIn(): BehaviorSubject<boolean> {
         return this.userLoggedIn;
     }
-    public onUserTypeLoggedIn(): Observable<string>{
+    public onUserTypeLoggedIn(): BehaviorSubject<string> {
         return this.userTypeLogIn;
     }
 }

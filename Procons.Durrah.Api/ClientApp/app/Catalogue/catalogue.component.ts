@@ -107,6 +107,7 @@ export class CatalogueComponent implements OnInit {
             
         });
     }
+    //TO-DO: REMOVE AMOUNT HERE!
     Book(onBook: Boolean) {
         var selectedWorker = this.selectedWorker;
         

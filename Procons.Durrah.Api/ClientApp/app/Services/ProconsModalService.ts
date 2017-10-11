@@ -8,21 +8,32 @@ export class ProconsModalSerivce {
 
     }
 
-    showErrorModal(optionalMessage: string = "error.default") {
-        this.translate.get([optionalMessage, 'ok']).subscribe(errorMessages => {
-            this.modal.alert()
-                .showClose(true)
-                .body(`
+    showErrorModal(optionalMessage: string = "error.default", isTranslateKey = true) {
+        if (isTranslateKey) {
+            this.translate.get([optionalMessage, 'ok']).subscribe(errorMessages => {
+                this.createErrorModalTemplate(errorMessages[optionalMessage], errorMessages['ok']);
+            });
+        }else{
+            this.translate.get(['ok']).subscribe(errorMessages => {
+                this.createErrorModalTemplate(optionalMessage, errorMessages['ok']);
+            });
+        }
+
+    }
+
+    private createErrorModalTemplate(errorMessage: string, buttonMessage: string) {
+        this.modal.alert()
+            .showClose(true)
+            .body(`
                         <div class="modal-body">
                             <div class="modal-icon"><img src="/Assets/src/app/images/icon_lock.png" class="icon" /></div>
-                            <p><small>${errorMessages[optionalMessage]}</small></p>
+                            <p><small>${errorMessage}</small></p>
                         </div>`
-                )
-                .okBtn(errorMessages['ok'])
-                .open();
+            )
+            .okBtn(buttonMessage)
+            .open();
 
 
-        });
     }
 
     showHTMLModal(html: string) {
