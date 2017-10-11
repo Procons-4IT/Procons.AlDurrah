@@ -24,7 +24,7 @@ export class ApiService {
     private config = require('../../config.json');
     private language: string;
     private userLoggedIn: BehaviorSubject<boolean>;
-    private userTypeLogIn: Observable<string>;
+    private userTypeLogIn: BehaviorSubject<string>;
 
 
     public resetParams: ResetPasswordParams = {
@@ -180,7 +180,7 @@ export class ApiService {
     public onUserLoggedIn(): BehaviorSubject<boolean> {
         return this.userLoggedIn;
     }
-    public onUserTypeLoggedIn(): Observable<string> {
+    public onUserTypeLoggedIn(): BehaviorSubject<string> {
         return this.userTypeLogIn;
     }
 }

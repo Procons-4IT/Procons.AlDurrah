@@ -15,7 +15,7 @@ import { ApiService } from './Services/ApiService';
 export class AppComponent implements OnInit {
     public items: MenuItem[];
     public isLoginPage: boolean;
-    public isAdmin: boolean;
+    public isAgent: boolean = false;
     public isLoggedIn: boolean = false;
     public menuNode = {};
 
@@ -33,11 +33,18 @@ export class AppComponent implements OnInit {
 
     ngOnInit() {
         this.listenToUserLogin();
+        this.listenToUserTypeLogin();
     }
 
     listenToUserLogin() {
         this.myApi.onUserLoggedIn().subscribe(x => {
             this.isLoggedIn = x;
+        });
+    }
+    listenToUserTypeLogin() {
+        this.myApi.onUserTypeLoggedIn().subscribe(userType => {
+            console.log('adding user type ',userType);
+            this.isAgent = userType === "cSupplier"
         });
     }
     logOut() {
