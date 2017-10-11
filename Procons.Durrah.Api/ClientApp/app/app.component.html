@@ -21,7 +21,7 @@
                     <li *ngIf="!isLoggedIn"><a href="#sectionLogin" class="page-scroll">التسجيل</a></li>
                     <li><a href="#sectionWebshop" class="page-scroll">سوق الدرة</a></li>
                     <li *ngIf="!isAgent"><a href="#sectionCatalogue" class="page-scroll">كتالوج الدره</a></li>
-                    <li *ngIf="isLoggedIn && isAgent"><a href="#sectionWorkerManagment" class="page-scroll">worker managment</a></li>
+                    <li *ngIf="isLoggedIn && isAgent"><a href="#sectionWorkerManagment" class="page-scroll">خصائص العمال</a></li>
                     <li><a href="#sectionServices" class="page-scroll">خدماتنا</a></li>
                     <li><a href="#sectionIntroduction" class="page-scroll"> نبذه عن الشركه</a></li>
                     <li *ngIf="isLoggedIn"><a (click)="logOut()" class="page-scroll btn btn-default">{{'logOut' | translate }}</a></li>
