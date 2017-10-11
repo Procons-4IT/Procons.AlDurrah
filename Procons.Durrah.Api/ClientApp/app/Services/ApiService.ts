@@ -62,13 +62,16 @@ export class ApiService {
             } else
                 return false;
         })
-            .catch(error => {
-                let errorObject: any = error.json && error.json();
-                let errorMessage: string =  errorObject.error_description || "something went wrong";
-                return Observable.throw(errorMessage);
+            .catch(errorResponse => {
+                return Observable.throw(this.getErrorMessage(errorResponse));
             })
             .do(x => { this.alertListenersUserLoggedIn(true) });
 
+    }
+    private getErrorMessage(errorResponse): string {
+        let errorObject: any = errorResponse.json && errorResponse.json();
+        let errorMessage: string = errorObject.error_description || "something went wrong";
+        return errorMessage;
     }
     public forgotPassword(email: string): Observable<any> {
         var requestBody = { EmailAddress: email };;
@@ -88,6 +91,8 @@ export class ApiService {
         return this.httpPostHelper(this.config.createNewUserUrl, param)
             .map(response => {
                 return response.json();
+            }).catch(errorResponse => {
+                return Observable.throw(this.getErrorMessage(errorResponse));
             });
     }
     public knetPaymentRedirectUrl(paymentInformation: PaymentRedirectParams): Observable<string> {
