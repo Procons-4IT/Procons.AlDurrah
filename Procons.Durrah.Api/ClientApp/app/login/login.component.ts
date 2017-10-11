@@ -130,7 +130,7 @@ export class LoginComponent implements OnInit {
             this.recaptchaToken = null;
             this.captcha.reset();
         }, onError => {
-
+            debugger;
             this.loading = false;
             this.myModal.showErrorModal(onError,false);
             this.recaptchaToken = null;

@@ -90,11 +90,14 @@
         public AspNet.IdentityResult CreateUser(ApplicationUser user)
         {
             AspNet.IdentityResult identityResult = null;
-            var password = Utilities.Encrypt(user.Password);
-            var oDoc = base.B1Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oBusinessPartners) as SAPbobsCOM.BusinessPartners;
-            var oRecords = base.B1Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.BoRecordset) as SAPbobsCOM.Recordset;
+            SAPbobsCOM.BusinessPartners oDoc = null;
+            SAPbobsCOM.Recordset oRecords = null;
             try
             {
+                var password = Utilities.Encrypt(user.Password);
+                oDoc = base.B1Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oBusinessPartners) as SAPbobsCOM.BusinessPartners;
+                oRecords = base.B1Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.BoRecordset) as SAPbobsCOM.Recordset;
+
                 oRecords.DoQuery($@"SELECT ""CardCode"" FROM OCRD WHERE ""U_UserName"" = '{user.UserName}' OR ""E_Mail"" = '{user.Email}'");
                 if (oRecords.RecordCount == 0)
                 {
@@ -109,6 +112,7 @@
                     {
                         var err = base.B1Company.GetLastErrorDescription();
                         identityResult = new AspNet.IdentityResult(err);
+                        throw new Exception(err);
                     }
                     else
                         identityResult = AspNet.IdentityResult.Success; ;

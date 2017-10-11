@@ -69,8 +69,9 @@ export class ApiService {
 
     }
     private getErrorMessage(errorResponse): string {
+        debugger;
         let errorObject: any = errorResponse.json && errorResponse.json();
-        let errorMessage: string = errorObject.error_description || "something went wrong";
+        let errorMessage: string = errorObject.error_description || errorObject.message|| "something went wrong";
         return errorMessage;
     }
     public forgotPassword(email: string): Observable<any> {

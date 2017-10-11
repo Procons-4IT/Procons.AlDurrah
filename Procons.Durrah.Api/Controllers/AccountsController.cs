@@ -10,6 +10,8 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net;
+    using System.Net.Http;
     using System.Threading.Tasks;
     using System.Web.Http;
 
@@ -23,19 +25,23 @@
 
         [AllowAnonymous]
         [Route("create")]
-        public async Task<IHttpActionResult> CreateUser(ApplicationUser user)
+        public async Task<HttpResponseMessage> CreateUser(ApplicationUser user)
         {
-            if (!base.GoogleReCaptcha(user.CaptchaCode))
-                return BadRequest("Verify Captcha!");
-            
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            //if (!base.GoogleReCaptcha(user.CaptchaCode))
+            //    return BadRequest("Verify Captcha!");
+
+            //if (!ModelState.IsValid)
+            //    return BadRequest(ModelState);
             //var baseUrl = Request.RequestUri.GetLeftPart(UriPartial.Authority);
             var baseUrl = Utilities.GetConfigurationValue(Common.Constants.ConfigurationKeys.BaseUrl);
             IdentityResult addUserResult = await this.AppUserManager.CreateAsync(user);
 
             if (!addUserResult.Succeeded)
-                return GetErrorResult(addUserResult);
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, addUserResult.Errors.FirstOrDefault());
+                //return GetErrorResult(addUserResult);
+            }
+                
             else
             {
                 idMessage.Destination = user.Email;
@@ -52,10 +58,11 @@
                     var messageBody = Utilities.GetResourceValue(Common.Constants.Resources.ConfirmationBody).GetMessageBody(tokens);
                     idMessage.Body = messageBody;
                     emailService.SendAsync(idMessage);
-                    return Ok(Utilities.GetResourceValue(Common.Constants.Resources.ConfirmationSent));
+                    return Request.CreateResponse(HttpStatusCode.OK, Utilities.GetResourceValue(Common.Constants.Resources.ConfirmationSent));
+                    //return Ok(Utilities.GetResourceValue(Common.Constants.Resources.ConfirmationSent));
                 }
                 else
-                    return NotFound();
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, result); 
             }
         }
 
