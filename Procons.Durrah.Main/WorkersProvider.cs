@@ -13,11 +13,14 @@
     using System.Collections.Generic;
     using System.Data.Services.Client;
     using System.Data.SqlClient;
+    using System.Drawing;
     using System.IO;
     using System.Linq;
     using System.Net.Http;
     using System.Text;
     using System.Threading;
+    using System.Web;
+    using System.Web.UI;
     using SAPB1 = Procons.Durrah.Main.B1ServiceLayer.SAPB1;
 
     public class WorkersProvider : ProviderBase
@@ -278,6 +281,7 @@
 
                 while (readerResult.Read())
                 {
+
                     workersList.Add(
                         new Worker()
                         {
@@ -297,7 +301,7 @@
                             PassportIssDate = MapField<string>(readerResult["U_PassportIssDate"]),
                             PassportNumber = MapField<string>(readerResult["U_PassportNumber"]),
                             PassportPoIssue = MapField<string>(readerResult["U_PassportPoIssue"]),
-                            Photo = MapField<string>(readerResult["U_Photo"]),
+                            Photo =  MapField<string>(readerResult["U_Photo"]),
                             Religion = MapField<string>(readerResult[Utilities.GetLocalizedField("U_Religion")]),
                             SerialNumber = MapField<string>(readerResult["U_Serial"]),
                             Status = MapField<string>(readerResult["U_Status"]),

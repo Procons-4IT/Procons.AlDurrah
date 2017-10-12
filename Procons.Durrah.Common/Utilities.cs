@@ -6,6 +6,8 @@
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Configuration;
+    using System.Drawing;
+    using System.Drawing.Imaging;
     using System.IO;
     using System.Linq;
     using System.Security.Cryptography;
@@ -136,6 +138,28 @@
                 content = content.Replace($"[[{k.Key}]]", k.Value);
             }
             return content.ToString();
+        }
+
+        public static string GetUrlFromLocalImage(string path)
+        {
+            try
+            {
+                var image = Image.FromFile(path);
+                byte[] imageBytes = null;
+                using (var ms = new MemoryStream())
+                {
+                    image.Save(ms, ImageFormat.Png);
+                    imageBytes = ms.ToArray();
+                }
+                string base64String = Convert.ToBase64String(imageBytes, 0, imageBytes.Length);
+                var imageUrl = $"data:image/png;base64," + base64String;
+                return imageUrl;
+            }
+            catch(Exception ex)
+            {
+                Utilities.LogException(ex);
+                return string.Empty;
+            }
         }
     }
 }
