@@ -371,6 +371,17 @@
                 var salesOrder = GetSalesOrder(trans.PaymentID);
                 if (salesOrder != null)
                 {
+                    salesOrder.UserFields.Fields.Item("U_Result").Value = trans.Result;
+                    salesOrder.UserFields.Fields.Item("U_Auth").Value = trans.Auth;
+                    salesOrder.UserFields.Fields.Item("U_TranID").Value = trans.TranID;
+                    salesOrder.UserFields.Fields.Item("U_Ref").Value = trans.Ref;
+                    if (salesOrder.Update() != 0)
+                    {
+                        base.B1Company.EndTransaction(BoWfTransOpt.wf_RollBack);
+                        var err = base.B1Company.GetLastErrorDescription();
+                        throw new Exception(err);
+                    }
+
                     var itemnumber = salesOrder.Lines.LineNum;
                     var itemcode = salesOrder.Lines.ItemCode;
                     Documents oDoc = base.B1Company.GetBusinessObject(BoObjectTypes.oInvoices) as Documents;
