@@ -271,6 +271,7 @@
 
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@RELIGION"" AS ""R"" ON ""A"".""U_Religion"" = ""R"".""Code""");
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@EDUCATION"" AS ""E"" ON ""A"".""U_Education"" = ""E"".""Code""");
+                query.Append($@"WHERE A.""U_Status"" = '1' ");
 
                 query.Append(exp);
                 var readerResult = dbHelper.ExecuteQuery(query.ToString());
@@ -456,7 +457,10 @@
 
             if (typeof(T) == typeof(COUNTRIES))
             {
-                var results = _serviceInstance.CurrentServicelayerInstance.COUNTRIESUDO.ToList<COUNTRIES>();
+                //var query = from c in _serviceInstance.CurrentServicelayerInstance.COUNTRIESUDO
+                //            select new ListItem(c.Code, c.Name, c.U_NAME);
+                //var test = query.ToList();
+                var results = _serviceInstance.CurrentServicelayerInstance.COUNTRIESUDO.ToList();
                 return GetLookups<COUNTRIES>(results);
             }
             else if (typeof(T) == typeof(LANGUAGES))
@@ -483,6 +487,19 @@
                 return null;
 
             List<LookupItem> GetLookups<Y>(List<Y> list)
+            {
+                var lookups = new List<LookupItem>();
+                foreach (dynamic r in list)
+                {
+                    if (Utilities.GetCurrentLanguage() == Languages.English.GetDescription())
+                        lookups.Add(new LookupItem(r.Name, r.Code));
+                    else
+                        lookups.Add(new LookupItem(r.U_NAME, r.Code));
+                }
+                return lookups;
+            }
+
+            List<LookupItem> GetLookupsNew<Y>(List<Y> list)
             {
                 var lookups = new List<LookupItem>();
                 foreach (dynamic r in list)
@@ -614,7 +631,7 @@
                 return null;
         }
 
-        private string GetExpressionSql(Catalogue wrk)
+        private string GetExpressionSqlOld(Catalogue wrk)
         {
             StringBuilder queryBuilder = new StringBuilder();
             if (wrk != null)
@@ -686,6 +703,42 @@
                 return null;
         }
 
+        private string GetExpressionSql(Catalogue wrk)
+        {
+            StringBuilder queryBuilder = new StringBuilder();
+            if (wrk != null)
+            {
+                if (wrk.Age != null)
+                {
+                    var boundaries = wrk.Age.Trim().Split('-');
+                    queryBuilder.Append($" AND \"U_Age\" BETWEEN {boundaries[0]} AND {boundaries[1]}");
+                }
+                if (wrk.Gender != null)
+                {
+                    queryBuilder.Append($" AND \"U_Gender\" = '{wrk.Gender}'");
+                }
+                if (wrk.Nationality != null)
+                {
+                    queryBuilder.Append($" AND \"U_Nationality\" = '{wrk.Nationality}'");
+                }
+                if (wrk.MaritalStatus != null)
+                {
+                    queryBuilder.Append($" AND \"U_MaritalStatus\" = '{wrk.MaritalStatus}'");
+                }
+                if (wrk.WorkerType != null)
+                {
+                    queryBuilder.Append($" AND \"U_ItemCode\" = '{wrk.WorkerType}'");
+                }
+                if (wrk.Language != null)
+                {
+                    queryBuilder.Append($" AND \"U_Language\" = '{wrk.Language}'");
+                }
+                return queryBuilder.ToString();
+            }
+            else
+                return null;
+        }
+
         private string CreateAttachment(string fileName)
         {
             SAPbobsCOM.Attachments2 oATT = base.B1Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oAttachments2) as SAPbobsCOM.Attachments2;
@@ -720,5 +773,19 @@
         }
 
         #endregion
+    }
+
+    public class ListItem
+    {
+        public string Code { get; set; }
+        public string Name { get; set; }
+        public string U_Name { get; set; }
+
+        public ListItem(string code,string english,string arabic)
+        {
+            Code = code;
+            Name = english;
+            U_Name = arabic;
+        }
     }
 }

@@ -74,7 +74,7 @@ export class CatalogueComponent implements OnInit {
     }
 
     GoToResults(workerFilter: Worker) {
-        
+        debugger;
         this.loading = true;
         this.myApi.getAllWorkers(workerFilter).subscribe(workers => {
             this.loading = false

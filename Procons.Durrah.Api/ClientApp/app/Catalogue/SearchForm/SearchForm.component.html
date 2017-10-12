@@ -45,8 +45,8 @@
                       </option>
                    </select>
         </div>
-        <div class="form-group" #languageInput>
-          <select class="form-control">
+        <div class="form-group" >
+          <select class="form-control" #languageInput>
                      <option>اللغات المتحدث بها</option>
                      <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriteriaParams.languages;">
                         {{nameValuePair.name}}

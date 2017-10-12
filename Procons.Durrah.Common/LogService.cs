@@ -5,6 +5,7 @@
     using NLog.Targets;
     using System;
     using System.Diagnostics;
+    using System.IO;
     using System.Text;
 
     public class LogService: ILoggingService
@@ -14,6 +15,13 @@
 
         public LogService()
         {
+           
+            var physicalPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath;
+            var logPath = string.Concat(physicalPath, "Durra logs");
+
+            if (!Directory.Exists(logPath))
+                Directory.CreateDirectory(logPath);
+
             TargetName = "Durra";
             var template = new StringBuilder("-------------- ${level} (${longdate}) --------------${newline}");
             template.Append("${newline}");
@@ -25,7 +33,7 @@
 
             var target = new FileTarget();
             target.Name = TargetName;
-            target.FileName = $"c:\\Durra logs\\{Guid.NewGuid()}.log";
+            target.FileName = $"{logPath}\\{Guid.NewGuid()}.log";
             target.Layout = template.ToString();
 
             var config = new LoggingConfiguration();
@@ -35,7 +43,6 @@
             config.LoggingRules.Add(rule);
 
             LogManager.Configuration = config;
-
             _siteLogger = LogManager.GetLogger(TargetName);
         }
 
