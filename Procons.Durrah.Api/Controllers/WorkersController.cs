@@ -225,16 +225,24 @@
         {
             var cardCode = GetCurrentUserCardCode();
             var worker = await SaveFile();
-            var result =  workersFacade.UpdateWorker(worker);
+            var result =  workersFacade.UpdateWorker(worker,cardCode);
             return Ok(result);
         }
 
         [HttpPost]
-        [Authorize]
-        public IHttpActionResult DeleteWorker(string code)
+        public IHttpActionResult DeleteWorker([FromBody]Worker worker)
         {
-            return Ok();
+            var cardCode = GetCurrentUserCardCode();
+            var result = workersFacade.DeleteWorker(worker.WorkerCode, cardCode);
+            return Ok(result);
         }
+
+        //[HttpPost]
+        //[Authorize]
+        //public IHttpActionResult DeleteWorker(string code)
+        //{
+        //    return Ok();
+        //}
 
         #region Private Methods
 
@@ -352,6 +360,7 @@
             worker.Video = MapField<string>(provider.FormData["Video"]);
             worker.Height = MapField<string>(provider.FormData["Height"]);
             worker.Weight = MapField<string>(provider.FormData["Weight"]);
+            worker.WorkerCode = MapField<string>(provider.FormData["WorkerCode"]);
         }
 
         #endregion

@@ -882,7 +882,7 @@
             catch (Exception ex)
             {
 
-                //throw ex;
+                Utilities.LogException(ex);
             }
 
             return null;
@@ -1350,6 +1350,9 @@
         {
             return currentServiceContainer.WORKERSUDO.ToList<WORKERS>();
         }
+
+       
+
         /// <summary>
         /// 
         /// </summary>

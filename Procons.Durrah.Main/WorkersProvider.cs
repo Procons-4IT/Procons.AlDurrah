@@ -85,7 +85,7 @@
                 var oGeneralService = sCmp.GetGeneralService("WORKERSUDO");
 
                 var oGeneralData = oGeneralService.GetDataInterface(GeneralServiceDataInterfaces.gsGeneralData) as GeneralData;
-                oGeneralData.SetProperty("Code", worker.CivilId);
+                oGeneralData.SetProperty("Code", worker.PassportNumber);
                 oGeneralData.SetProperty("U_Agent", worker.Agent);
                 oGeneralData.SetProperty("U_Age", worker.Age);
                 oGeneralData.SetProperty("U_BirthDate", worker.BirthDate);
@@ -109,7 +109,6 @@
                 oGeneralData.SetProperty("U_Weight", worker.Weight);
 
                 oGeneralService.Add(oGeneralData);
-                //CreateGoodsReceipt(worker.Code,  200, DateTime.Now, DateTime.Now, "");
                 created = true;
             }
             catch (Exception ex)
@@ -119,7 +118,7 @@
             return created;
         }
 
-        public bool UpdateWorker(Worker worker)
+        public bool UpdateWorker(Worker worker,string cardCode)
         {
             var created = false;
 
@@ -133,34 +132,47 @@
                 var oGeneralService = sCmp.GetGeneralService("WORKERSUDO");
 
                 GeneralDataParams oParams = oGeneralService.GetDataInterface(GeneralServiceDataInterfaces.gsGeneralDataParams) as GeneralDataParams;
-                oParams.SetProperty("Code", worker.CivilId);
+                oParams.SetProperty("Code", worker.WorkerCode);
                 var oGeneralData = oGeneralService.GetByParams(oParams);
 
-                oGeneralData.SetProperty("Code", Guid.NewGuid().ToString());
-                oGeneralData.SetProperty("U_Agent", "Wissam");
-                oGeneralData.SetProperty("U_Age", worker.Age);
-                oGeneralData.SetProperty("U_BirthDate", worker.BirthDate);
-                oGeneralData.SetProperty("U_CivilId", worker.CivilId);
-                oGeneralData.SetProperty("U_ItemCode", worker.Code);
-                oGeneralData.SetProperty("U_Education", worker.Education);
-                oGeneralData.SetProperty("U_Gender", worker.Gender);
-                oGeneralData.SetProperty("U_Height", worker.Height);
-                oGeneralData.SetProperty("U_Language", worker.Language);
-                oGeneralData.SetProperty("U_MaritalStatus", worker.MaritalStatus);
-                oGeneralData.SetProperty("U_Nationality", worker.Nationality);
-                oGeneralData.SetProperty("U_Passport", string.Concat(attachmentPath, passportCopy));
-                oGeneralData.SetProperty("U_PassportPoIssue", worker.PassportIssDate);
-                oGeneralData.SetProperty("U_PassportExpDate", worker.PassportExpDate);
-                oGeneralData.SetProperty("U_PassportNumber", worker.PassportNumber);
-                oGeneralData.SetProperty("U_Photo", string.Concat(attachmentPath, photo));
-                oGeneralData.SetProperty("U_Religion", worker.Religion);
-                oGeneralData.SetProperty("U_Serial", worker.SerialNumber);
-                oGeneralData.SetProperty("U_Status", worker.Status);
-                oGeneralData.SetProperty("U_Video", worker.Video);
-                oGeneralData.SetProperty("U_Weight", worker.Weight);
 
-                oGeneralService.Update(oGeneralData);
-                created = true;
+                if (oGeneralData != null )
+                {
+                    if(oGeneralData.GetProperty("U_ItemCode").ToString()== "DW00002")
+                    {
+                        //oGeneralData.SetProperty("Code", Guid.NewGuid().ToString());
+                        oGeneralData.SetProperty("U_Agent", "Wissam");
+                        oGeneralData.SetProperty("U_Age", worker.Age);
+                        oGeneralData.SetProperty("U_BirthDate", worker.BirthDate);
+                        oGeneralData.SetProperty("U_CivilId", worker.CivilId);
+                        oGeneralData.SetProperty("U_ItemCode", worker.Code);
+                        oGeneralData.SetProperty("U_Education", worker.Education);
+                        oGeneralData.SetProperty("U_Gender", worker.Gender);
+                        oGeneralData.SetProperty("U_Height", worker.Height);
+                        oGeneralData.SetProperty("U_Language", worker.Language);
+                        oGeneralData.SetProperty("U_MaritalStatus", worker.MaritalStatus);
+                        oGeneralData.SetProperty("U_Nationality", worker.Nationality);
+                        oGeneralData.SetProperty("U_Passport", string.Concat(attachmentPath, passportCopy));
+                        oGeneralData.SetProperty("U_PassportPoIssue", worker.PassportIssDate);
+                        oGeneralData.SetProperty("U_PassportExpDate", worker.PassportExpDate);
+                        oGeneralData.SetProperty("U_PassportNumber", worker.PassportNumber);
+                        oGeneralData.SetProperty("U_Photo", string.Concat(attachmentPath, photo));
+                        oGeneralData.SetProperty("U_Religion", worker.Religion);
+                        oGeneralData.SetProperty("U_Serial", worker.SerialNumber);
+                        oGeneralData.SetProperty("U_Status", worker.Status);
+                        oGeneralData.SetProperty("U_Video", worker.Video);
+                        oGeneralData.SetProperty("U_Weight", worker.Weight);
+
+                        oGeneralService.Update(oGeneralData);
+                        created = true;
+                    }
+                }
+                else
+                {
+                    Utilities.LogException($"Agent dont have permissions to update worker: {worker.WorkerCode}");
+                    created = false;
+                }
+                    
             }
             catch (Exception ex)
             {
@@ -169,24 +181,27 @@
             return created;
         }
 
-        public bool DeleteWorker(string id)
+        public bool DeleteWorker(string id, string cardCode)
         {
-            var conn = Factory.DeclareClass<DataBaseHelper.DatabaseHelper<SqlConnection>>();
-            SqlTransaction transaction = null;
-            var created = false;
+            var worker = new WORKERS();
+            var deleted = false;
             try
             {
-                transaction = conn.Connection.BeginTransaction();
-
-                //TODO: DELETE WORKER, GOODS ISSUE HAS TO BE CREATED 
-                transaction.Commit();
-                created = true;
+                var instance = ServiceLayerProvider.GetInstance();
+                worker = instance.CurrentServicelayerInstance.WORKERSUDO.Where(x => x.Code == id && x.U_Agent == cardCode).FirstOrDefault();
+                if (worker != null)
+                {
+                    instance.CurrentServicelayerInstance.DeleteObject(worker);
+                    instance.SaveChangesBatch();
+                    deleted = true;
+                }
             }
             catch (Exception ex)
             {
-                transaction.Rollback();
+                instance.CurrentServicelayerInstance.Detach(worker);
+                Utilities.LogException(ex);
             }
-            return created;
+            return deleted;
         }
 
         public List<Worker> GetWorkersOld(Catalogue worker)
@@ -327,7 +342,7 @@
 
                 instance.CurrentServicelayerInstance.AddToOrders(salesOrder);
                 var worker = instance.CurrentServicelayerInstance.WORKERSUDO.Where(x => x.U_Serial == trans.SerialNumber && x.U_ItemCode == trans.Code).FirstOrDefault();
-                worker.U_Status = "0";
+                worker.U_Status = "2";
                 instance.CurrentServicelayerInstance.UpdateObject(worker);
                 var resultOrder = instance.CurrentServicelayerInstance.SaveChanges();
 
@@ -354,6 +369,7 @@
             Transaction creationResult = null;
             try
             {
+                var paymentAmount = GetDownPaymentAmount();
                 base.B1Company.StartTransaction();
                 var salesOrder = GetSalesOrder(trans.PaymentID);
                 if (salesOrder != null)
@@ -389,7 +405,7 @@
                     oDownPay.CardCode = salesOrder.CardCode;
                     //oDownPay.DownPaymentPercentage = 100
                     oDownPay.DownPaymentType = SAPbobsCOM.DownPaymentTypeEnum.dptInvoice;
-
+                    oDownPay.DocTotal = paymentAmount;
                     oDownPay.Lines.BaseType = 17;
                     oDownPay.Lines.BaseEntry = salesOrder.Lines.DocEntry;
                     oDownPay.Lines.BaseLine = salesOrder.Lines.LineNum;
@@ -397,7 +413,6 @@
                     //oDownPay.Lines.SerialNumbers.InternalSerialNumber = salesOrder.Lines.SerialNumbers.InternalSerialNumber;
                     //oDownPay.Lines.SerialNumbers.ManufacturerSerialNumber = salesOrder.Lines.SerialNumbers.ManufacturerSerialNumber;
                     //oDownPay.Lines.SerialNumbers.SystemSerialNumber = salesOrder.Lines.SerialNumbers.SystemSerialNumber;
-
 
                     int RetCode = oDownPay.Add();
 
@@ -413,7 +428,7 @@
                     {
                         var InvoiceNo = base.B1Company.GetNewObjectKey();
                         var oPay = base.B1Company.GetBusinessObject(BoObjectTypes.oIncomingPayments) as Payments;
-                        var paymentAmount = GetDownPaymentAmount();
+                    
                         trans.Amount = paymentAmount.ToString();
                         oPay.CardCode = salesOrder.CardCode;
                         oPay.Invoices.DocEntry = Convert.ToInt32(InvoiceNo);

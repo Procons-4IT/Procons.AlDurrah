@@ -15,14 +15,14 @@
             return provider.CreateWorker(worker);
         }
 
-        public bool UpdateWorker(Worker worker)
+        public bool UpdateWorker(Worker worker,string cardCode)
         {
-            return provider.UpdateWorker(worker);
+            return provider.UpdateWorker(worker, cardCode);
         }
 
-        public bool DeleteWorker(string id)
+        public bool DeleteWorker(string id, string cardCode)
         {
-            return provider.DeleteWorker(id);
+            return provider.DeleteWorker(id, cardCode);
         }
 
         public List<Worker> GetWorkers(Catalogue wrk)
