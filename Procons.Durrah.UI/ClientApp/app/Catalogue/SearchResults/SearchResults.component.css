@@ -1,0 +1,18 @@
+
+.icon-large{
+    font-size: 2rem;
+}
+.ui-datatable .ui-datatable-frozen-view .ui-datatable-data > tr > td,
+.ui-datatable .ui-datatable-unfrozen-view .ui-datatable-data > tr > td {
+    height: 24px;
+}
+.row.no-gutter {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  
+  .row.no-gutter [class*='col-']:not(:first-child),
+  .row.no-gutter [class*='col-']:not(:last-child) {
+    padding-right: 0;
+    padding-left: 0;
+  }

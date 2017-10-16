@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.10
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procons.Durrah.Api", "Procons.Durrah.Api\Procons.Durrah.Api.csproj", "{FE46F959-09B9-4182-9AEC-E66364EFC1AC}"
 EndProject
@@ -16,6 +16,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procons.DatabaseHelper", "Procons.DatabaseHelper\Procons.DatabaseHelper.csproj", "{7E779548-DEF2-43A7-ACB7-F916C3285ED9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procons.ExpressionBuilder", "Procons.ExpressionBuilder\Procons.ExpressionBuilder.csproj", "{70BF550D-5943-4162-8FAB-0BBA743A3D93}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procons.Durrah.UI", "Procons.Durrah.UI\Procons.Durrah.UI.csproj", "{831EE704-127B-4FCC-8EEF-F43BB9499B36}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{70BF550D-5943-4162-8FAB-0BBA743A3D93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{70BF550D-5943-4162-8FAB-0BBA743A3D93}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{70BF550D-5943-4162-8FAB-0BBA743A3D93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{831EE704-127B-4FCC-8EEF-F43BB9499B36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{831EE704-127B-4FCC-8EEF-F43BB9499B36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{831EE704-127B-4FCC-8EEF-F43BB9499B36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{831EE704-127B-4FCC-8EEF-F43BB9499B36}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

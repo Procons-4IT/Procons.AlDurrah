@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="Procons.Durrah.Api.Services.KnetService" CodeBehind="KnetService.svc.cs" %>

@@ -1,0 +1,158 @@
+<!-- <section role="main" class="main-container subpage"> -->
+
+<div class="section section-overlay section-full-width full-height" id="sectionCatalogue2">
+  <div class="container">
+    <div class="section-content">
+      <div class="content-wrapper">
+        <div class="tab-content">
+          <div role="tabpanel">
+            <div class="row">
+              <div class="col-xs-12">
+                <h2 class="text-center"><span class="icon icon-ed-search icon-3x"></span> {{state.title}}</h2>
+                <form (ngSubmit)="addWorker(photoInput,passportInput);" method="post" id="profileEditForm" class="form-default has-upload" #workerForm="ngForm">
+                  <div class="row">
+                    <div class="form-group col-sm-6">
+                      <input type="date" class="form-control" name="birthDate" [(ngModel)]="state.worker.birthDate" />
+                    </div>
+
+                    <div class="form-group col-sm-6">
+                      <select class="form-control" name="gender" [(ngModel)]="state.worker.gender">
+                                  <option>Gender</option>
+                                  <option>Male </option>
+                                  <option>Female</option>
+                                </select>
+                    </div>
+
+                    <div class="form-group col-sm-6">
+                      <select class="form-control" name="nationality" [(ngModel)]="state.worker.nationality">
+                                  <option>Nationality</option>
+                                  <option>Lebanon</option>
+                                </select>
+                    </div>
+
+                    <div class="form-group col-sm-6">
+                      <select class="form-control" name="religion" [(ngModel)]="state.worker.religion">
+                                  <option>Religion</option>
+                                  <option>Other</option>
+                                </select>
+                    </div>
+
+                    <div class="form-group col-sm-6">
+                      <select class="form-control" name="maritalStatus" [(ngModel)]="state.worker.maritalStatus">
+                                  <option>Happy</option>
+                                  <option>Married</option>
+                                </select>
+                    </div>
+
+
+                    <div class="form-group col-sm-6">
+                      <select class="form-control" name="language" [(ngModel)]="state.worker.language">
+                                  <option>Arabic</option>
+                                  <option>Arabic</option>
+                                  <option>Arabic</option>
+                                </select>
+                    </div>
+
+                    <!-- FIX PHOTO BINDING TO FILE TYPE! -->
+                    <div class="form-group col-sm-6">
+                      <input type="text" class="form-control input-fake" placeholder="Photo" />
+                      <input type="file" name="photo" id="photo" class="form-control input-file" placeholder="Photo" #photoInput/>
+                      <label for="photo"><span class="text">File Upload</span> <span class="icon icon-angle-down icon-xs"></span></label>
+                    </div>
+
+
+                    <div class="form-group col-sm-6">
+                      <input type="text" class="form-control" placeholder="Weight" name="weight" [(ngModel)]="state.worker.weight" />
+                    </div>
+
+
+                    <div class="form-group col-sm-6">
+                      <input name="height" [(ngModel)]="state.worker.height" type="text" class="form-control" placeholder="Height" />
+                    </div>
+
+
+                    <div class="form-group col-sm-6">
+                      <select class="form-control" name="education" [(ngModel)]="state.worker.education">
+                                  <option>Good</option>
+                                  <option>Good</option>
+                                  <option>Good</option>
+                                  <option>Good</option>
+                                </select>
+                    </div>
+                    <!-- FIX PASSPORT PHOTO UPLOAD -->
+                    <div class="form-group col-sm-6">
+                      <input type="text" class="form-control input-fake" placeholder="Photo" />
+                      <input type="file" name="passport" id="passport" class="form-control input-file" placeholder="Passport" #passportInput/>
+                      <label for="passport"><span class="text">File Upload</span> <span class="icon icon-angle-down icon-xs"></span></label>
+                    </div>
+
+
+                    <div class="form-group col-sm-6">
+                      <input name="videopublic" [(ngModel)]="state.worker.videopublic" type="text" class="form-control" placeholder="http://Video Link"
+                      />
+                    </div>
+
+                    <div class="form-group col-sm-6">
+                      <input name="passortNumber" [(ngModel)]="state.worker.passportNumber" type="text" class="form-control" placeholder="Passport Number"
+                      />
+                    </div>
+
+                    <div class="form-group col-sm-6">
+                      <input name="passportIssueDate" [(ngModel)]="state.worker.passportIssDate" type="text" class="form-control" placeholder="Passport Issue Date"
+                      />
+                    </div>
+
+
+                    <div class="form-group col-sm-6">
+                      <input name="passportPoIssue" [(ngModel)]="state.worker.passportPoIssue" type="text" class="form-control" placeholder="Passport Place of Issue"
+                      />
+                    </div>
+
+                    <div class="form-group col-sm-6">
+                      <input name="passportExpiry" [(ngModel)]="state.worker.passportExpDate" type="text" class="form-control" placeholder="Passport Date of Expiry"
+                      />
+                    </div>
+
+
+                    <div class="form-group col-sm-6">
+                      <input name="civilId" [(ngModel)]="state.worker.civilId" type="text" class="form-control" placeholder="Civil ID" />
+                    </div>
+
+                    <!-- TO DO FIX  TYPE? Is it need?? ! !  -->
+
+                    <!-- <div class="form-group col-sm-6">
+                      <select class="form-control">
+                        <option>Type</option>
+                      </select>
+                    </div> -->
+
+
+                    <div class="form-group col-sm-6 text-right">
+                      <input type="submit" value="Save" class="btn btn-default" id="" />
+                    </div>
+                    <div class="form-group col-sm-6 text-right">
+                      <div class="btn btn-default" (click)="back()">{{'back' | translate }}</div>
+                    </div>
+                  </div>
+                </form>
+                <!-- DELETE ME PLEASEEEEE -->
+                <!-- <p>Debugger:</p>
+                <p style="word-break: break-word"> {{print(state.worker)}}</p> -->
+                <div>
+                  Temp Text
+                  <label for="file">Upload Files</label>
+                  <input type="file" id="file" multiple #files>
+                  <button (click)="originalUploadFile(files)">Submit!</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- </section> -->

@@ -1,0 +1,12 @@
+{
+  "baseUrl": "http://dev.procons-scloud.com",
+  "getSearchCriteriaUrl": "/api/Workers/GetSearchLookups",
+  "getWorkersUrl": "/api/Workers/GetWorkers",
+  "knetUrl": "/api/Workers/CallKnetGateway",
+  "incomingPaymentUrl": "/api/Workers/CreatePayment",
+  "loginUrl": "/oauth/token",
+  "forgotPasswordUrl": "/api/accounts/resetrequest",
+  "resetPasswordUrl": "/api/accounts/reset",
+  "createNewUserUrl": "/api/accounts/create",
+  "emailValidationUrl": "/api/accounts/confirmEmail"
+}
