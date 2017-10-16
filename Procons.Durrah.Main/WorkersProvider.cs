@@ -32,25 +32,7 @@
             var _serviceInstance = ServiceLayerProvider.GetInstance();
             var _worker = new WORKERS();
 
-            //var bodyText = @"{""ItemPriceParams"": { ""CardCode"": ""Houssam"", ""ItemCode"": ""DRH0001WRKR""}}";
-            //dynamic responseObject = _serviceInstance.Execute("CompanyService_GetItemPrice", HttpMethod.Post, bodyText);
             var fileName = CreateAttachment(@"c:\BoyumInstallerLog.txt");
-
-            //dynamic responseObject = _serviceInstance.Execute("CompanyService_GetPathAdmin", HttpMethod.Post, null);
-            //var _attachment = new SAPB1.Attachments2();
-            //var _attachmentLine = new SAPB1.Attachments2_Line();
-            //_attachmentLine.FileName = System.IO.Path.GetFileNameWithoutExtension(@"c:\BoyumInstallerLog.txt");
-            //_attachmentLine.Override = SAPbobsCOM.BoYesNoEnum.tYES.ToString();
-            //_attachmentLine.FileExtension = System.IO.Path.GetExtension(@"c:\BoyumInstallerLog.txt").Substring(1);
-            //_attachmentLine.SourcePath = @"/";
-            //_attachmentLine.UserID = "1";
-            //_attachment.Attachments2_Lines.Add(_attachmentLine);
-            //_serviceInstance.CurrentServicelayerInstance.AddToAttachments2(_attachment);
-            //BodyOperationParameter[] body = null;
-            //var resultTest = _serviceInstance.CurrentServicelayerInstance.Execute<object>(new Uri("https://192.168.1.120:50000/b1s/v1/CompanyService_GetPathAdmin"), "POST", false, body);
-            //DataServiceResponse response1 = _serviceInstance.CurrentServicelayerInstance.SaveChanges();
-
-
             _worker.Code = Guid.NewGuid().ToString();
             _worker.U_Agent = worker.Agent;
             _worker.U_Age = worker.Age;
@@ -106,7 +88,7 @@
                 oGeneralData.SetProperty("Code", worker.CivilId);
                 oGeneralData.SetProperty("U_Agent", worker.Agent);
                 oGeneralData.SetProperty("U_Age", worker.Age);
-                oGeneralData.SetProperty("U_BirthDate",worker.BirthDate);
+                oGeneralData.SetProperty("U_BirthDate", worker.BirthDate);
                 oGeneralData.SetProperty("U_CivilId", worker.CivilId);
                 oGeneralData.SetProperty("U_ItemCode", worker.Code);
                 oGeneralData.SetProperty("U_Education", worker.Education);
@@ -127,6 +109,7 @@
                 oGeneralData.SetProperty("U_Weight", worker.Weight);
 
                 oGeneralService.Add(oGeneralData);
+                //CreateGoodsReceipt(worker.Code,  200, DateTime.Now, DateTime.Now, "");
                 created = true;
             }
             catch (Exception ex)
@@ -151,7 +134,7 @@
 
                 GeneralDataParams oParams = oGeneralService.GetDataInterface(GeneralServiceDataInterfaces.gsGeneralDataParams) as GeneralDataParams;
                 oParams.SetProperty("Code", worker.CivilId);
-                var oGeneralData= oGeneralService.GetByParams(oParams);
+                var oGeneralData = oGeneralService.GetByParams(oParams);
 
                 oGeneralData.SetProperty("Code", Guid.NewGuid().ToString());
                 oGeneralData.SetProperty("U_Agent", "Wissam");
@@ -301,7 +284,7 @@
                             PassportIssDate = MapField<string>(readerResult["U_PassportIssDate"]),
                             PassportNumber = MapField<string>(readerResult["U_PassportNumber"]),
                             PassportPoIssue = MapField<string>(readerResult["U_PassportPoIssue"]),
-                            Photo =  MapField<string>(readerResult["U_Photo"]),
+                            Photo = MapField<string>(readerResult["U_Photo"]),
                             Religion = MapField<string>(readerResult[Utilities.GetLocalizedField("U_Religion")]),
                             SerialNumber = MapField<string>(readerResult["U_Serial"]),
                             Status = MapField<string>(readerResult["U_Status"]),
@@ -388,18 +371,37 @@
 
                     var itemnumber = salesOrder.Lines.LineNum;
                     var itemcode = salesOrder.Lines.ItemCode;
-                    Documents oDoc = base.B1Company.GetBusinessObject(BoObjectTypes.oInvoices) as Documents;
-                    oDoc.CardCode = salesOrder.CardCode;
-                    oDoc.Lines.BaseEntry = salesOrder.Lines.DocEntry;
-                    oDoc.Lines.BaseLine = salesOrder.Lines.LineNum;
-                    oDoc.Lines.BaseType = 17;
-                    oDoc.Lines.Quantity = 1;
-                    oDoc.Lines.UnitPrice = salesOrder.Lines.UnitPrice;
-                    oDoc.Lines.SerialNumbers.InternalSerialNumber = salesOrder.Lines.SerialNumbers.InternalSerialNumber;
-                    oDoc.Lines.SerialNumbers.ManufacturerSerialNumber = salesOrder.Lines.SerialNumbers.ManufacturerSerialNumber;
-                    oDoc.Lines.SerialNumbers.SystemSerialNumber = salesOrder.Lines.SerialNumbers.SystemSerialNumber;
 
-                    int RetCode = oDoc.Add();
+                    //Documents oDoc = base.B1Company.GetBusinessObject(BoObjectTypes.oInvoices) as Documents;
+                    //oDoc.CardCode = salesOrder.CardCode;
+                    //oDoc.Lines.BaseEntry = salesOrder.Lines.DocEntry;
+                    //oDoc.Lines.BaseLine = salesOrder.Lines.LineNum;
+                    //oDoc.Lines.BaseType = 17;
+                    //oDoc.Lines.Quantity = 1;
+                    //oDoc.Lines.UnitPrice = salesOrder.Lines.UnitPrice;
+                    //oDoc.Lines.SerialNumbers.InternalSerialNumber = salesOrder.Lines.SerialNumbers.InternalSerialNumber;
+                    //oDoc.Lines.SerialNumbers.ManufacturerSerialNumber = salesOrder.Lines.SerialNumbers.ManufacturerSerialNumber;
+                    //oDoc.Lines.SerialNumbers.SystemSerialNumber = salesOrder.Lines.SerialNumbers.SystemSerialNumber;
+                    //int RetCode = oDoc.Add();
+
+                    SAPbobsCOM.Documents oDownPay = base.B1Company.GetBusinessObject(BoObjectTypes.oDownPayments) as Documents;
+
+                    oDownPay.CardCode = salesOrder.CardCode;
+                    //oDownPay.DownPaymentPercentage = 100
+                    oDownPay.DownPaymentType = SAPbobsCOM.DownPaymentTypeEnum.dptInvoice;
+
+                    oDownPay.Lines.BaseType = 17;
+                    oDownPay.Lines.BaseEntry = salesOrder.Lines.DocEntry;
+                    oDownPay.Lines.BaseLine = salesOrder.Lines.LineNum;
+                    oDownPay.Lines.UnitPrice = salesOrder.Lines.UnitPrice;
+                    oDownPay.Lines.SerialNumbers.InternalSerialNumber = salesOrder.Lines.SerialNumbers.InternalSerialNumber;
+                    oDownPay.Lines.SerialNumbers.ManufacturerSerialNumber = salesOrder.Lines.SerialNumbers.ManufacturerSerialNumber;
+                    oDownPay.Lines.SerialNumbers.SystemSerialNumber = salesOrder.Lines.SerialNumbers.SystemSerialNumber;
+
+
+                    int RetCode = oDownPay.Add();
+
+
                     if (RetCode != 0)
                     {
                         if (base.B1Company.InTransaction)
@@ -416,7 +418,7 @@
                         oPay.CardCode = salesOrder.CardCode;
                         oPay.Invoices.DocEntry = Convert.ToInt32(InvoiceNo);
                         oPay.Invoices.SumApplied = paymentAmount;
-                        oPay.Invoices.InvoiceType = BoRcptInvTypes.it_Invoice;
+                        oPay.Invoices.InvoiceType = BoRcptInvTypes.it_DownPayment;
                         oPay.DocDate = DateTime.Today;
                         //TODO: Replace bank account with cach
                         oPay.TransferSum = paymentAmount;
@@ -547,13 +549,14 @@
             }
             return paymentAmount;
         }
+
         public string GetItemCodeByPaymentId(string paymentId)
         {
             string itemCode = string.Empty;
             try
             {
                 var conn = Factory.DeclareClass<DatabaseHelper<HanaConnection>>();
-               StringBuilder query=new StringBuilder($@" SELECT IFNULL(""ItemCode"",'') AS ""ItemCode""");
+                StringBuilder query = new StringBuilder($@" SELECT IFNULL(""ItemCode"",'') AS ""ItemCode""");
                 query.Append($@" FROM ""{base.databaseName}"".""RDR1"" T INNER JOIN ""{base.databaseName}"".""ORDR"" T1 ON T.""DocEntry"" = T1.""DocEntry""");
                 query.Append($@" WHERE ""U_PaymentID"" = '{paymentId}'");
 
@@ -761,7 +764,7 @@
             oATT.Lines.Add();
             oATT.Lines.FileName = System.IO.Path.GetFileNameWithoutExtension(FileName);
             oATT.Lines.FileExtension = System.IO.Path.GetExtension(FileName).Substring(1);
-            oATT.Lines.SourcePath = Path.GetDirectoryName( System.Web.Hosting.HostingEnvironment.MapPath(FileName));// System.IO.Path.GetDirectoryName(FileName);
+            oATT.Lines.SourcePath = Path.GetDirectoryName(System.Web.Hosting.HostingEnvironment.MapPath(FileName));// System.IO.Path.GetDirectoryName(FileName);
             oATT.Lines.Override = SAPbobsCOM.BoYesNoEnum.tYES;
             if (oATT.Add() == 0)
                 return System.IO.Path.GetFileName(fileName);
@@ -781,11 +784,57 @@
                 var path = rec.Fields.Item(0).Value.ToString();
                 return path;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
         }
+
+        public int CreateGoodsReceipt(string itemCode, double totalCost, DateTime taxDate, DateTime refDate, string memo)
+        {
+            var goodsReceipt = B1Company.GetBusinessObject(BoObjectTypes.oInventoryGenEntry) as Documents;
+            var oItem = B1Company.GetBusinessObject(BoObjectTypes.oItems) as Items;
+            try
+            {
+                goodsReceipt.DocType = BoDocumentTypes.dDocument_Items;
+                goodsReceipt.DocDate = refDate;
+                goodsReceipt.TaxDate = taxDate;
+                goodsReceipt.Comments = base.MapField<string>(memo);
+                goodsReceipt.Lines.ItemCode = itemCode;
+                goodsReceipt.Lines.Quantity = 1;
+                goodsReceipt.Lines.SerialNum = "Abx";
+                oItem.GetByKey(itemCode);
+
+                //if (oItem.InventoryUOM != uomName)
+                //{
+                //    goodsReceipt.Lines.UseBaseUnits = SAPbobsCOM.BoYesNoEnum.tNO;
+                //    goodsReceipt.Lines.MeasureUnit = uomName;
+                //}
+                goodsReceipt.Lines.UnitPrice = totalCost;
+                //goodsReceipt.Reference2 = reference;
+
+                if (goodsReceipt.Add() != 0)
+                {
+                    var error = B1Company.GetLastErrorDescription();
+                    throw new Exception(error);
+                }
+                else
+                {
+                    return goodsReceipt.DocEntry;
+                }
+            }
+            catch (Exception ex)
+            {
+                Utilities.LogException(ex);
+                return 0;
+            }
+            finally
+            {
+                goodsReceipt.ReleaseObject();
+                oItem.ReleaseObject();
+            }
+        }
+
 
         #endregion
     }

@@ -221,10 +221,10 @@
             return Ok(result);
         }
 
-        public async Task<IHttpActionResult> UpdateWorker([FromBody]Worker worker)
+        public async Task<IHttpActionResult> UpdateWorker()
         {
-            //var cardCode = GetCurrentUserCardCode();
-            //var worker = await SaveFile();
+            var cardCode = GetCurrentUserCardCode();
+            var worker = await SaveFile();
             var result =  workersFacade.UpdateWorker(worker);
             return Ok(result);
         }

@@ -81,7 +81,7 @@
         {
             bool captchaResult = false;
             string urlToPost = Utilities.GetConfigurationValue(Common.Constants.ConfigurationKeys.GoogleCaptchaUrl);
-            string secretKey = Utilities.GetConfigurationValue(Common.Constants.ConfigurationKeys.GoogleCaptchaSecretKey); 
+            string secretKey = Utilities.GetConfigurationValue(Common.Constants.ConfigurationKeys.GoogleCaptchaSecretKey);
             var postData = "secret=" + secretKey + "&response=" + gRecaptchaResponse;
 
             // send post data
@@ -135,7 +135,7 @@
         protected T MapField<T>(object o)
         {
             var result = default(T);
-            if (o != DBNull.Value)
+            if (o != DBNull.Value && o != null)
             {
                 if (o.GetType() == typeof(float))
                     result = (T)Convert.ChangeType(float.Parse(o.ToString()), typeof(T));
