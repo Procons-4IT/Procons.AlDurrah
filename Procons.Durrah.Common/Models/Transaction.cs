@@ -4,6 +4,7 @@
     {
         public string SerialNumber { get; set; }
         public string Code { get; set; }
+        public string WorkerCode { get; set; }
         public string CardCode { get; set; }
         public string Amount { get; set; }
         public string PaymentID { get; set; }

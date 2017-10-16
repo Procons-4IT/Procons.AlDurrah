@@ -243,7 +243,6 @@
                 var exp = GetExpressionSql(worker);
                 var databaseBame = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.DatabaseName);
 
-
                 var query = new StringBuilder();
                 query.Append(@"SELECT ""A"".""Code"",""A"".""Name"",""U_ItemCode"",""U_Serial"",""U_Agent"",""U_Age"",");
                 query.Append(@"""U_BirthDate"",""U_Gender"",""D"".""Name"" AS ""U_Nationality"",""D"".""U_NAME"" AS ""U_Nationality_AR"",""R"".""Name"" AS ""U_Religion"",""R"".""U_NAME"" AS ""U_Religion_AR"",");
@@ -268,6 +267,7 @@
                     workersList.Add(
                         new Worker()
                         {
+                            WorkerCode= MapField<string>(readerResult["Code"]),
                             Agent = MapField<string>(readerResult["U_Agent"]),
                             Age = MapField<int>(readerResult["U_Age"]),
                             BirthDate = MapField<string>(readerResult["U_BirthDate"]),
@@ -317,15 +317,15 @@
                 salesOrder.U_Auth = trans.Auth;
                 salesOrder.U_TrackID = trans.TrackID;
                 salesOrder.U_Ref = trans.Ref;
+                salesOrder.U_WorkerID = trans.WorkerCode;
                 salesOrder.DocDueDate = DateTime.Now;
 
                 salesOrderLine.ItemCode = trans.Code;
-                dserialNum.SystemSerialNumber = serialDetails.SystemNumber;
-                salesOrderLine.SerialNumbers.Add(dserialNum);
+                //dserialNum.SystemSerialNumber = serialDetails.SystemNumber;
+                //salesOrderLine.SerialNumbers.Add(dserialNum);
                 salesOrder.DocumentLines.Add(salesOrderLine);
 
                 instance.CurrentServicelayerInstance.AddToOrders(salesOrder);
-                //UPDATE WORKER STATUS
                 var worker = instance.CurrentServicelayerInstance.WORKERSUDO.Where(x => x.U_Serial == trans.SerialNumber && x.U_ItemCode == trans.Code).FirstOrDefault();
                 worker.U_Status = "0";
                 instance.CurrentServicelayerInstance.UpdateObject(worker);
@@ -394,9 +394,9 @@
                     oDownPay.Lines.BaseEntry = salesOrder.Lines.DocEntry;
                     oDownPay.Lines.BaseLine = salesOrder.Lines.LineNum;
                     oDownPay.Lines.UnitPrice = salesOrder.Lines.UnitPrice;
-                    oDownPay.Lines.SerialNumbers.InternalSerialNumber = salesOrder.Lines.SerialNumbers.InternalSerialNumber;
-                    oDownPay.Lines.SerialNumbers.ManufacturerSerialNumber = salesOrder.Lines.SerialNumbers.ManufacturerSerialNumber;
-                    oDownPay.Lines.SerialNumbers.SystemSerialNumber = salesOrder.Lines.SerialNumbers.SystemSerialNumber;
+                    //oDownPay.Lines.SerialNumbers.InternalSerialNumber = salesOrder.Lines.SerialNumbers.InternalSerialNumber;
+                    //oDownPay.Lines.SerialNumbers.ManufacturerSerialNumber = salesOrder.Lines.SerialNumbers.ManufacturerSerialNumber;
+                    //oDownPay.Lines.SerialNumbers.SystemSerialNumber = salesOrder.Lines.SerialNumbers.SystemSerialNumber;
 
 
                     int RetCode = oDownPay.Add();

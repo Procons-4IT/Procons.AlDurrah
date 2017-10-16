@@ -3812,6 +3812,13 @@
         <Property Name="U_Ref" Type="Edm.String" />
         <Property Name="U_TrackID" Type="Edm.String" />
         <Property Name="U_Status" Type="Edm.String" />
+        <Property Name="U_ExpDate" Type="Edm.DateTime" />
+        <Property Name="U_Approved" Type="Edm.String" />
+        <Property Name="U_Visa" Type="Edm.String" />
+        <Property Name="U_FName" Type="Edm.String" />
+        <Property Name="U_Reserved" Type="Edm.String" />
+        <Property Name="U_WorkerID" Type="Edm.String" />
+        <Property Name="U_WorkerName" Type="Edm.String" />
         <Property Name="Document_ApprovalRequests" Type="Collection(SAPB1.Document_ApprovalRequest)" />
         <Property Name="DocumentLines" Type="Collection(SAPB1.DocumentLine)" />
         <Property Name="DocumentAdditionalExpenses" Type="Collection(SAPB1.DocumentAdditionalExpense)" />
@@ -4614,6 +4621,13 @@
         <Property Name="U_Ref" Type="Edm.String" />
         <Property Name="U_TrackID" Type="Edm.String" />
         <Property Name="U_Status" Type="Edm.String" />
+        <Property Name="U_ExpDate" Type="Edm.DateTime" />
+        <Property Name="U_Approved" Type="Edm.String" />
+        <Property Name="U_Visa" Type="Edm.String" />
+        <Property Name="U_FName" Type="Edm.String" />
+        <Property Name="U_Reserved" Type="Edm.String" />
+        <Property Name="U_WorkerID" Type="Edm.String" />
+        <Property Name="U_WorkerName" Type="Edm.String" />
         <Property Name="StockTransfer_ApprovalRequests" Type="Collection(SAPB1.StockTransfer_ApprovalRequest)" />
         <Property Name="StockTransferLines" Type="Collection(SAPB1.StockTransferLine)" />
         <Property Name="StockTransferTaxExtension" Type="SAPB1.StockTransferTaxExtension" />
@@ -4787,6 +4801,7 @@
         <Property Name="LastLogoutTime" Type="Edm.DateTime" />
         <Property Name="LastPasswordChangeTime" Type="Edm.DateTime" />
         <Property Name="LastPasswordChangedBy" Type="Edm.String" />
+        <Property Name="U_BOY_B1UP_RCS" Nullable="false" Type="Edm.Int32" />
         <Property Name="UserPermission" Type="Collection(SAPB1.UserPermissionItem)" />
         <Property Name="UserActionRecord" Type="Collection(SAPB1.UserActionRecordItem)" />
         <Property Name="UserBranchAssignment" Type="Collection(SAPB1.UserBranchAssignmentItem)" />
@@ -7417,6 +7432,10 @@
         <Property Name="WorkStreetNumber" Type="Edm.String" />
         <Property Name="HomeStreetNumber" Type="Edm.String" />
         <Property Name="LinkedVendor" Type="Edm.String" />
+        <Property Name="U_BOY_SBO_USER" Type="Edm.String" />
+        <Property Name="U_BOY_SBO_PASS" Type="Edm.String" />
+        <Property Name="U_BOY_SBO_ROLE" Type="Edm.Int32" />
+        <Property Name="U_BOY_TB_0" Nullable="false" Type="Edm.String" />
         <Property Name="EmployeeAbsenceInfoLines" Type="Collection(SAPB1.EmployeeAbsenceInfo)" />
         <Property Name="EmployeeEducationInfoLines" Type="Collection(SAPB1.EmployeeEducationInfo)" />
         <Property Name="EmployeeReviewsInfoLines" Type="Collection(SAPB1.EmployeeReviewsInfo)" />
@@ -8557,6 +8576,8 @@
         <Property Name="U_Password" Type="Edm.String" />
         <Property Name="U_UserName" Type="Edm.String" />
         <Property Name="U_Confirmed" Type="Edm.String" />
+        <Property Name="U_Item" Type="Edm.String" />
+        <Property Name="U_BOY_TB_0" Nullable="false" Type="Edm.String" />
         <Property Name="BPAddresses" Type="Collection(SAPB1.BPAddress)" />
         <Property Name="ContactEmployees" Type="Collection(SAPB1.ContactEmployee)" />
         <Property Name="BPAccountReceivablePaybleCollection" Type="Collection(SAPB1.BPAccountReceivablePayble)" />
@@ -11311,6 +11332,7 @@
         <Property Name="CapitalGoodsOnHoldLimit" Type="Edm.Double" />
         <Property Name="AssessableValue" Type="Edm.Double" />
         <Property Name="AssVal4WTR" Type="Edm.Double" />
+        <Property Name="U_BOY_TB_0" Nullable="false" Type="Edm.String" />
         <Property Name="ItemPrices" Type="Collection(SAPB1.ItemPrice)" />
         <Property Name="ItemWarehouseInfoCollection" Type="Collection(SAPB1.ItemWarehouseInfo)" />
         <Property Name="ItemPreferredVendors" Type="Collection(SAPB1.ItemPreferredVendor)" />
@@ -12057,6 +12079,7 @@
         <Property Name="Locked" Type="Edm.String" />
         <Property Name="EmployeeID" Type="Edm.Int32" />
         <Property Name="Active" Type="Edm.String" />
+        <Property Name="U_BOY_50_BRKO" Type="Edm.String" />
         <NavigationProperty FromRole="SalesPersons" Name="SalesOpportunities" Relationship="SAPB1.FK_SalesOpportunities_SalesPersons" ToRole="SalesOpportunities" />
         <NavigationProperty FromRole="SalesPersons" Name="UserDefaultGroups" Relationship="SAPB1.FK_UserDefaultGroups_SalesPersons" ToRole="UserDefaultGroups" />
         <NavigationProperty FromRole="SalesPersons" Name="InventoryGenEntries" Relationship="SAPB1.FK_Documents_SalesPersons" ToRole="Documents" />
@@ -13368,6 +13391,994 @@
         <Property Name="SequenceNo" Type="Edm.Int32" />
         <Property Name="Description" Type="Edm.String" />
       </ComplexType>
+      <EntityType Name="BOY_40_CONFIG">
+        <Key>
+          <PropertyRef Name="DocEntry" />
+        </Key>
+        <Property Name="DocNum" Type="Edm.Int32" />
+        <Property Name="Period" Type="Edm.Int32" />
+        <Property Name="Instance" Type="Edm.Int32" />
+        <Property Name="Series" Type="Edm.Int32" />
+        <Property Name="Handwrtten" Type="Edm.String" />
+        <Property Name="Status" Type="Edm.String" />
+        <Property Name="RequestStatus" Type="Edm.String" />
+        <Property Name="Creator" Type="Edm.String" />
+        <Property Name="Remark" Type="Edm.String" />
+        <Property Name="DocEntry" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Canceled" Type="Edm.String" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="UserSign" Type="Edm.Int32" />
+        <Property Name="Transfered" Type="Edm.String" />
+        <Property Name="CreateDate" Type="Edm.DateTime" />
+        <Property Name="CreateTime" Type="Edm.DateTime" />
+        <Property Name="UpdateDate" Type="Edm.DateTime" />
+        <Property Name="UpdateTime" Type="Edm.DateTime" />
+        <Property Name="DataSource" Type="Edm.String" />
+        <Property Name="U_BOY_AKT" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_BEA" Nullable="false" Type="Edm.Int32" />
+        <Property Name="U_BOY_ACS" Nullable="false" Type="Edm.Int32" />
+        <Property Name="U_BOY_INE" Nullable="false" Type="Edm.Int32" />
+        <Property Name="U_BOY_ITC" Nullable="false" Type="Edm.Int32" />
+        <Property Name="U_BOY_BBE" Nullable="false" Type="Edm.Int32" />
+        <Property Name="U_BOY_CHP" Type="Edm.Int32" />
+        <Property Name="U_BOY_COL" Type="Edm.String" />
+        <Property Name="U_BOY_COMM" Type="Edm.String" />
+        <Property Name="U_BOY_CATE" Type="Edm.String" />
+        <Property Name="U_BOY_ASQL" Type="Edm.String" />
+        <Property Name="U_BOY_SCOM" Nullable="false" Type="Edm.Int32" />
+        <Property Name="U_BOY_NUP" Type="Edm.String" />
+        <Property Name="U_BOY_SITM" Type="Edm.String" />
+        <Property Name="U_BOY_SCOL" Type="Edm.String" />
+        <Property Name="U_BOY_SUF" Type="Edm.String" />
+        <Property Name="U_BOY_SVAL" Type="Edm.String" />
+        <Property Name="U_BOY_STYP" Nullable="false" Type="Edm.Int32" />
+        <Property Name="U_BOY_TYPE" Nullable="false" Type="Edm.Int32" />
+        <Property Name="U_BOY_EVT" Nullable="false" Type="Edm.Int32" />
+        <Property Name="U_BOY_MODE" Nullable="false" Type="Edm.Int32" />
+        <Property Name="U_BOY_FORM" Type="Edm.String" />
+        <Property Name="U_BOY_ITM" Type="Edm.String" />
+        <Property Name="U_BOY_MODI" Nullable="false" Type="Edm.Int32" />
+        <Property Name="U_BOY_NAME" Type="Edm.String" />
+        <Property Name="U_BOY_ROW" Type="Edm.Int32" />
+        <Property Name="U_BOY_SORT" Nullable="false" Type="Edm.Int32" />
+        <Property Name="U_BOY_USR" Type="Edm.String" />
+        <Property Name="U_BOY_USRS" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_MENU" Type="Edm.String" />
+        <Property Name="U_BOY_PREEVTLOOP" Type="Edm.String" />
+        <Property Name="BOY_40_CONFIGLINESCollection" Type="Collection(SAPB1.BOY_40_CONFIGLINES)" />
+      </EntityType>
+      <ComplexType Name="BOY_40_CONFIGLINES">
+        <Property Name="DocEntry" Nullable="false" Type="Edm.Int32" />
+        <Property Name="LineId" Nullable="false" Type="Edm.Int32" />
+        <Property Name="VisOrder" Type="Edm.Int32" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="U_BOY_RES" Type="Edm.String" />
+        <Property Name="U_BOY_UF" Type="Edm.String" />
+      </ComplexType>
+      <ComplexType Name="BOY_40_CONFIGParams">
+        <Property Name="DocEntry" Type="Edm.Int32" />
+      </ComplexType>
+      <ComplexType Name="InvokeParams">
+        <Property Name="Value" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="BOY_41_FUNCTIONS">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Type="Edm.String" />
+        <Property Name="DocEntry" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Canceled" Type="Edm.String" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="UserSign" Type="Edm.Int32" />
+        <Property Name="Transfered" Type="Edm.String" />
+        <Property Name="CreateDate" Type="Edm.DateTime" />
+        <Property Name="CreateTime" Type="Edm.DateTime" />
+        <Property Name="UpdateDate" Type="Edm.DateTime" />
+        <Property Name="UpdateTime" Type="Edm.DateTime" />
+        <Property Name="DataSource" Type="Edm.String" />
+        <Property Name="U_BOY_FUNC" Type="Edm.String" />
+        <Property Name="U_BOY_RMKS" Type="Edm.String" />
+        <Property Name="U_BOY_CATE" Type="Edm.String" />
+        <Property Name="U_BOY_MSG" Type="Edm.String" />
+        <Property Name="U_BOY_MSGT" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_MSGB" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_SQL" Type="Edm.String" />
+        <Property Name="U_BOY_HGT" Type="Edm.Int32" />
+        <Property Name="U_BOY_WDT" Type="Edm.Int32" />
+        <Property Name="U_BOY_CL" Type="Edm.Int32" />
+        <Property Name="U_BOY_SCL" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_TIT" Type="Edm.String" />
+        <Property Name="U_BOY_STA" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_FOREX" Type="Edm.String" />
+        <Property Name="U_BOY_SQLVAREX" Type="Edm.String" />
+        <Property Name="U_BOY_SQLVARTI" Type="Edm.String" />
+        <Property Name="U_BOY_REFR" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_SSDTEX" Type="Edm.String" />
+        <Property Name="U_BOY_ARSEC" Nullable="false" Type="Edm.Int32" />
+        <Property Name="U_BOY_GRIDORCHART" Nullable="false" Type="Edm.Int32" />
+        <Property Name="U_BOY_FT_SUFFIX" Type="Edm.String" />
+        <Property Name="U_BOY_FIXCOLCNT" Nullable="false" Type="Edm.Int32" />
+        <Property Name="U_BOY_BANDEDROWCOL" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_REPGRP1" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_REPGRP2" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_REPGRP3" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_REPGRP4" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_REPGRP5" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_REPGRP6" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_REPGRP7" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_REPGRP8" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_REPGRP9" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_REPGRP10" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_SQL_LAYOUT" Type="Edm.String" />
+        <Property Name="U_BOY_SQL_ROWHEAD" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_FCISCB" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_FILEEX" Type="Edm.String" />
+        <Property Name="U_BOY_ARGSEX" Type="Edm.String" />
+        <Property Name="U_BOY_WDIR" Type="Edm.String" />
+        <Property Name="U_BOY_STY" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_MCRO" Type="Edm.String" />
+        <Property Name="U_BOY_MCRODEBUG" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_CCRENMODE" Nullable="false" Type="Edm.Int32" />
+        <Property Name="U_BOY_CRFILE" Type="Edm.String" />
+        <Property Name="U_BOY_CRACTOR" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_CRACTPR" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_CRACTSR" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_CRSAVEFILEFOR" Nullable="false" Type="Edm.Int32" />
+        <Property Name="U_BOY_CRPRINTER" Type="Edm.String" />
+        <Property Name="U_BOY_CRSAVEFILE" Type="Edm.String" />
+        <Property Name="U_BOY_CRBLOCK" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_CRDS" Nullable="false" Type="Edm.Int32" />
+        <Property Name="U_BOY_CUSTDS" Type="Edm.String" />
+        <Property Name="U_BOY_CRNUMCPEX" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_OCRAG" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_VIEWER" Nullable="false" Type="Edm.Int32" />
+        <Property Name="U_BOY_CRYSVAR" Type="Edm.String" />
+        <Property Name="U_BOY_CRYVARTI" Type="Edm.String" />
+        <Property Name="U_BOY_DYCO" Type="Edm.String" />
+        <Property Name="U_BOY_DYCOL" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_DYCOR" Type="Edm.String" />
+        <Property Name="U_BOY_DYCOU" Type="Edm.String" />
+        <Property Name="U_BOY_LL_IUID" Type="Edm.String" />
+        <Property Name="U_BOY_LL_ILL" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_LL_ITLST" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_LL_CT" Nullable="false" Type="Edm.Int32" />
+        <Property Name="U_BOY_LL_NCFPUF" Type="Edm.String" />
+        <Property Name="U_BOY_LL_NCLUF" Type="Edm.String" />
+        <Property Name="U_BOY_LL_NCFRV" Type="Edm.String" />
+        <Property Name="U_BOY_LL_NCFRT" Nullable="false" Type="Edm.Int32" />
+        <Property Name="U_BOY_LL_DIR" Nullable="false" Type="Edm.Int32" />
+        <Property Name="U_BOY_LL_SCSQL" Type="Edm.String" />
+        <Property Name="U_BOY_LL_FDLL" Type="Edm.String" />
+        <Property Name="U_BOY_FE_HEADERDATAS" Type="Edm.String" />
+        <Property Name="U_BOY_FE_HEADERDATAC" Type="Edm.String" />
+        <Property Name="U_BOY_FE_BODYDATAS" Type="Edm.String" />
+        <Property Name="U_BOY_FE_BODYDATAC" Type="Edm.String" />
+        <Property Name="U_BOY_FE_FOOTERDATAS" Type="Edm.String" />
+        <Property Name="U_BOY_FE_FOOTERDATAC" Type="Edm.String" />
+        <Property Name="U_BOY_FE_HTEMPLATE" Type="Edm.String" />
+        <Property Name="U_BOY_FE_BTEMPLATE" Type="Edm.String" />
+        <Property Name="U_BOY_FE_FTEMPLATE" Type="Edm.String" />
+        <Property Name="U_BOY_FE_MAHS" Type="Edm.String" />
+        <Property Name="U_BOY_FE_MAHC" Type="Edm.String" />
+        <Property Name="U_BOY_FE_FILENAME" Type="Edm.String" />
+        <Property Name="U_BOY_FE_CODER" Type="Edm.String" />
+        <Property Name="U_BOY_FE_FILETYPE" Nullable="false" Type="Edm.Int32" />
+        <Property Name="U_BOY_FE_ENCODING" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_FE_OPENDOC" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_FE_ADDBREAK" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_FE_EXPORTTYPE" Nullable="false" Type="Edm.Int32" />
+        <Property Name="U_BOY_FE_FORNGS" Type="Edm.String" />
+        <Property Name="U_BOY_FE_FORNDS" Type="Edm.String" />
+        <Property Name="U_BOY_FE_FORNDD" Type="Edm.Int32" />
+        <Property Name="U_BOY_FE_FORDTF" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_FE_LOG" Type="Edm.String" />
+        <Property Name="U_BOY_FI_GUIDOFCO" Type="Edm.String" />
+        <Property Name="U_BOY_FI_WORK" Type="Edm.String" />
+        <Property Name="U_BOY_FI_SUCCESS" Type="Edm.String" />
+        <Property Name="U_BOY_FI_ERROR" Type="Edm.String" />
+        <Property Name="U_BOY_FI_LOG" Type="Edm.String" />
+        <Property Name="U_BOY_FI_FFILTER" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_FI_CODEREF" Type="Edm.String" />
+        <Property Name="U_BOY_DASHBOARD" Type="Edm.String" />
+        <Property Name="U_BOY_SHOWDB" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_SAVEDB" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_OSDB" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_DBFP" Type="Edm.String" />
+        <Property Name="U_BOY_DBFT" Nullable="false" Type="Edm.Int32" />
+        <Property Name="U_BOY_DCREX" Type="Edm.String" />
+        <Property Name="U_BOY_DCUEX" Type="Edm.String" />
+        <Property Name="U_BOY_DASHVAR" Type="Edm.String" />
+        <Property Name="U_BOY_DASHVARTI" Type="Edm.String" />
+        <Property Name="BOY_41_FUNC_L01Collection" Type="Collection(SAPB1.BOY_41_FUNC_L01)" />
+        <Property Name="BOY_41_FUNC_L02Collection" Type="Collection(SAPB1.BOY_41_FUNC_L02)" />
+        <Property Name="BOY_41_FUNC_L03Collection" Type="Collection(SAPB1.BOY_41_FUNC_L03)" />
+        <Property Name="BOY_41_FUNC_L04Collection" Type="Collection(SAPB1.BOY_41_FUNC_L04)" />
+        <Property Name="BOY_41_FUNC_L05Collection" Type="Collection(SAPB1.BOY_41_FUNC_L05)" />
+        <Property Name="BOY_41_FUNC_L06Collection" Type="Collection(SAPB1.BOY_41_FUNC_L06)" />
+        <Property Name="BOY_41_FUNC_L07Collection" Type="Collection(SAPB1.BOY_41_FUNC_L07)" />
+        <Property Name="BOY_41_FUNC_L08Collection" Type="Collection(SAPB1.BOY_41_FUNC_L08)" />
+        <Property Name="BOY_41_FUNC_L09Collection" Type="Collection(SAPB1.BOY_41_FUNC_L09)" />
+        <Property Name="BOY_41_FUNC_L10Collection" Type="Collection(SAPB1.BOY_41_FUNC_L10)" />
+      </EntityType>
+      <ComplexType Name="BOY_41_FUNC_L01">
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="LineId" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="U_BOY_ITM" Type="Edm.String" />
+        <Property Name="U_BOY_COL" Type="Edm.String" />
+        <Property Name="U_BOY_DESC" Type="Edm.String" />
+        <Property Name="U_BOY_ILL" Type="Edm.String" />
+        <Property Name="U_BOY_VV" Type="Edm.String" />
+        <Property Name="U_BOY_ETV" Type="Edm.String" />
+        <Property Name="U_BOY_VTYP" Type="Edm.Int32" />
+      </ComplexType>
+      <ComplexType Name="BOY_41_FUNC_L02">
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="LineId" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="U_BOY_ACT" Type="Edm.String" />
+        <Property Name="U_BOY_BFLD" Type="Edm.String" />
+        <Property Name="U_BOY_BTBL" Type="Edm.String" />
+        <Property Name="U_BOY_DESC" Type="Edm.String" />
+        <Property Name="U_BOY_EAD" Type="Edm.String" />
+        <Property Name="U_BOY_EFI" Type="Edm.String" />
+        <Property Name="U_BOY_EOK" Type="Edm.String" />
+        <Property Name="U_BOY_FPN" Type="Edm.Int32" />
+        <Property Name="U_BOY_HGT" Type="Edm.Int32" />
+        <Property Name="U_BOY_LFT" Type="Edm.Int32" />
+        <Property Name="U_BOY_TOP" Type="Edm.Int32" />
+        <Property Name="U_BOY_TPN" Type="Edm.Int32" />
+        <Property Name="U_BOY_TYP" Type="Edm.String" />
+        <Property Name="U_BOY_UID" Type="Edm.String" />
+        <Property Name="U_BOY_WDT" Type="Edm.Int32" />
+        <Property Name="U_BOY_VV" Type="Edm.String" />
+        <Property Name="U_BOY_AFM" Type="Edm.String" />
+        <Property Name="U_BOY_RJ" Type="Edm.String" />
+        <Property Name="U_BOY_SZ" Type="Edm.String" />
+        <Property Name="U_BOY_TS" Type="Edm.String" />
+        <Property Name="U_BOY_FC" Type="Edm.Int32" />
+        <Property Name="U_BOY_BC" Type="Edm.Int32" />
+        <Property Name="U_BOY_FS" Type="Edm.Int32" />
+        <Property Name="U_BOY_LO" Type="Edm.String" />
+        <Property Name="U_BOY_LT" Type="Edm.String" />
+        <Property Name="U_BOY_GW" Type="Edm.String" />
+        <Property Name="U_BOY_VOFF" Type="Edm.String" />
+        <Property Name="U_BOY_VON" Type="Edm.String" />
+        <Property Name="U_BOY_ISPASS" Type="Edm.String" />
+      </ComplexType>
+      <ComplexType Name="BOY_41_FUNC_L03">
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="LineId" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="U_BOY_PAR" Type="Edm.String" />
+        <Property Name="U_BOY_VAL" Type="Edm.String" />
+        <Property Name="U_BOY_REMARKS" Type="Edm.String" />
+      </ComplexType>
+      <ComplexType Name="BOY_41_FUNC_L04">
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="LineId" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="U_BOY_LL_RES" Type="Edm.String" />
+        <Property Name="U_BOY_LL_BL" Type="Edm.String" />
+        <Property Name="U_BOY_LL_FPUF" Type="Edm.String" />
+        <Property Name="U_BOY_LL_LUF" Type="Edm.String" />
+        <Property Name="U_BOY_LL_FRVEX" Type="Edm.String" />
+        <Property Name="U_BOY_LL_FRT" Type="Edm.Int32" />
+      </ComplexType>
+      <ComplexType Name="BOY_41_FUNC_L05">
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="LineId" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="U_BOY_LL_FRC" Type="Edm.Int32" />
+        <Property Name="U_BOY_LL_FRCCV" Type="Edm.String" />
+        <Property Name="U_BOY_LL_FRCT" Type="Edm.Int32" />
+        <Property Name="U_BOY_LL_FRCVT" Type="Edm.Int32" />
+        <Property Name="U_BOY_LL_FRUF" Type="Edm.String" />
+      </ComplexType>
+      <ComplexType Name="BOY_41_FUNC_L06">
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="LineId" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="U_BOY_FE_KEY" Type="Edm.String" />
+        <Property Name="U_BOY_FE_DATA" Type="Edm.String" />
+        <Property Name="U_BOY_FE_TYPE" Type="Edm.Int32" />
+      </ComplexType>
+      <ComplexType Name="BOY_41_FUNC_L07">
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="LineId" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="U_BOY_PAR" Type="Edm.String" />
+        <Property Name="U_BOY_VAL" Type="Edm.String" />
+        <Property Name="U_BOY_REMARKS" Type="Edm.String" />
+      </ComplexType>
+      <ComplexType Name="BOY_41_FUNC_L08">
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="LineId" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+      </ComplexType>
+      <ComplexType Name="BOY_41_FUNC_L09">
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="LineId" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+      </ComplexType>
+      <ComplexType Name="BOY_41_FUNC_L10">
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="LineId" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+      </ComplexType>
+      <ComplexType Name="BOY_41_FUNCTIONSParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="BOY_41_UFBATCHES">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Type="Edm.String" />
+        <Property Name="DocEntry" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Canceled" Type="Edm.String" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="UserSign" Type="Edm.Int32" />
+        <Property Name="Transfered" Type="Edm.String" />
+        <Property Name="CreateDate" Type="Edm.DateTime" />
+        <Property Name="CreateTime" Type="Edm.DateTime" />
+        <Property Name="UpdateDate" Type="Edm.DateTime" />
+        <Property Name="UpdateTime" Type="Edm.DateTime" />
+        <Property Name="DataSource" Type="Edm.String" />
+        <Property Name="U_BOY_REMARK" Type="Edm.String" />
+        <Property Name="U_BOY_ACTIVE" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_SHOWIF" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_LOGGING" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_SQL" Type="Edm.String" />
+        <Property Name="U_BOY_USERS" Type="Edm.String" />
+        <Property Name="U_BOY_USETTINGS" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_UNI" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="BOY_41_UFBATCHESParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="BOY_41_UFSCHEDULES">
+        <Key>
+          <PropertyRef Name="DocEntry" />
+        </Key>
+        <Property Name="DocNum" Type="Edm.Int32" />
+        <Property Name="Period" Type="Edm.Int32" />
+        <Property Name="Instance" Type="Edm.Int32" />
+        <Property Name="Series" Type="Edm.Int32" />
+        <Property Name="Handwrtten" Type="Edm.String" />
+        <Property Name="Status" Type="Edm.String" />
+        <Property Name="RequestStatus" Type="Edm.String" />
+        <Property Name="Creator" Type="Edm.String" />
+        <Property Name="Remark" Type="Edm.String" />
+        <Property Name="DocEntry" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Canceled" Type="Edm.String" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="UserSign" Type="Edm.Int32" />
+        <Property Name="Transfered" Type="Edm.String" />
+        <Property Name="CreateDate" Type="Edm.DateTime" />
+        <Property Name="CreateTime" Type="Edm.DateTime" />
+        <Property Name="UpdateDate" Type="Edm.DateTime" />
+        <Property Name="UpdateTime" Type="Edm.DateTime" />
+        <Property Name="DataSource" Type="Edm.String" />
+        <Property Name="U_BOY_NAME" Type="Edm.String" />
+        <Property Name="U_BOY_UNI" Type="Edm.String" />
+        <Property Name="U_BOY_UNITYPE" Nullable="false" Type="Edm.Int32" />
+        <Property Name="U_BOY_CONFID" Type="Edm.String" />
+        <Property Name="U_BOY_ACTIVE" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_LOGGING" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_WARNING" Nullable="false" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="BOY_41_UFSCHEDULESParams">
+        <Property Name="DocEntry" Type="Edm.Int32" />
+      </ComplexType>
+      <EntityType Name="BOY_81_DMSH">
+        <Key>
+          <PropertyRef Name="DocEntry" />
+        </Key>
+        <Property Name="DocNum" Type="Edm.Int32" />
+        <Property Name="Period" Type="Edm.Int32" />
+        <Property Name="Instance" Type="Edm.Int32" />
+        <Property Name="Series" Type="Edm.Int32" />
+        <Property Name="Handwrtten" Type="Edm.String" />
+        <Property Name="Status" Type="Edm.String" />
+        <Property Name="RequestStatus" Type="Edm.String" />
+        <Property Name="Creator" Type="Edm.String" />
+        <Property Name="Remark" Type="Edm.String" />
+        <Property Name="DocEntry" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Canceled" Type="Edm.String" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="UserSign" Type="Edm.Int32" />
+        <Property Name="Transfered" Type="Edm.String" />
+        <Property Name="CreateDate" Type="Edm.DateTime" />
+        <Property Name="CreateTime" Type="Edm.DateTime" />
+        <Property Name="UpdateDate" Type="Edm.DateTime" />
+        <Property Name="UpdateTime" Type="Edm.DateTime" />
+        <Property Name="DataSource" Type="Edm.String" />
+        <Property Name="U_BOY_WHERE" Type="Edm.String" />
+        <Property Name="U_BOY_ACT" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_TRANS" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_NAME" Type="Edm.String" />
+        <Property Name="U_BOY_TYPE" Type="Edm.String" />
+        <Property Name="U_BOY_CONID" Type="Edm.String" />
+        <Property Name="BOY_81_DMSUCollection" Type="Collection(SAPB1.BOY_81_DMSU)" />
+        <Property Name="BOY_81_DMSPCollection" Type="Collection(SAPB1.BOY_81_DMSP)" />
+      </EntityType>
+      <ComplexType Name="BOY_81_DMSU">
+        <Property Name="DocEntry" Nullable="false" Type="Edm.Int32" />
+        <Property Name="LineId" Nullable="false" Type="Edm.Int32" />
+        <Property Name="VisOrder" Type="Edm.Int32" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="U_BOY_ACT" Type="Edm.String" />
+        <Property Name="U_BOY_ALIAS" Type="Edm.String" />
+        <Property Name="U_BOY_VAL" Type="Edm.String" />
+      </ComplexType>
+      <ComplexType Name="BOY_81_DMSP">
+        <Property Name="DocEntry" Nullable="false" Type="Edm.Int32" />
+        <Property Name="LineId" Nullable="false" Type="Edm.Int32" />
+        <Property Name="VisOrder" Type="Edm.Int32" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="U_BOY_ACT" Type="Edm.String" />
+        <Property Name="U_BOY_PROPN" Type="Edm.String" />
+        <Property Name="U_BOY_VAL" Type="Edm.String" />
+      </ComplexType>
+      <ComplexType Name="BOY_81_DMSHParams">
+        <Property Name="DocEntry" Type="Edm.Int32" />
+      </ComplexType>
+      <EntityType Name="BOY_99_MBC">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Type="Edm.String" />
+        <Property Name="DocEntry" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Canceled" Type="Edm.String" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="UserSign" Type="Edm.Int32" />
+        <Property Name="Transfered" Type="Edm.String" />
+        <Property Name="CreateDate" Type="Edm.DateTime" />
+        <Property Name="CreateTime" Type="Edm.DateTime" />
+        <Property Name="UpdateDate" Type="Edm.DateTime" />
+        <Property Name="UpdateTime" Type="Edm.DateTime" />
+        <Property Name="DataSource" Type="Edm.String" />
+        <Property Name="BOY_99_MBCLCollection" Type="Collection(SAPB1.BOY_99_MBCL)" />
+      </EntityType>
+      <ComplexType Name="BOY_99_MBCL">
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="LineId" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="U_BOY_CAP" Type="Edm.String" />
+        <Property Name="U_BOY_TYPE" Type="Edm.String" />
+        <Property Name="U_BOY_UF" Type="Edm.String" />
+      </ComplexType>
+      <ComplexType Name="BOY_99_MBCParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="BOY_B1UP_ADDDBINFO">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Type="Edm.String" />
+        <Property Name="DocEntry" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Canceled" Type="Edm.String" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="UserSign" Type="Edm.Int32" />
+        <Property Name="Transfered" Type="Edm.String" />
+        <Property Name="CreateDate" Type="Edm.DateTime" />
+        <Property Name="CreateTime" Type="Edm.DateTime" />
+        <Property Name="UpdateDate" Type="Edm.DateTime" />
+        <Property Name="UpdateTime" Type="Edm.DateTime" />
+        <Property Name="DataSource" Type="Edm.String" />
+        <Property Name="U_BOY_DB_USER" Type="Edm.String" />
+        <Property Name="U_BOY_DB_PASS" Type="Edm.String" />
+        <Property Name="U_BOY_DB_SERVER" Type="Edm.String" />
+        <Property Name="U_BOY_UIS" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_DB_DATABASE" Type="Edm.String" />
+        <Property Name="U_BOY_DB_SERVTYPE" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="BOY_B1UP_ADDDBINFOParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="BOY_B1UP_CATE">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Type="Edm.String" />
+        <Property Name="DocEntry" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Canceled" Type="Edm.String" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="UserSign" Type="Edm.Int32" />
+        <Property Name="Transfered" Type="Edm.String" />
+        <Property Name="CreateDate" Type="Edm.DateTime" />
+        <Property Name="CreateTime" Type="Edm.DateTime" />
+        <Property Name="UpdateDate" Type="Edm.DateTime" />
+        <Property Name="UpdateTime" Type="Edm.DateTime" />
+        <Property Name="DataSource" Type="Edm.String" />
+        <Property Name="U_BOY_DESCRIPTION" Type="Edm.String" />
+        <Property Name="BOY_B1UP_CATE_L01Collection" Type="Collection(SAPB1.BOY_B1UP_CATE_L01)" />
+        <Property Name="BOY_B1UP_CATE_L02Collection" Type="Collection(SAPB1.BOY_B1UP_CATE_L02)" />
+        <Property Name="BOY_B1UP_CATE_L03Collection" Type="Collection(SAPB1.BOY_B1UP_CATE_L03)" />
+        <Property Name="BOY_B1UP_CATE_L04Collection" Type="Collection(SAPB1.BOY_B1UP_CATE_L04)" />
+        <Property Name="BOY_B1UP_CATE_L05Collection" Type="Collection(SAPB1.BOY_B1UP_CATE_L05)" />
+        <Property Name="BOY_B1UP_CATE_L06Collection" Type="Collection(SAPB1.BOY_B1UP_CATE_L06)" />
+        <Property Name="BOY_B1UP_CATE_L07Collection" Type="Collection(SAPB1.BOY_B1UP_CATE_L07)" />
+        <Property Name="BOY_B1UP_CATE_L08Collection" Type="Collection(SAPB1.BOY_B1UP_CATE_L08)" />
+        <Property Name="BOY_B1UP_CATE_L09Collection" Type="Collection(SAPB1.BOY_B1UP_CATE_L09)" />
+        <Property Name="BOY_B1UP_CATE_L10Collection" Type="Collection(SAPB1.BOY_B1UP_CATE_L10)" />
+      </EntityType>
+      <ComplexType Name="BOY_B1UP_CATE_L01">
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="LineId" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+      </ComplexType>
+      <ComplexType Name="BOY_B1UP_CATE_L02">
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="LineId" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+      </ComplexType>
+      <ComplexType Name="BOY_B1UP_CATE_L03">
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="LineId" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+      </ComplexType>
+      <ComplexType Name="BOY_B1UP_CATE_L04">
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="LineId" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+      </ComplexType>
+      <ComplexType Name="BOY_B1UP_CATE_L05">
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="LineId" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+      </ComplexType>
+      <ComplexType Name="BOY_B1UP_CATE_L06">
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="LineId" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+      </ComplexType>
+      <ComplexType Name="BOY_B1UP_CATE_L07">
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="LineId" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+      </ComplexType>
+      <ComplexType Name="BOY_B1UP_CATE_L08">
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="LineId" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+      </ComplexType>
+      <ComplexType Name="BOY_B1UP_CATE_L09">
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="LineId" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+      </ComplexType>
+      <ComplexType Name="BOY_B1UP_CATE_L10">
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="LineId" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+      </ComplexType>
+      <ComplexType Name="BOY_B1UP_CATEParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="BOY_B1UP_DOTNETCODE">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Type="Edm.String" />
+        <Property Name="DocEntry" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Canceled" Type="Edm.String" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="UserSign" Type="Edm.Int32" />
+        <Property Name="Transfered" Type="Edm.String" />
+        <Property Name="CreateDate" Type="Edm.DateTime" />
+        <Property Name="CreateTime" Type="Edm.DateTime" />
+        <Property Name="UpdateDate" Type="Edm.DateTime" />
+        <Property Name="UpdateTime" Type="Edm.DateTime" />
+        <Property Name="DataSource" Type="Edm.String" />
+        <Property Name="U_BOY_DOTDYCO" Type="Edm.String" />
+        <Property Name="U_BOY_DOTDYCOL" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_DOTDYCOR" Type="Edm.String" />
+        <Property Name="U_BOY_DOTDYCOU" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="BOY_B1UP_DOTNETCODEParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="BOY_B1UP_TRANSHEAD">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Type="Edm.String" />
+        <Property Name="DocEntry" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Canceled" Type="Edm.String" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="UserSign" Type="Edm.Int32" />
+        <Property Name="Transfered" Type="Edm.String" />
+        <Property Name="CreateDate" Type="Edm.DateTime" />
+        <Property Name="CreateTime" Type="Edm.DateTime" />
+        <Property Name="UpdateDate" Type="Edm.DateTime" />
+        <Property Name="UpdateTime" Type="Edm.DateTime" />
+        <Property Name="DataSource" Type="Edm.String" />
+        <Property Name="U_BOY_DEFTRANS" Type="Edm.String" />
+        <Property Name="BOY_B1UP_TRANSLINECollection" Type="Collection(SAPB1.BOY_B1UP_TRANSLINE)" />
+      </EntityType>
+      <ComplexType Name="BOY_B1UP_TRANSLINE">
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="LineId" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="U_BOY_TRANS" Type="Edm.String" />
+        <Property Name="U_BOY_LANCODE" Type="Edm.Int32" />
+      </ComplexType>
+      <ComplexType Name="BOY_B1UP_TRANSHEADParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="BOY_B1UP_USERGROUP">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Type="Edm.String" />
+        <Property Name="DocEntry" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Canceled" Type="Edm.String" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="UserSign" Type="Edm.Int32" />
+        <Property Name="Transfered" Type="Edm.String" />
+        <Property Name="CreateDate" Type="Edm.DateTime" />
+        <Property Name="CreateTime" Type="Edm.DateTime" />
+        <Property Name="UpdateDate" Type="Edm.DateTime" />
+        <Property Name="UpdateTime" Type="Edm.DateTime" />
+        <Property Name="DataSource" Type="Edm.String" />
+        <Property Name="BOY_B1UP_USERGROUPLCollection" Type="Collection(SAPB1.BOY_B1UP_USERGROUPL)" />
+      </EntityType>
+      <ComplexType Name="BOY_B1UP_USERGROUPL">
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="LineId" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="U_BOY_USER" Type="Edm.String" />
+      </ComplexType>
+      <ComplexType Name="BOY_B1UP_USERGROUPParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="BOY_BUTTONS_EX">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Type="Edm.String" />
+        <Property Name="DocEntry" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Canceled" Type="Edm.String" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="UserSign" Type="Edm.Int32" />
+        <Property Name="Transfered" Type="Edm.String" />
+        <Property Name="CreateDate" Type="Edm.DateTime" />
+        <Property Name="CreateTime" Type="Edm.DateTime" />
+        <Property Name="UpdateDate" Type="Edm.DateTime" />
+        <Property Name="UpdateTime" Type="Edm.DateTime" />
+        <Property Name="DataSource" Type="Edm.String" />
+        <Property Name="U_BOY_WDT" Type="Edm.Int32" />
+        <Property Name="U_BOY_HGT" Type="Edm.Int32" />
+        <Property Name="U_BOY_BWDT" Type="Edm.Int32" />
+        <Property Name="U_BOY_DCR" Type="Edm.String" />
+        <Property Name="U_BOY_CATEGORY" Type="Edm.String" />
+        <Property Name="U_BOY_FTEX" Type="Edm.String" />
+        <Property Name="U_BOY_USR" Type="Edm.String" />
+        <Property Name="U_BOY_USRS" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_ISAC" Nullable="false" Type="Edm.String" />
+        <Property Name="BOY_BUTTONSLCollection" Type="Collection(SAPB1.BOY_BUTTONSL)" />
+      </EntityType>
+      <ComplexType Name="BOY_BUTTONSL">
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="LineId" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="U_KUID" Type="Edm.String" />
+        <Property Name="U_BOY_K" Type="Edm.String" />
+        <Property Name="U_BOY_KS" Type="Edm.String" />
+        <Property Name="U_BOY_KT" Type="Edm.String" />
+        <Property Name="U_BOY_KO" Type="Edm.String" />
+        <Property Name="U_BOY_KF" Type="Edm.String" />
+        <Property Name="U_BOY_KG" Type="Edm.String" />
+        <Property Name="U_BOY_KC" Type="Edm.String" />
+        <Property Name="U_BOY_KI" Type="Edm.String" />
+        <Property Name="U_BOY_KM" Type="Edm.String" />
+        <Property Name="U_BOY_KU" Type="Edm.String" />
+        <Property Name="U_BOY_MB" Type="Edm.String" />
+        <Property Name="U_BOY_CATEGORY" Type="Edm.String" />
+      </ComplexType>
+      <ComplexType Name="BOY_BUTTONS_EXParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="BOY_I7_RCMCHEAD">
+        <Key>
+          <PropertyRef Name="DocEntry" />
+        </Key>
+        <Property Name="DocNum" Type="Edm.Int32" />
+        <Property Name="Period" Type="Edm.Int32" />
+        <Property Name="Instance" Type="Edm.Int32" />
+        <Property Name="Series" Type="Edm.Int32" />
+        <Property Name="Handwrtten" Type="Edm.String" />
+        <Property Name="Status" Type="Edm.String" />
+        <Property Name="RequestStatus" Type="Edm.String" />
+        <Property Name="Creator" Type="Edm.String" />
+        <Property Name="Remark" Type="Edm.String" />
+        <Property Name="DocEntry" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Canceled" Type="Edm.String" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="UserSign" Type="Edm.Int32" />
+        <Property Name="Transfered" Type="Edm.String" />
+        <Property Name="CreateDate" Type="Edm.DateTime" />
+        <Property Name="CreateTime" Type="Edm.DateTime" />
+        <Property Name="UpdateDate" Type="Edm.DateTime" />
+        <Property Name="UpdateTime" Type="Edm.DateTime" />
+        <Property Name="DataSource" Type="Edm.String" />
+        <Property Name="U_BOY_FORMTYPE" Type="Edm.String" />
+        <Property Name="U_BOY_DESC" Type="Edm.String" />
+        <Property Name="U_BOY_CAT" Type="Edm.String" />
+        <Property Name="U_BOY_USERS" Type="Edm.String" />
+        <Property Name="U_BOY_IEUSERS" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_ACTIVE" Nullable="false" Type="Edm.String" />
+        <Property Name="BOY_I7_RCMCLINECollection" Type="Collection(SAPB1.BOY_I7_RCMCLINE)" />
+      </EntityType>
+      <ComplexType Name="BOY_I7_RCMCLINE">
+        <Property Name="DocEntry" Nullable="false" Type="Edm.Int32" />
+        <Property Name="LineId" Nullable="false" Type="Edm.Int32" />
+        <Property Name="VisOrder" Type="Edm.Int32" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="U_BOY_GUID" Type="Edm.String" />
+        <Property Name="U_BOY_CAPTION" Type="Edm.String" />
+        <Property Name="U_BOY_ICON" Type="Edm.String" />
+        <Property Name="U_BOY_ADD" Type="Edm.String" />
+        <Property Name="U_BOY_OK" Type="Edm.String" />
+        <Property Name="U_BOY_FIND" Type="Edm.String" />
+        <Property Name="U_BOY_FUNCTIONTYPE" Type="Edm.String" />
+        <Property Name="U_BOY_FUNCTOEXE" Type="Edm.String" />
+        <Property Name="U_BOY_USERS" Type="Edm.String" />
+        <Property Name="U_BOY_IEUSERS" Type="Edm.String" />
+        <Property Name="U_BOY_RESULT" Type="Edm.String" />
+        <Property Name="U_BOY_SQL" Type="Edm.String" />
+        <Property Name="U_BOY_PARENT" Type="Edm.String" />
+        <Property Name="U_BOY_POS" Type="Edm.Int32" />
+        <Property Name="U_BOY_ACTIVEMENU" Type="Edm.String" />
+        <Property Name="U_BOY_UNIFUNC" Type="Edm.String" />
+      </ComplexType>
+      <ComplexType Name="BOY_I7_RCMCHEADParams">
+        <Property Name="DocEntry" Type="Edm.Int32" />
+      </ComplexType>
+      <EntityType Name="BOY_IPT">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Type="Edm.String" />
+        <Property Name="DocEntry" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Canceled" Type="Edm.String" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="UserSign" Type="Edm.Int32" />
+        <Property Name="Transfered" Type="Edm.String" />
+        <Property Name="CreateDate" Type="Edm.DateTime" />
+        <Property Name="CreateTime" Type="Edm.DateTime" />
+        <Property Name="UpdateDate" Type="Edm.DateTime" />
+        <Property Name="UpdateTime" Type="Edm.DateTime" />
+        <Property Name="DataSource" Type="Edm.String" />
+        <Property Name="U_BOY_DESC" Type="Edm.String" />
+        <Property Name="U_BOY_CATEGORY" Type="Edm.String" />
+        <Property Name="U_BOY_BUG" Type="Edm.String" />
+        <Property Name="U_BOY_UDFT" Type="Edm.String" />
+        <Property Name="U_BOY_WDT" Type="Edm.Int32" />
+        <Property Name="U_BOY_HGT" Type="Edm.Int32" />
+        <Property Name="U_BOY_UF" Type="Edm.String" />
+        <Property Name="U_BOY_FTEX" Type="Edm.String" />
+        <Property Name="U_BOY_USR" Type="Edm.String" />
+        <Property Name="U_BOY_USRS" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_ISAC" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_RENMODE" Nullable="false" Type="Edm.Int32" />
+        <Property Name="U_BOY_TABGROUP" Type="Edm.String" />
+        <Property Name="BOY_IPT_SYSCollection" Type="Collection(SAPB1.BOY_IPT_SYS)" />
+        <Property Name="BOY_IPT_UDFCollection" Type="Collection(SAPB1.BOY_IPT_UDF)" />
+        <Property Name="BOY_IPT_SQLRCollection" Type="Collection(SAPB1.BOY_IPT_SQLR)" />
+        <Property Name="BOY_IPT_CUSTCollection" Type="Collection(SAPB1.BOY_IPT_CUST)" />
+      </EntityType>
+      <ComplexType Name="BOY_IPT_SYS">
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="LineId" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="U_BOY_UID" Type="Edm.String" />
+        <Property Name="U_BOY_DESC" Type="Edm.String" />
+        <Property Name="U_BOY_X" Type="Edm.String" />
+        <Property Name="U_BOY_Y" Type="Edm.String" />
+        <Property Name="U_BOY_WDT" Type="Edm.Int32" />
+        <Property Name="U_BOY_HGT" Type="Edm.Int32" />
+        <Property Name="U_BOY_PANE" Type="Edm.Int32" />
+        <Property Name="U_BOY_PAN2" Type="Edm.Int32" />
+        <Property Name="U_BOY_UON" Type="Edm.String" />
+        <Property Name="U_BOY_ACT" Type="Edm.String" />
+        <Property Name="U_BOY_HID" Type="Edm.String" />
+        <Property Name="U_BOY_LNKT" Type="Edm.String" />
+        <Property Name="U_BOY_CATEGORY" Type="Edm.String" />
+        <Property Name="U_BOY_RJ" Type="Edm.String" />
+        <Property Name="U_BOY_SZ" Type="Edm.String" />
+        <Property Name="U_BOY_TS" Type="Edm.String" />
+        <Property Name="U_BOY_FC" Type="Edm.Int32" />
+        <Property Name="U_BOY_BC" Type="Edm.Int32" />
+        <Property Name="U_BOY_FS" Type="Edm.Int32" />
+        <Property Name="U_BOY_PFS" Type="Edm.Int32" />
+        <Property Name="U_BOY_PPT" Type="Edm.Int32" />
+        <Property Name="U_BOY_PPI" Type="Edm.String" />
+      </ComplexType>
+      <ComplexType Name="BOY_IPT_UDF">
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="LineId" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="U_BOY_UID" Type="Edm.String" />
+        <Property Name="U_BOY_FLD" Type="Edm.String" />
+        <Property Name="U_BOY_DESC" Type="Edm.String" />
+        <Property Name="U_BOY_LBL" Type="Edm.String" />
+        <Property Name="U_BOY_LBLW" Type="Edm.Int32" />
+        <Property Name="U_BOY_X" Type="Edm.Int32" />
+        <Property Name="U_BOY_Y" Type="Edm.Int32" />
+        <Property Name="U_BOY_WDT" Type="Edm.Int32" />
+        <Property Name="U_BOY_HGT" Type="Edm.Int32" />
+        <Property Name="U_BOY_PANE" Type="Edm.Int32" />
+        <Property Name="U_BOY_PAN2" Type="Edm.Int32" />
+        <Property Name="U_BOY_TYPE" Type="Edm.String" />
+        <Property Name="U_BOY_TBL" Type="Edm.String" />
+        <Property Name="U_BOY_ACT" Type="Edm.String" />
+        <Property Name="U_BOY_LNKT" Type="Edm.String" />
+        <Property Name="U_BOY_EADD" Type="Edm.String" />
+        <Property Name="U_BOY_EOK" Type="Edm.String" />
+        <Property Name="U_BOY_EFIN" Type="Edm.String" />
+        <Property Name="U_BOY_ISPASS" Type="Edm.String" />
+        <Property Name="U_BOY_LB" Type="Edm.String" />
+        <Property Name="U_BOY_CFL" Type="Edm.String" />
+        <Property Name="U_BOY_GW" Type="Edm.String" />
+        <Property Name="U_BOY_OT" Type="Edm.String" />
+        <Property Name="U_BOY_CATEGORY" Type="Edm.String" />
+        <Property Name="U_BOY_VV" Type="Edm.String" />
+        <Property Name="U_BOY_AFM" Type="Edm.String" />
+        <Property Name="U_BOY_RJ" Type="Edm.String" />
+        <Property Name="U_BOY_SZ" Type="Edm.String" />
+        <Property Name="U_BOY_TS" Type="Edm.String" />
+        <Property Name="U_BOY_FC" Type="Edm.Int32" />
+        <Property Name="U_BOY_BC" Type="Edm.Int32" />
+        <Property Name="U_BOY_FS" Type="Edm.Int32" />
+        <Property Name="U_BOY_VOFF" Type="Edm.String" />
+        <Property Name="U_BOY_VON" Type="Edm.String" />
+        <Property Name="U_BOY_PFS" Type="Edm.Int32" />
+        <Property Name="U_BOY_PPT" Type="Edm.Int32" />
+        <Property Name="U_BOY_PPI" Type="Edm.String" />
+        <Property Name="U_BOY_PPL" Type="Edm.String" />
+        <Property Name="U_BOY_PATH" Type="Edm.String" />
+        <Property Name="U_BOY_SHA" Type="Edm.String" />
+        <Property Name="U_BOY_SWA" Type="Edm.String" />
+        <Property Name="U_BOY_CONDTYP" Type="Edm.Int32" />
+        <Property Name="U_BOY_COMCOND" Type="Edm.Int32" />
+        <Property Name="U_BOY_CUSCOND" Type="Edm.String" />
+        <Property Name="U_BOY_XMLCOND" Type="Edm.String" />
+      </ComplexType>
+      <ComplexType Name="BOY_IPT_SQLR">
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="LineId" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="U_BOY_UFCODE" Type="Edm.String" />
+        <Property Name="U_BOY_TABPOS" Type="Edm.Int32" />
+        <Property Name="U_BOY_PANELEVEL" Type="Edm.Int32" />
+        <Property Name="U_BOY_GUID" Type="Edm.String" />
+        <Property Name="U_BOY_LEFT" Type="Edm.Int32" />
+        <Property Name="U_BOY_TOP" Type="Edm.Int32" />
+        <Property Name="U_BOY_WIDTH" Type="Edm.Int32" />
+        <Property Name="U_BOY_HEIGHT" Type="Edm.Int32" />
+        <Property Name="U_BOY_ACT" Type="Edm.String" />
+      </ComplexType>
+      <ComplexType Name="BOY_IPT_CUST">
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="LineId" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="U_BOY_IUID" Type="Edm.String" />
+        <Property Name="U_BOY_DESC" Type="Edm.String" />
+        <Property Name="U_BOY_TABPOS" Type="Edm.Int32" />
+        <Property Name="U_BOY_PANELEVEL" Type="Edm.Int32" />
+        <Property Name="U_BOY_GUID" Type="Edm.String" />
+        <Property Name="U_BOY_ACT" Type="Edm.String" />
+      </ComplexType>
+      <ComplexType Name="BOY_IPTParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="BOY_MANDATORY">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Type="Edm.String" />
+        <Property Name="DocEntry" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Canceled" Type="Edm.String" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="UserSign" Type="Edm.Int32" />
+        <Property Name="Transfered" Type="Edm.String" />
+        <Property Name="CreateDate" Type="Edm.DateTime" />
+        <Property Name="CreateTime" Type="Edm.DateTime" />
+        <Property Name="UpdateDate" Type="Edm.DateTime" />
+        <Property Name="UpdateTime" Type="Edm.DateTime" />
+        <Property Name="DataSource" Type="Edm.String" />
+        <Property Name="U_BOY_DESC" Type="Edm.String" />
+        <Property Name="U_BOY_CATE" Type="Edm.String" />
+        <Property Name="U_BOY_ADD" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_UPD" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_OK" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_AUID" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_FTEX" Type="Edm.String" />
+        <Property Name="U_BOY_USR" Type="Edm.String" />
+        <Property Name="U_BOY_USRS" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_ISAC" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_COL" Type="Edm.Int32" />
+        <Property Name="U_BOY_FCOL" Type="Edm.Int32" />
+        <Property Name="U_BOY_SMB" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_CUSM" Type="Edm.String" />
+        <Property Name="BOY_MANDATORY_LINESCollection" Type="Collection(SAPB1.BOY_MANDATORY_LINES)" />
+      </EntityType>
+      <ComplexType Name="BOY_MANDATORY_LINES">
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="LineId" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="U_BOY_UID" Type="Edm.String" />
+        <Property Name="U_BOY_COL" Type="Edm.String" />
+        <Property Name="U_BOY_DESC" Type="Edm.String" />
+        <Property Name="U_BOY_EMPT" Type="Edm.String" />
+        <Property Name="U_BOY_ILR" Type="Edm.String" />
+        <Property Name="U_BOY_CATE" Type="Edm.String" />
+        <Property Name="U_BOY_WARL" Type="Edm.String" />
+      </ComplexType>
+      <ComplexType Name="BOY_MANDATORYParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
       <EntityType Name="COUNTRIES">
         <Key>
           <PropertyRef Name="Code" />
@@ -13389,9 +14400,6 @@
       </EntityType>
       <ComplexType Name="COUNTRIESParams">
         <Property Name="Code" Type="Edm.String" />
-      </ComplexType>
-      <ComplexType Name="InvokeParams">
-        <Property Name="Value" Type="Edm.String" />
       </ComplexType>
       <EntityType Name="EDUCATION">
         <Key>
@@ -13523,162 +14531,578 @@
       <ComplexType Name="RELIGIONParams">
         <Property Name="Code" Type="Edm.String" />
       </ComplexType>
-      <EntityType Name="Z_OHLD">
+      <EntityType Name="BOY_60_ANM">
         <Key>
           <PropertyRef Name="Code" />
         </Key>
         <Property Name="Code" Nullable="false" Type="Edm.String" />
         <Property Name="Name" Nullable="false" Type="Edm.String" />
-        <Property Name="U_Z_FRMONTH" Type="Edm.Double" />
-        <Property Name="U_Z_TOMONTH" Type="Edm.Double" />
-        <Property Name="U_Z_DAYS" Type="Edm.Int32" />
+        <Property Name="U_BOY_60_AC" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_60_MU" Type="Edm.String" />
+        <Property Name="U_BOY_60_T" Type="Edm.String" />
+        <Property Name="U_BOY_60_PMU" Type="Edm.String" />
+        <Property Name="U_BOY_60_P" Type="Edm.Int32" />
+        <Property Name="U_BOY_60_U" Type="Edm.String" />
+        <Property Name="U_BOY_60_US" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_60_F" Type="Edm.String" />
+        <Property Name="U_BOY_60_IP" Type="Edm.String" />
+        <Property Name="U_BOY_60_CAT" Type="Edm.String" />
       </EntityType>
-      <ComplexType Name="Z_OHLDParams">
+      <ComplexType Name="BOY_60_ANMParams">
         <Property Name="Code" Type="Edm.String" />
       </ComplexType>
-      <EntityType Name="Z_PAY_OCON">
+      <EntityType Name="BOY_60_EEM">
         <Key>
           <PropertyRef Name="Code" />
         </Key>
         <Property Name="Code" Nullable="false" Type="Edm.String" />
         <Property Name="Name" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_60_MU2" Type="Edm.String" />
+        <Property Name="U_BOY_60_OT" Type="Edm.String" />
+        <Property Name="U_BOY_60_NT" Type="Edm.String" />
+        <Property Name="U_BOY_60_CAT" Type="Edm.String" />
       </EntityType>
-      <ComplexType Name="Z_PAY_OCONParams">
+      <ComplexType Name="BOY_60_EEMParams">
         <Property Name="Code" Type="Edm.String" />
       </ComplexType>
-      <EntityType Name="Z_PAY_ODED">
+      <EntityType Name="BOY_81_CONDITION">
         <Key>
           <PropertyRef Name="Code" />
         </Key>
         <Property Name="Code" Nullable="false" Type="Edm.String" />
         <Property Name="Name" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_NAME" Type="Edm.String" />
+        <Property Name="U_BOY_TYPE" Type="Edm.String" />
+        <Property Name="U_BOY_CONDITION" Type="Edm.String" />
+        <Property Name="U_BOY_CONDITIONEX" Type="Edm.String" />
       </EntityType>
-      <ComplexType Name="Z_PAY_ODEDParams">
+      <ComplexType Name="BOY_81_CONDITIONParams">
         <Property Name="Code" Type="Edm.String" />
       </ComplexType>
-      <EntityType Name="Z_PAY_OEAR">
+      <EntityType Name="BOY_81_FORMTYPES">
         <Key>
           <PropertyRef Name="Code" />
         </Key>
         <Property Name="Code" Nullable="false" Type="Edm.String" />
         <Property Name="Name" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_FORM" Type="Edm.String" />
+        <Property Name="U_BOY_CAT" Nullable="false" Type="Edm.Int32" />
       </EntityType>
-      <ComplexType Name="Z_PAY_OEARParams">
+      <ComplexType Name="BOY_81_FORMTYPESParams">
         <Property Name="Code" Type="Edm.String" />
       </ComplexType>
-      <EntityType Name="Z_PAY_OEAR1">
+      <EntityType Name="BOY_A2_READONLY">
         <Key>
           <PropertyRef Name="Code" />
         </Key>
         <Property Name="Code" Nullable="false" Type="Edm.String" />
         <Property Name="Name" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_ITEMUID" Type="Edm.String" />
+        <Property Name="U_BOY_FORMTYPE" Type="Edm.String" />
+        <Property Name="U_BOY_ADD" Type="Edm.String" />
+        <Property Name="U_BOY_OK" Type="Edm.String" />
+        <Property Name="U_BOY_FIND" Type="Edm.String" />
+        <Property Name="U_BOY_USR" Type="Edm.String" />
+        <Property Name="U_BOY_USRS" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_CATE" Type="Edm.String" />
       </EntityType>
-      <ComplexType Name="Z_PAY_OEAR1Params">
+      <ComplexType Name="BOY_A2_READONLYParams">
         <Property Name="Code" Type="Edm.String" />
       </ComplexType>
-      <EntityType Name="Z_PAY_OGLA">
+      <EntityType Name="BOY_B1UP_AUE">
         <Key>
           <PropertyRef Name="Code" />
         </Key>
         <Property Name="Code" Nullable="false" Type="Edm.String" />
         <Property Name="Name" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_USERNAME" Type="Edm.String" />
+        <Property Name="U_BOY_VERSION" Type="Edm.String" />
       </EntityType>
-      <ComplexType Name="Z_PAY_OGLAParams">
+      <ComplexType Name="BOY_B1UP_AUEParams">
         <Property Name="Code" Type="Edm.String" />
       </ComplexType>
-      <EntityType Name="Z_PAY_OMED">
+      <EntityType Name="BOY_B1UP_CONFIG">
         <Key>
           <PropertyRef Name="Code" />
         </Key>
         <Property Name="Code" Nullable="false" Type="Edm.String" />
         <Property Name="Name" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_FB" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_MAN" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_IPT" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_VEK" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_DEF" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_TOOL" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_ABON" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_LETT" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_TEMP" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_PLIE" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_QC" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_REF" Nullable="false" Type="Edm.Int32" />
+        <Property Name="U_BOY_BVAL" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_TABCTRL" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_AAEM" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_B1SE" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_B1PRINT" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_B1DM" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_B1BUDGET" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_B1CHIMP" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_B1TT" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_MDM" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_READONLY" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_B1DASH" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_LEGCOCK" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_B1UPVER" Type="Edm.String" />
+        <Property Name="U_BOY_WHBR" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_AUU" Type="Edm.String" />
+        <Property Name="U_BOY_SUPERUSER" Type="Edm.String" />
+        <Property Name="U_BOY_AUUS" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_RCMC" Nullable="false" Type="Edm.String" />
       </EntityType>
-      <ComplexType Name="Z_PAY_OMEDParams">
+      <ComplexType Name="BOY_B1UP_CONFIGParams">
         <Property Name="Code" Type="Edm.String" />
       </ComplexType>
-      <EntityType Name="Z_PAY_OOVT">
+      <EntityType Name="BOY_BUTTONS_DL">
         <Key>
           <PropertyRef Name="Code" />
         </Key>
         <Property Name="Code" Nullable="false" Type="Edm.String" />
         <Property Name="Name" Nullable="false" Type="Edm.String" />
-        <Property Name="U_Z_OVTCODE" Type="Edm.String" />
-        <Property Name="U_Z_OVTRATE" Type="Edm.Double" />
-        <Property Name="U_Z_OVTTYPE" Type="Edm.String" />
-        <Property Name="U_Z_GLACC" Type="Edm.String" />
+        <Property Name="U_BOY_TYPE" Type="Edm.String" />
+        <Property Name="U_BOY_KEY" Type="Edm.String" />
+        <Property Name="U_BOY_DESC" Type="Edm.String" />
+        <Property Name="U_BOY_DATA" Type="Edm.String" />
+        <Property Name="U_BOY_SORT" Type="Edm.Int32" />
       </EntityType>
-      <ComplexType Name="Z_PAY_OOVTParams">
+      <ComplexType Name="BOY_BUTTONS_DLParams">
         <Property Name="Code" Type="Edm.String" />
       </ComplexType>
-      <EntityType Name="Z_PAY_OSBM">
+      <EntityType Name="BOY_BUTTONS_DLAF">
         <Key>
           <PropertyRef Name="Code" />
         </Key>
         <Property Name="Code" Nullable="false" Type="Edm.String" />
         <Property Name="Name" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_FUNK" Type="Edm.String" />
+        <Property Name="U_BOY_DATA" Type="Edm.String" />
       </EntityType>
-      <ComplexType Name="Z_PAY_OSBMParams">
+      <ComplexType Name="BOY_BUTTONS_DLAFParams">
         <Property Name="Code" Type="Edm.String" />
       </ComplexType>
-      <EntityType Name="Z_PAY_OSHT">
+      <EntityType Name="BOY_BUTTONS_DLF">
         <Key>
           <PropertyRef Name="Code" />
         </Key>
         <Property Name="Code" Nullable="false" Type="Edm.String" />
         <Property Name="Name" Nullable="false" Type="Edm.String" />
-        <Property Name="U_Z_SCODE" Type="Edm.String" />
-        <Property Name="U_Z_SRATE" Type="Edm.Double" />
-        <Property Name="U_Z_GLACC" Type="Edm.String" />
+        <Property Name="U_BOY_NAME" Type="Edm.String" />
+        <Property Name="U_BOY_FILE" Type="Edm.String" />
+        <Property Name="U_BOY_ARG" Type="Edm.String" />
       </EntityType>
-      <ComplexType Name="Z_PAY_OSHTParams">
+      <ComplexType Name="BOY_BUTTONS_DLFParams">
         <Property Name="Code" Type="Edm.String" />
       </ComplexType>
-      <EntityType Name="Z_PAY_OSOB">
+      <EntityType Name="BOY_E7_DEFDEL">
         <Key>
           <PropertyRef Name="Code" />
         </Key>
         <Property Name="Code" Nullable="false" Type="Edm.String" />
         <Property Name="Name" Nullable="false" Type="Edm.String" />
       </EntityType>
-      <ComplexType Name="Z_PAY_OSOBParams">
+      <ComplexType Name="BOY_E7_DEFDELParams">
         <Property Name="Code" Type="Edm.String" />
       </ComplexType>
-      <EntityType Name="Z_PAY_OTAX">
+      <EntityType Name="BOY_E7_DEVDASH">
         <Key>
           <PropertyRef Name="Code" />
         </Key>
         <Property Name="Code" Nullable="false" Type="Edm.String" />
         <Property Name="Name" Nullable="false" Type="Edm.String" />
-        <Property Name="U_Z_SLAP_FROM" Type="Edm.Int32" />
-        <Property Name="U_Z_SLAP_TO" Type="Edm.Int32" />
+        <Property Name="U_BOY_ACTIVE" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_NAME" Type="Edm.String" />
+        <Property Name="U_BOY_IMGPATH" Type="Edm.String" />
+        <Property Name="U_BOY_USR" Type="Edm.String" />
+        <Property Name="U_BOY_USRS" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_DBINFO" Nullable="false" Type="Edm.String" />
       </EntityType>
-      <ComplexType Name="Z_PAY_OTAXParams">
+      <ComplexType Name="BOY_E7_DEVDASHParams">
         <Property Name="Code" Type="Edm.String" />
       </ComplexType>
-      <EntityType Name="Z_PAY_TERMS">
+      <EntityType Name="BOY_E7_SERVSET">
         <Key>
           <PropertyRef Name="Code" />
         </Key>
         <Property Name="Code" Nullable="false" Type="Edm.String" />
         <Property Name="Name" Nullable="false" Type="Edm.String" />
-        <Property Name="U_Z_Code" Type="Edm.String" />
-        <Property Name="U_Z_Name" Type="Edm.String" />
-        <Property Name="U_Z_FrgnName" Type="Edm.String" />
+        <Property Name="U_BOY_SLKEY" Type="Edm.String" />
+        <Property Name="U_BOY_SNAME" Type="Edm.String" />
+        <Property Name="U_BOY_SIPS" Type="Edm.String" />
+        <Property Name="U_BOY_SPORT" Type="Edm.Int32" />
+        <Property Name="U_BOY_SPVERSION" Type="Edm.Int32" />
       </EntityType>
-      <ComplexType Name="Z_PAY_TERMSParams">
+      <ComplexType Name="BOY_E7_SERVSETParams">
         <Property Name="Code" Type="Edm.String" />
       </ComplexType>
-      <EntityType Name="Z_WORK">
+      <EntityType Name="BOY_HELP_ENTRY">
         <Key>
           <PropertyRef Name="Code" />
         </Key>
         <Property Name="Code" Nullable="false" Type="Edm.String" />
         <Property Name="Name" Nullable="false" Type="Edm.String" />
-        <Property Name="U_Z_YEAR" Type="Edm.Int32" />
-        <Property Name="U_Z_MONTH" Type="Edm.String" />
-        <Property Name="U_Z_DAYS" Type="Edm.Int32" />
+        <Property Name="U_BOY_FORMTYPE" Type="Edm.String" />
+        <Property Name="U_BOY_DESCR" Type="Edm.String" />
+        <Property Name="U_BOY_HEUID" Type="Edm.String" />
+        <Property Name="U_BOY_RELITEM" Type="Edm.String" />
+        <Property Name="U_BOY_COLUMN" Type="Edm.String" />
+        <Property Name="U_BOY_DISTYPE" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_REDSIZE" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_TXTLINK" Type="Edm.String" />
+        <Property Name="U_BOY_TEXT" Type="Edm.String" />
       </EntityType>
-      <ComplexType Name="Z_WORKParams">
+      <ComplexType Name="BOY_HELP_ENTRYParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="BOY_IPT_CONFIG">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_PLAT" Type="Edm.Int32" />
+      </EntityType>
+      <ComplexType Name="BOY_IPT_CONFIGParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="BOY_PLUGINS">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_PID" Type="Edm.String" />
+        <Property Name="U_BOY_USER" Type="Edm.String" />
+        <Property Name="U_BOY_USERSET" Nullable="false" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="BOY_PLUGINSParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="BOY_SBO_AVERSIONS">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_IDENTI" Type="Edm.String" />
+        <Property Name="U_BOY_MAJOR" Type="Edm.Int32" />
+        <Property Name="U_BOY_MINOR" Type="Edm.Int32" />
+        <Property Name="U_BOY_BUILD" Type="Edm.Int32" />
+        <Property Name="U_BOY_REVISION" Type="Edm.Int32" />
+      </EntityType>
+      <ComplexType Name="BOY_SBO_AVERSIONSParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="BOY_SBO_DBINFO">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_DB_USER" Type="Edm.String" />
+        <Property Name="U_BOY_DB_PASS" Type="Edm.String" />
+        <Property Name="U_BOY_UIS" Nullable="false" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="BOY_SBO_DBINFOParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="BOY_SBO_EULA">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_IDENTI" Type="Edm.String" />
+        <Property Name="U_BOY_MAJOR" Type="Edm.Int32" />
+        <Property Name="U_BOY_MINOR" Type="Edm.Int32" />
+        <Property Name="U_BOY_BUILD" Type="Edm.Int32" />
+        <Property Name="U_BOY_REVISION" Type="Edm.Int32" />
+        <Property Name="U_BOY_USER" Type="Edm.Int32" />
+      </EntityType>
+      <ComplexType Name="BOY_SBO_EULAParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="BOY_SBO_EXTDATA">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_KEY" Type="Edm.String" />
+        <Property Name="U_BOY_PART_0" Type="Edm.String" />
+        <Property Name="U_BOY_PART_1" Type="Edm.String" />
+        <Property Name="U_BOY_PART_2" Type="Edm.String" />
+        <Property Name="U_BOY_PART_3" Type="Edm.String" />
+        <Property Name="U_BOY_PART_4" Type="Edm.String" />
+        <Property Name="U_BOY_PART_5" Type="Edm.String" />
+        <Property Name="U_BOY_PART_6" Type="Edm.String" />
+        <Property Name="U_BOY_PART_7" Type="Edm.String" />
+        <Property Name="U_BOY_PART_8" Type="Edm.String" />
+        <Property Name="U_BOY_PART_9" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="BOY_SBO_EXTDATAParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="BOY_SBO_EXTEVT">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Nullable="false" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="BOY_SBO_EXTEVTParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="BOY_SBO_FEEDBACK">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_USE_FEEDBACK" Nullable="false" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="BOY_SBO_FEEDBACKParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="BOY_SBO_LASTVALUE">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_FORM" Type="Edm.String" />
+        <Property Name="U_BOY_ITEM" Type="Edm.String" />
+        <Property Name="U_BOY_USER" Type="Edm.Int32" />
+        <Property Name="U_BOY_TYPE" Type="Edm.Int32" />
+        <Property Name="U_BOY_VALUE" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="BOY_SBO_LASTVALUEParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="BOY_SBO_LICASSN">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_ID" Type="Edm.String" />
+        <Property Name="U_BOY_USR" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="BOY_SBO_LICASSNParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="BOY_SBO_LICCONF">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_URL" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="BOY_SBO_LICCONFParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="BOY_SBO_LICDATA">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_ID" Type="Edm.String" />
+        <Property Name="U_BOY_LASTU" Type="Edm.DateTime" />
+        <Property Name="U_BOY_DAT" Type="Edm.String" />
+        <Property Name="U_BOY_INSTALNO" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="BOY_SBO_LICDATAParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="BOY_SBO_PARTNER">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_EMAIL" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="BOY_SBO_PARTNERParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="BOY_SBO_QUERYCACHE">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_TSQL" Type="Edm.String" />
+        <Property Name="U_BOY_HANA" Type="Edm.String" />
+        <Property Name="U_BOY_VERSION" Type="Edm.Int32" />
+      </EntityType>
+      <ComplexType Name="BOY_SBO_QUERYCACHEParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="BOY_SBO_SCHEDULE">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_CONF_ID" Type="Edm.String" />
+        <Property Name="U_BOY_COMPONENT" Type="Edm.String" />
+        <Property Name="U_BOY_COMP_PATH" Type="Edm.String" />
+        <Property Name="U_BOY_NAME" Type="Edm.String" />
+        <Property Name="U_BOY_DAYINMONTH" Type="Edm.Int32" />
+        <Property Name="U_BOY_END_TYPE" Type="Edm.Int32" />
+        <Property Name="U_BOY_INTERVAL" Type="Edm.Int32" />
+        <Property Name="U_BOY_REC_TYPE" Type="Edm.Int32" />
+        <Property Name="U_BOY_KILL_HANG" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_RETRY_KILL" Type="Edm.Int32" />
+        <Property Name="U_BOY_START" Type="Edm.String" />
+        <Property Name="U_BOY_END" Type="Edm.String" />
+        <Property Name="U_BOY_S_EMAIL" Type="Edm.String" />
+        <Property Name="U_BOY_E_EMAIL" Type="Edm.String" />
+        <Property Name="U_BOY_MONDAY" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_TUESDAY" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_WEDNESDAY" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_THURSDAY" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_FRIDAY" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_SATURDAY" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_SUNDAY" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_LAST_UPDATE" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="BOY_SBO_SCHEDULEParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="BOY_TOOLBOX_ACBC">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_IGNORE" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="BOY_TOOLBOX_ACBCParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="BOY_TOOLBOX_ACIC">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_IGNORE" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="BOY_TOOLBOX_ACICParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="BOY_TOOLBOX_CONFIG">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_UAKN" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_OPEN" Type="Edm.String" />
+        <Property Name="U_BOY_BETM" Type="Edm.String" />
+        <Property Name="U_BOY_UBET" Type="Edm.String" />
+        <Property Name="U_BOY_BTAB" Type="Edm.String" />
+        <Property Name="U_BOY_UTAB" Type="Edm.String" />
+        <Property Name="U_BOY_BACT" Type="Edm.String" />
+        <Property Name="U_BOY_OACT" Type="Edm.String" />
+        <Property Name="U_BOY_GTA" Type="Edm.String" />
+        <Property Name="U_BOY_GTAC" Type="Edm.String" />
+        <Property Name="U_BOY_GTF" Type="Edm.String" />
+        <Property Name="U_BOY_GTFC" Type="Edm.String" />
+        <Property Name="U_BOY_WEB" Type="Edm.String" />
+        <Property Name="U_BOY_ZIP" Type="Edm.String" />
+        <Property Name="U_BOY_AFP" Type="Edm.String" />
+        <Property Name="U_BOY_AART" Type="Edm.String" />
+        <Property Name="U_BOY_STP" Type="Edm.String" />
+        <Property Name="U_BOY_PW" Type="Edm.String" />
+        <Property Name="U_BOY_ENT" Type="Edm.String" />
+        <Property Name="U_BOY_ENTJ" Type="Edm.String" />
+        <Property Name="U_BOY_PWB" Type="Edm.String" />
+        <Property Name="U_BOY_PWL" Type="Edm.Int32" />
+        <Property Name="U_BOY_WEBB" Type="Edm.String" />
+        <Property Name="U_BOY_LINE" Type="Edm.String" />
+        <Property Name="U_BOY_DJES" Type="Edm.String" />
+        <Property Name="U_BOY_JES" Type="Edm.String" />
+        <Property Name="U_BOY_DMF" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_DFF" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_BPFL" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_DOFL" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_JR" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_JRS" Type="Edm.String" />
+        <Property Name="U_BOY_AD" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_COAP" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_EMB" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_UPT" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_VFC" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_SINB" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_SIDI" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_SIND" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_SINK" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_ATSI" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_ATSO" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_HIDB" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_SOBP" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_HIDI" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_HIDE" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_GTNP" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_GTNS" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_UQE" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_BLOCKUNDO" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_GTNSS" Type="Edm.String" />
+        <Property Name="U_BOY_GTNPS" Type="Edm.String" />
+        <Property Name="U_BOY_UMCP" Type="Edm.String" />
+        <Property Name="U_BOY_MCPT" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_UMBT" Type="Edm.String" />
+        <Property Name="U_BOY_MBTT" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_UMST" Type="Edm.String" />
+        <Property Name="U_BOY_MBST" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_UOCR" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_UAE" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_SBPL" Type="Edm.String" />
+        <Property Name="U_BOY_SBPC" Type="Edm.String" />
+        <Property Name="U_BOY_SBPS" Type="Edm.String" />
+        <Property Name="U_BOY_SIM" Type="Edm.String" />
+        <Property Name="U_BOY_ELICENSE" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_OPENFOL" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_NUMATTACH" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_DISDOCADD" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_USEHELPSYSTEM" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_CLOSEPREV" Nullable="false" Type="Edm.Int32" />
+        <Property Name="U_BOY_LINESEARCHFT" Type="Edm.String" />
+        <Property Name="U_BOY_BPSORE" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_ITSORE" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_JRSEX" Type="Edm.String" />
+        <Property Name="U_BOY_LINESCODF" Type="Edm.String" />
+        <Property Name="U_BOY_COPY_GRID" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_AUEN_SYSINF" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_USE_DELDWU" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_DELDWUOPT" Nullable="false" Type="Edm.Int32" />
+      </EntityType>
+      <ComplexType Name="BOY_TOOLBOX_CONFIGParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="BOY_TOOLBOX_UDW">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Nullable="false" Type="Edm.String" />
+        <Property Name="U_BOY_TITLE" Type="Edm.String" />
+        <Property Name="U_BOY_USERS" Type="Edm.String" />
+        <Property Name="U_BOY_USETTINGS" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="BOY_TOOLBOX_UDWParams">
         <Property Name="Code" Type="Edm.String" />
       </ComplexType>
       <EntityType Name="WORKERS">
@@ -13703,7 +15127,6 @@
         <Property Name="U_Agent" Type="Edm.String" />
         <Property Name="U_Age" Type="Edm.Double" />
         <Property Name="U_BirthDate" Type="Edm.DateTime" />
-        <Property Name="U_Gender" Type="Edm.String" />
         <Property Name="U_Nationality" Type="Edm.String" />
         <Property Name="U_Religion" Type="Edm.String" />
         <Property Name="U_MaritalStatus" Type="Edm.String" />
@@ -13721,6 +15144,7 @@
         <Property Name="U_Price" Type="Edm.Double" />
         <Property Name="U_CivilId" Type="Edm.String" />
         <Property Name="U_Status" Type="Edm.String" />
+        <Property Name="U_Gender" Type="Edm.String" />
       </EntityType>
       <ComplexType Name="WORKERSParams">
         <Property Name="Code" Type="Edm.String" />
@@ -19724,6 +21148,21 @@
         <EntitySet EntityType="SAPB1.UserDefaultGroup" Name="UserDefaultGroups" />
         <EntitySet EntityType="SAPB1.SalesOpportunities" Name="SalesOpportunities" />
         <EntitySet EntityType="SAPB1.SalesOpportunityInterestSetup" Name="SalesOpportunityInterestsSetup" />
+        <EntitySet EntityType="SAPB1.BOY_40_CONFIG" Name="BOY_40_CONFIG" />
+        <EntitySet EntityType="SAPB1.BOY_41_FUNCTIONS" Name="BOY_41_FUNCTIONS" />
+        <EntitySet EntityType="SAPB1.BOY_41_UFBATCHES" Name="BOY_41_UFBATCH" />
+        <EntitySet EntityType="SAPB1.BOY_41_UFSCHEDULES" Name="BOY_41_UFSCHEDULE" />
+        <EntitySet EntityType="SAPB1.BOY_81_DMSH" Name="BOY_81_DMSCHE" />
+        <EntitySet EntityType="SAPB1.BOY_99_MBC" Name="BOY_99_MBC" />
+        <EntitySet EntityType="SAPB1.BOY_B1UP_ADDDBINFO" Name="BOY_B1UP_ADDDBINFO" />
+        <EntitySet EntityType="SAPB1.BOY_B1UP_CATE" Name="BOY_B1UP_CONFIGCATE" />
+        <EntitySet EntityType="SAPB1.BOY_B1UP_DOTNETCODE" Name="BOY_B1UP_DOTNETCODE" />
+        <EntitySet EntityType="SAPB1.BOY_B1UP_TRANSHEAD" Name="BOY_B1UP_TRANS" />
+        <EntitySet EntityType="SAPB1.BOY_B1UP_USERGROUP" Name="BOY_B1UP_USERGROUP" />
+        <EntitySet EntityType="SAPB1.BOY_BUTTONS_EX" Name="BOY_BUTTON_UDO_EX" />
+        <EntitySet EntityType="SAPB1.BOY_I7_RCMCHEAD" Name="BOY_I7_RCMCHEAD" />
+        <EntitySet EntityType="SAPB1.BOY_IPT" Name="BOY_IPT" />
+        <EntitySet EntityType="SAPB1.BOY_MANDATORY" Name="BOY_MANDATORY" />
         <EntitySet EntityType="SAPB1.COUNTRIES" Name="COUNTRIESUDO" />
         <EntitySet EntityType="SAPB1.EDUCATION" Name="EDUCATION" />
         <EntitySet EntityType="SAPB1.EMAILCONFIRMATION" Name="EMAILCONFIRMATION" />
@@ -19731,20 +21170,39 @@
         <EntitySet EntityType="SAPB1.MARITALSTATUS" Name="MARITALSTATUSUDO" />
         <EntitySet EntityType="SAPB1.PASSRESET" Name="PASSRESET" />
         <EntitySet EntityType="SAPB1.RELIGION" Name="RELIGION" />
-        <EntitySet EntityType="SAPB1.Z_OHLD" Name="U_Z_OHLD" />
-        <EntitySet EntityType="SAPB1.Z_PAY_OCON" Name="U_Z_PAY_OCON" />
-        <EntitySet EntityType="SAPB1.Z_PAY_ODED" Name="U_Z_PAY_ODED" />
-        <EntitySet EntityType="SAPB1.Z_PAY_OEAR" Name="U_Z_PAY_OEAR" />
-        <EntitySet EntityType="SAPB1.Z_PAY_OEAR1" Name="U_Z_PAY_OEAR1" />
-        <EntitySet EntityType="SAPB1.Z_PAY_OGLA" Name="U_Z_PAY_OGLA" />
-        <EntitySet EntityType="SAPB1.Z_PAY_OMED" Name="U_Z_PAY_OMED" />
-        <EntitySet EntityType="SAPB1.Z_PAY_OOVT" Name="U_Z_PAY_OOVT" />
-        <EntitySet EntityType="SAPB1.Z_PAY_OSBM" Name="U_Z_PAY_OSBM" />
-        <EntitySet EntityType="SAPB1.Z_PAY_OSHT" Name="U_Z_PAY_OSHT" />
-        <EntitySet EntityType="SAPB1.Z_PAY_OSOB" Name="U_Z_PAY_OSOB" />
-        <EntitySet EntityType="SAPB1.Z_PAY_OTAX" Name="U_Z_PAY_OTAX" />
-        <EntitySet EntityType="SAPB1.Z_PAY_TERMS" Name="U_Z_PAY_TERMS" />
-        <EntitySet EntityType="SAPB1.Z_WORK" Name="U_Z_WORK" />
+        <EntitySet EntityType="SAPB1.BOY_60_ANM" Name="U_BOY_60_ANM" />
+        <EntitySet EntityType="SAPB1.BOY_60_EEM" Name="U_BOY_60_EEM" />
+        <EntitySet EntityType="SAPB1.BOY_81_CONDITION" Name="U_BOY_81_CONDITION" />
+        <EntitySet EntityType="SAPB1.BOY_81_FORMTYPES" Name="U_BOY_81_FORMTYPES" />
+        <EntitySet EntityType="SAPB1.BOY_A2_READONLY" Name="U_BOY_A2_READONLY" />
+        <EntitySet EntityType="SAPB1.BOY_B1UP_AUE" Name="U_BOY_B1UP_AUE" />
+        <EntitySet EntityType="SAPB1.BOY_B1UP_CONFIG" Name="U_BOY_B1UP_CONFIG" />
+        <EntitySet EntityType="SAPB1.BOY_BUTTONS_DL" Name="U_BOY_BUTTONS_DL" />
+        <EntitySet EntityType="SAPB1.BOY_BUTTONS_DLAF" Name="U_BOY_BUTTONS_DLAF" />
+        <EntitySet EntityType="SAPB1.BOY_BUTTONS_DLF" Name="U_BOY_BUTTONS_DLF" />
+        <EntitySet EntityType="SAPB1.BOY_E7_DEFDEL" Name="U_BOY_E7_DEFDEL" />
+        <EntitySet EntityType="SAPB1.BOY_E7_DEVDASH" Name="U_BOY_E7_DEVDASH" />
+        <EntitySet EntityType="SAPB1.BOY_E7_SERVSET" Name="U_BOY_E7_SERVSET" />
+        <EntitySet EntityType="SAPB1.BOY_HELP_ENTRY" Name="U_BOY_HELP_ENTRY" />
+        <EntitySet EntityType="SAPB1.BOY_IPT_CONFIG" Name="U_BOY_IPT_CONFIG" />
+        <EntitySet EntityType="SAPB1.BOY_PLUGINS" Name="U_BOY_PLUGINS" />
+        <EntitySet EntityType="SAPB1.BOY_SBO_AVERSIONS" Name="U_BOY_SBO_AVERSIONS" />
+        <EntitySet EntityType="SAPB1.BOY_SBO_DBINFO" Name="U_BOY_SBO_DBINFO" />
+        <EntitySet EntityType="SAPB1.BOY_SBO_EULA" Name="U_BOY_SBO_EULA" />
+        <EntitySet EntityType="SAPB1.BOY_SBO_EXTDATA" Name="U_BOY_SBO_EXTDATA" />
+        <EntitySet EntityType="SAPB1.BOY_SBO_EXTEVT" Name="U_BOY_SBO_EXTEVT" />
+        <EntitySet EntityType="SAPB1.BOY_SBO_FEEDBACK" Name="U_BOY_SBO_FEEDBACK" />
+        <EntitySet EntityType="SAPB1.BOY_SBO_LASTVALUE" Name="U_BOY_SBO_LASTVALUE" />
+        <EntitySet EntityType="SAPB1.BOY_SBO_LICASSN" Name="U_BOY_SBO_LICASSN" />
+        <EntitySet EntityType="SAPB1.BOY_SBO_LICCONF" Name="U_BOY_SBO_LICCONF" />
+        <EntitySet EntityType="SAPB1.BOY_SBO_LICDATA" Name="U_BOY_SBO_LICDATA" />
+        <EntitySet EntityType="SAPB1.BOY_SBO_PARTNER" Name="U_BOY_SBO_PARTNER" />
+        <EntitySet EntityType="SAPB1.BOY_SBO_QUERYCACHE" Name="U_BOY_SBO_QUERYCACHE" />
+        <EntitySet EntityType="SAPB1.BOY_SBO_SCHEDULE" Name="U_BOY_SBO_SCHEDULE" />
+        <EntitySet EntityType="SAPB1.BOY_TOOLBOX_ACBC" Name="U_BOY_TOOLBOX_ACBC" />
+        <EntitySet EntityType="SAPB1.BOY_TOOLBOX_ACIC" Name="U_BOY_TOOLBOX_ACIC" />
+        <EntitySet EntityType="SAPB1.BOY_TOOLBOX_CONFIG" Name="U_BOY_TOOLBOX_CONFIG" />
+        <EntitySet EntityType="SAPB1.BOY_TOOLBOX_UDW" Name="U_BOY_TOOLBOX_UDW" />
         <EntitySet EntityType="SAPB1.WORKERS" Name="WORKERSUDO" />
         <EntitySet EntityType="SAPB1.WORKERTYPES" Name="WORKERTYPESUDO" />
         <EntitySet EntityType="SAPB1.B1Session" Name="B1Sessions" />

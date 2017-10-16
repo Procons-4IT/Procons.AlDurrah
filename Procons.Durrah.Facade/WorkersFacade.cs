@@ -28,7 +28,6 @@
         public List<Worker> GetWorkers(Catalogue wrk)
         {
             var workersList = provider.GetWorkers(wrk);
-            //var workersList = MappingHelper.FillCollection<Worker>(dr);
             return workersList;
         }
 

@@ -2,6 +2,7 @@
 {
     public class Worker
     {
+        public string WorkerCode { get; set; }
         public string SerialNumber { get; set; }
         public string Agent { get; set; }
         public int Age { get; set; }

@@ -110,8 +110,9 @@ export class CatalogueComponent implements OnInit {
     //TO-DO: REMOVE AMOUNT HERE!
     Book(onBook: Boolean) {
         var selectedWorker = this.selectedWorker;
-        
-        var paymentInformation = { SerialNumber: selectedWorker.serialNumber, CardCode: selectedWorker.agent, Amount: "100", Code: selectedWorker.code }
+        debugger;
+        var paymentInformation = { SerialNumber: selectedWorker.serialNumber, CardCode: selectedWorker.agent, Amount: "100", Code: selectedWorker.code, WorkerCode: selectedWorker.workerCode }
+    
         this.loading = true;
         this.myApi.knetPaymentRedirectUrl(paymentInformation)
             .map(url => this.utility.redirectToUrl(url))

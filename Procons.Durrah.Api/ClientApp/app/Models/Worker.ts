@@ -19,10 +19,10 @@ export class Worker {
 
         public serialNumber : string,
         public agent : string,
-        public code : string,
+        public code: string,
+        public workerCode:string,
         public passport: string,
         public status : string,
-
         public passportCopy: any
     ) { }
 }

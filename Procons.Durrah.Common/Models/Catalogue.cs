@@ -2,6 +2,7 @@
 {
     public class Catalogue
     {
+        public string Code { get; set; }
         public string Age { get; set; }
         public string WorkerType { get; set; }
         public string Gender { get; set; }
