@@ -10,7 +10,7 @@ export class Worker {
         public weight : string,
         public height: string,
         public education  : string,
-        public videopublic  : string,
+        public video: string,
         public passportNumber: string,
         public passportIssDate : string,
         public passportPoIssue: string,

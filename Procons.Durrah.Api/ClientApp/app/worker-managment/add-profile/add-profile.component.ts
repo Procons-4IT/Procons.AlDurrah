@@ -58,7 +58,7 @@ export class AddProfileComponent implements OnInit {
             formData.append('Weight', this.state.worker.weight);
             formData.append('Height', this.state.worker.height);
             formData.append('Education', this.state.worker.education);
-            formData.append('Video', this.state.worker.videopublic);
+            formData.append('Video', this.state.worker.video);
             formData.append('PassportNumber', this.state.worker.passportNumber);
             formData.append('PassportIssDate', this.state.worker.passportIssDate);
             formData.append('PassportExpDate', this.state.worker.passportExpDate);
