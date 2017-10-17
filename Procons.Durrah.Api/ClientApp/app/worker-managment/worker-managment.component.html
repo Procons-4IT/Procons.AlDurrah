@@ -4,6 +4,7 @@
     <div class="container">
         <div class="section-content">
             <div class="content-wrapper">
+                    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
                 <div class="tab-content">
                     <div role="tabpanel">
                         <div class="row">
@@ -18,13 +19,13 @@
                                         <div class="box profile-box clearfix">
                                             <div class="profile-main">
                                                 <div class="profile-thumb">
-                                                    <img src="/Assets/src/app/images/profiles/test.jpg" class="img-responsive">
+                                                    <img [src]="worker.photo" class="img-responsive">
                                                 </div>
-                                                <h3 class="h5">Aaliyah Al Soufi {{worker.name}} </h3>
+                                                <h3 class="h5">{{worker.agent}} </h3>
                                                 <div class="datas">
-                                                    <div><span class="icon icon-ed-kg icon-fw"></span> 56kg</div>
-                                                    <div><span class="icon icon-ed-height icon-fw"></span> 1m62</div>
-                                                    <div>available</div>
+                                                    <div><span class="icon icon-ed-kg icon-fw"></span> {{worker.weight}}</div>
+                                                    <div><span class="icon icon-ed-height icon-fw"></span> {{worker.height}} cm</div>
+                                                    <div>{{worker.status}}</div>
                                                 </div>
                                             </div>
                                             <div class="profile-actions">
@@ -56,4 +57,4 @@
 
 <!-- </section> -->
 <view-profiles [workers]="state.workers" (onBack)="ShowWorkerManagment()" *ngIf="state.showProfiles"></view-profiles>
-<add-profile (onBack)="ShowWorkerManagment()" [worker]="state.selectedWorker" *ngIf="state.showAddProfile"></add-profile>
+<add-profile (onBack)="ShowWorkerManagment()" [worker]="state.selectedWorker" [searchCriterias]="state.searchCriteriaParams" *ngIf="state.showAddProfile"></add-profile>

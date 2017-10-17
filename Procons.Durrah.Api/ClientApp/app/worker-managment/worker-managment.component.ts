@@ -1,25 +1,35 @@
 //Consider Changing the Navigation Logic to a router-outlet with Child Components and a Feature Module (issue: Fix the NavBar Navigations)
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Worker } from "../Models/Worker";
+import { ApiService } from "../Services/ApiService";
 
 @Component({
     selector: "worker-managment",
     templateUrl: "./worker-managment.component.html",
     styles: ["./worker-managment.component.css"]
 })
-export class WorkerMangmentComponent {
+export class WorkerMangmentComponent implements OnInit {
 
+    ngOnInit(): void {
+        console.log('view loading!');
+        this.myApi.getAllWorkers({}).subscribe(workers => {
+            console.log('i got a bunch of workers ', workers);
+            this.state.workers = workers;
+        })
+    }
+
+    loading= false;
     //Temp Show the Add Profile Modal
     state = {
         showWorkerManagment: true,
         showProfiles: false,
         showAddProfile: false,
-        workers: Array.from({ length: 7 }, (_, idx) => { return { name: idx++ } }),
+        searchCriteriaParams: null,
+        workers: null,
         selectedWorker: null
     }
 
-    constructor() {
-        console.log('render the page!');
+    constructor(public myApi: ApiService) {
     }
 
     ShowProfiles() {
@@ -41,8 +51,17 @@ export class WorkerMangmentComponent {
     }
     ShowEditWorker(worker) {
         //Temp Fix
-        this.ShowAddWorker();
-        this.state.selectedWorker = worker;
+        this.loading = true;
+        this.myApi.getSearchCriteriaParameters().subscribe(searchCriteriaParams => {
+            this.loading = false;
+            this.state.searchCriteriaParams = searchCriteriaParams;
+            this.ShowAddWorker();
+            this.state.selectedWorker = worker;
+
+        },onError=>{
+            console.error(onError);
+            this.loading = false;
+        });
     }
 
     Delete(worker: Worker, index: number) {

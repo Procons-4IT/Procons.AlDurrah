@@ -166,6 +166,15 @@ export class ApiService {
         return this.http.post(url, formData);
 
     }
+    public updateWorker(worker: Worker): Observable<any> {
+        return this.httpPostHelper(this.config.updateWorkerUrl, worker);
+    }
+    public addWorker(worker: Worker): Observable<any> {
+        return this.httpPostHelper(this.config.addWorkerUrl, worker);
+    }
+    public deleteWorker(workerCode: String): Observable<any> {
+        return this.httpPostHelper(this.config.deleteWorkerUrl, { "WorkerCode": workerCode });
+    }
 
     public isLoggedIn(): boolean {
         return !!this.GetSecurityToken();
