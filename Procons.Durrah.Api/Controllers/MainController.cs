@@ -2,6 +2,8 @@
 using Procons.Durrah.Facade;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -32,6 +34,18 @@ namespace Procons.Durrah.Api.Controllers
             var trackid = Request.Form["trackid"];
             Response.Write($"REDIRECT={Utilities.GetConfigurationValue(Constants.ConfigurationKeys.ResultUrl)}?PaymentID={paymentID}&Result={ result }&PostDate={ postdate }&TranID={ tranid }&Auth={ auth }&Ref={refr }&TrackID={trackid}");
             return View();
+        }
+
+        public ActionResult Image(string path)
+        {
+            var image = System.Drawing.Image.FromFile(path);
+            byte[] imageBytes = null;
+            using (var ms = new MemoryStream())
+            {
+                image.Save(ms, ImageFormat.Png);
+                imageBytes = ms.ToArray();
+                return base.File(ms.ToArray(), "image/png");
+            }
         }
     }
 }

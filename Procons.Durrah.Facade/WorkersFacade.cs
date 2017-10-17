@@ -25,9 +25,9 @@
             return provider.DeleteWorker(id, cardCode);
         }
 
-        public List<Worker> GetWorkers(Catalogue wrk)
+        public List<Worker> GetWorkers(Catalogue wrk, string requestUrl)
         {
-            var workersList = provider.GetWorkers(wrk);
+            var workersList = provider.GetWorkers(wrk, requestUrl);
             return workersList;
         }
 
@@ -71,6 +71,11 @@
         public string GetItemCodeByPaymentId(string PaymentId)
         {
             return provider.GetItemCodeByPaymentId(PaymentId);
+        }
+
+        public string GetAttachmentsPath()
+        {
+            return provider.GetAttachmentPath();
         }
 
         #region Private Methods

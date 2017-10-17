@@ -15,8 +15,7 @@
     using System.IO;
     using System.Threading.Tasks;
     using System.Net.Http.Headers;
-    using System.Collections.Specialized;
-    using System.Diagnostics;
+    using System.Drawing.Imaging;
 
     public class WorkersController : BaseApiController
     {
@@ -146,7 +145,7 @@
         public IHttpActionResult CreatePayment([FromBody]Transaction payment)
         {
             var paymentAmount = workersFacade.GetDownPaymentAmount().ToString();
-           
+
 
             payment.Amount = paymentAmount;
             if (payment.Result == "captured")
@@ -207,7 +206,9 @@
         [Authorize]
         public IHttpActionResult GetWorkers([FromBody]Catalogue worker)
         {
-            var workers = workersFacade.GetWorkers(worker);
+            Uri uri = new Uri(Request.RequestUri.ToString());
+            var requestUrl = $"{uri.Scheme}{ Uri.SchemeDelimiter}{uri.Host}:{uri.Port}";
+            var workers = workersFacade.GetWorkers(worker, requestUrl);
             return Ok(workers);
         }
 
@@ -224,7 +225,7 @@
         {
             var cardCode = GetCurrentUserCardCode();
             var worker = await SaveFile();
-            var result =  workersFacade.UpdateWorker(worker,cardCode);
+            var result = workersFacade.UpdateWorker(worker, cardCode);
             return Ok(result);
         }
 
@@ -236,13 +237,24 @@
             return Ok(result);
         }
 
-        //[HttpPost]
-        //[Authorize]
-        //public IHttpActionResult DeleteWorker(string code)
-        //{
-        //    return Ok();
-        //}
-
+        [HttpGet]
+        public HttpResponseMessage Image(string path)
+        {
+            var attachmentsPath = workersFacade.GetAttachmentsPath();
+            using (var image = System.Drawing.Image.FromFile($"{attachmentsPath}{path}"))
+            {
+                byte[] imageBytes = null;
+                using (var ms = new MemoryStream())
+                {
+                    image.Save(ms, ImageFormat.Png);
+                    imageBytes = ms.ToArray();
+                    HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
+                    result.Content = new ByteArrayContent(imageBytes);
+                    result.Content.Headers.ContentType = new MediaTypeHeaderValue("image/png");
+                    return result;
+                }
+            }
+        }
         #region Private Methods
 
         private async Task<Worker> SaveFile()
@@ -307,7 +319,7 @@
                 Directory.CreateDirectory(rootPath);
 
             var provider = new MultipartFormDataStreamProvider(rootPath);
-            Task<MultipartFormDataStreamProvider> task =  Request.Content.ReadAsMultipartAsync(provider);
+            Task<MultipartFormDataStreamProvider> task = Request.Content.ReadAsMultipartAsync(provider);
             task.RunSynchronously();
 
             foreach (MultipartFileData item in provider.FileData)

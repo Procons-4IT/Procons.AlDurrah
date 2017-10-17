@@ -12,16 +12,9 @@
     using System;
     using System.Collections.Generic;
     using System.Data.Services.Client;
-    using System.Data.SqlClient;
-    using System.Drawing;
     using System.IO;
     using System.Linq;
-    using System.Net.Http;
     using System.Text;
-    using System.Threading;
-    using System.Web;
-    using System.Web.UI;
-    using SAPB1 = Procons.Durrah.Main.B1ServiceLayer.SAPB1;
 
     public class WorkersProvider : ProviderBase
     {
@@ -246,8 +239,9 @@
             return workersList;
         }
 
-        public List<Worker> GetWorkers(Catalogue worker)
+        public List<Worker> GetWorkers(Catalogue worker,string requestUrl)
         {
+
             List<Worker> workersList = new List<Worker>();
             try
             {
@@ -296,7 +290,7 @@
                             PassportIssDate = MapField<string>(readerResult["U_PassportIssDate"]),
                             PassportNumber = MapField<string>(readerResult["U_PassportNumber"]),
                             PassportPoIssue = MapField<string>(readerResult["U_PassportPoIssue"]),
-                            Photo = Utilities.GetUrlFromLocalImage(MapField<string>(readerResult["U_Photo"])),
+                            Photo = $"{requestUrl}/api/Workers/Image?path={Utilities.GetFileName(MapField<string>(readerResult["U_Photo"]))}",
                             Religion = MapField<string>(readerResult[Utilities.GetLocalizedField("U_Religion")]),
                             SerialNumber = MapField<string>(readerResult["U_Serial"]),
                             Status = MapField<string>(readerResult["U_Status"]),
@@ -585,6 +579,28 @@
             return itemCode;
         }
 
+        public string GetAttachmentPath()
+        {
+            try
+            {
+                var path = string.Empty;
+                var conn = Factory.DeclareClass<DatabaseHelper<HanaConnection>>();
+                StringBuilder query= new StringBuilder($@"SELECT IFNULL(""AttachPath"",'') ""AttachPath"" FROM ""{base.databaseName}"".""OADP""");
+                var result = conn.ExecuteQuery(query.ToString());
+
+                while (result.Read())
+                {
+                    path = MapField<string>(result["AttachPath"]);
+                }
+                return path;
+            }
+            catch (Exception ex)
+            {
+                Utilities.LogException(ex);
+                return string.Empty;
+            }
+        }
+
         #region PRIVATE METHODS
         private Filter<WORKERS> GetExpression(Catalogue wrk)
         {
@@ -787,21 +803,6 @@
             }
         }
 
-        private string GetAttachmentPath()
-        {
-            try
-            {
-                SAPbobsCOM.Recordset rec = base.B1Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.BoRecordset) as SAPbobsCOM.Recordset;
-                rec.DoQuery(@"SELECT IFNULL(""AttachPath"",'') FROM ""OADP""");
-                var path = rec.Fields.Item(0).Value.ToString();
-                return path;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
         public int CreateGoodsReceipt(string itemCode, double totalCost, DateTime taxDate, DateTime refDate, string memo)
         {
             var goodsReceipt = B1Company.GetBusinessObject(BoObjectTypes.oInventoryGenEntry) as Documents;
@@ -849,19 +850,5 @@
 
 
         #endregion
-    }
-
-    public class ListItem
-    {
-        public string Code { get; set; }
-        public string Name { get; set; }
-        public string U_Name { get; set; }
-
-        public ListItem(string code,string english,string arabic)
-        {
-            Code = code;
-            Name = english;
-            U_Name = arabic;
-        }
     }
 }

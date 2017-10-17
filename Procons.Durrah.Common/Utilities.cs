@@ -166,6 +166,19 @@
                 return string.Empty;
             }
         }
+
+        public static string GetFileName(string path)
+        {
+            if (File.Exists(path))
+            {
+                var fileName = Path.GetFileName(path);
+                return fileName;
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
     }
 }
 
