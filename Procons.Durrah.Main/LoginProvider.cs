@@ -162,7 +162,7 @@
             {
                 var ServiceInstance = ServiceLayerProvider.GetInstance();
 
-                var result = ServiceInstance.CurrentServicelayerInstance.EMAILCONFIRMATION.Where(x => x.Code == validationId && x.Name == email).FirstOrDefault();
+                var result = ServiceInstance.CurrentServicelayerInstance.EMAILCONFIRMATION.Where(x => x.Code == validationId.ToUpper() && x.Name == email).FirstOrDefault();
                 if (result != null)
                 {
                     var user = ServiceInstance.CurrentServicelayerInstance.BusinessPartners.Where(x => x.EmailAddress == email).FirstOrDefault();
