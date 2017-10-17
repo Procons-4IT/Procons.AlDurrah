@@ -2,10 +2,20 @@
 {
     public class Worker
     {
+        /// <summary>
+        /// Worker Code
+        /// </summary>
         public string WorkerCode { get; set; }
         public string SerialNumber { get; set; }
         public string Agent { get; set; }
         public int Age { get; set; }
+        /// <summary>
+        /// Related Item Name
+        /// </summary>
+        public string Name { get; set; }
+        /// <summary>
+        /// Related Item Code
+        /// </summary>
         public string Code { get; set; }
         public string BirthDate { get; set; }
         public string Gender { get; set; }

@@ -278,6 +278,7 @@
                     workersList.Add(
                         new Worker()
                         {
+                            Name = MapField<string>(readerResult["Name"]),
                             WorkerCode = MapField<string>(readerResult["Code"]),
                             Agent = MapField<string>(readerResult["U_Agent"]),
                             Age = MapField<int>(readerResult["U_Age"]),
