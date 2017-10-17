@@ -83,8 +83,8 @@
 
                 var sCmp = B1Company.GetCompanyService();
                 var oGeneralService = sCmp.GetGeneralService("WORKERSUDO");
-
                 var oGeneralData = oGeneralService.GetDataInterface(GeneralServiceDataInterfaces.gsGeneralData) as GeneralData;
+
                 oGeneralData.SetProperty("Code", worker.PassportNumber);
                 oGeneralData.SetProperty("U_Agent", worker.Agent);
                 oGeneralData.SetProperty("U_Age", worker.Age);
@@ -204,16 +204,12 @@
             return deleted;
         }
 
-        public List<Worker> GetWorkersOld(Catalogue worker)
+        public List<Worker> GetAgentWorkers(string agent)
         {
-            var exp = GetExpression(worker);
             var ServiceInstance = ServiceLayerProvider.GetInstance();
             var workers = new List<WORKERS>();
 
-            if (exp != null)
-                workers = ServiceInstance.CurrentServicelayerInstance.WORKERSUDO.Where(exp).ToList<WORKERS>();
-            else
-                workers = ServiceInstance.CurrentServicelayerInstance.WORKERSUDO.ToList<WORKERS>();
+            workers = ServiceInstance.CurrentServicelayerInstance.WORKERSUDO.Where(x => x.U_Agent == agent).ToList<WORKERS>();
 
             List<Worker> workersList = new List<Worker>();
             foreach (var w in workers)
@@ -221,29 +217,29 @@
                 workersList.Add(
                     new Worker()
                     {
-                        //Agent = w.U_Agent,
-                        //Age = w.U_Age,
-                        //BirthDate = w.U_BirthDate.ToString(),
-                        //CivilId = w.U_CivilId,
-                        //Code = w.U_ItemCode,
-                        //Education = w.U_Education,
-                        //Gender = w.U_Gender,
-                        //Height = w.U_Height,
-                        //Language = w.U_Language,
-                        //MaritalStatus = w.U_MaritalStatus,
-                        //Nationality = w.U_Nationality,
-                        //Passport = w.U_Passport,
-                        //PassportExpDate = w.U_PassportExpDate,
-                        //PassportIssDate = w.U_PassportPoIssue,
-                        //PassportNumber = w.U_PassportNumber,
-                        //PassportPoIssue = w.U_PassportPoIssue,
-                        //Photo = w.U_Photo,
-                        //Religion = w.U_Religion,
-                        //SerialNumber = w.U_Serial,
-                        //Status = w.U_Status,
-                        //Video = w.U_Video,
-                        //Price = w.U_Price,
-                        //Weight = w.U_Weight.ToString()
+                        Agent = w.U_Agent,
+                        Age = MapField<int>(w.U_Age),
+                        BirthDate = w.U_BirthDate.ToString(),
+                        CivilId = w.U_CivilId,
+                        Code = w.U_ItemCode,
+                        Education = w.U_Education,
+                        Gender = w.U_Gender,
+                        Height = w.U_Height,
+                        Language = w.U_Language,
+                        MaritalStatus = w.U_MaritalStatus,
+                        Nationality = w.U_Nationality,
+                        Passport = w.U_Passport,
+                        PassportExpDate = w.U_PassportExpDate,
+                        PassportIssDate = w.U_PassportPoIssue,
+                        PassportNumber = w.U_PassportNumber,
+                        PassportPoIssue = w.U_PassportPoIssue,
+                        Photo = w.U_Photo,
+                        Religion = w.U_Religion,
+                        SerialNumber = w.U_Serial,
+                        Status = w.U_Status,
+                        Video = w.U_Video,
+                        Price = MapField<int>(w.U_Price),
+                        Weight = w.U_Weight.ToString()
                     }
                     );
             }

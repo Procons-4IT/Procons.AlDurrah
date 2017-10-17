@@ -195,13 +195,12 @@
         }
 
         [HttpPost]
-        [Authorize]
-        public IHttpActionResult GetAgentWorkers([FromBody]Worker worker)
+        //[Authorize]
+        public IHttpActionResult GetAgentWorkers()
         {
-            var claims = ((ClaimsIdentity)User.Identity).Claims;
-            var cardCode = claims.Where(x => x.Type == worker.Agent).FirstOrDefault().Value;
-            //workersFacade.GetAgentWorkers(cardCode);
-            return Ok();
+            var cardCode = GetCurrentUserCardCode();
+            var workers = workersFacade.GetAgentWorkers(cardCode);
+            return Ok(workers);
         }
 
         [HttpPost]

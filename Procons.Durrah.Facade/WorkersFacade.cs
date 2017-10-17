@@ -31,6 +31,12 @@
             return workersList;
         }
 
+        public List<Worker> GetAgentWorkers(string agent)
+        {
+            var workersList = provider.GetAgentWorkers(agent);
+            return workersList;
+        }
+
         public double? CreateSalesOrder(Transaction transaction, string cardCode)
         {
             return provider.CreateSalesOrder(transaction, cardCode);
