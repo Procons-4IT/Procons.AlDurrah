@@ -8,8 +8,10 @@
           <div role="tabpanel">
             <div class="row">
               <div class="col-xs-12">
-                <h2 class="text-center"><span class="icon icon-ed-search icon-3x"></span> {{state.title}}</h2>
-                <form (ngSubmit)="addWorker(photoInput,passportInput);" method="post" id="profileEditForm" class="form-default has-upload" #workerForm="ngForm">
+                <h2 class="text-center">
+                  <span class="icon icon-ed-search icon-3x"></span> {{state.title}}</h2>
+                <form (ngSubmit)="addWorker(photoInput,passportInput);" method="post" id="profileEditForm" class="form-default has-upload"
+                  #workerForm="ngForm">
                   <div class="row">
                     <div class="form-group col-sm-6">
                       <input type="date" class="form-control" name="birthDate" [(ngModel)]="state.worker.birthDate" />
@@ -17,47 +19,57 @@
 
                     <div class="form-group col-sm-6">
                       <select class="form-control" name="gender" [(ngModel)]="state.worker.gender">
-                                  <option>Gender</option>
-                                  <option>Male </option>
-                                  <option>Female</option>
-                                </select>
+                        <option>الجنس</option>
+                        <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.gender;">
+                          {{nameValuePair.name}}
+                        </option>
+                      </select>
                     </div>
 
                     <div class="form-group col-sm-6">
                       <select class="form-control" name="nationality" [(ngModel)]="state.worker.nationality">
-                                  <option>Nationality</option>
-                                  <option>Lebanon</option>
-                                </select>
+                        <option>الجنسية</option>
+                        <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.nationality;">
+                          {{nameValuePair.name}}
+                        </option>
+                      </select>
                     </div>
 
                     <div class="form-group col-sm-6">
                       <select class="form-control" name="religion" [(ngModel)]="state.worker.religion">
-                                  <option>Religion</option>
-                                  <option>Other</option>
-                                </select>
+                        <option>Religion</option>
+                        <option>Christian</option>
+                        <option>Other</option>
+                      </select>
                     </div>
 
                     <div class="form-group col-sm-6">
                       <select class="form-control" name="maritalStatus" [(ngModel)]="state.worker.maritalStatus">
-                                  <option>Happy</option>
-                                  <option>Married</option>
-                                </select>
+                        <option>الحالة الاجتماعية</option>
+                        <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.maritalStatus;">
+                           {{nameValuePair.name}}
+                         </option>
+                      </select>
                     </div>
 
 
                     <div class="form-group col-sm-6">
                       <select class="form-control" name="language" [(ngModel)]="state.worker.language">
-                                  <option>Arabic</option>
-                                  <option>Arabic</option>
-                                  <option>Arabic</option>
-                                </select>
+                        <option>اللغات المتحدث بها</option>
+                        <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.languages;">
+                           {{nameValuePair.name}}
+                         </option>
+                      </select>
                     </div>
 
                     <!-- FIX PHOTO BINDING TO FILE TYPE! -->
                     <div class="form-group col-sm-6">
                       <input type="text" class="form-control input-fake" placeholder="Photo" />
                       <input type="file" name="photo" id="photo" class="form-control input-file" placeholder="Photo" #photoInput/>
-                      <label for="photo"><span class="text">File Upload</span> <span class="icon icon-angle-down icon-xs"></span></label>
+                      <label for="photo">
+                        <span class="text">File Upload</span>
+                        <span class="icon icon-angle-down icon-xs"></span>
+                      </label>
                     </div>
 
 
@@ -73,22 +85,25 @@
 
                     <div class="form-group col-sm-6">
                       <select class="form-control" name="education" [(ngModel)]="state.worker.education">
-                                  <option>Good</option>
-                                  <option>Good</option>
-                                  <option>Good</option>
-                                  <option>Good</option>
-                                </select>
+                        <option>Good</option>
+                        <option>Good</option>
+                        <option>Good</option>
+                        <option>Good</option>
+                      </select>
                     </div>
                     <!-- FIX PASSPORT PHOTO UPLOAD -->
                     <div class="form-group col-sm-6">
                       <input type="text" class="form-control input-fake" placeholder="Photo" />
                       <input type="file" name="passport" id="passport" class="form-control input-file" placeholder="Passport" #passportInput/>
-                      <label for="passport"><span class="text">File Upload</span> <span class="icon icon-angle-down icon-xs"></span></label>
+                      <label for="passport">
+                        <span class="text">File Upload</span>
+                        <span class="icon icon-angle-down icon-xs"></span>
+                      </label>
                     </div>
 
 
                     <div class="form-group col-sm-6">
-                      <input name="videopublic" [(ngModel)]="state.worker.videopublic" type="text" class="form-control" placeholder="http://Video Link"
+                      <input name="videopublic" [(ngModel)]="state.worker.video" type="text" class="form-control" placeholder="http://Video Link"
                       />
                     </div>
 

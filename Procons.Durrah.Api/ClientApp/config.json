@@ -8,5 +8,8 @@
   "forgotPasswordUrl": "/api/accounts/resetrequest",
   "resetPasswordUrl": "/api/accounts/reset",
   "createNewUserUrl": "/api/accounts/create",
-  "emailValidationUrl": "/api/accounts/confirmEmail"
+  "emailValidationUrl": "/api/accounts/confirmEmail",
+  "addWorkerUrl": "/api/Workers/AddWorker",
+  "updateWorkerUrl":"/api/Workers/UpdateWorker",
+  "deleteWorkerUrl":"/api/Workers/DeleteWorker"
 }

@@ -2,6 +2,7 @@ import { Component, ElementRef, EventEmitter, Input, Output, OnInit } from '@ang
 
 import { ApiService } from '../../Services/ApiService';
 import { Worker } from "../../Models/Worker";
+import { SearchCriteriaParams } from '../../Models/ApiRequestType'
 
 @Component({
     selector: "add-profile",
@@ -10,6 +11,7 @@ import { Worker } from "../../Models/Worker";
 })
 export class AddProfileComponent implements OnInit {
     @Input() worker;
+    @Input() searchCriterias: SearchCriteriaParams;
     @Output() onBack = new EventEmitter<any>();
     print: any;
     state: { isAddMode: boolean, title: string, worker: Worker } = {
@@ -27,6 +29,7 @@ export class AddProfileComponent implements OnInit {
             this.state.isAddMode = false;
             this.state.title = "Edit Profile"
             this.state.worker = Object.assign({}, this.worker);
+            console.log('searchCriteria Params ', this.searchCriterias);
         } else {
             let workerParams: any = Array.from({ length: 22 }, x => { return '' }) as any;
             this.state.worker = new (<any>Worker)(...workerParams);
@@ -55,7 +58,7 @@ export class AddProfileComponent implements OnInit {
             formData.append('Weight', this.state.worker.weight);
             formData.append('Height', this.state.worker.height);
             formData.append('Education', this.state.worker.education);
-            formData.append('Video', this.state.worker.videopublic);
+            formData.append('Video', this.state.worker.video);
             formData.append('PassportNumber', this.state.worker.passportNumber);
             formData.append('PassportIssDate', this.state.worker.passportIssDate);
             formData.append('PassportExpDate', this.state.worker.passportExpDate);
