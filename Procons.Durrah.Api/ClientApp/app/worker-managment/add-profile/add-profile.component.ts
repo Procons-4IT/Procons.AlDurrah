@@ -2,6 +2,7 @@ import { Component, ElementRef, EventEmitter, Input, Output, OnInit } from '@ang
 
 import { ApiService } from '../../Services/ApiService';
 import { Worker } from "../../Models/Worker";
+import { SearchCriteriaParams } from '../../Models/ApiRequestType'
 
 @Component({
     selector: "add-profile",
@@ -10,6 +11,7 @@ import { Worker } from "../../Models/Worker";
 })
 export class AddProfileComponent implements OnInit {
     @Input() worker;
+    @Input() searchCriterias: SearchCriteriaParams;
     @Output() onBack = new EventEmitter<any>();
     print: any;
     state: { isAddMode: boolean, title: string, worker: Worker } = {
@@ -27,6 +29,7 @@ export class AddProfileComponent implements OnInit {
             this.state.isAddMode = false;
             this.state.title = "Edit Profile"
             this.state.worker = Object.assign({}, this.worker);
+            console.log('searchCriteria Params ', this.searchCriterias);
         } else {
             let workerParams: any = Array.from({ length: 22 }, x => { return '' }) as any;
             this.state.worker = new (<any>Worker)(...workerParams);
