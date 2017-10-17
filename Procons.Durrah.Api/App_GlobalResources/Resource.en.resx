@@ -129,6 +129,9 @@
   <data name="DurraPasswordReset" xml:space="preserve">
     <value>Durra Password Reset</value>
   </data>
+  <data name="F" xml:space="preserve">
+    <value>Female</value>
+  </data>
   <data name="Failed_Transaction" xml:space="preserve">
     <value>Transaction failed!!!</value>
   </data>
@@ -146,6 +149,9 @@
 		&lt;/p&gt;
 	&lt;body&gt;
 &lt;/html&gt;</value>
+  </data>
+  <data name="M" xml:space="preserve">
+    <value>Male</value>
   </data>
   <data name="PasswordResetBody" xml:space="preserve">
     <value>Click on the following link to change your password &lt;a href="[[BaseUrl]]/ResetPassword?ValidationId=[[Result]]&amp;Email=[[Email]]"&gt;here&lt;/a&gt;</value>

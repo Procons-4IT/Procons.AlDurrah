@@ -278,14 +278,14 @@
                     workersList.Add(
                         new Worker()
                         {
-                            WorkerCode= MapField<string>(readerResult["Code"]),
+                            WorkerCode = MapField<string>(readerResult["Code"]),
                             Agent = MapField<string>(readerResult["U_Agent"]),
                             Age = MapField<int>(readerResult["U_Age"]),
                             BirthDate = MapField<DateTime>(readerResult["U_BirthDate"]).ToShortDateString(),
                             CivilId = MapField<string>(readerResult["U_CivilId"]),
                             Code = MapField<string>(readerResult["U_ItemCode"]),
                             Education = MapField<string>(readerResult[Utilities.GetLocalizedField("U_Education")]),
-                            Gender = MapField<string>(readerResult["U_Gender"]),
+                            Gender = Utilities.GetResourceValue(MapField<string>(readerResult["U_Gender"])),
                             Height = MapField<string>(readerResult["U_Height"]),
                             Language = MapField<string>(readerResult[Utilities.GetLocalizedField("U_Language")]),
                             MaritalStatus = MapField<string>(readerResult[Utilities.GetLocalizedField("U_MaritalStatus")]),
@@ -295,7 +295,7 @@
                             PassportIssDate = MapField<string>(readerResult["U_PassportIssDate"]),
                             PassportNumber = MapField<string>(readerResult["U_PassportNumber"]),
                             PassportPoIssue = MapField<string>(readerResult["U_PassportPoIssue"]),
-                            Photo = MapField<string>(readerResult["U_Photo"]),
+                            Photo = Utilities.GetUrlFromLocalImage(MapField<string>(readerResult["U_Photo"])),
                             Religion = MapField<string>(readerResult[Utilities.GetLocalizedField("U_Religion")]),
                             SerialNumber = MapField<string>(readerResult["U_Serial"]),
                             Status = MapField<string>(readerResult["U_Status"]),

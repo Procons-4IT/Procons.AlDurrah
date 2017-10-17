@@ -144,18 +144,23 @@
         {
             try
             {
-                var image = Image.FromFile(path);
-                byte[] imageBytes = null;
-                using (var ms = new MemoryStream())
+                if (!string.IsNullOrEmpty(path))
                 {
-                    image.Save(ms, ImageFormat.Png);
-                    imageBytes = ms.ToArray();
+                    var image = Image.FromFile(path);
+                    byte[] imageBytes = null;
+                    using (var ms = new MemoryStream())
+                    {
+                        image.Save(ms, ImageFormat.Png);
+                        imageBytes = ms.ToArray();
+                    }
+                    string base64String = Convert.ToBase64String(imageBytes, 0, imageBytes.Length);
+                    var imageUrl = $"data:image/png;base64," + base64String;
+                    return imageUrl;
                 }
-                string base64String = Convert.ToBase64String(imageBytes, 0, imageBytes.Length);
-                var imageUrl = $"data:image/png;base64," + base64String;
-                return imageUrl;
+                else
+                    return string.Empty;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Utilities.LogException(ex);
                 return string.Empty;
