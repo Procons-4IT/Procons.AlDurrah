@@ -15139,12 +15139,12 @@
         <Property Name="U_Video" Type="Edm.String" />
         <Property Name="U_PassportNumber" Type="Edm.String" />
         <Property Name="U_PassportIssDate" Type="Edm.DateTime" />
-        <Property Name="U_PassportExpDate" Type="Edm.String" />
         <Property Name="U_PassportPoIssue" Type="Edm.String" />
         <Property Name="U_Price" Type="Edm.Double" />
         <Property Name="U_CivilId" Type="Edm.String" />
         <Property Name="U_Status" Type="Edm.String" />
         <Property Name="U_Gender" Type="Edm.String" />
+        <Property Name="U_PassportExpDate" Type="Edm.DateTime" />
       </EntityType>
       <ComplexType Name="WORKERSParams">
         <Property Name="Code" Type="Edm.String" />

@@ -46,8 +46,8 @@
             _worker.U_MaritalStatus = worker.MaritalStatus;
             _worker.U_Nationality = worker.Nationality;
             _worker.U_Passport = worker.Passport;
-            _worker.U_PassportExpDate = worker.PassportExpDate;
-            _worker.U_PassportPoIssue = worker.PassportIssDate;
+            _worker.U_PassportExpDate = MapField<DateTime>( worker.PassportExpDate);
+            _worker.U_PassportIssDate = MapField<DateTime>(worker.PassportIssDate);
             _worker.U_PassportNumber = worker.PassportNumber;
             _worker.U_PassportPoIssue = worker.PassportPoIssue;
             _worker.U_Photo = worker.Photo;
@@ -229,8 +229,8 @@
                         MaritalStatus = w.U_MaritalStatus,
                         Nationality = w.U_Nationality,
                         Passport = w.U_Passport,
-                        PassportExpDate = w.U_PassportExpDate,
-                        PassportIssDate = w.U_PassportPoIssue,
+                        PassportExpDate = MapField<DateTime>(w.U_PassportExpDate).ToShortDateString(),
+                        PassportIssDate = MapField<DateTime>(w.U_PassportIssDate).ToShortDateString(),
                         PassportNumber = w.U_PassportNumber,
                         PassportPoIssue = w.U_PassportPoIssue,
                         Photo = w.U_Photo,
@@ -281,7 +281,7 @@
                             WorkerCode= MapField<string>(readerResult["Code"]),
                             Agent = MapField<string>(readerResult["U_Agent"]),
                             Age = MapField<int>(readerResult["U_Age"]),
-                            BirthDate = MapField<string>(readerResult["U_BirthDate"]),
+                            BirthDate = MapField<DateTime>(readerResult["U_BirthDate"]).ToShortDateString(),
                             CivilId = MapField<string>(readerResult["U_CivilId"]),
                             Code = MapField<string>(readerResult["U_ItemCode"]),
                             Education = MapField<string>(readerResult[Utilities.GetLocalizedField("U_Education")]),
@@ -291,7 +291,7 @@
                             MaritalStatus = MapField<string>(readerResult[Utilities.GetLocalizedField("U_MaritalStatus")]),
                             Nationality = MapField<string>(readerResult[Utilities.GetLocalizedField("U_Nationality")]),
                             Passport = MapField<string>(readerResult["U_Passport"]),
-                            PassportExpDate = MapField<string>(readerResult["U_PassportExpDate"]),
+                            PassportExpDate = MapField<DateTime>(readerResult["U_PassportExpDate"]).ToShortDateString(),
                             PassportIssDate = MapField<string>(readerResult["U_PassportIssDate"]),
                             PassportNumber = MapField<string>(readerResult["U_PassportNumber"]),
                             PassportPoIssue = MapField<string>(readerResult["U_PassportPoIssue"]),

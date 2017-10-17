@@ -30,7 +30,7 @@
                 base.AddFieldSL("Video", "Video", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 250, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
                 base.AddFieldSL("PassportNumber", "PassportNumber", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
                 base.AddFieldSL("PassportIssDate", "PassportIssDate", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Date.ToString(), SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
-                base.AddFieldSL("PassportExpDate", "PassportExpDate", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
+                base.AddFieldSL("PassportExpDate", "PassportExpDate", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Date.ToString(), SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
                 base.AddFieldSL("PassportPoIssue", "PassportPoIssue", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
                 base.AddFieldSL("Price", "Price", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Float.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), SAPbobsCOM.BoFldSubTypes.st_Price.ToString(), true);
                 base.AddFieldSL("CivilId", "CivilId", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);

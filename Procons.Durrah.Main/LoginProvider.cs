@@ -66,8 +66,8 @@
                             MaritalStatus = w.U_MaritalStatus,
                             Nationality = w.U_Nationality,
                             Passport = w.U_Passport,
-                            PassportExpDate = w.U_PassportExpDate,
-                            PassportIssDate = w.U_PassportPoIssue,
+                            PassportExpDate = MapField<DateTime>(w.U_PassportExpDate).ToString(),
+                            PassportIssDate = MapField<DateTime>(w.U_PassportIssDate).ToString(),
                             PassportNumber = w.U_PassportNumber,
                             PassportPoIssue = w.U_PassportPoIssue,
                             Photo = w.U_Photo,
@@ -80,10 +80,10 @@
                         );
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Utilities.LogException(ex);
-            }       
+            }
             return workersList;
         }
 
