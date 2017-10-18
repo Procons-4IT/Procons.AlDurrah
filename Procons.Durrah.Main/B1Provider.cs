@@ -84,6 +84,7 @@
             }
             catch (Exception ex)
             {
+                Utilities.LogException(ex);
                 return string.Empty;
             }
 

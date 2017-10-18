@@ -439,7 +439,7 @@
             try
             {
                 var slInstance = instance.CurrentServicelayerInstance;
-                var result = slInstance.UserObjectsMD.Where(x => x.Name == udo.Name);
+                var result = slInstance.UserObjectsMD.Where(x => x.Code == udo.Name);
                 if (result.Count() == 0)
                 {
                     slInstance.AddToUserObjectsMD(udo);

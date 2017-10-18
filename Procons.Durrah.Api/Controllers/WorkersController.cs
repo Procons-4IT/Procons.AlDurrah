@@ -30,10 +30,14 @@
             List<LookupItem> languages = workersFacade.GetLanguagesLookups();
             List<LookupItem> age = new List<LookupItem>() { new LookupItem("18-25", "18-25"), new LookupItem("25-35", "25-35"), new LookupItem("35-45", "35-45"), new LookupItem("45-55", "45-55") };
             List<LookupItem> nationality = workersFacade.GetCountriesLookups();
+            List<LookupItem> religion = workersFacade.GetReligionLookups();
+            List<LookupItem> education = workersFacade.GetEducationLookups();
             List<LookupItem> gender = new List<LookupItem>() { new LookupItem(Utilities.GetResourceValue("M"), "M"), new LookupItem(Utilities.GetResourceValue("F"), "F") };
             List<LookupItem> maritalStatus = workersFacade.GetMaritalStatusLookups();
             List<LookupItem> workerTypes = workersFacade.GetWorkersTypesLookups();
             result.Add("Languages", languages);
+            result.Add("Education", education);
+            result.Add("Religion", religion);
             result.Add("Nationality", nationality);
             result.Add("Gender", gender);
             result.Add("MaritalStatus", maritalStatus);

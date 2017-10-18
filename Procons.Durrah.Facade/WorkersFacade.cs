@@ -59,6 +59,14 @@
         {
             return provider.GetLookupValues<COUNTRIES>();
         }
+        public List<LookupItem> GetEducationLookups()
+        {
+            return provider.GetLookupValues<EDUCATION>();
+        }
+        public List<LookupItem> GetReligionLookups()
+        {
+            return provider.GetLookupValues<RELIGION>();
+        }
         public List<LookupItem> GetWorkersTypesLookups()
         {
             return provider.GetLookupValues<Item>();

@@ -181,6 +181,8 @@
             try
             {
                 var instance = ServiceLayerProvider.GetInstance();
+                //TODO: REMOVE COMMENT TO ADD CARDCODE FILTER
+                //worker = instance.CurrentServicelayerInstance.WORKERSUDO.Where(x => x.Code == id && x.U_Agent == cardCode).FirstOrDefault();
                 worker = instance.CurrentServicelayerInstance.WORKERSUDO.Where(x => x.Code == id && x.U_Agent == cardCode).FirstOrDefault();
                 if (worker != null)
                 {
@@ -480,9 +482,6 @@
 
             if (typeof(T) == typeof(COUNTRIES))
             {
-                //var query = from c in _serviceInstance.CurrentServicelayerInstance.COUNTRIESUDO
-                //            select new ListItem(c.Code, c.Name, c.U_NAME);
-                //var test = query.ToList();
                 var results = _serviceInstance.CurrentServicelayerInstance.COUNTRIESUDO.ToList();
                 return GetLookups<COUNTRIES>(results);
             }
@@ -506,23 +505,20 @@
                 var results = _serviceInstance.CurrentServicelayerInstance.Items.Select(x => new LookupItem(x.ItemName, x.ItemCode)).ToList();
                 return results;
             }
+            else if (typeof(T) == typeof(RELIGION))
+            {
+                var results = _serviceInstance.CurrentServicelayerInstance.RELIGION.ToList();
+                return GetLookups<RELIGION>(results);
+            }
+            else if (typeof(T) == typeof(EDUCATION))
+            {
+                var results = _serviceInstance.CurrentServicelayerInstance.EDUCATION.ToList();
+                return GetLookups<EDUCATION>(results);
+            }
             else
                 return null;
 
             List<LookupItem> GetLookups<Y>(List<Y> list)
-            {
-                var lookups = new List<LookupItem>();
-                foreach (dynamic r in list)
-                {
-                    if (Utilities.GetCurrentLanguage() == Languages.English.GetDescription())
-                        lookups.Add(new LookupItem(r.Name, r.Code));
-                    else
-                        lookups.Add(new LookupItem(r.U_NAME, r.Code));
-                }
-                return lookups;
-            }
-
-            List<LookupItem> GetLookupsNew<Y>(List<Y> list)
             {
                 var lookups = new List<LookupItem>();
                 foreach (dynamic r in list)
