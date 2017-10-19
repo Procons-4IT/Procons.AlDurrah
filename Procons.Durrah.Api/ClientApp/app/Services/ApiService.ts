@@ -124,6 +124,16 @@ export class ApiService {
             });
         return actualData;
     }
+    public getAllAgentWorkers(optionalFilterCritera: WorkerFilterParams | object): Observable<any[]> {
+        
+                var actualData = this.httpPostHelper(this.config.getAgentWorkerUrl, optionalFilterCritera)
+                    .map(response => {
+                        var data: any[] = response.json();
+                        return data;
+                    });
+                return actualData;
+            }
+
     public httpPostHelper(url: string, body: any): Observable<Response> {
         let headers = new Headers();
         headers.append("accept-language", this.language);

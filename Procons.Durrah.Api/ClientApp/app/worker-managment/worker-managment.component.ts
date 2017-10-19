@@ -12,10 +12,10 @@ export class WorkerMangmentComponent implements OnInit {
 
     ngOnInit(): void {
         console.log('view loading!');
-        this.myApi.getAllWorkers({}).subscribe(workers => {
+        this.myApi.getAllAgentWorkers({}).subscribe(workers => {
             console.log('i got a bunch of workers ', workers);
             this.state.workers = workers;
-        })
+        });
     }
 
     loading= false;
@@ -26,6 +26,7 @@ export class WorkerMangmentComponent implements OnInit {
         showAddProfile: false,
         searchCriteriaParams: null,
         workers: null,
+        workerWithKeyValue: null,
         selectedWorker: null
     }
 

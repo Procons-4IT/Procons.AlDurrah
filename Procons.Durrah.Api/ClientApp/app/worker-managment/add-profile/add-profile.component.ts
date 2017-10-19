@@ -1,4 +1,5 @@
 import { Component, ElementRef, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import {DatePipe} from '@angular/common';
 
 import { ApiService } from '../../Services/ApiService';
 import { Worker } from "../../Models/Worker";
@@ -7,13 +8,18 @@ import { SearchCriteriaParams } from '../../Models/ApiRequestType'
 @Component({
     selector: "add-profile",
     templateUrl: "./add-profile.component.html",
-    styles: ["./add-profile.component.css"]
+    styles: ["./add-profile.component.css"],
+    providers: [DatePipe]
 })
 export class AddProfileComponent implements OnInit {
     @Input() worker;
     @Input() searchCriterias: SearchCriteriaParams;
     @Output() onBack = new EventEmitter<any>();
     print: any;
+    
+    photoFileText = "Select Photo File";
+    passportFileText = "Select Passport File";
+    
     state: { isAddMode: boolean, title: string, worker: Worker } = {
         isAddMode: true,
         title: "Add Profile",

@@ -14,7 +14,7 @@
                   #workerForm="ngForm">
                   <div class="row">
                     <div class="form-group col-sm-6">
-                      <input type="date" class="form-control" name="birthDate" [(ngModel)]="state.worker.birthDate" />
+                      <input type="date" class="form-control" name="birthDate" [value]="state.worker.birthDate | date: 'yyyy-MM-dd'" (input)="state.worker.birthDate = $event.target.valueAsDate" />
                     </div>
 
                     <div class="form-group col-sm-6">
@@ -38,8 +38,9 @@
                     <div class="form-group col-sm-6">
                       <select class="form-control" name="religion" [(ngModel)]="state.worker.religion">
                         <option>Religion</option>
-                        <option>Christian</option>
-                        <option>Other</option>
+                        <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.religion;">
+                          {{nameValuePair.name}}
+                        </option>
                       </select>
                     </div>
 
@@ -47,8 +48,8 @@
                       <select class="form-control" name="maritalStatus" [(ngModel)]="state.worker.maritalStatus">
                         <option>الحالة الاجتماعية</option>
                         <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.maritalStatus;">
-                           {{nameValuePair.name}}
-                         </option>
+                          {{nameValuePair.name}}
+                        </option>
                       </select>
                     </div>
 
@@ -57,15 +58,15 @@
                       <select class="form-control" name="language" [(ngModel)]="state.worker.language">
                         <option>اللغات المتحدث بها</option>
                         <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.languages;">
-                           {{nameValuePair.name}}
-                         </option>
+                          {{nameValuePair.name}}
+                        </option>
                       </select>
                     </div>
 
                     <!-- FIX PHOTO BINDING TO FILE TYPE! -->
                     <div class="form-group col-sm-6">
-                      <input type="text" class="form-control input-fake" placeholder="Photo" />
-                      <input type="file" name="photo" id="photo" class="form-control input-file" placeholder="Photo" #photoInput/>
+                     <label class="form-control input-file" for="photo">{{photoFileText}}</label> 
+                      <input type="file" name="photo" id="photo" class="form-control input-file" placeholder="Photo" #photoInput style="display:none;"/>
                       <label for="photo">
                         <span class="text">File Upload</span>
                         <span class="icon icon-angle-down icon-xs"></span>
@@ -85,16 +86,18 @@
 
                     <div class="form-group col-sm-6">
                       <select class="form-control" name="education" [(ngModel)]="state.worker.education">
-                        <option>Good</option>
-                        <option>Good</option>
-                        <option>Good</option>
-                        <option>Good</option>
+                        <option>Education</option>
+                        <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.education;">
+                          {{nameValuePair.name}}
+                        </option>
                       </select>
                     </div>
                     <!-- FIX PASSPORT PHOTO UPLOAD -->
                     <div class="form-group col-sm-6">
-                      <input type="text" class="form-control input-fake" placeholder="Photo" />
-                      <input type="file" name="passport" id="passport" class="form-control input-file" placeholder="Passport" #passportInput/>
+                      <label for="passport" class="form-control input-file">
+                      {{passportFileText}}  
+                      </label> 
+                      <input type="file" name="passport" id="passport" class="form-control input-file" placeholder="Passport" #passportInput style="display:none;"/>
                       <label for="passport">
                         <span class="text">File Upload</span>
                         <span class="icon icon-angle-down icon-xs"></span>
@@ -103,8 +106,7 @@
 
 
                     <div class="form-group col-sm-6">
-                      <input name="videopublic" [(ngModel)]="state.worker.video" type="text" class="form-control" placeholder="http://Video Link"
-                      />
+                      <input name="videopublic" [(ngModel)]="state.worker.video" type="text" class="form-control" placeholder="http://Video Link" />
                     </div>
 
                     <div class="form-group col-sm-6">
@@ -113,18 +115,17 @@
                     </div>
 
                     <div class="form-group col-sm-6">
-                      <input name="passportIssueDate" [(ngModel)]="state.worker.passportIssDate" type="text" class="form-control" placeholder="Passport Issue Date"
+                      <input name="passportIssueDate" type="date" [value]="state.worker.passportIssDate | date: 'yyyy-MM-dd'" (input)="state.worker.passportIssDate = $event.target.valueAsDate" class="form-control" placeholder="Passport Issue Date"
                       />
                     </div>
 
 
                     <div class="form-group col-sm-6">
-                      <input name="passportPoIssue" [(ngModel)]="state.worker.passportPoIssue" type="text" class="form-control" placeholder="Passport Place of Issue"
-                      />
+                      <input name="passportPoIssue" type="text" [(ngModel)]="state.worker.passportPoIssue"  class="form-control" placeholder="Passport Place of Issue" />
                     </div>
 
                     <div class="form-group col-sm-6">
-                      <input name="passportExpiry" [(ngModel)]="state.worker.passportExpDate" type="text" class="form-control" placeholder="Passport Date of Expiry"
+                      <input name="passportExpiry" type="date" [value]="state.worker.passportExpDate | date: 'yyyy-MM-dd'" (input)="state.worker.passportExpDate = $event.target.valueAsDate"  class="form-control" placeholder="Passport Date of Expiry"
                       />
                     </div>
 
