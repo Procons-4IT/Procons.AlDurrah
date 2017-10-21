@@ -1,6 +1,6 @@
 //Consider Changing the Navigation Logic to a router-outlet with Child Components and a Feature Module (issue: Fix the NavBar Navigations)
 import { Component, OnInit } from '@angular/core';
-import { Worker } from "../Models/Worker";
+import { Worker, WorkerManagementData } from "../Models/Worker";
 import { ApiService } from "../Services/ApiService";
 
 @Component({
@@ -12,13 +12,16 @@ export class WorkerMangmentComponent implements OnInit {
 
     ngOnInit(): void {
         console.log('view loading!');
-        this.myApi.getAllAgentWorkers({}).subscribe(workers => {
-            console.log('i got a bunch of workers ', workers);
-            this.state.workers = workers;
+        this.myApi.getWorkerManagmentData().subscribe(allTheData => {
+            console.log('i got a bunch of workers ', allTheData);
+            this.state.workers = allTheData.workerDisplayData;
+            this.state.workersServerData = allTheData.workerServerData;
+            this.state.searchCriteriaParams = allTheData.searchCriteria;
+            this.state.selectedWorker = this.state.workersServerData[0];
         });
     }
 
-    loading= false;
+    loading = false;
     //Temp Show the Add Profile Modal
     state = {
         showWorkerManagment: true,
@@ -26,7 +29,7 @@ export class WorkerMangmentComponent implements OnInit {
         showAddProfile: false,
         searchCriteriaParams: null,
         workers: null,
-        workerWithKeyValue: null,
+        workersServerData: null,
         selectedWorker: null
     }
 
@@ -50,24 +53,16 @@ export class WorkerMangmentComponent implements OnInit {
         this.state.selectedWorker = null;
         this.state.showAddProfile = true;
     }
-    ShowEditWorker(worker) {
+    ShowEditWorker(worker, i) {
         //Temp Fix
-        this.loading = true;
-        this.myApi.getSearchCriteriaParameters().subscribe(searchCriteriaParams => {
-            this.loading = false;
-            this.state.searchCriteriaParams = searchCriteriaParams;
-            this.ShowAddWorker();
-            this.state.selectedWorker = worker;
-
-        },onError=>{
-            console.error(onError);
-            this.loading = false;
-        });
+        this.ShowAddWorker();
+        this.state.selectedWorker = this.state.workersServerData[i];
     }
 
     Delete(worker: Worker, index: number) {
+        //fix delete!
         console.log('deleting Worker ', worker, ' ', index);
-        this.state.workers.splice(index, 1);
+        // this.state.workers.splice(index, 1);
         console.log('#TO DO IMPLEMENT DELETE API');
     }
 }

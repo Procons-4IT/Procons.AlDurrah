@@ -74,7 +74,7 @@ export class CatalogueComponent implements OnInit {
     }
 
     GoToResults(workerFilter: Worker) {
-        debugger;
+        
         this.loading = true;
         this.myApi.getAllWorkers(workerFilter).subscribe(workers => {
             this.loading = false
@@ -110,7 +110,7 @@ export class CatalogueComponent implements OnInit {
     //TO-DO: REMOVE AMOUNT HERE!
     Book(onBook: Boolean) {
         var selectedWorker = this.selectedWorker;
-        debugger;
+        
         var paymentInformation = { SerialNumber: selectedWorker.serialNumber, CardCode: selectedWorker.agent, Amount: "100", Code: selectedWorker.code, WorkerCode: selectedWorker.workerCode }
     
         this.loading = true;
