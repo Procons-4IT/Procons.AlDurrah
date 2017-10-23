@@ -2,6 +2,7 @@
   "baseUrl": "https://dev.procons-scloud.com",
   "getSearchCriteriaUrl": "/api/Workers/GetSearchLookups",
   "getWorkersUrl": "/api/Workers/GetWorkers",
+  "getAgentWorkerUrl":"/api/Workers/GetAgentWorkers",
   "knetUrl": "/api/Workers/CallKnetGateway",
   "incomingPaymentUrl": "/api/Workers/CreatePayment",
   "loginUrl": "/oauth/token",

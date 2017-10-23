@@ -19,7 +19,7 @@ export class ContextService {
     public httpPost(requestHeaders: Array<any>, requestBody: string, serviceUrl: string): Observable<Response> {
         let headers = new Headers();
         requestHeaders.forEach(element => {
-            debugger;
+            
             headers.append(element.valueOf().key, element.valueOf().value);
         });
 

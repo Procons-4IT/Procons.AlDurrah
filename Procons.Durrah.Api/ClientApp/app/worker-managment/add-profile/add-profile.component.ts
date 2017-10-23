@@ -1,4 +1,5 @@
 import { Component, ElementRef, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { DatePipe } from '@angular/common';
 
 import { ApiService } from '../../Services/ApiService';
 import { Worker } from "../../Models/Worker";
@@ -7,13 +8,18 @@ import { SearchCriteriaParams } from '../../Models/ApiRequestType'
 @Component({
     selector: "add-profile",
     templateUrl: "./add-profile.component.html",
-    styles: ["./add-profile.component.css"]
+    styles: ["./add-profile.component.css"],
+    providers: [DatePipe]
 })
 export class AddProfileComponent implements OnInit {
     @Input() worker;
     @Input() searchCriterias: SearchCriteriaParams;
     @Output() onBack = new EventEmitter<any>();
     print: any;
+
+    photoFileText = "Select Photo File";
+    passportFileText = "Select Passport File";
+
     state: { isAddMode: boolean, title: string, worker: Worker } = {
         isAddMode: true,
         title: "Add Profile",
@@ -24,7 +30,6 @@ export class AddProfileComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        
         if (this.worker) {
             this.state.isAddMode = false;
             this.state.title = "Edit Profile"
@@ -40,7 +45,7 @@ export class AddProfileComponent implements OnInit {
         this.onBack.emit();
     }
     addWorker(photoInput: any, passInput: any) {
-        
+
         let photoFile = photoInput.files;
         let passportFile = passInput.files;
 
@@ -65,11 +70,11 @@ export class AddProfileComponent implements OnInit {
             formData.append('CivilId', this.state.worker.civilId);
             //type Missing ? is it code
 
-            
+
             this.myApi.uploadFile(formData).subscribe(x => {
                 console.log('Somethign Happend ! ', formData)
             }, onError => {
-                
+
             });
 
         } else {
@@ -79,7 +84,7 @@ export class AddProfileComponent implements OnInit {
     }
 
     originalUploadFile(elFiles: ElementRef) {
-        
+
         let files = elFiles.nativeElement.files;
         if (files && files[0]) {
             const formData = new FormData();
@@ -106,11 +111,11 @@ export class AddProfileComponent implements OnInit {
             formData.append('Age', '43'); //This is not needed
             formData.append('Code', 'code');
 
-            
+
             this.myApi.uploadFile(formData).subscribe(x => {
                 console.log('Somethign Happend ! ', formData)
             }, onError => {
-                
+
             });
         }
     }

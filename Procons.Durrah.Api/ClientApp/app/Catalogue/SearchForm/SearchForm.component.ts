@@ -23,7 +23,7 @@ export class searchFormComponent implements OnInit {
     }
 
     GotoResults(workType, age, sex, nationality, maritalStatus, language) {
-        debugger;
+        
         let argumentKeys = ["WorkerType", "Age", "Gender", "Nationality", "MaritalStatus", "Language"];
         let workerFilterParams = {};
         for (var i = 0; i < arguments.length; i++) {

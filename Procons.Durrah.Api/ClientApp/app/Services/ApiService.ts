@@ -3,8 +3,10 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/zip';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/catch';
@@ -12,7 +14,7 @@ import 'rxjs/add/operator/catch';
 
 import { Injectable, OnDestroy } from '@angular/core';
 import { WorkerFilterParams, ConfirmEmailParams, PaymentRedirectParams, KnetPayment, SearchCriteriaParams, ResetPasswordParams, CreateNewUserParams } from '../Models/ApiRequestType';
-import { Worker } from '../Models/Worker';
+import { Worker, WorkerManagementData } from '../Models/Worker';
 @Injectable()
 export class ApiService {
     KEYS = {
@@ -71,7 +73,7 @@ export class ApiService {
     private getErrorMessage(errorResponse): string {
         debugger;
         let errorObject: any = errorResponse.json && errorResponse.json();
-        let errorMessage: string = errorObject.error_description || errorObject.message|| "something went wrong";
+        let errorMessage: string = errorObject.error_description || errorObject.message || "something went wrong";
         return errorMessage;
     }
     public forgotPassword(email: string): Observable<any> {
@@ -124,6 +126,72 @@ export class ApiService {
             });
         return actualData;
     }
+    public getAllAgentWorkers(optionalFilterCritera: WorkerFilterParams | object): Observable<any[]> {
+
+        var actualData = this.httpPostHelper(this.config.getAgentWorkerUrl, optionalFilterCritera)
+            .map(response => {
+                var data: any[] = response.json();
+                return data;
+            });
+        return actualData;
+    }
+
+    public getWorkerManagmentData(): Observable<WorkerManagementData> {
+        let $workerKeyData = this.getAllAgentWorkers({});
+        let $searchCritera = this.getSearchCriteriaParameters();
+
+        let $workerManagmentData = Observable.zip($workerKeyData, $searchCritera, (workerData: Worker[], searchCriterParams: SearchCriteriaParams) => {
+            return { w: workerData, s: searchCriterParams };
+        }).map(data => this.convertToWorkerWorkerManagementData(data.w, data.s));
+
+        return $workerManagmentData
+    }
+    public convertToWorkerWorkerManagementData(workerServerData: Worker[], searchCriterParams: SearchCriteriaParams): WorkerManagementData {
+        //fix performance! language -> languages mismatch, consider lodash, change server or hardcoding 
+        let workerManagmentData = new WorkerManagementData();
+        workerManagmentData.searchCriteria = searchCriterParams;
+        workerManagmentData.workerServerData = workerServerData;
+        let workerDisplayData = [];
+        let tempWorker;
+        let searchProperties: string[] = Object.getOwnPropertyNames(workerManagmentData.searchCriteria);
+
+        for (let i = 0; i < workerManagmentData.workerServerData.length; i++) {
+            tempWorker = workerManagmentData.workerServerData[i];
+            workerDisplayData.push(this.convertWorkerValues(tempWorker, workerManagmentData.searchCriteria, searchProperties));
+        }
+        workerManagmentData.workerDisplayData = workerDisplayData;
+        return workerManagmentData;
+
+    }
+    public convertWorkerValues(workerServerData: Worker, searchCriteria, searchProperties) {
+        console.log('help!');
+        //s['religion'][w1['religion']].name
+        var workerDisplayData = Object.assign({}, workerServerData);
+        var searchProperty;
+        for (var searchIndex = 0; searchIndex < searchProperties.length; searchIndex++) {
+            searchProperty = searchProperties[searchIndex];
+            if (workerDisplayData.hasOwnProperty(searchProperty)) {
+                var workerKey = workerDisplayData[searchProperty];
+                var propertyValue = searchCriteria[searchProperty];
+                let name = this.getNameFromProperty(workerKey, propertyValue);
+                workerDisplayData[searchProperty] = name;
+            }
+        }
+        console.log(workerDisplayData);
+        return workerDisplayData;
+    }
+    public getNameFromProperty(key: string, propertyValue: any[]): string {
+        //[{name,value}] 
+        let keyValuePair;
+        for (let i = 0; i < propertyValue.length; i++) {
+            keyValuePair = propertyValue[i];
+            if (keyValuePair.value === key) {
+                return keyValuePair.name;
+            }
+        }
+        return null;
+    }
+
     public httpPostHelper(url: string, body: any): Observable<Response> {
         let headers = new Headers();
         headers.append("accept-language", this.language);
