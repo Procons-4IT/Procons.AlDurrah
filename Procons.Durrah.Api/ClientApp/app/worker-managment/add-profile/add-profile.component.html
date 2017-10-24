@@ -1,174 +1,162 @@
 <!-- <section role="main" class="main-container subpage"> -->
-
 <div class="section section-overlay section-full-width full-height" id="sectionCatalogue2">
   <div class="container">
     <div class="section-content">
       <div class="content-wrapper">
         <div class="tab-content">
-          <div role="tabpanel">
+          <div class="tabpanel">
             <div class="row">
               <div class="col-xs-12">
                 <h2 class="text-center">
                   <span class="icon icon-ed-search icon-3x"></span> {{state.title}}</h2>
-                <form (ngSubmit)="addWorker(photoInput,passportInput);" method="post" id="profileEditForm" class="form-default has-upload"
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 col-md-offset-3">
+
+                <form (ngSubmit)="addWorker(photoUpload,passportUpload);" method="post" id="profileEditForm" class="form-default has-upload"
                   #workerForm="ngForm">
-                  <div class="row">
-                    <div class="form-group col-sm-6">
-                      <input type="date" class="form-control" name="birthDate" [value]="state.worker.birthDate | date: 'yyyy-MM-dd'" (input)="state.worker.birthDate = $event.target.valueAsDate" />
-                    </div>
 
-                    <div class="form-group col-sm-6">
-                      <select class="form-control" name="gender" [(ngModel)]="state.worker.gender">
-                        <option>الجنس</option>
-                        <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.gender;">
-                          {{nameValuePair.name}}
-                        </option>
-                      </select>
-                    </div>
+                  <div class="form-group">
+                    <label for="birthDate">BirthDate</label>
+                    <input id="birthDate" type="date" class="form-control" name="birthDate" [value]="state.worker.birthDate | date: 'yyyy-MM-dd'"
+                      (input)="state.worker.birthDate = $event.target.valueAsDate" />
+                  </div>
 
-                    <div class="form-group col-sm-6">
-                      <select class="form-control" name="nationality" [(ngModel)]="state.worker.nationality">
-                        <option>الجنسية</option>
-                        <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.nationality;">
-                          {{nameValuePair.name}}
-                        </option>
-                      </select>
-                    </div>
+                  <div class="form-group">
+                    <label for="gender">Gender</label>
+                    <!-- <option>الجنس</option> -->
+                    <select id="gender" class="form-control" name="gender" #genderInput>
+                      <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.gender;">
+                        {{nameValuePair.name}}
+                      </option>
+                    </select>
+                  </div>
 
-                    <div class="form-group col-sm-6">
-                      <select class="form-control" name="religion" [(ngModel)]="state.worker.religion">
-                        <option>Religion</option>
-                        <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.religion;">
-                          {{nameValuePair.name}}
-                        </option>
-                      </select>
-                    </div>
+                  <div class="form-group">
+                    <label for="nationality">Nationality</label>
+                    <!-- <option>الجنسية</option> -->
+                    <select id="nationality" class="form-control" name="nationality" #nationalityInput>
+                      <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.nationality;">
+                        {{nameValuePair.name}}
+                      </option>
+                    </select>
+                  </div>
 
-                    <div class="form-group col-sm-6">
-                      <select class="form-control" name="maritalStatus" [(ngModel)]="state.worker.maritalStatus">
-                        <option>الحالة الاجتماعية</option>
-                        <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.maritalStatus;">
-                          {{nameValuePair.name}}
-                        </option>
-                      </select>
-                    </div>
+                  <div class="form-group">
+                    <label for="religion">Religion</label>
+                    <!-- <option>Religion</option> -->
+                    <select id="religion" class="form-control" name="religion" #religionInput>
+                      <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.religion;">
+                        {{nameValuePair.name}}
+                      </option>
+                    </select>
+                  </div>
 
+                  <div class="form-group ">
+                    <label for="marital">الحالة الاجتماعية</label>
+                    <!-- <option>الحالة الاجتماعية</option> -->
+                    <select id="marital" class="form-control" name="maritalStatus">
+                      <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.maritalStatus;">
+                        {{nameValuePair.name}}
+                      </option>
+                    </select>
+                  </div>
 
-                    <div class="form-group col-sm-6">
-                      <select class="form-control" name="language" [(ngModel)]="state.worker.language">
-                        <option>اللغات المتحدث بها</option>
-                        <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.languages;">
-                          {{nameValuePair.name}}
-                        </option>
-                      </select>
-                    </div>
+                  <div class="form-group ">
+                    <label for="lang">اللغات المتحدث بها</label>
+                    <!-- <option>اللغات المتحدث بها</option> -->
+                    <select id="lang" class="form-control" name="language" #languageInput>
+                      <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.languages;">
+                        {{nameValuePair.name}}
+                      </option>
+                    </select>
+                  </div>
 
-                    <!-- FIX PHOTO BINDING TO FILE TYPE! -->
-                    <div class="form-group col-sm-6">
-                     <label class="form-control input-file" for="photo">{{photoFileText}}</label> 
-                      <input type="file" name="photo" id="photo" class="form-control input-file" placeholder="Photo" #photoInput style="display:none;"/>
-                      <label for="photo">
-                        <span class="text">File Upload</span>
-                        <span class="icon icon-angle-down icon-xs"></span>
-                      </label>
-                    </div>
+                  <div class="form-group ">
+                    <label for="weight">Weight</label>
+                    <input id="weight" type="text" class="form-control" placeholder="..kg" name="weight" #weightInput />
+                  </div>
 
+                  <div class="form-group ">
+                    <label for="height">Height</label>
+                    <input name="height" id="height" type="text" class="form-control" placeholder="..cm" #heightInput />
+                  </div>
 
-                    <div class="form-group col-sm-6">
-                      <input type="text" class="form-control" placeholder="Weight" name="weight" [(ngModel)]="state.worker.weight" />
-                    </div>
+                  <div class="form-group ">
+                    <label for="education">Education</label>
+                    <select id="education" class="form-control" name="education" #educationInput>
+                      <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.education;">
+                        {{nameValuePair.name}}
+                      </option>
+                    </select>
+                  </div>
 
+                  <div class="form-group ">
+                    <label for="video">Video</label>
+                    <input name="videopublic" id="video" type="text" class="form-control" placeholder="http://Video Link" />
+                  </div>
 
-                    <div class="form-group col-sm-6">
-                      <input name="height" [(ngModel)]="state.worker.height" type="text" class="form-control" placeholder="Height" />
-                    </div>
+                  <div class="form-group ">
+                    <label for="passNumb"> PassportNumber</label>
+                    <input id="passNumb" name="passortNumber" type="text" class="form-control" placeholder="ex. 12345" />
+                  </div>
 
-
-                    <div class="form-group col-sm-6">
-                      <select class="form-control" name="education" [(ngModel)]="state.worker.education">
-                        <option>Education</option>
-                        <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.education;">
-                          {{nameValuePair.name}}
-                        </option>
-                      </select>
-                    </div>
-                    <!-- FIX PASSPORT PHOTO UPLOAD -->
-                    <div class="form-group col-sm-6">
-                      <label for="passport" class="form-control input-file">
-                      {{passportFileText}}  
-                      </label> 
-                      <input type="file" name="passport" id="passport" class="form-control input-file" placeholder="Passport" #passportInput style="display:none;"/>
-                      <label for="passport">
-                        <span class="text">File Upload</span>
-                        <span class="icon icon-angle-down icon-xs"></span>
-                      </label>
-                    </div>
-
-
-                    <div class="form-group col-sm-6">
-                      <input name="videopublic" [(ngModel)]="state.worker.video" type="text" class="form-control" placeholder="http://Video Link" />
-                    </div>
-
-                    <div class="form-group col-sm-6">
-                      <input name="passortNumber" [(ngModel)]="state.worker.passportNumber" type="text" class="form-control" placeholder="Passport Number"
-                      />
-                    </div>
-
-                    <div class="form-group col-sm-6">
-                      <input name="passportIssueDate" type="date" [value]="state.worker.passportIssDate | date: 'yyyy-MM-dd'" (input)="state.worker.passportIssDate = $event.target.valueAsDate" class="form-control" placeholder="Passport Issue Date"
-                      />
-                    </div>
+                  <div class="form-group ">
+                    <label for="passIssueDate">Passport Issue Date</label>
+                    <input id="passIssueDate" name="passportIssueDate" type="date" [value]="state.worker.passportIssDate | date: 'yyyy-MM-dd'"
+                      (input)="state.worker.passportIssDate = $event.target.valueAsDate" class="form-control" />
+                  </div>
 
 
-                    <div class="form-group col-sm-6">
-                      <input name="passportPoIssue" type="text" [(ngModel)]="state.worker.passportPoIssue"  class="form-control" placeholder="Passport Place of Issue" />
-                    </div>
+                  <div class="form-group ">
+                    <label for="passPoIssue">Passport Place of Issue</label>
+                    <input name="passportPoIssue" type="text" class="form-control" placeholder="ex. Germany" />
+                  </div>
 
-                    <div class="form-group col-sm-6">
-                      <input name="passportExpiry" type="date" [value]="state.worker.passportExpDate | date: 'yyyy-MM-dd'" (input)="state.worker.passportExpDate = $event.target.valueAsDate"  class="form-control" placeholder="Passport Date of Expiry"
-                      />
-                    </div>
-
-
-                    <div class="form-group col-sm-6">
-                      <input name="civilId" [(ngModel)]="state.worker.civilId" type="text" class="form-control" placeholder="Civil ID" />
-                    </div>
-
-                    <!-- TO DO FIX  TYPE? Is it need?? ! !  -->
-
-                    <!-- <div class="form-group col-sm-6">
-                      <select class="form-control">
-                        <option>Type</option>
-                      </select>
-                    </div> -->
+                  <div class="form-group ">
+                    <label for="passExpiry">Passport Expiry</label>
+                    <input name="passportExpiry" type="date" [value]="state.worker.passportExpDate | date: 'yyyy-MM-dd'" (input)="state.worker.passportExpDate = $event.target.valueAsDate"
+                      class="form-control" />
+                  </div>
 
 
-                    <div class="form-group col-sm-6 text-right">
-                      <input type="submit" value="Save" class="btn btn-default" id="" />
-                    </div>
-                    <div class="form-group col-sm-6 text-right">
-                      <div class="btn btn-default" (click)="back()">{{'back' | translate }}</div>
-                    </div>
+                  <div class="form-group ">
+                    <label for="civilID"> Civil ID</label>
+                    <input id="civilID" name="civilId" type="text" class="form-control" placeholder="ex. 1234" />
+                  </div>
+
+                  <div class="form-group">
+                    <label for="photoUpload">Photo Upload</label>
+                    <p-fileUpload id="photoUpload" name="myfile[]" customUpload="true" #photoUpload></p-fileUpload>
+                  </div>
+                  <div class="form-group ">
+                    <label for="passportUpload">Passport Upload</label>
+                    <p-fileUpload id="passportUpload" name="myfile2[]" customUpload="true" #passportUpload></p-fileUpload>
+                  </div>
+
+                  {{state.worker | json}}
+
+                  <div class="form-group  text-right">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                  </div>
+                  <div class="form-group  text-right">
+                    <div class="btn btn-default" (click)="back()">{{'back' | translate }}</div>
                   </div>
                 </form>
-                <!-- DELETE ME PLEASEEEEE -->
-                <!-- <p>Debugger:</p>
-                <p style="word-break: break-word"> {{print(state.worker)}}</p> -->
-                <div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- </section> -->
+  <!-- <div>
                   Temp Text
                   <label for="file">Upload Files</label>
                   <input type="file" id="file" multiple #files>
                   <button (click)="originalUploadFile(files)">Submit!</button>
                 </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- </section> -->
+  -->

@@ -8,7 +8,7 @@ import { SearchCriteriaParams } from '../../Models/ApiRequestType'
 @Component({
     selector: "add-profile",
     templateUrl: "./add-profile.component.html",
-    styles: ["./add-profile.component.css"],
+    styleUrls: ["./add-profile.component.css"],
     providers: [DatePipe]
 })
 export class AddProfileComponent implements OnInit {
@@ -36,8 +36,35 @@ export class AddProfileComponent implements OnInit {
             this.state.worker = Object.assign({}, this.worker);
             console.log('searchCriteria Params ', this.searchCriterias);
         } else {
-            let workerParams: any = Array.from({ length: 22 }, x => { return '' }) as any;
-            this.state.worker = new (<any>Worker)(...workerParams);
+            // let workerParams: any = Array.from({ length: 22 }, x => { return 'a' }) as any;
+            // this.state.worker = new (<any>Worker)(...workerParams);
+            this.state.worker = {
+                "workerCode": null,
+                "serialNumber": "A123456",
+                "agent": "SA004",
+                "age": 25,
+                "name": null,
+                "code": "DW00003",
+                "birthDate": "9/1/1990 12:00:00 AM",
+                "gender": "M",
+                "nationality": "1",
+                "religion": "1",
+                "maritalStatus": "1",
+                "language": "1",
+                "photo": "C:\\Program Files (x86)\\sap\\SAP Business One\\Attachments\\test.jpg",
+                "price": 200.0,
+                "weight": "76",
+                "height": "180",
+                "education": "1",
+                "passport": "A123456",
+                "video": "https://www.youtube.com/embed/HYNpSAR2yd4",
+                "passportNumber": "A123456",
+                "passportIssDate": "9/1/2017",
+                "passportExpDate": "9/1/2018",
+                "passportPoIssue": "01.09.2017",
+                "civilId": "123456123456",
+                "status": "2"
+            } as any;
         }
     }
 
@@ -74,7 +101,7 @@ export class AddProfileComponent implements OnInit {
             this.myApi.uploadFile(formData).subscribe(x => {
                 console.log('Somethign Happend ! ', formData)
             }, onError => {
-
+                console.log('someting terrible happened!');
             });
 
         } else {
@@ -118,5 +145,9 @@ export class AddProfileComponent implements OnInit {
 
             });
         }
+    }
+    myUploader(event) {
+        //event.files == files to upload
+        console.log('I should upload the files!');
     }
 }
