@@ -26,7 +26,6 @@ export class AddProfileComponent implements OnInit {
         worker: null
     }
     constructor(public myApi: ApiService) {
-        this.print = JSON.stringify;
     }
 
     ngOnInit(): void {

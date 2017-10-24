@@ -92,7 +92,16 @@
                       </option>
                     </select>
                   </div>
-
+                  
+                  <div class="form-group ">
+                      <label for="workerType">Worker Type</label>
+                      <select id="workerType" class="form-control" name="workerType" #workerTypeInpu>
+                        <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.workerTypes;">
+                          {{nameValuePair.name}}
+                        </option>
+                      </select>
+                    </div>
+  
                   <div class="form-group ">
                     <label for="video">Video</label>
                     <input name="videopublic" id="video" type="text" class="form-control" placeholder="http://Video Link" />
