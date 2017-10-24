@@ -94,7 +94,8 @@ export class AddProfileComponent implements OnInit {
             formData.append('PassportIssDate', this.state.worker.passportIssDate);
             formData.append('PassportExpDate', this.state.worker.passportExpDate);
             formData.append('CivilId', this.state.worker.civilId);
-            //type Missing ? is it code
+            formData.append('Code', this.state.worker.code);
+
 
 
             this.myApi.uploadFile(formData).subscribe(x => {

@@ -138,11 +138,11 @@
 
                   <div class="form-group">
                     <label for="photoUpload">Photo Upload</label>
-                    <p-fileUpload id="photoUpload" name="myfile[]" customUpload="true" #photoUpload></p-fileUpload>
+                    <p-fileUpload id="photoUpload" name="myfile[]" customUpload="true" multiple="false" #photoUpload></p-fileUpload>
                   </div>
                   <div class="form-group ">
                     <label for="passportUpload">Passport Upload</label>
-                    <p-fileUpload id="passportUpload" name="myfile2[]" customUpload="true" #passportUpload></p-fileUpload>
+                    <p-fileUpload id="passportUpload" name="myfile2[]" customUpload="true" multiple="false"#passportUpload></p-fileUpload>
                   </div>
 
                   {{state.worker | json}}
