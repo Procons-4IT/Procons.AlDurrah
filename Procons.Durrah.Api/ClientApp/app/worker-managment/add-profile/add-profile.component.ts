@@ -57,11 +57,11 @@ export class AddProfileComponent implements OnInit {
                 "education": "1",
                 "passport": "A123456",
                 "video": "https://www.youtube.com/embed/HYNpSAR2yd4",
-                "passportNumber": "A123456",
+                "passportNumber": "BK22456",
                 "passportIssDate": "9/1/2017",
                 "passportExpDate": "9/1/2018",
                 "passportPoIssue": "01.09.2017",
-                "civilId": "123456123456",
+                "civilId": "224456123456",
                 "status": "2"
             } as any;
         }
