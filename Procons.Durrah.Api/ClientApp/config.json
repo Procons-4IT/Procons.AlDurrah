@@ -1,5 +1,5 @@
 {
-  "baseUrl": "https://dev.procons-scloud.com",
+  "baseUrl": "http://localhost:59822",
   "getSearchCriteriaUrl": "/api/Workers/GetSearchLookups",
   "getWorkersUrl": "/api/Workers/GetWorkers",
   "getAgentWorkerUrl":"/api/Workers/GetAgentWorkers",

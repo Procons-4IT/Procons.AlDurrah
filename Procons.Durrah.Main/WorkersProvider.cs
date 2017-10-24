@@ -199,7 +199,7 @@
             return deleted;
         }
 
-        public List<Worker> GetAgentWorkers(string agent)
+        public List<Worker> GetAgentWorkers(string agent, string requestUrl)
         {
             var ServiceInstance = ServiceLayerProvider.GetInstance();
             var workers = new List<WORKERS>();
@@ -223,12 +223,12 @@
                         Language = w.U_Language,
                         MaritalStatus = w.U_MaritalStatus,
                         Nationality = w.U_Nationality,
-                        Passport = w.U_Passport,
+                        Passport = Utilities.ConvertImagePathToUrl(requestUrl, w.U_Passport),
                         PassportExpDate = MapField<DateTime>(w.U_PassportExpDate).ToShortDateString(),
                         PassportIssDate = MapField<DateTime>(w.U_PassportIssDate).ToShortDateString(),
                         PassportNumber = w.U_PassportNumber,
                         PassportPoIssue = w.U_PassportPoIssue,
-                        Photo = w.U_Photo,
+                        Photo = Utilities.ConvertImagePathToUrl(requestUrl, w.U_Photo),
                         Religion = w.U_Religion,
                         SerialNumber = w.U_Serial,
                         Status = w.U_Status,
@@ -241,7 +241,7 @@
             return workersList;
         }
 
-        public List<Worker> GetWorkers(Catalogue worker,string requestUrl)
+        public List<Worker> GetWorkers(Catalogue worker, string requestUrl)
         {
 
             List<Worker> workersList = new List<Worker>();
@@ -287,12 +287,12 @@
                             Language = MapField<string>(readerResult[Utilities.GetLocalizedField("U_Language")]),
                             MaritalStatus = MapField<string>(readerResult[Utilities.GetLocalizedField("U_MaritalStatus")]),
                             Nationality = MapField<string>(readerResult[Utilities.GetLocalizedField("U_Nationality")]),
-                            Passport = MapField<string>(readerResult["U_Passport"]),
+                            Passport = Utilities.ConvertImagePathToUrl(requestUrl, MapField<string>(readerResult["U_Passport"])),
                             PassportExpDate = MapField<DateTime>(readerResult["U_PassportExpDate"]).ToShortDateString(),
                             PassportIssDate = MapField<string>(readerResult["U_PassportIssDate"]),
                             PassportNumber = MapField<string>(readerResult["U_PassportNumber"]),
                             PassportPoIssue = MapField<string>(readerResult["U_PassportPoIssue"]),
-                            Photo = $"{requestUrl}/api/Workers/Image?path={Utilities.GetFileName(MapField<string>(readerResult["U_Photo"]))}",
+                            Photo = Utilities.ConvertImagePathToUrl(requestUrl, MapField<string>(readerResult["U_Photo"])),
                             Religion = MapField<string>(readerResult[Utilities.GetLocalizedField("U_Religion")]),
                             SerialNumber = MapField<string>(readerResult["U_Serial"]),
                             Status = MapField<string>(readerResult["U_Status"]),

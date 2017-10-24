@@ -146,5 +146,12 @@
             else
                 return default(T);
         }
+
+        protected string GetMainUrl()
+        {
+            Uri uri = new Uri(Request.RequestUri.ToString());
+            var requestUrl = $"{uri.Scheme}{ Uri.SchemeDelimiter}{uri.Host}:{uri.Port}";
+            return requestUrl;
+        }
     }
 }

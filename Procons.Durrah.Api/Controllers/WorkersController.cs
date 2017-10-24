@@ -16,6 +16,7 @@
     using System.Threading.Tasks;
     using System.Net.Http.Headers;
     using System.Drawing.Imaging;
+    using System.Web.Hosting;
 
     public class WorkersController : BaseApiController
     {
@@ -202,7 +203,8 @@
         public IHttpActionResult GetAgentWorkers()
         {
             var cardCode = GetCurrentUserCardCode();
-            var workers = workersFacade.GetAgentWorkers(cardCode);
+            var requestUrl = GetMainUrl();
+            var workers = workersFacade.GetAgentWorkers(cardCode, requestUrl);
             return Ok(workers);
         }
 
@@ -210,8 +212,7 @@
         [Authorize]
         public IHttpActionResult GetWorkers([FromBody]Catalogue worker)
         {
-            Uri uri = new Uri(Request.RequestUri.ToString());
-            var requestUrl = $"{uri.Scheme}{ Uri.SchemeDelimiter}{uri.Host}:{uri.Port}";
+            var requestUrl = GetMainUrl();
             var workers = workersFacade.GetWorkers(worker, requestUrl);
             return Ok(workers);
         }
@@ -244,8 +245,15 @@
         [HttpGet]
         public HttpResponseMessage Image(string path)
         {
-            var attachmentsPath = workersFacade.GetAttachmentsPath();
-            using (var image = System.Drawing.Image.FromFile($"{attachmentsPath}{path}"))
+            var defaultImagePth = HostingEnvironment.MapPath(@"\Assets\src\app\images\no_photo.png");
+             var attachmentsPath = workersFacade.GetAttachmentsPath();
+            var imagePath = string.Empty;
+            if (File.Exists($"{attachmentsPath}{path}"))
+                imagePath = $"{attachmentsPath}{path}";
+            else
+                imagePath = defaultImagePth;
+
+            using (var image = System.Drawing.Image.FromFile(imagePath))
             {
                 byte[] imageBytes = null;
                 using (var ms = new MemoryStream())

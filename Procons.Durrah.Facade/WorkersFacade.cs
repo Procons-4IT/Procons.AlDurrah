@@ -31,9 +31,9 @@
             return workersList;
         }
 
-        public List<Worker> GetAgentWorkers(string agent)
+        public List<Worker> GetAgentWorkers(string agent,string requestUrl)
         {
-            var workersList = provider.GetAgentWorkers(agent);
+            var workersList = provider.GetAgentWorkers(agent, requestUrl);
             return workersList;
         }
 

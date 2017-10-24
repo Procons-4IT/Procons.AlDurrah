@@ -54,7 +54,7 @@
                 return Convert.ToBase64String(memoryStream.GetBuffer(), 0, (int)(memoryStream.Length));
             }
             return string.Empty;
-        
+
 
         }
 
@@ -121,19 +121,19 @@
             var resourceValue = string.Empty;
             try
             {
-                resourceValue= HttpContext.GetGlobalResourceObject("Resource", key).ToString();
+                resourceValue = HttpContext.GetGlobalResourceObject("Resource", key).ToString();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 LogException(ex);
             }
             return resourceValue;
         }
 
-        public static string GetMessageBody(this string Message, Dictionary<string,string> tokens)
+        public static string GetMessageBody(this string Message, Dictionary<string, string> tokens)
         {
             StringBuilder content = new StringBuilder(Message);
-            foreach(KeyValuePair<string, string> k in tokens)
+            foreach (KeyValuePair<string, string> k in tokens)
             {
                 content = content.Replace($"[[{k.Key}]]", k.Value);
             }
@@ -178,6 +178,11 @@
             {
                 return string.Empty;
             }
+        }
+
+        public static string ConvertImagePathToUrl(string requestUrl, string fileName)
+        {
+            return $"{ requestUrl}/api/Workers/Image?path={Utilities.GetFileName(fileName)}";
         }
     }
 }
