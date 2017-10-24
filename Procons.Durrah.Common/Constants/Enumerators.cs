@@ -19,7 +19,7 @@ namespace Procons.Durrah.Common.Enumerators
     {
         SimpleEdmx = 0,
         ComplexType = 1,
-        Collection = 2              
+        Collection = 2
     }
 
     public enum UpdateSemantics
@@ -34,6 +34,16 @@ namespace Procons.Durrah.Common.Enumerators
         English,
         [Description("ar")]
         Arabic
+    }
+
+    public enum WorkerStatus
+    {
+        [Description("Unavailable")]
+        Closed = 0,
+        [Description("Available")]
+        Opened = 1,
+        [Description("Booked")]
+        Booked = 2
     }
 
     //public enum Operation

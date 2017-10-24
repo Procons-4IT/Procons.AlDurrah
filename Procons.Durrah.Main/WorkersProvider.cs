@@ -18,52 +18,6 @@
 
     public class WorkersProvider : ProviderBase
     {
-        public bool CreateWorkerOld(Worker worker)
-        {
-            var created = false;
-            DataServiceResponse response = null;
-            var _serviceInstance = ServiceLayerProvider.GetInstance();
-            var _worker = new WORKERS();
-
-            var fileName = CreateAttachment(@"c:\BoyumInstallerLog.txt");
-            _worker.Code = Guid.NewGuid().ToString();
-            _worker.U_Agent = worker.Agent;
-            _worker.U_Age = worker.Age;
-            _worker.U_BirthDate = Convert.ToDateTime(worker.BirthDate);
-            _worker.U_CivilId = worker.CivilId;
-            _worker.U_ItemCode = worker.Code;
-            _worker.U_Education = worker.Education;
-            _worker.U_Gender = worker.Gender;
-            _worker.U_Height = worker.Height;
-            _worker.U_Language = worker.Language;
-            _worker.U_MaritalStatus = worker.MaritalStatus;
-            _worker.U_Nationality = worker.Nationality;
-            _worker.U_Passport = worker.Passport;
-            _worker.U_PassportExpDate = MapField<DateTime>( worker.PassportExpDate);
-            _worker.U_PassportIssDate = MapField<DateTime>(worker.PassportIssDate);
-            _worker.U_PassportNumber = worker.PassportNumber;
-            _worker.U_PassportPoIssue = worker.PassportPoIssue;
-            _worker.U_Photo = worker.Photo;
-            _worker.U_Price = worker.Price;
-            _worker.U_Religion = worker.Religion;
-            _worker.U_Serial = worker.SerialNumber;
-            _worker.U_Status = worker.Status;
-            _worker.U_Video = worker.Video;
-            _worker.U_Weight = Convert.ToInt32(worker.Weight);
-
-            try
-            {
-                _serviceInstance.CurrentServicelayerInstance.AddToWORKERSUDO(_worker);
-                response = _serviceInstance.CurrentServicelayerInstance.SaveChanges();
-                if (response != null)
-                    created = true;
-            }
-            catch (Exception ex)
-            {
-                Utilities.LogException(ex);
-            }
-            return created;
-        }
         public bool CreateWorker(Worker worker)
         {
             var created = false;
@@ -111,7 +65,7 @@
             return created;
         }
 
-        public bool UpdateWorker(Worker worker,string cardCode)
+        public bool UpdateWorker(Worker worker, string cardCode)
         {
             var created = false;
 
@@ -129,9 +83,9 @@
                 var oGeneralData = oGeneralService.GetByParams(oParams);
 
 
-                if (oGeneralData != null )
+                if (oGeneralData != null)
                 {
-                    if(oGeneralData.GetProperty("U_ItemCode").ToString()== "DW00002")
+                    if (oGeneralData.GetProperty("U_ItemCode").ToString() == "DW00002")
                     {
                         //oGeneralData.SetProperty("Code", Guid.NewGuid().ToString());
                         oGeneralData.SetProperty("U_Agent", "Wissam");
@@ -165,7 +119,7 @@
                     Utilities.LogException($"Agent dont have permissions to update worker: {worker.WorkerCode}");
                     created = false;
                 }
-                    
+
             }
             catch (Exception ex)
             {
@@ -203,15 +157,15 @@
         {
             var ServiceInstance = ServiceLayerProvider.GetInstance();
             var workers = new List<WORKERS>();
-
             workers = ServiceInstance.CurrentServicelayerInstance.WORKERSUDO.Where(x => x.U_Agent == agent).ToList<WORKERS>();
 
-            List<Worker> workersList = new List<Worker>();
+            var workersList = new List<Worker>();
             foreach (var w in workers)
             {
                 workersList.Add(
                     new Worker()
                     {
+                        Name = w.Name,
                         Agent = w.U_Agent,
                         Age = MapField<int>(w.U_Age),
                         BirthDate = w.U_BirthDate.ToString(),
@@ -241,7 +195,49 @@
             return workersList;
         }
 
-        public List<Worker> GetWorkers(Catalogue worker, string requestUrl)
+        public List<Worker> GetWorker(string agent, string code, string requestUrl)
+        {
+            var ServiceInstance = ServiceLayerProvider.GetInstance();
+            var workers = new List<WORKERS>();
+            workers = ServiceInstance.CurrentServicelayerInstance.WORKERSUDO.Where(x => x.U_Agent == agent && x.Code == code).ToList<WORKERS>();
+
+            var workersList = new List<Worker>();
+            foreach (var w in workers)
+            {
+                workersList.Add(
+                    new Worker()
+                    {
+                        Name = w.Name,
+                        Agent = w.U_Agent,
+                        Age = MapField<int>(w.U_Age),
+                        BirthDate = w.U_BirthDate.ToString(),
+                        CivilId = w.U_CivilId,
+                        Code = w.U_ItemCode,
+                        Education = w.U_Education,
+                        Gender = w.U_Gender,
+                        Height = w.U_Height,
+                        Language = w.U_Language,
+                        MaritalStatus = w.U_MaritalStatus,
+                        Nationality = w.U_Nationality,
+                        Passport = Utilities.ConvertImagePathToUrl(requestUrl, w.U_Passport),
+                        PassportExpDate = MapField<DateTime>(w.U_PassportExpDate).ToShortDateString(),
+                        PassportIssDate = MapField<DateTime>(w.U_PassportIssDate).ToShortDateString(),
+                        PassportNumber = w.U_PassportNumber,
+                        PassportPoIssue = w.U_PassportPoIssue,
+                        Photo = Utilities.ConvertImagePathToUrl(requestUrl, w.U_Photo),
+                        Religion = w.U_Religion,
+                        SerialNumber = w.U_Serial,
+                        Status = w.U_Status,
+                        Video = w.U_Video,
+                        Price = MapField<int>(w.U_Price),
+                        Weight = w.U_Weight.ToString()
+                    }
+                    );
+            }
+            return workersList;
+        }
+
+        public List<Worker> GetWorkers(Catalogue worker, string requestUrl, WorkerStatus? status)
         {
 
             List<Worker> workersList = new List<Worker>();
@@ -263,14 +259,17 @@
 
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@RELIGION"" AS ""R"" ON ""A"".""U_Religion"" = ""R"".""Code""");
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@EDUCATION"" AS ""E"" ON ""A"".""U_Education"" = ""E"".""Code""");
-                query.Append($@"WHERE A.""U_Status"" = '1' ");
+                if (status == null)
+                    query.Append($@"WHERE 1 = 1 ");
+                else
+                    query.Append($@"WHERE A.""U_Status"" = '{((int)status).ToString()}' ");
+
 
                 query.Append(exp);
                 var readerResult = dbHelper.ExecuteQuery(query.ToString());
 
                 while (readerResult.Read())
                 {
-
                     workersList.Add(
                         new Worker()
                         {
@@ -421,7 +420,7 @@
                     {
                         var InvoiceNo = base.B1Company.GetNewObjectKey();
                         var oPay = base.B1Company.GetBusinessObject(BoObjectTypes.oIncomingPayments) as Payments;
-                    
+
                         trans.Amount = paymentAmount.ToString();
                         oPay.CardCode = salesOrder.CardCode;
                         oPay.Invoices.DocEntry = Convert.ToInt32(InvoiceNo);
@@ -581,7 +580,7 @@
             {
                 var path = string.Empty;
                 var conn = Factory.DeclareClass<DatabaseHelper<HanaConnection>>();
-                StringBuilder query= new StringBuilder($@"SELECT IFNULL(""AttachPath"",'') ""AttachPath"" FROM ""{base.databaseName}"".""OADP""");
+                StringBuilder query = new StringBuilder($@"SELECT IFNULL(""AttachPath"",'') ""AttachPath"" FROM ""{base.databaseName}"".""OADP""");
                 var result = conn.ExecuteQuery(query.ToString());
 
                 while (result.Read())

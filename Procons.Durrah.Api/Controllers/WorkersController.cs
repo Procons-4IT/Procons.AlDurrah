@@ -17,6 +17,7 @@
     using System.Net.Http.Headers;
     using System.Drawing.Imaging;
     using System.Web.Hosting;
+    using Procons.Durrah.Common.Enumerators;
 
     public class WorkersController : BaseApiController
     {
@@ -209,11 +210,21 @@
         }
 
         [HttpPost]
+        //[Authorize]
+        public IHttpActionResult GetWorker(string code)
+        {
+            var cardCode = GetCurrentUserCardCode();
+            var requestUrl = GetMainUrl();
+            var workers = workersFacade.GetAgentWorkers(cardCode, requestUrl);
+            return Ok(workers);
+        }
+
+        [HttpPost]
         [Authorize]
         public IHttpActionResult GetWorkers([FromBody]Catalogue worker)
         {
             var requestUrl = GetMainUrl();
-            var workers = workersFacade.GetWorkers(worker, requestUrl);
+            var workers = workersFacade.GetWorkers(worker, requestUrl, WorkerStatus.Opened);
             return Ok(workers);
         }
 

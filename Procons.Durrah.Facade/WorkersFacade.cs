@@ -1,6 +1,7 @@
 ﻿namespace Procons.Durrah.Facade
 {
     using Procons.Durrah.Common;
+    using Procons.Durrah.Common.Enumerators;
     using Procons.Durrah.Main;
     using Procons.Durrah.Main.B1ServiceLayer.SAPB1;
     using System.Collections.Generic;
@@ -25,9 +26,9 @@
             return provider.DeleteWorker(id, cardCode);
         }
 
-        public List<Worker> GetWorkers(Catalogue wrk, string requestUrl)
+        public List<Worker> GetWorkers(Catalogue wrk, string requestUrl, WorkerStatus status)
         {
-            var workersList = provider.GetWorkers(wrk, requestUrl);
+            var workersList = provider.GetWorkers(wrk, requestUrl, status);
             return workersList;
         }
 
