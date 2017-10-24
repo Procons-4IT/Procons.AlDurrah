@@ -92,7 +92,16 @@
                       </option>
                     </select>
                   </div>
-
+                  
+                  <div class="form-group ">
+                      <label for="workerType">Worker Type</label>
+                      <select id="workerType" class="form-control" name="workerType" #workerTypeInpu>
+                        <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.workerTypes;">
+                          {{nameValuePair.name}}
+                        </option>
+                      </select>
+                    </div>
+  
                   <div class="form-group ">
                     <label for="video">Video</label>
                     <input name="videopublic" id="video" type="text" class="form-control" placeholder="http://Video Link" />
@@ -129,11 +138,11 @@
 
                   <div class="form-group">
                     <label for="photoUpload">Photo Upload</label>
-                    <p-fileUpload id="photoUpload" name="myfile[]" customUpload="true" #photoUpload></p-fileUpload>
+                    <p-fileUpload id="photoUpload" name="myfile[]" customUpload="true" multiple="false" #photoUpload></p-fileUpload>
                   </div>
                   <div class="form-group ">
                     <label for="passportUpload">Passport Upload</label>
-                    <p-fileUpload id="passportUpload" name="myfile2[]" customUpload="true" #passportUpload></p-fileUpload>
+                    <p-fileUpload id="passportUpload" name="myfile2[]" customUpload="true" multiple="false"#passportUpload></p-fileUpload>
                   </div>
 
                   {{state.worker | json}}
