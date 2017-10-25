@@ -92,8 +92,8 @@ export class ApiService {
     }
     public createNewUser(param: CreateNewUserParams) {
         return this.httpPostHelper(this.config.createNewUserUrl, param)
-            .map(response => {
-                return response.json();
+            .map(response  => {
+                return (response as any)._body ;
             }).catch(errorResponse => {
                 return Observable.throw(this.getErrorMessage(errorResponse));
             });
