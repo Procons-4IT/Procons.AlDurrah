@@ -48,7 +48,11 @@
             public const string DurraEmailConfirmation = "DurraEmailConfirmation";
             public const string ConfirmationBody = "ConfirmationBody";
             public const string PasswordResetBody = "PasswordResetBody";
-            public const string DurraPasswordReset = "DurraPasswordReset"; 
+            public const string DurraPasswordReset = "DurraPasswordReset";
+
+            public const string WorkerStatus_Unavailable = "WorkerStatus_Unavailable";
+            public const string WorkerStatus_Available = "WorkerStatus_Available";
+            public const string WorkerStatus_Booked = "WorkerStatus_Booked";
         }
         public struct KNET
         {

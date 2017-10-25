@@ -430,7 +430,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ClientApp\app\SharedComponents\" />
-    <Folder Include="dist\" />
     <Folder Include="Views\Workers\" />
   </ItemGroup>
   <ItemGroup>

@@ -179,5 +179,32 @@ namespace Resources {
                 return ResourceManager.GetString("Transaction_Completed", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to متوفر.
+        /// </summary>
+        internal static string WorkerStatus_Available {
+            get {
+                return ResourceManager.GetString("WorkerStatus_Available", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to محجوز.
+        /// </summary>
+        internal static string WorkerStatus_Booked {
+            get {
+                return ResourceManager.GetString("WorkerStatus_Booked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to غير متوفر.
+        /// </summary>
+        internal static string WorkerStatus_Unavailable {
+            get {
+                return ResourceManager.GetString("WorkerStatus_Unavailable", resourceCulture);
+            }
+        }
     }
 }

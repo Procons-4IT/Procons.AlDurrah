@@ -81,7 +81,8 @@
         protected T MapField<T>(object o)
         {
             var result = default(T);
-            if (o != DBNull.Value)
+
+            if (o != DBNull.Value && o != null)
             {
                 if (o.GetType() == typeof(HanaDecimal))
                     result = (T)Convert.ChangeType(Convert.ToDecimal(o), typeof(T));
@@ -90,9 +91,18 @@
                 else
                     result = (T)Convert.ChangeType(o, typeof(T));
                 return result;
+
             }
             else
-                return default(T);
+            {
+                if (typeof(T) == typeof(DateTime))
+                    return (T)(object)DateTime.MinValue;
+                else if (typeof(T) == typeof(string))
+                    return (T)(object)string.Empty;
+                else
+                    return default(T);
+            }
+
         }
 
         #region Table Methods

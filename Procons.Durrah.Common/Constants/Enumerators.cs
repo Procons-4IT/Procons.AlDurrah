@@ -38,11 +38,11 @@ namespace Procons.Durrah.Common.Enumerators
 
     public enum WorkerStatus
     {
-        [Description("Unavailable")]
+        [Description(Constants.Resources.WorkerStatus_Unavailable)]
         Closed = 0,
-        [Description("Available")]
+        [Description(Constants.Resources.WorkerStatus_Available)]
         Opened = 1,
-        [Description("Booked")]
+        [Description(Constants.Resources.WorkerStatus_Booked)]
         Booked = 2
     }
 

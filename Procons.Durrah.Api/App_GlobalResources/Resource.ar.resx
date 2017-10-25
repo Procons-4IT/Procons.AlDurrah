@@ -165,4 +165,13 @@
   <data name="Transaction_Completed" xml:space="preserve">
     <value>Transaction Completed</value>
   </data>
+  <data name="WorkerStatus_Available" xml:space="preserve">
+    <value>متوفر</value>
+  </data>
+  <data name="WorkerStatus_Booked" xml:space="preserve">
+    <value>محجوز</value>
+  </data>
+  <data name="WorkerStatus_Unavailable" xml:space="preserve">
+    <value>غير متوفر</value>
+  </data>
 </root>
