@@ -92,7 +92,7 @@ export class CatalogueComponent implements OnInit {
 
 
     GoToProfile(event: Worker) {
-        
+  
         this.selectedWorker = event;
         this.showSearchResultTable = false;
         this.showProfile = true;

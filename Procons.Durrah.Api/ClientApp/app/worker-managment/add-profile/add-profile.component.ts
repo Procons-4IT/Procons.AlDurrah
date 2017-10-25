@@ -71,7 +71,7 @@ export class AddProfileComponent implements OnInit {
         this.onBack.emit();
     }
     addWorker(photoInput: any, passInput: any) {
-
+debugger;
         let photoFile = photoInput.files;
         let passportFile = passInput.files;
 

@@ -149,8 +149,6 @@ export class LoginComponent implements OnInit {
             <div class="modal-body">
                 <div class="modal-icon"><img src="/Assets/src/app/images/icon_lock.png" class="icon" /></div>
                 <p><small>لقد سجلت الدخول</small></p>
-                <h4>إنشاء كلمة المرور</h4>
-                <a href="#tabNewPass" data-toggle="tab" data-dismiss="modal">واصل</a>
             </div> `
 
         this.myModal.showHTMLModal(html);
