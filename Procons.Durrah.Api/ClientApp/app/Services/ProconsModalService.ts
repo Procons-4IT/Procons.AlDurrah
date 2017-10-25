@@ -13,14 +13,24 @@ export class ProconsModalSerivce {
             this.translate.get([optionalMessage, 'ok']).subscribe(errorMessages => {
                 this.createErrorModalTemplate(errorMessages[optionalMessage], errorMessages['ok']);
             });
-        }else{
+        } else {
             this.translate.get(['ok']).subscribe(errorMessages => {
                 this.createErrorModalTemplate(optionalMessage, errorMessages['ok']);
             });
         }
 
     }
-
+    showSuccessModal(message: string, isTranslateKey = true) {
+        if (isTranslateKey) {
+            this.translate.get([message, 'ok']).subscribe(translatedMessages => {
+                this.createMessageModalTemplate(translatedMessages[message], translatedMessages['ok']);
+            });
+        } else {
+            this.translate.get(['ok']).subscribe(translatedMessages => {
+                this.createMessageModalTemplate(message, translatedMessages['ok']);
+            });
+        }
+    }
     private createErrorModalTemplate(errorMessage: string, buttonMessage: string) {
         this.modal.alert()
             .showClose(true)
@@ -35,7 +45,20 @@ export class ProconsModalSerivce {
 
 
     }
+    private createMessageModalTemplate(message: string, buttonMessage: string) {
+        this.modal.alert()
+            .showClose(true)
+            .body(`
+                    <div class="modal-body">
+                        <span class="glyphicon glyphicon-ok lg" "></span>
+                        <p><small>${message}</small></p>
+                    </div>`
+            )
+            .okBtn(buttonMessage)
+            .open();
 
+    }
+//<span class="glyphicons glyphicons-ok-circle"></span>
     showHTMLModal(html: string) {
         this.modal.alert()
             .showClose(true)

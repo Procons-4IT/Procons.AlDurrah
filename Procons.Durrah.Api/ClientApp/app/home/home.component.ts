@@ -83,11 +83,14 @@ export class HomeComponent implements OnInit {
       .mergeMap(x => { return this.utility.getResetPasswordUrlProperties(this.activeRouter) })
       .mergeMap(params => { return this.myApi.confirmEmail(params) })
       .subscribe(x => {
-        
+
         this.loadingPayment = false;
         if (x) {
           this.paymentModalText = 'Email Confirmed!';
-          this.router.navigate(['/home']);
+          var stateObj = { foo: "bar" };
+          history.replaceState(stateObj, "page 3", "home");
+
+
         } else {
           this.paymentModalText = 'Invalid Email!';
         }
