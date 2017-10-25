@@ -73,8 +73,8 @@
             try
             {
                 var attachmentPath = GetAttachmentPath();
-                var passportCopy = worker.Passport != null && worker.Passport != string.Empty ? CreateAttachment(worker.Passport) : worker.Passport;
-                var photo = worker.Photo != null && worker.Photo != string.Empty ? CreateAttachment(worker.Photo) : worker.Photo;
+                var passportCopy = worker.Passport != null && worker.Passport != string.Empty && worker.Passport != "0" && worker.Passport != "1" ? CreateAttachment(worker.Passport) : worker.Passport;
+                var photo = worker.Photo != null && worker.Photo != string.Empty && worker.Photo != "0" && worker.Photo != "1" ? CreateAttachment(worker.Photo) : worker.Passport;
 
                 var sCmp = B1Company.GetCompanyService();
                 var oGeneralService = sCmp.GetGeneralService("WORKERSUDO");
@@ -86,34 +86,43 @@
 
                 if (oGeneralData != null)
                 {
-                    if (oGeneralData.GetProperty("U_Status").ToString() == ((int)WorkerStatus.Opened).ToString() && oGeneralData.GetProperty("U_Agent").ToString() == cardCode)
-                    {
-                        oGeneralData.SetProperty("U_Age", MapField<int>(worker.Age));
-                        oGeneralData.SetProperty("U_BirthDate", MapField<DateTime>(worker.BirthDate));
-                        oGeneralData.SetProperty("U_CivilId", MapField<string>(worker.CivilId));
-                        oGeneralData.SetProperty("U_ItemCode", MapField<string>(worker.Code));
-                        oGeneralData.SetProperty("Name", MapField<string>(worker.Name));
-                        oGeneralData.SetProperty("U_Education", MapField<string>(worker.Education));
-                        oGeneralData.SetProperty("U_Gender", MapField<string>(worker.Gender));
-                        oGeneralData.SetProperty("U_Height", MapField<string>(worker.Height));
-                        oGeneralData.SetProperty("U_Language", MapField<string>(worker.Language));
-                        oGeneralData.SetProperty("U_MaritalStatus", MapField<string>(worker.MaritalStatus));
-                        oGeneralData.SetProperty("U_Nationality", MapField<string>(worker.Nationality));
-                        oGeneralData.SetProperty("U_Passport", MapField<string>(string.Concat(attachmentPath, passportCopy)));
-                        oGeneralData.SetProperty("U_PassportIssDate", MapField<DateTime>(worker.PassportIssDate));
-                        oGeneralData.SetProperty("U_PassportExpDate", MapField<DateTime>(worker.PassportExpDate));
-                        oGeneralData.SetProperty("U_PassportNumber", MapField<string>(worker.PassportNumber));
+                    //if (oGeneralData.GetProperty("U_Status").ToString() == ((int)WorkerStatus.Opened).ToString() && oGeneralData.GetProperty("U_Agent").ToString() == cardCode)
+                    //{
+                    oGeneralData.SetProperty("U_Age", MapField<int>(worker.Age));
+                    oGeneralData.SetProperty("U_BirthDate", MapField<DateTime>(worker.BirthDate));
+                    oGeneralData.SetProperty("U_CivilId", MapField<string>(worker.CivilId));
+                    oGeneralData.SetProperty("U_ItemCode", MapField<string>(worker.Code));
+                    oGeneralData.SetProperty("Name", MapField<string>(worker.Name));
+                    oGeneralData.SetProperty("U_Education", MapField<string>(worker.Education));
+                    oGeneralData.SetProperty("U_Gender", MapField<string>(worker.Gender));
+                    oGeneralData.SetProperty("U_Height", MapField<string>(worker.Height));
+                    oGeneralData.SetProperty("U_Language", MapField<string>(worker.Language));
+                    oGeneralData.SetProperty("U_MaritalStatus", MapField<string>(worker.MaritalStatus));
+                    oGeneralData.SetProperty("U_Nationality", MapField<string>(worker.Nationality));
+                    oGeneralData.SetProperty("U_PassportIssDate", MapField<DateTime>(worker.PassportIssDate));
+                    oGeneralData.SetProperty("U_PassportExpDate", MapField<DateTime>(worker.PassportExpDate));
+                    oGeneralData.SetProperty("U_PassportNumber", MapField<string>(worker.PassportNumber));
+
+                    if (photo.Equals("0"))
+                        oGeneralData.SetProperty("U_Photo", string.Empty);
+                    else if (!photo.Equals("1"))
                         oGeneralData.SetProperty("U_Photo", string.Concat(attachmentPath, photo));
-                        oGeneralData.SetProperty("U_Religion", MapField<string>(worker.Religion));
-                        oGeneralData.SetProperty("U_Serial", MapField<string>(worker.SerialNumber));
-                        oGeneralData.SetProperty("U_Status", MapField<string>(worker.Status));
-                        oGeneralData.SetProperty("U_Video", MapField<string>(worker.Video));
-                        oGeneralData.SetProperty("U_Weight", MapField<string>(worker.Weight));
-                        oGeneralService.Update(oGeneralData);
-                        created = true;
-                    }
-                    else
-                        Utilities.LogException($"Worker {oGeneralData.GetProperty("Code")} is already {((WorkerStatus)Convert.ToInt16(oGeneralData.GetProperty("U_Status"))).ToString()} or agent {cardCode} dont have the permissions to edit this worker.");
+
+                    if (passportCopy.Equals("0"))
+                        oGeneralData.SetProperty("U_Passport", string.Empty);
+                    else if (!passportCopy.Equals("1"))
+                        oGeneralData.SetProperty("U_Passport", MapField<string>(string.Concat(attachmentPath, passportCopy)));
+
+                    oGeneralData.SetProperty("U_Religion", MapField<string>(worker.Religion));
+                    oGeneralData.SetProperty("U_Serial", MapField<string>(worker.SerialNumber));
+                    oGeneralData.SetProperty("U_Status", MapField<string>(worker.Status));
+                    oGeneralData.SetProperty("U_Video", MapField<string>(worker.Video));
+                    oGeneralData.SetProperty("U_Weight", MapField<string>(worker.Weight));
+                    oGeneralService.Update(oGeneralData);
+                    created = true;
+                    //}
+                    //else
+                    //    Utilities.LogException($"Worker {oGeneralData.GetProperty("Code")} is already {((WorkerStatus)Convert.ToInt16(oGeneralData.GetProperty("U_Status"))).ToString()} or agent {cardCode} dont have the permissions to edit this worker.");
                 }
                 else
                 {
