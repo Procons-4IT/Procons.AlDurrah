@@ -71,7 +71,7 @@ export class ApiService {
 
     }
     private getErrorMessage(errorResponse): string {
-        debugger;
+
         let errorObject: any = errorResponse.json && errorResponse.json();
         let errorMessage: string = errorObject.error_description || errorObject.message || "something went wrong";
         return errorMessage;
@@ -92,8 +92,8 @@ export class ApiService {
     }
     public createNewUser(param: CreateNewUserParams) {
         return this.httpPostHelper(this.config.createNewUserUrl, param)
-            .map(response  => {
-                return (response as any)._body ;
+            .map(response => {
+                return (response as any)._body;
             }).catch(errorResponse => {
                 return Observable.throw(this.getErrorMessage(errorResponse));
             });
@@ -155,16 +155,57 @@ export class ApiService {
         let tempWorker;
         let searchProperties: string[] = Object.getOwnPropertyNames(workerManagmentData.searchCriteria);
 
+        let newWorkerServerData = [];
+        //iterate over worker array
         for (let i = 0; i < workerManagmentData.workerServerData.length; i++) {
             tempWorker = workerManagmentData.workerServerData[i];
-            workerDisplayData.push(this.convertWorkerValues(tempWorker, workerManagmentData.searchCriteria, searchProperties));
+            //convert individual worker
+            let convertedWorkers = this.convertWorkerValue(tempWorker);
+            newWorkerServerData.push(convertedWorkers[0]);
+            workerDisplayData.push(convertedWorkers[1]);
         }
         workerManagmentData.workerDisplayData = workerDisplayData;
+        workerManagmentData.workerServerData = newWorkerServerData;
         return workerManagmentData;
 
     }
+    public splitProperties(nameValuePairString): string[] | any {
+        if (typeof nameValuePairString === "string") {
+            let pair = nameValuePairString.split("#");
+            if (pair.length == 2) {
+                return pair;
+            } else return nameValuePairString;
+        }
+        return nameValuePairString;
+
+
+    }
+    public convertWorkerValue(workerServerNameValueHashData: Worker) {
+        var workerDisplayData = Object.assign({}, workerServerNameValueHashData);
+        var workerKeyData = Object.assign({}, workerServerNameValueHashData);
+
+        let workerProperties: string[] = Object.getOwnPropertyNames(workerServerNameValueHashData);
+        var workerProperty;
+        let tempPropertyValue;
+        for (var propertyIndex = 0; propertyIndex < workerProperties.length; propertyIndex++) {
+            workerProperty = workerProperties[propertyIndex];
+            let splitValue = this.splitProperties(workerServerNameValueHashData[workerProperty]);
+
+            if (Array.isArray(splitValue) && splitValue.length === 2) {
+                workerDisplayData[workerProperty] = splitValue[1]; //grab value after hash
+                workerKeyData[workerProperty] = splitValue[0]; //grab value after hash
+
+            } else {
+                workerDisplayData[workerProperty] = splitValue;
+                workerKeyData[workerProperty] = splitValue;
+
+            }
+
+        }
+
+        return [workerKeyData, workerDisplayData];
+    }
     public convertWorkerValues(workerServerData: Worker, searchCriteria, searchProperties) {
-        console.log('help!');
         //s['religion'][w1['religion']].name
         var workerDisplayData = Object.assign({}, workerServerData);
         var searchProperty;
@@ -224,7 +265,7 @@ export class ApiService {
         // });
     }
     public uploadFile(formData) {
-        let url = this.config.baseUrl+ this.config.addWorkerUrl;
+        let url = this.config.baseUrl + this.config.addWorkerUrl;
         let headers = new Headers();
 
         // headers.append('Content-Type', 'application/x-www-form-urlencoded');

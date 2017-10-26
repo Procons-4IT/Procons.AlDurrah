@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, OnInit, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 
 import { ApiService } from '../../Services/ApiService';
@@ -15,15 +15,18 @@ export class AddProfileComponent implements OnInit {
     @Input() worker;
     @Input() searchCriterias: SearchCriteriaParams;
     @Output() onBack = new EventEmitter<any>();
-    print: any;
+    @ViewChild("photoUpload") photoUpload;
+    @ViewChild("passportUpload") passportUpload;
 
+    test = false;
     photoFileText = "Select Photo File";
     passportFileText = "Select Passport File";
 
-    state: { isAddMode: boolean, title: string, worker: Worker } = {
+    state: { isAddMode: boolean, title: string, worker: Worker, selectOptionText: string } = {
         isAddMode: true,
         title: "Add Profile",
-        worker: null
+        worker: null,
+        selectOptionText: "-- select an option -- "
     }
     constructor(public myApi: ApiService) {
     }
@@ -35,35 +38,36 @@ export class AddProfileComponent implements OnInit {
             this.state.worker = Object.assign({}, this.worker);
             console.log('searchCriteria Params ', this.searchCriterias);
         } else {
-            // let workerParams: any = Array.from({ length: 22 }, x => { return 'a' }) as any;
-            // this.state.worker = new (<any>Worker)(...workerParams);
-            this.state.worker = {
-                "workerCode": null,
-                "serialNumber": "A123456",
-                "agent": "SA004",
-                "age": 25,
-                "name": null,
-                "code": "DW00003",
-                "birthDate": "9/1/1990 12:00:00 AM",
-                "gender": "M",
-                "nationality": "1",
-                "religion": "1",
-                "maritalStatus": "1",
-                "language": "1",
-                "photo": "C:\\Program Files (x86)\\sap\\SAP Business One\\Attachments\\test.jpg",
-                "price": 200.0,
-                "weight": "76",
-                "height": "180",
-                "education": "1",
-                "passport": "A123456",
-                "video": "https://www.youtube.com/embed/HYNpSAR2yd4",
-                "passportNumber": "BK22456",
-                "passportIssDate": "9/1/2017",
-                "passportExpDate": "9/1/2018",
-                "passportPoIssue": "01.09.2017",
-                "civilId": "224456123456",
-                "status": "2"
-            } as any;
+            let workerParams: any = Array.from({ length: 23 }, x => { return '' }) as any;
+            this.state.worker = new (<any>Worker)(...workerParams);
+            //     this.state.isAddMode = false;
+            //     this.state.worker = {
+            //         "workerCode": null,
+            //         "serialNumber": "AB23102017",
+            //         "agent": "SA004",
+            //         "age": 47,
+            //         "name": "Maid Srilanka Sample",
+            //         "code": "DW00003",
+            //         "birthDate": "1/1/1970 12:00:00 AM",
+            //         "gender": "F",
+            //         "nationality": "2",
+            //         "religion": "2",
+            //         "maritalStatus": "1",
+            //         "language": "2",
+            //         "photo": "http://127.0.0.1:1357/minion2.jpeg",
+            //         "price": 237.0,
+            //         "weight": "65",
+            //         "height": "150",
+            //         "education": "1",
+            //         "passport": "http://127.0.0.1:1357/minion2.jpeg",
+            //         "video": null,
+            //         "passportNumber": "AB23102017",
+            //         "passportIssDate": "1/1/2016",
+            //         "passportExpDate": "12/31/2026",
+            //         "passportPoIssue": "Bandaranaiyak",
+            //         "civilId": null,
+            //         "status": "2"
+            //     } as any;
         }
     }
 
@@ -71,7 +75,6 @@ export class AddProfileComponent implements OnInit {
         this.onBack.emit();
     }
     addWorker(photoInput: any, passInput: any) {
-debugger;
         let photoFile = photoInput.files;
         let passportFile = passInput.files;
 
@@ -109,7 +112,17 @@ debugger;
         }
 
     }
+    editWorker(photoInput: any, passInput: any) {
+        //don't do anything Yet! 
+    }
 
+    isFilesAttached(): boolean {
+
+        let photoFile = this.photoUpload.files;
+        let passportFile = this.passportUpload.files;
+
+        return (photoFile && photoFile[0] && passportFile && passportFile[0]);
+    }
     originalUploadFile(elFiles: ElementRef) {
 
         let files = elFiles.nativeElement.files;
@@ -150,4 +163,19 @@ debugger;
         //event.files == files to upload
         console.log('I should upload the files!');
     }
+
+    // rz() {
+    // //     var preview = document.querySelector('img');
+    // //     var file = document.querySelector('input[type=file]').files[0];
+    // //     var reader = new FileReader();
+
+    // //     reader.addEventListener("load", function () {
+    // //         this.preview = reader.result;
+    // //     }, false);
+
+    // //     if (file) {
+    // //         reader.readAsDataURL(file);
+    // //     }
+    // }
+    //http://127.0.0.1:1357/minion2.jpeg show this URL ! 
 }
