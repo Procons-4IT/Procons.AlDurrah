@@ -1,39 +1,39 @@
 import { SearchCriteriaParams } from './ApiRequestType';
 
 export class Worker {
-    public birthDate: string;
-    public gender: string;
-    public nationality: string;
-    public religion: string;
-    public maritalStatus: string;
-    public language: string;
-    public photo: string;
-    public weight: string;
-    public height: string;
-    public education: string;
-    public video: string;
-    public passportNumber: string;
-    public passportIssDate: string;
-    public passportPoIssue: string;
-    public passportExpDate: string;
-    public civilId: string;
+    constructor(public birthDate: string,
+        public gender: string,
+        public nationality: string,
+        public religion: string,
+        public maritalStatus: string,
+        public language: string,
+        public photo: string,
+        public weight: string,
+        public height: string,
+        public education: string,
+        public video: string,
+        public passportNumber: string,
+        public passportIssDate: string,
+        public passportPoIssue: string,
+        public passportExpDate: string,
+        public civilId: string,
 
-    public serialNumber: string;
-    public agent: string;
-    public code: string;
-    public workerCode: string;
-    public passport: string;
-    public status: string;
-    public passportCopy: any
+        public serialNumber: string,
+        public agent: string,
+        public code: string,
+        public workerCode: string,
+        public passport: string,
+        public status: string,
+        public passportCopy: any
 
-    constructor() { }
+    ) { }
 }
 
 export class WorkerManagementData {
     searchCriteria: SearchCriteriaParams;
-    workerServerData:Worker[];
+    workerServerData: Worker[];
     workerDisplayData: Worker[];
-    constructor(){ }
+    constructor() { }
 }
 
 //Problem is that some views expect worker keys and othe expect worker values ? 
