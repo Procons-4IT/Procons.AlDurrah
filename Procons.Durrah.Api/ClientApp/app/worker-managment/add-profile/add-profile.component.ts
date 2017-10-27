@@ -48,7 +48,7 @@ export class AddProfileComponent implements OnInit {
         } else {
             let workerParams: any = Array.from({ length: 24 }, x => { return '' }) as any;
             this.state.worker = new (<any>Worker)(...workerParams);
-            this.state.isAddMode = false;
+            this.state.isAddMode = true;
         }
     }
 
