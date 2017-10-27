@@ -108,6 +108,8 @@ export class AddProfileComponent implements OnInit {
             formData.append('PassportIssDate', this.state.worker.passportIssDate);
             formData.append('PassportExpDate', this.state.worker.passportExpDate);
             formData.append('CivilId', this.state.worker.civilId);
+            let itemName: any[] = this.searchCriterias.workerTypes.filter(nameValuePair => nameValuePair.value === this.state.worker.code);
+            formData.append('Name', itemName[0].name);
             formData.append('Code', this.state.worker.code);
 
 
