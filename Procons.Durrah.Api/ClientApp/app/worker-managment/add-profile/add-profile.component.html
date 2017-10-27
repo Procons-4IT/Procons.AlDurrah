@@ -2,6 +2,7 @@
 <div class="section section-overlay section-full-width full-height" id="sectionCatalogue2">
   <div class="container">
     <div class="section-content">
+      <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
       <div class="content-wrapper">
         <div class="tab-content">
           <div class="tabpanel">
@@ -17,6 +18,13 @@
 
                 <form (ngSubmit)="addWorker(photoUpload,passportUpload);" method="post" id="profileEditForm" class="form-default has-upload"
                   #workerForm="ngForm">
+
+                  <div class="form-group">
+                    <label for="name">Name</label>
+                    <input required id="name" type="text" class="form-control" name="name" [(ngModel)]="state.worker.name" placeholder="name" />
+                  </div>
+
+
                   <div class="form-group">
                     <label for="birthDate">BirthDate</label>
                     <input required id="birthDate" type="date" class="form-control" name="birthDate" [value]="state.worker.birthDate | date: 'yyyy-MM-dd'"
@@ -145,18 +153,54 @@
                     <input required id="civilID" name="civilId" type="text" class="form-control" placeholder="ex. 1234" [(ngModel)]="state.worker.civilId"
                     />
                   </div>
-
                   <div class="form-group">
                     <label for="photoUpload">Photo Upload</label>
-                    <p-fileUpload id="photoUpload" name="myfile[]" customUpload="true" multiple="false" #photoUpload>
+                    <p-fileUpload id="photoUpload" name="myfile[]" customUpload="true" multiple="false" (onSelect)="deleteServerFile(true)"	 #photoUpload>
                       <ng-template pTemplate="content">
+                        <div class="ui-fileupload-files" [style.display]="photoServerMode === FUM.Edit? 'block' : 'none'">
+                          <div>
+                            <div class="ui-fileupload-row">
+                              <div>
+                                <img [src]="state.worker.photo" width="50">
+                              </div>
+                              <div>Saved File</div>
+                              <div></div>
+                              <div>
+                                <button (click)="deleteServerFile(true)" icon="fa-close" pbutton="" type="button" ng-reflect-icon="fa-close" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only">
+                                  <span class="ui-button-icon-left ui-clickable fa fa-fw fa-close"></span>
+                                  <span class="ui-button-text ui-clickable">ui-btn</span>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </ng-template>
                     </p-fileUpload>
 
                   </div>
                   <div class="form-group ">
                     <label for="passportUpload">Passport Upload</label>
-                    <p-fileUpload id="passportUpload" name="myfile2[]" customUpload="true" [multiple]="false" #passportUpload></p-fileUpload>
+                    <p-fileUpload id="passportUpload" name="myfile2[]" customUpload="true" [multiple]="false" (onSelect)="deleteServerFile(false)" #passportUpload>
+                      <ng-template pTemplate="content">
+                        <div class="ui-fileupload-files" [style.display]="passportServerMode === FUM.Edit? 'block' : 'none'">
+                          <div>
+                            <div class="ui-fileupload-row">
+                              <div>
+                                <img [src]="state.worker.passport" width="50">
+                              </div>
+                              <div>Saved File</div>
+                              <div></div>
+                              <div>
+                                <button (click)="deleteServerFile(false)" icon="fa-close" pbutton="" type="button" ng-reflect-icon="fa-close" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only">
+                                  <span class="ui-button-icon-left ui-clickable fa fa-fw fa-close"></span>
+                                  <span class="ui-button-text ui-clickable">ui-btn</span>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-template>
+                    </p-fileUpload>
                   </div>
 
 

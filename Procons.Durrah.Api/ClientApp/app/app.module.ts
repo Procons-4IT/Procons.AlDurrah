@@ -10,6 +10,7 @@ import { SearchResultsComponent } from './Catalogue/SearchResults/SearchResults.
 import { searchFormComponent } from './Catalogue/SearchForm/SearchForm.component';
 import { profileComponent } from './Catalogue/Profile/profile.component';
 import { WorkerMangmentComponent } from './worker-managment/worker-managment.component';
+import { ViewAgentWorkersComponent } from './worker-managment/view-agent-workers/view-agent-workers.component';
 import { ViewProfilesComponent } from './worker-managment/view-profiles/view-profiles.component';
 import { AddProfileComponent } from './worker-managment/add-profile/add-profile.component';
 import { RoutingModule, routingComponents, } from './app.routing';
@@ -46,7 +47,7 @@ import { ContextService } from './Services/ContextService';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { DataGridModule } from 'primeng/primeng';
-import { ModalModule } from 'ngx-modialog';
+import { ModalModule} from 'ngx-modialog';
 import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, './Assets/i18n/', '.json');
@@ -63,6 +64,7 @@ export function createTranslateLoader(http: HttpClient) {
         LoginComponent,
         WorkerMangmentComponent,
         ViewProfilesComponent,
+        ViewAgentWorkersComponent,
         AddProfileComponent
     ],
     imports: [

@@ -1,7 +1,8 @@
 import { SearchCriteriaParams } from './ApiRequestType';
 
 export class Worker {
-    constructor(public birthDate: string,
+    constructor(public name: string,
+        public birthDate: string,
         public gender: string,
         public nationality: string,
         public religion: string,

@@ -267,12 +267,13 @@ export class ApiService {
     public uploadFile(formData) {
         let url = this.config.baseUrl + this.config.addWorkerUrl;
         let headers = new Headers();
-
-        // headers.append('Content-Type', 'application/x-www-form-urlencoded');
-        // headers.append("Content-Type", 'application/json');
-        // headers.append("accept-language", this.language);
-        // let options: RequestOptions = new RequestOptions({ headers: headers });
-        return this.http.post(url, formData);
+        headers.append("accept-language", this.language);
+        let token = this.GetSecurityToken();
+        if (token) {
+            headers.append('Authorization', `bearer ${token}`);
+        }
+        let options: RequestOptions = new RequestOptions({ headers: headers });
+        return this.http.post(url, formData, options);
 
     }
     public updateWorker(worker: Worker): Observable<any> {
