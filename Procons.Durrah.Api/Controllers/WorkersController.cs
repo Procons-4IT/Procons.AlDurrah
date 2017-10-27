@@ -229,6 +229,7 @@
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IHttpActionResult> AddWorker()
         {
             var cardCode = GetCurrentUserCardCode();
@@ -387,6 +388,7 @@
             worker.Agent = GetCurrentUserCardCode();
             worker.BirthDate = MapField<string>(provider.FormData["BirthDate"]);
             worker.CivilId = MapField<string>(provider.FormData["CivilId"]);
+            worker.Name = MapField<string>(provider.FormData["Name"]);
             worker.Code = MapField<string>(provider.FormData["Code"]);
             worker.Education = MapField<string>(provider.FormData["Education"]);
             worker.Gender = MapField<string>(provider.FormData["Gender"]);

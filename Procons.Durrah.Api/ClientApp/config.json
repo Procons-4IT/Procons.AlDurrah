@@ -13,4 +13,4 @@
   "addWorkerUrl": "/api/Workers/AddWorker",
   "updateWorkerUrl":"/api/Workers/UpdateWorker",
   "deleteWorkerUrl":"/api/Workers/DeleteWorker"
-}
+}   

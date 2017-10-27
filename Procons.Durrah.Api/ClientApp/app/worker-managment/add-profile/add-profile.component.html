@@ -18,21 +18,14 @@
 
                 <form (ngSubmit)="submitWorker(photoUpload,passportUpload);" method="post" id="profileEditForm" class="form-default has-upload"
                   #workerForm="ngForm">
-                  <!-- <div class="form-group">
-                    <label for="name">Name</label>
-                    <input required id="name" type="text" class="form-control" name="name" [(ngModel)]="state.worker.name" placeholder="name"
-                    />
-                  </div> -->
-
-
                   <div class="form-group">
-                    <label for="birthDate">BirthDate</label>
-                    <input required id="birthDate" type="date" class="form-control" name="birthDate" [value]="state.worker.birthDate | date: 'yyyy-MM-dd'"
+                    <label for="birthDate">{{ 'birthDate' | translate }}</label>
+                    <input required id="birthDate" type="date" class="form-control" name="birthDate" [value]="state.worker.birthDate | date: 'يوم-شهر-سنة'"
                       (input)="state.worker.birthDate = $event.target.valueAsDate" />
                   </div>
 
                   <div class="form-group">
-                    <label for="gender">Gender</label>
+                    <label for="gender">{{ 'gender' | translate }}</label>
                     <select required id="gender" class="form-control" name="gender" [(ngModel)]="state.worker.gender">
                       <option disabled selected value=""> {{state.selectOptionText}}</option>
                       <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.gender;">
@@ -42,7 +35,7 @@
                   </div>
 
                   <div class="form-group">
-                    <label for="nationality">Nationality</label>
+                    <label for="nationality">{{ 'nationality' | translate }}</label>
                     <!-- <option>الجنسية</option> -->
                     <select required id="nationality" class="form-control" name="nationality" [(ngModel)]="state.worker.nationality">
                       <option disabled selected value=""> {{state.selectOptionText}}</option>
@@ -53,7 +46,7 @@
                   </div>
 
                   <div class="form-group">
-                    <label for="religion">Religion</label>
+                    <label for="religion">{{ 'religion' | translate }}</label>
                     <!-- <option>Religion</option> -->
                     <select required id="religion" class="form-control" name="religion" [(ngModel)]="state.worker.religion">
                       <option disabled selected value=""> {{state.selectOptionText}}</option>
@@ -64,7 +57,7 @@
                   </div>
 
                   <div class="form-group ">
-                    <label for="marital">الحالة الاجتماعية</label>
+                    <label for="marital">{{ 'maritalStatus' | translate }}</label>
                     <select required id="marital" class="form-control" name="maritalStatus" [(ngModel)]="state.worker.maritalStatus">
                       <option disabled selected value=""> {{state.selectOptionText}}</option>
                       <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.maritalStatus;">
@@ -74,7 +67,7 @@
                   </div>
 
                   <div class="form-group ">
-                    <label for="lang">اللغات المتحدث بها</label>
+                    <label for="lang">{{ 'languages' | translate }}</label>
                     <!-- <option>اللغات المتحدث بها</option> -->
                     <select required id="lang" class="form-control" name="language" [(ngModel)]="state.worker.language">
                       <option disabled selected value=""> {{state.selectOptionText}}</option>
@@ -85,19 +78,19 @@
                   </div>
 
                   <div class="form-group ">
-                    <label for="weight">Weight</label>
+                    <label for="weight">{{ 'weight' | translate }}</label>
                     <input required id="weight" type="text" class="form-control" placeholder="..kg" name="weight" [(ngModel)]="state.worker.weight"
                     />
                   </div>
 
                   <div class="form-group ">
-                    <label for="height">Height</label>
+                    <label for="height">{{ 'height' | translate }}</label>
                     <input required name="height" id="height" type="text" class="form-control" placeholder="..cm" [(ngModel)]="state.worker.height"
                     />
                   </div>
 
                   <div class="form-group ">
-                    <label for="education">Education</label>
+                    <label for="education">{{ 'education' | translate }}</label>
                     <select required id="education" class="form-control" name="education" [(ngModel)]="state.worker.education">
                       <option disabled selected value=""> {{state.selectOptionText}}</option>
                       <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.education;">
@@ -107,7 +100,7 @@
                   </div>
 
                   <div class="form-group ">
-                    <label for="workerType">Worker Type</label>
+                    <label for="workerType">{{ 'workerType' | translate }}</label>
                     <select required id="workerType" class="form-control" name="workerType" [(ngModel)]="state.worker.code">
                       <option disabled selected value=""> {{state.selectOptionText}}</option>
                       <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.workerTypes;">
@@ -117,44 +110,44 @@
                   </div>
 
                   <div class="form-group ">
-                    <label for="video">Video</label>
+                    <label for="video">{{ 'video' | translate }}</label>
                     <input required name="videopublic" id="video" type="text" class="form-control" placeholder="http://Video Link" [(ngModel)]="state.worker.video"
                     />
                   </div>
 
                   <div class="form-group ">
-                    <label for="passNumb"> PassportNumber</label>
+                    <label for="passNumb"> {{ 'passportNumber' | translate }}</label>
                     <input required id="passNumb" name="passortNumber" type="text" class="form-control" placeholder="ex. 12345" [(ngModel)]="state.worker.passportNumber"
                     />
                   </div>
 
                   <div class="form-group ">
-                    <label for="passIssueDate">Passport Issue Date</label>
-                    <input required id="passIssueDate" name="passportIssueDate" type="date" [value]="state.worker.passportIssDate | date: 'yyyy-MM-dd'"
+                    <label for="passIssueDate">{{ 'passportIssueDate' | translate }}</label>
+                    <input required id="passIssueDate" name="passportIssueDate" type="date" [value]="state.worker.passportIssDate | date: 'يوم-شهر-سنة'"
                       (input)="state.worker.passportIssDate = $event.target.valueAsDate" class="form-control" />
                   </div>
 
 
                   <div class="form-group ">
-                    <label for="passPoIssue">Passport Place of Issue</label>
+                    <label for="passPoIssue">{{ 'passportPlaceofIssue' | translate }}</label>
                     <input required name="passportPoIssue" type="text" class="form-control" placeholder="ex. Germany" [(ngModel)]="state.worker.passportPoIssue"
                     />
                   </div>
 
                   <div class="form-group ">
-                    <label for="passExpiry">Passport Expiry</label>
-                    <input required name="passportExpiry" type="date" [value]="state.worker.passportExpDate | date: 'yyyy-MM-dd'" (input)="state.worker.passportExpDate = $event.target.valueAsDate"
+                    <label for="passExpiry">{{ 'passportExpiry' | translate }}</label>
+                    <input required name="passportExpiry" type="date" [value]="state.worker.passportExpDate | date: 'يوم-شهر-سنة'" (input)="state.worker.passportExpDate = $event.target.valueAsDate"
                       class="form-control" />
                   </div>
 
 
                   <div class="form-group ">
-                    <label for="civilID"> Civil ID</label>
+                    <label for="civilID"> {{ 'civilID' | translate }}</label>
                     <input required id="civilID" name="civilId" type="text" class="form-control" placeholder="ex. 1234" [(ngModel)]="state.worker.civilId"
                     />
                   </div>
                   <div class="form-group">
-                    <label for="photoUpload">Photo Upload</label>
+                    <label for="photoUpload">{{ 'photoUpload' | translate }}</label>
                     <p-fileUpload id="photoUpload" name="myfile[]" customUpload="true" multiple="false" (onSelect)="deleteServerFile(true)" #photoUpload>
                       <ng-template pTemplate="content">
                         <div class="ui-fileupload-files" [style.display]="photoServerMode === FUM.Edit? 'block' : 'none'">
@@ -179,7 +172,7 @@
 
                   </div>
                   <div class="form-group ">
-                    <label for="passportUpload">Passport Upload</label>
+                    <label for="passportUpload">{{ 'PassportUpload' | translate }}</label>
                     <p-fileUpload id="passportUpload" name="myfile2[]" customUpload="true" [multiple]="false" (onSelect)="deleteServerFile(false)"
                       #passportUpload>
                       <ng-template pTemplate="content">
@@ -206,7 +199,7 @@
 
 
                   <div class="form-group  text-right">
-                    <input type="submit" value="Save" class="btn btn-default" [disabled]="!workerForm.valid || !isFilesAttached()" *ngIf="state.isAddMode"
+                    <input type="submit" value="{{ 'save' | translate }}" class="btn btn-default" [disabled]="!workerForm.valid || !isFilesAttached()" *ngIf="state.isAddMode"
                     />
                     <input type="submit" value="Update" class="btn btn-default"  *ngIf="!state.isAddMode" />
 
@@ -222,11 +215,3 @@
       </div>
     </div>
   </div>
-  <!-- </section> -->
-  <!-- <div>
-                  Temp Text
-                  <label for="file">Upload Files</label>
-                  <input required type="file" id="file" multiple #files>
-                  <button (click)="originalUploadFile(files)">Submit!</button>
-                </div>
-  -->

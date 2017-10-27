@@ -25,9 +25,9 @@ export class AddProfileComponent implements OnInit {
     loading = false;
     state: { isAddMode: boolean, title: string, worker: Worker, selectOptionText: string } = {
         isAddMode: true,
-        title: "Add Profile",
+        title: "اضافة ملف",
         worker: null,
-        selectOptionText: "-- select an option -- "
+        selectOptionText: "-- اختيار --"
     }
     photoServerMode: FileUploadMode = FileUploadMode.Add;
     passportServerMode: FileUploadMode = FileUploadMode.Add;

@@ -15,11 +15,8 @@
         {
             get
             {
-                if (_connection == null)
-                {
-                    _connection = (T)Activator.CreateInstance(typeof(T), ConnectionString);
-                    _connection.Open();
-                }
+                _connection = (T)Activator.CreateInstance(typeof(T), ConnectionString);
+                _connection.Open();
                 return _connection;
             }
         }
@@ -52,7 +49,9 @@
                         command.Parameters.Add(param);
                     }
                 }
-                return command.ExecuteReader();
+                var result = command.ExecuteReader();
+                Connection.Close();
+                return result;
             }
             catch(Exception ex)
             {

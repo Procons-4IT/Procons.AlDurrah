@@ -162,7 +162,7 @@
             return deleted;
         }
 
-        public List<Worker> GetAgentWorkers(string agent, string requestUrl)
+        public List<Worker> GetAgentWorkersOld(string agent, string requestUrl)
         {
             var ServiceInstance = ServiceLayerProvider.GetInstance();
             var workers = new List<WORKERS>();
@@ -316,6 +316,70 @@
             }
             return workersList;
         }
+
+        public List<Worker> GetAgentWorkers(string agent, string requestUrl)
+        {
+            List<Worker> workersList = new List<Worker>();
+            try
+            {
+                var databaseBame = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.DatabaseName);
+
+                var query = new StringBuilder();
+                query.Append(@"SELECT ""A"".""Code"",""A"".""Name"",""U_ItemCode"",""U_Serial"",""U_Agent"",""U_Age"",");
+                query.Append(@"""U_BirthDate"",""U_Gender"",""D"".""Code"" AS ""U_NationalityCode"",""D"".""Name"" AS ""U_Nationality"",""D"".""U_NAME"" AS ""U_Nationality_AR"",""R"".""Code"" AS ""U_ReligionCode"",""R"".""Name"" AS ""U_Religion"",""R"".""U_NAME"" AS ""U_Religion_AR"",");
+                query.Append(@"""C"".""Code"" AS ""U_LanguageCode"",""C"".""Name"" AS ""U_Language"",""C"".""U_NAME"" AS ""U_Language_AR"",""U_Photo"",""U_Weight"",""U_Height"",""E"".""Name"" AS ""U_Education"",""E"".""U_NAME"" AS ""U_Education_AR"",");
+                query.Append(@"""U_Passport"",""U_Video"",""U_PassportNumber"",""U_PassportIssDate"",""U_PassportExpDate"",""U_PassportPoIssue"",""U_Price"",""U_CivilId"",""U_Status"",");
+                query.Append($@"""B"".""Code"" AS ""U_MaritalStatusCode"",""B"".""Name"" AS ""U_MaritalStatus"",""B"".""U_NAME"" AS ""U_MaritalStatus_AR""");
+                query.Append($@" FROM ""{databaseBame}"".""@WORKERS"" as ""A""");
+                query.Append($@" INNER JOIN ""{databaseBame}"".""@MARITALSTATUS"" AS ""B"" ON ""A"".""U_MaritalStatus"" = ""B"".""Code""");
+                query.Append($@" INNER JOIN ""{databaseBame}"".""@LANGUAGES"" AS ""C"" ON ""A"".""U_Language"" = ""C"".""Code""");
+                query.Append($@" INNER JOIN ""{databaseBame}"".""@COUNTRIES"" AS ""D"" ON ""A"".""U_Nationality"" = ""D"".""Code""");
+
+                query.Append($@" INNER JOIN ""{databaseBame}"".""@RELIGION"" AS ""R"" ON ""A"".""U_Religion"" = ""R"".""Code""");
+                query.Append($@" INNER JOIN ""{databaseBame}"".""@EDUCATION"" AS ""E"" ON ""A"".""U_Education"" = ""E"".""Code""");
+                query.Append($@" WHERE ""U_Agent""='{agent}'");
+
+                var readerResult = dbHelper.ExecuteQuery(query.ToString());
+                while (readerResult.Read())
+                {
+                    workersList.Add(
+                        new Worker()
+                        {
+                            Name = MapField<string>(readerResult["Name"]),
+                            WorkerCode = MapField<string>(readerResult["Code"]),
+                            Agent = MapField<string>(readerResult["U_Agent"]),
+                            Age = MapField<int>(readerResult["U_Age"]),
+                            BirthDate = MapField<DateTime>(readerResult["U_BirthDate"]).ToShortDateString(),
+                            CivilId = MapField<string>(readerResult["U_CivilId"]),
+                            Code = MapField<string>(readerResult["U_ItemCode"]),
+                            Education = AddHashSeperator(readerResult["U_NationalityCode"].ToString(), MapField<string>(readerResult[Utilities.GetLocalizedField("U_Education")])),
+                            Gender = Utilities.GetResourceValue(MapField<string>(readerResult["U_Gender"])),
+                            Height = MapField<string>(readerResult["U_Height"]),
+                            Language = AddHashSeperator(readerResult["U_LanguageCode"].ToString(), MapField<string>(readerResult[Utilities.GetLocalizedField("U_Language")])),
+                            MaritalStatus = AddHashSeperator(readerResult["U_MaritalStatusCode"].ToString(), MapField<string>(readerResult[Utilities.GetLocalizedField("U_MaritalStatus")])),
+                            Nationality = AddHashSeperator(readerResult["U_NationalityCode"].ToString(), MapField<string>(readerResult[Utilities.GetLocalizedField("U_Nationality")])),
+                            Passport = Utilities.ConvertImagePathToUrl(requestUrl, MapField<string>(readerResult["U_Passport"])),
+                            PassportExpDate = MapField<DateTime>(readerResult["U_PassportExpDate"]).ToShortDateString(),
+                            PassportIssDate = MapField<string>(readerResult["U_PassportIssDate"]),
+                            PassportNumber = MapField<string>(readerResult["U_PassportNumber"]),
+                            PassportPoIssue = MapField<string>(readerResult["U_PassportPoIssue"]),
+                            Photo = Utilities.ConvertImagePathToUrl(requestUrl, MapField<string>(readerResult["U_Photo"])),
+                            Religion = AddHashSeperator(readerResult["U_ReligionCode"].ToString(), MapField<string>(readerResult[Utilities.GetLocalizedField("U_Religion")])),
+                            SerialNumber = MapField<string>(readerResult["U_Serial"]),
+                            Status = GetWorkerStatus(MapField<int>(readerResult["U_Status"])),
+                            Video = MapField<string>(readerResult["U_Video"]),
+                            Price = MapField<float>(readerResult["U_Price"]),
+                            Weight = MapField<string>(readerResult["U_Weight"])
+                        });
+                }
+            }
+            catch (Exception ex)
+            {
+                Utilities.LogException(ex);
+            }
+            return workersList;
+        }
+
 
         public double? CreateSalesOrder(Transaction trans, string cardCode)
         {
@@ -856,13 +920,18 @@
         {
             try
             {
-                return Utilities.GetResourceValue(((WorkerStatus)status).GetDescription());
+                return AddHashSeperator(status.ToString(), Utilities.GetResourceValue(((WorkerStatus)status).GetDescription()));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Utilities.LogException(ex);
                 return string.Empty;
             }
+        }
+
+        private string AddHashSeperator(string id, string name)
+        {
+            return $"{id}#{name}";
         }
         #endregion
     }
