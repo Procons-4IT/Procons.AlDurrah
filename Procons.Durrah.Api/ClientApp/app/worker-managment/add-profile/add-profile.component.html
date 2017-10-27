@@ -206,9 +206,9 @@
 
 
                   <div class="form-group  text-right">
-                    <input type="submit" value="Save" class="btn btn-default" [disabled]="!workerForm.valid || !isFilesAttached()" *ngIf="!state.isAddMode"
+                    <input type="submit" value="Save" class="btn btn-default" [disabled]="!workerForm.valid || !isFilesAttached()" *ngIf="state.isAddMode"
                     />
-                    <input type="submit" value="Save" class="btn btn-default" [disabled]="!workerForm.valid" *ngIf="state.isAddMode" />
+                    <input type="submit" value="Update" class="btn btn-default"  *ngIf="!state.isAddMode" />
 
                   </div>
                   <div class="form-group  text-right">
