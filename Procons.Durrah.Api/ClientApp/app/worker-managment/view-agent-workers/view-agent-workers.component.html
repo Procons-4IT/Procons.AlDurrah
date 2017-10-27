@@ -1,0 +1,56 @@
+<div class="section section-overlay section-full-width" id="sectionCatalogue2">
+    <div class="container">
+        <div class="section-content">
+            <div class="content-wrapper">
+                <!-- <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading> -->
+                <div class="tab-content">
+                    <div role="tabpanel">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <h2 class="text-center">{{'Profiles' | translate }}</h2>
+                                <div class="actions">
+                                    <button (click)="ShowProfiles();" class="btn btn-default">{{'ViewProfiles' | translate }}</button>
+                                    <a (click)="ShowAddWorker();" class="btn btn-default">+ {{'AddProfile' | translate }}</a>
+                                </div>
+                                <div class="row">
+                                    <div *ngFor="let worker  of state.workers;let i =index" class="col-sm-6">
+                                        <div class="box profile-box clearfix">
+                                            <div class="profile-main">
+                                                <div class="profile-thumb">
+                                                    <img [src]="worker.photo" class="img-responsive">
+                                                </div>
+                                                <h3 class="h5">{{worker.agent}} </h3>
+                                                <div class="datas">
+                                                    <div>
+                                                        <span class="icon icon-ed-kg icon-fw"></span> {{worker.weight}}</div>
+                                                    <div>
+                                                        <span class="icon icon-ed-height icon-fw"></span> {{worker.height}} cm</div>
+                                                    <div>{{worker.status}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="profile-actions">
+                                                <a (click)="ShowEditWorker(worker,i)">Edit</a>
+                                                <div class="checkbox-custom">
+                                                    <label>
+                                                        <input type="checkbox" class="form-control" checked="checked" />
+                                                        <span class="icon icon-ed-check icon-fw"></span>
+                                                    </label>
+                                                </div>
+                                                <a (click)="Delete(worker,i)">{{'Delete' | translate }}</a>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

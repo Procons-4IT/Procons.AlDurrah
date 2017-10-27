@@ -18,59 +18,70 @@ export class AddProfileComponent implements OnInit {
     @ViewChild("photoUpload") photoUpload;
     @ViewChild("passportUpload") passportUpload;
 
-    test = false;
     photoFileText = "Select Photo File";
     passportFileText = "Select Passport File";
 
+    loading = false;
     state: { isAddMode: boolean, title: string, worker: Worker, selectOptionText: string } = {
         isAddMode: true,
         title: "Add Profile",
         worker: null,
         selectOptionText: "-- select an option -- "
     }
+    photoServerMode: FileUploadMode = FileUploadMode.Add;
+    passportServerMode: FileUploadMode = FileUploadMode.Add;
+
     constructor(public myApi: ApiService) {
     }
 
     ngOnInit(): void {
         if (this.worker) {
+            //EditMode
             this.state.isAddMode = false;
             this.state.title = "Edit Profile"
             this.state.worker = Object.assign({}, this.worker);
+            this.tempData();
+            this.photoServerMode = FileUploadMode.Edit;
+            this.passportServerMode = FileUploadMode.Edit;
             console.log('searchCriteria Params ', this.searchCriterias);
         } else {
-            let workerParams: any = Array.from({ length: 23 }, x => { return '' }) as any;
+            let workerParams: any = Array.from({ length: 24 }, x => { return '' }) as any;
             this.state.worker = new (<any>Worker)(...workerParams);
-            //     this.state.isAddMode = false;
-            //     this.state.worker = {
-            //         "workerCode": null,
-            //         "serialNumber": "AB23102017",
-            //         "agent": "SA004",
-            //         "age": 47,
-            //         "name": "Maid Srilanka Sample",
-            //         "code": "DW00003",
-            //         "birthDate": "1/1/1970 12:00:00 AM",
-            //         "gender": "F",
-            //         "nationality": "2",
-            //         "religion": "2",
-            //         "maritalStatus": "1",
-            //         "language": "2",
-            //         "photo": "http://127.0.0.1:1357/minion2.jpeg",
-            //         "price": 237.0,
-            //         "weight": "65",
-            //         "height": "150",
-            //         "education": "1",
-            //         "passport": "http://127.0.0.1:1357/minion2.jpeg",
-            //         "video": null,
-            //         "passportNumber": "AB23102017",
-            //         "passportIssDate": "1/1/2016",
-            //         "passportExpDate": "12/31/2026",
-            //         "passportPoIssue": "Bandaranaiyak",
-            //         "civilId": null,
-            //         "status": "2"
-            //     } as any;
+            this.state.isAddMode = false;
         }
     }
 
+    tempData() {
+        this.state.worker = {
+            "workerCode": null,
+            "serialNumber": "AB23102017",
+            "agent": "SA004",
+            "age": 47,
+            "name": "Maid Srilanka Sample",
+            "code": "DW00003",
+            "birthDate": "1/1/1970 12:00:00 AM",
+            "gender": "F",
+            "nationality": "2",
+            "religion": "2",
+            "maritalStatus": "1",
+            "language": "2",
+            "photo": "http://127.0.0.1:1357/minion2.jpeg",
+            "price": 237.0,
+            "weight": "65",
+            "height": "150",
+            "education": "1",
+            "passport": "http://127.0.0.1:1357/minion2.jpeg",
+            "video": null,
+            "passportNumber": "AB23102017",
+            "passportIssDate": "1/1/2016",
+            "passportExpDate": "12/31/2026",
+            "passportPoIssue": "Bandaranaiyak",
+            "civilId": null,
+            "status": "2"
+        } as any;
+        this.searchCriterias = { "languages": [{ "name": "English", "value": "1" }, { "name": "Arabic", "value": "2" }, { "name": "Hindi", "value": "3" }], "education": [{ "name": "University", "value": "1" }, { "name": "High School", "value": "2" }, { "name": "None", "value": "3" }, { "name": "Technical", "value": "4" }], "religion": [{ "name": "Christian", "value": "1" }, { "name": "Muslim", "value": "2" }, { "name": "Hindu", "value": "3" }], "nationality": [{ "name": "India", "value": "1" }, { "name": "Bengladish", "value": "2" }, { "name": "Philipin", "value": "3" }, { "name": "Ethioipia", "value": "4" }, { "name": "Srilanka", "value": "5" }, { "name": "Egypt", "value": "6" }], "gender": [{ "name": "Male", "value": "M" }, { "name": "Female", "value": "F" }], "maritalStatus": [{ "name": "Single", "value": "1" }, { "name": "Married", "value": "2" }, { "name": "Divorced", "value": "3" }], "workerTypes": [{ "name": "Domestic worker", "value": "DW00001" }, { "name": "Maid - Ethiopia", "value": "DW00002" }, { "name": "Maid - SriLanka", "value": "DW00003" }, { "name": "Driver Indian Fresh", "value": "DW00004" }, { "name": "Laptop Lenovo Thinkpad", "value": "FA00001" }, { "name": "Decoretion for main office", "value": "FA00002" }, { "name": "Laptop", "value": "FA00003" }] };
+
+    }
     back() {
         this.onBack.emit();
     }
@@ -100,11 +111,14 @@ export class AddProfileComponent implements OnInit {
             formData.append('Code', this.state.worker.code);
 
 
-
+            this.loading = true;
             this.myApi.uploadFile(formData).subscribe(x => {
                 console.log('Somethign Happend ! ', formData)
+                this.loading = false;
             }, onError => {
+                this.loading = false;
                 console.log('someting terrible happened!');
+
             });
 
         } else {
@@ -164,18 +178,16 @@ export class AddProfileComponent implements OnInit {
         console.log('I should upload the files!');
     }
 
-    // rz() {
-    // //     var preview = document.querySelector('img');
-    // //     var file = document.querySelector('input[type=file]').files[0];
-    // //     var reader = new FileReader();
+    deleteServerFile(isPhotoUpload: boolean) {
+        if (isPhotoUpload) {
+            this.photoServerMode = FileUploadMode.Delete;
+        } else {
+            this.passportServerMode = FileUploadMode.Delete;
+        }
+    }
+    FUM = FileUploadMode;
+}
 
-    // //     reader.addEventListener("load", function () {
-    // //         this.preview = reader.result;
-    // //     }, false);
-
-    // //     if (file) {
-    // //         reader.readAsDataURL(file);
-    // //     }
-    // }
-    //http://127.0.0.1:1357/minion2.jpeg show this URL ! 
+enum FileUploadMode {
+    Add, Edit, Delete
 }
