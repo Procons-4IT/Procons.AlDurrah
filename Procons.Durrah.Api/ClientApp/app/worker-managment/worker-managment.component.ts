@@ -1,5 +1,8 @@
 //Consider Changing the Navigation Logic to a router-outlet with Child Components and a Feature Module (issue: Fix the NavBar Navigations)
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import 'rxjs/add/operator/mergeMap';
+
 import { Worker, WorkerManagementData } from "../Models/Worker";
 import { ApiService } from "../Services/ApiService";
 
@@ -12,9 +15,9 @@ export class WorkerMangmentComponent implements OnInit {
 
     ngOnInit(): void {
         console.log('view loading!');
-        this.loading = true
 
-        let $workerDisplayData = this.myApi.getWorkerManagmentData()
+        let $workerDisplayData = Observable.of('').do(x => { this.loading = true })
+            .mergeMap(x => this.myApi.getWorkerManagmentData())
             .do(workerMangmentServerData => { this.bindServerState(workerMangmentServerData) })
             .map(workerMangmentServerData => { return this.state.workers }) //use the same object as parent component
             .do(data => { this.loading = false })

@@ -16,13 +16,13 @@
             <div class="row">
               <div class="col-md-6 col-md-offset-3">
 
-                <form (ngSubmit)="addWorker(photoUpload,passportUpload);" method="post" id="profileEditForm" class="form-default has-upload"
+                <form (ngSubmit)="submitWorker(photoUpload,passportUpload);" method="post" id="profileEditForm" class="form-default has-upload"
                   #workerForm="ngForm">
-
-                  <div class="form-group">
+                  <!-- <div class="form-group">
                     <label for="name">Name</label>
-                    <input required id="name" type="text" class="form-control" name="name" [(ngModel)]="state.worker.name" placeholder="name" />
-                  </div>
+                    <input required id="name" type="text" class="form-control" name="name" [(ngModel)]="state.worker.name" placeholder="name"
+                    />
+                  </div> -->
 
 
                   <div class="form-group">
@@ -155,7 +155,7 @@
                   </div>
                   <div class="form-group">
                     <label for="photoUpload">Photo Upload</label>
-                    <p-fileUpload id="photoUpload" name="myfile[]" customUpload="true" multiple="false" (onSelect)="deleteServerFile(true)"	 #photoUpload>
+                    <p-fileUpload id="photoUpload" name="myfile[]" customUpload="true" multiple="false" (onSelect)="deleteServerFile(true)" #photoUpload>
                       <ng-template pTemplate="content">
                         <div class="ui-fileupload-files" [style.display]="photoServerMode === FUM.Edit? 'block' : 'none'">
                           <div>
@@ -180,7 +180,8 @@
                   </div>
                   <div class="form-group ">
                     <label for="passportUpload">Passport Upload</label>
-                    <p-fileUpload id="passportUpload" name="myfile2[]" customUpload="true" [multiple]="false" (onSelect)="deleteServerFile(false)" #passportUpload>
+                    <p-fileUpload id="passportUpload" name="myfile2[]" customUpload="true" [multiple]="false" (onSelect)="deleteServerFile(false)"
+                      #passportUpload>
                       <ng-template pTemplate="content">
                         <div class="ui-fileupload-files" [style.display]="passportServerMode === FUM.Edit? 'block' : 'none'">
                           <div>
@@ -205,7 +206,10 @@
 
 
                   <div class="form-group  text-right">
-                    <input type="submit" value="Save" class="btn btn-default" [disabled]="!workerForm.valid || !isFilesAttached()" />
+                    <input type="submit" value="Save" class="btn btn-default" [disabled]="!workerForm.valid || !isFilesAttached()" *ngIf="state.isAddMode"
+                    />
+                    <input type="submit" value="Save" class="btn btn-default" [disabled]="!workerForm.valid" *ngIf="!state.isAddMode" />
+
                   </div>
                   <div class="form-group  text-right">
                     <div class="btn btn-default" (click)="back()">{{'back' | translate }}</div>
