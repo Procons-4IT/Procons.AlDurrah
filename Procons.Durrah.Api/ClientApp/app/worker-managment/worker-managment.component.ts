@@ -1,7 +1,12 @@
 //Consider Changing the Navigation Logic to a router-outlet with Child Components and a Feature Module (issue: Fix the NavBar Navigations)
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import 'rxjs/add/operator/mergeMap';
+
 import { Worker, WorkerManagementData } from "../Models/Worker";
 import { ApiService } from "../Services/ApiService";
+import { ProconsModalSerivce } from "../Services/ProconsModalService";
+
 
 @Component({
     selector: "worker-managment",
@@ -12,9 +17,9 @@ export class WorkerMangmentComponent implements OnInit {
 
     ngOnInit(): void {
         console.log('view loading!');
-        this.loading = true
 
-        let $workerDisplayData = this.myApi.getWorkerManagmentData()
+        let $workerDisplayData = Observable.of('').do(x => { this.loading = true })
+            .mergeMap(x => this.myApi.getWorkerManagmentData())
             .do(workerMangmentServerData => { this.bindServerState(workerMangmentServerData) })
             .map(workerMangmentServerData => { return this.state.workers }) //use the same object as parent component
             .do(data => { this.loading = false })
@@ -51,7 +56,7 @@ export class WorkerMangmentComponent implements OnInit {
         selectedWorker: null
     }
 
-    constructor(public myApi: ApiService) {
+    constructor(public myApi: ApiService, public myModal: ProconsModalSerivce) {
     }
 
     ShowProfiles() {
@@ -100,9 +105,16 @@ export class WorkerMangmentComponent implements OnInit {
 
     Delete(worker: Worker, index: number = 0) {
         //fix delete!
-        console.log('deleting Worker ', worker, ' ', index);
-        // this.state.workers.splice(index, 1);
-        console.log('#TO DO IMPLEMENT DELETE API');
+        this.state.workers.splice(index, 1);
+        this.loading = true;
+        this.myApi.deleteWorker(worker.code).subscribe(
+            onSucces => {
+                this.loading = false;
+                this.myModal.showSuccessModal("Worker Deleted!");
+            }, onError => {
+                this.loading = false;
+                this.myModal.showErrorModal("Failed to Delete Worker");
+            });
     }
 }
 

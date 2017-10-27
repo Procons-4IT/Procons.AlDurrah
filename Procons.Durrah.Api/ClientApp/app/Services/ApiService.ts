@@ -196,8 +196,9 @@ export class ApiService {
                 workerKeyData[workerProperty] = splitValue[0]; //grab value after hash
 
             } else {
+
                 workerDisplayData[workerProperty] = splitValue;
-                workerKeyData[workerProperty] = splitValue;
+                workerKeyData[workerProperty] = workerProperty === "gender" ? splitValue.charAt(0) : splitValue;
 
             }
 
@@ -206,7 +207,6 @@ export class ApiService {
         return [workerKeyData, workerDisplayData];
     }
     public convertWorkerValues(workerServerData: Worker, searchCriteria, searchProperties) {
-        //s['religion'][w1['religion']].name
         var workerDisplayData = Object.assign({}, workerServerData);
         var searchProperty;
         for (var searchIndex = 0; searchIndex < searchProperties.length; searchIndex++) {
@@ -218,7 +218,6 @@ export class ApiService {
                 workerDisplayData[searchProperty] = name;
             }
         }
-        console.log(workerDisplayData);
         return workerDisplayData;
     }
     public getNameFromProperty(key: string, propertyValue: any[]): string {
@@ -264,8 +263,7 @@ export class ApiService {
 
         // });
     }
-    public uploadFile(formData) {
-        let url = this.config.baseUrl + this.config.addWorkerUrl;
+    public uploadFile(formData, url) {
         let headers = new Headers();
         headers.append("accept-language", this.language);
         let token = this.GetSecurityToken();
@@ -273,14 +271,16 @@ export class ApiService {
             headers.append('Authorization', `bearer ${token}`);
         }
         let options: RequestOptions = new RequestOptions({ headers: headers });
-        return this.http.post(url, formData, options);
+        return this.http.post(url, formData, options).map(response => (response as any)._body);
 
     }
-    public updateWorker(worker: Worker): Observable<any> {
-        return this.httpPostHelper(this.config.updateWorkerUrl, worker);
+    public updateWorker(formData: any): Observable<any> {
+        let url = this.config.baseUrl + this.config.updateWorkerUrl;
+        return this.uploadFile(formData, url);
     }
-    public addWorker(worker: Worker): Observable<any> {
-        return this.httpPostHelper(this.config.addWorkerUrl, worker);
+    public addWorker(formData: any): Observable<any> {
+        let url = this.config.baseUrl + this.config.addWorkerUrl;
+        return this.uploadFile(formData, url);
     }
     public deleteWorker(workerCode: String): Observable<any> {
         return this.httpPostHelper(this.config.deleteWorkerUrl, { "WorkerCode": workerCode });
