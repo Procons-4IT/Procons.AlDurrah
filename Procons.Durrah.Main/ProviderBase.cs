@@ -290,6 +290,7 @@
                     }
 
                     instance.CurrentServicelayerInstance.AddToUserFieldsMD(userField);
+                    //instance.CurrentServicelayerInstance.SaveChanges();
                     //DataServiceResponse response = instance.CurrentServicelayerInstance.SaveChanges();
                     //if (null != response)
                     //{
@@ -440,16 +441,31 @@
 
         public bool AddUdo(string code, string tableName)
         {
+            return AddUdo(code, tableName, null);
+        }
+
+        public bool AddUdo(string code, string tableName, string childName)
+        {
             var udo = new B1ServiceLayer.SAPB1.UserObjectsMD()
             {
                 TableName = tableName,
                 Code = code,
                 Name = code
             };
+
             try
             {
                 var slInstance = instance.CurrentServicelayerInstance;
+
                 var result = slInstance.UserObjectsMD.Where(x => x.Code == udo.Name);
+
+                if (childName != null && result.Count() > 0)
+                {
+                    var UdoChild = result.FirstOrDefault().UserObjectMD_ChildTables.First();
+                    UdoChild.TableName = childName;
+                    UdoChild.SonNumber = 1;
+                }
+
                 if (result.Count() == 0)
                 {
                     slInstance.AddToUserObjectsMD(udo);

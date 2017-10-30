@@ -11,6 +11,7 @@
             try
             {
                 base.instance.Login();
+ 
                 base.AddTableSL("WORKERS", "WORKERS", SAPbobsCOM.BoUTBTableType.bott_MasterData);
                 base.AddFieldSL("ItemCode", "ItemCode", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
                 base.AddFieldSL("Serial", "Serial", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
@@ -35,7 +36,7 @@
                 base.AddFieldSL("Price", "Price", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Float.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), SAPbobsCOM.BoFldSubTypes.st_Price.ToString(), true);
                 base.AddFieldSL("CivilId", "CivilId", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
                 base.AddFieldSL("Status", "Status", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
-                base.AddFieldSL("WorkerName", "Status", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
+                base.AddFieldSL("WorkerName", "Worker Name", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
 
                 base.AddFieldSL("PaymentID", "Payment Id", "ORDR", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), false);
                 base.AddFieldSL("Result", "Payment Result", "ORDR", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 20, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), false);
@@ -49,7 +50,11 @@
                 base.AddFieldSL("Confirmed", "Confirmed", "OCRD", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 1, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), false);
                 base.AddFieldSL("DownPay", "Down Payment Amount", "OADM", SAPbobsCOM.BoFieldTypes.db_Float.ToString(), SAPbobsCOM.BoYesNoEnum.tNO.ToString(), SAPbobsCOM.BoFldSubTypes.st_Price.ToString(), false);
 
-                base.AddUdo("WORKERSUDO", "WORKERS");
+                base.AddTableSL("WORKERLNGS", "WORKER LANGUAGES", SAPbobsCOM.BoUTBTableType.bott_MasterDataLines);
+                base.AddFieldSL("VALUE", "Value", "WORKERLNGS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 50, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
+                base.AddFieldSL("NAME", "Name", "WORKERLNGS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 50, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
+
+                base.AddUdo("WORKERSUDO", "WORKERS","WORKERLNGS");
 
                 base.AddTableSL("COUNTRIES", "COUNTRIES", SAPbobsCOM.BoUTBTableType.bott_MasterData);
                 base.AddFieldSL("NAME", "NAME AR", "COUNTRIES", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);

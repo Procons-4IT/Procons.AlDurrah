@@ -69,7 +69,6 @@
         public bool UpdateWorker(Worker worker, string cardCode)
         {
             var created = false;
-
             try
             {
                 var attachmentPath = GetAttachmentPath();
@@ -86,6 +85,22 @@
 
                 if (oGeneralData != null)
                 {
+                    List<string> languages = new List<string>();
+
+                    var gDataCollection = oGeneralData.Child("LANGUAGES");
+                    for (int i = gDataCollection.Count - 1; i >= 0; i--)
+                    {
+                        gDataCollection.Remove(i);
+                    }
+
+                    foreach (var l in languages)
+                    {
+                        var newLanguage = gDataCollection.Add();
+                        newLanguage.SetProperty("U_Name", "4");
+                        newLanguage.SetProperty("U_Value", "4");
+                    }
+
+
                     //if (oGeneralData.GetProperty("U_Status").ToString() == ((int)WorkerStatus.Opened).ToString() && oGeneralData.GetProperty("U_Agent").ToString() == cardCode)
                     //{
                     oGeneralData.SetProperty("U_Age", MapField<int>(worker.Age));
@@ -118,6 +133,7 @@
                     oGeneralData.SetProperty("U_Status", MapField<string>(worker.Status));
                     oGeneralData.SetProperty("U_Video", MapField<string>(worker.Video));
                     oGeneralData.SetProperty("U_Weight", MapField<string>(worker.Weight));
+
                     oGeneralService.Update(oGeneralData);
                     created = true;
                     //}
@@ -256,23 +272,23 @@
                 var databaseBame = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.DatabaseName);
 
                 var query = new StringBuilder();
-                query.Append(@"SELECT ""A"".""Code"",""A"".""Name"",""U_ItemCode"",""U_Serial"",""U_Agent"",""U_Age"",");
+                query.Append(@"SELECT ""A"".""Code"",""A"".""U_WorkerName"",""A"".""Name"",""U_ItemCode"",""U_Serial"",""U_Agent"",""U_Age"",");
                 query.Append(@"""U_BirthDate"",""U_Gender"",""D"".""Name"" AS ""U_Nationality"",""D"".""U_NAME"" AS ""U_Nationality_AR"",""R"".""Name"" AS ""U_Religion"",""R"".""U_NAME"" AS ""U_Religion_AR"",");
                 query.Append(@"""C"".""Name"" AS ""U_Language"",""C"".""U_NAME"" AS ""U_Language_AR"",""U_Photo"",""U_Weight"",""U_Height"",""E"".""Name"" AS ""U_Education"",""E"".""U_NAME"" AS ""U_Education_AR"",");
                 query.Append(@"""U_Passport"",""U_Video"",""U_PassportNumber"",""U_PassportIssDate"",""U_PassportExpDate"",""U_PassportPoIssue"",""U_Price"",""U_CivilId"",""U_Status"",");
                 query.Append($@"""B"".""Name"" AS ""U_MaritalStatus"",""B"".""U_NAME"" AS ""U_MaritalStatus_AR""");
                 query.Append($@" FROM ""{databaseBame}"".""@WORKERS"" as ""A""");
+
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@MARITALSTATUS"" AS ""B"" ON ""A"".""U_MaritalStatus"" = ""B"".""Code""");
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@LANGUAGES"" AS ""C"" ON ""A"".""U_Language"" = ""C"".""Code""");
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@COUNTRIES"" AS ""D"" ON ""A"".""U_Nationality"" = ""D"".""Code""");
-
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@RELIGION"" AS ""R"" ON ""A"".""U_Religion"" = ""R"".""Code""");
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@EDUCATION"" AS ""E"" ON ""A"".""U_Education"" = ""E"".""Code""");
+
                 if (status == null)
                     query.Append($@"WHERE 1 = 1 ");
                 else
                     query.Append($@"WHERE A.""U_Status"" = '{((int)status).ToString()}' ");
-
 
                 query.Append(exp);
                 var readerResult = dbHelper.ExecuteQuery(query.ToString());
@@ -284,6 +300,7 @@
                         {
                             Name = MapField<string>(readerResult["Name"]),
                             WorkerCode = MapField<string>(readerResult["Code"]),
+                            WorkerName = MapField<string>(readerResult["U_WorkerName"]),
                             Agent = MapField<string>(readerResult["U_Agent"]),
                             Age = MapField<int>(readerResult["U_Age"]),
                             BirthDate = MapField<DateTime>(readerResult["U_BirthDate"]).ToShortDateString(),
@@ -325,16 +342,16 @@
                 var databaseBame = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.DatabaseName);
 
                 var query = new StringBuilder();
-                query.Append(@"SELECT ""A"".""Code"",""A"".""Name"",""U_ItemCode"",""U_Serial"",""U_Agent"",""U_Age"",""U_WorkerName"", ");
+                query.Append(@"SELECT ""A"".""Code"",""A"".""U_WorkerName"",""A"".""Name"",""U_ItemCode"",""U_Serial"",""U_Agent"",""U_Age"",""U_WorkerName"", ");
                 query.Append(@"""U_BirthDate"",""U_Gender"",""D"".""Code"" AS ""U_NationalityCode"",""D"".""Name"" AS ""U_Nationality"",""D"".""U_NAME"" AS ""U_Nationality_AR"",""R"".""Code"" AS ""U_ReligionCode"",""R"".""Name"" AS ""U_Religion"",""R"".""U_NAME"" AS ""U_Religion_AR"",");
                 query.Append(@"""C"".""Code"" AS ""U_LanguageCode"",""C"".""Name"" AS ""U_Language"",""C"".""U_NAME"" AS ""U_Language_AR"",""U_Photo"",""U_Weight"",""U_Height"",""E"".""Name"" AS ""U_Education"",""E"".""U_NAME"" AS ""U_Education_AR"",");
                 query.Append(@"""U_Passport"",""U_Video"",""U_PassportNumber"",""U_PassportIssDate"",""U_PassportExpDate"",""U_PassportPoIssue"",""U_Price"",""U_CivilId"",""U_Status"",");
                 query.Append($@"""B"".""Code"" AS ""U_MaritalStatusCode"",""B"".""Name"" AS ""U_MaritalStatus"",""B"".""U_NAME"" AS ""U_MaritalStatus_AR""");
                 query.Append($@" FROM ""{databaseBame}"".""@WORKERS"" as ""A""");
+
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@MARITALSTATUS"" AS ""B"" ON ""A"".""U_MaritalStatus"" = ""B"".""Code""");
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@LANGUAGES"" AS ""C"" ON ""A"".""U_Language"" = ""C"".""Code""");
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@COUNTRIES"" AS ""D"" ON ""A"".""U_Nationality"" = ""D"".""Code""");
-
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@RELIGION"" AS ""R"" ON ""A"".""U_Religion"" = ""R"".""Code""");
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@EDUCATION"" AS ""E"" ON ""A"".""U_Education"" = ""E"".""Code""");
                 query.Append($@" WHERE ""U_Agent""='{agent}'");
@@ -347,6 +364,7 @@
                         {
                             Name = MapField<string>(readerResult["Name"]),
                             WorkerCode = MapField<string>(readerResult["Code"]),
+                            WorkerName = MapField<string>(readerResult["U_WorkerName"]),
                             Agent = MapField<string>(readerResult["U_Agent"]),
                             Age = MapField<int>(readerResult["U_Age"]),
                             BirthDate = MapField<DateTime>(readerResult["U_BirthDate"]).ToShortDateString(),
