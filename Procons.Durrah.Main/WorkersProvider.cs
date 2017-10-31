@@ -11,6 +11,7 @@
     using SAPbobsCOM;
     using System;
     using System.Collections.Generic;
+    using System.Data;
     using System.Data.Services.Client;
     using System.IO;
     using System.Linq;
@@ -32,10 +33,22 @@
                 var oGeneralService = sCmp.GetGeneralService("WORKERSUDO");
                 var oGeneralData = oGeneralService.GetDataInterface(GeneralServiceDataInterfaces.gsGeneralData) as GeneralData;
 
+                var gDataCollection = oGeneralData.Child("WORKERLNGS");
+                if (worker.Languages != null)
+                {
+                    foreach (var l in worker.Languages)
+                    {
+                        var newLanguage = gDataCollection.Add();
+                        newLanguage.SetProperty("U_NAME", l.Name);
+                        newLanguage.SetProperty("U_VALUE", l.Value);
+                    }
+                }
+
                 oGeneralData.SetProperty("Code", worker.PassportNumber);
+                oGeneralData.SetProperty("U_WorkerName", worker.WorkerName);
                 oGeneralData.SetProperty("U_Agent", worker.Agent);
                 oGeneralData.SetProperty("U_Age", worker.Age);
-                oGeneralData.SetProperty("U_BirthDate", worker.BirthDate);
+                oGeneralData.SetProperty("U_BirthDate", DateTime.Parse(worker.BirthDate.RemoveGmtPartFromDate()));
                 oGeneralData.SetProperty("U_CivilId", worker.CivilId);
                 oGeneralData.SetProperty("U_ItemCode", worker.Code);
                 oGeneralData.SetProperty("Name", worker.Name);
@@ -46,8 +59,9 @@
                 oGeneralData.SetProperty("U_MaritalStatus", worker.MaritalStatus);
                 oGeneralData.SetProperty("U_Nationality", worker.Nationality);
                 oGeneralData.SetProperty("U_Passport", string.Concat(attachmentPath, passportCopy));
-                oGeneralData.SetProperty("U_PassportPoIssue", worker.PassportIssDate);
-                oGeneralData.SetProperty("U_PassportExpDate", worker.PassportExpDate);
+                oGeneralData.SetProperty("U_PassportPoIssue", worker.PassportPoIssue);
+                oGeneralData.SetProperty("U_PassportIssDate", DateTime.Parse(worker.PassportIssDate.RemoveGmtPartFromDate()));
+                oGeneralData.SetProperty("U_PassportExpDate", DateTime.Parse(worker.PassportExpDate.RemoveGmtPartFromDate()));
                 oGeneralData.SetProperty("U_PassportNumber", worker.PassportNumber);
                 oGeneralData.SetProperty("U_Photo", string.Concat(attachmentPath, photo));
                 oGeneralData.SetProperty("U_Religion", worker.Religion);
@@ -86,23 +100,25 @@
                 if (oGeneralData != null)
                 {
                     List<string> languages = new List<string>();
-
-                    var gDataCollection = oGeneralData.Child("LANGUAGES");
+                    
+                    var gDataCollection = oGeneralData.Child("WORKERLNGS");
                     for (int i = gDataCollection.Count - 1; i >= 0; i--)
-                    {
                         gDataCollection.Remove(i);
-                    }
 
-                    foreach (var l in languages)
+                    if (worker.Languages != null)
                     {
-                        var newLanguage = gDataCollection.Add();
-                        newLanguage.SetProperty("U_Name", "4");
-                        newLanguage.SetProperty("U_Value", "4");
+                        foreach (var l in worker.Languages)
+                        {
+                            var newLanguage = gDataCollection.Add();
+                            newLanguage.SetProperty("U_Name", l.Name);
+                            newLanguage.SetProperty("U_Value", l.Value);
+                        }
                     }
 
 
                     //if (oGeneralData.GetProperty("U_Status").ToString() == ((int)WorkerStatus.Opened).ToString() && oGeneralData.GetProperty("U_Agent").ToString() == cardCode)
                     //{
+                    oGeneralData.SetProperty("U_WorkerName", worker.WorkerName);
                     oGeneralData.SetProperty("U_Age", MapField<int>(worker.Age));
                     oGeneralData.SetProperty("U_BirthDate", MapField<DateTime>(worker.BirthDate));
                     oGeneralData.SetProperty("U_CivilId", MapField<string>(worker.CivilId));
@@ -116,6 +132,7 @@
                     oGeneralData.SetProperty("U_Nationality", MapField<string>(worker.Nationality));
                     oGeneralData.SetProperty("U_PassportIssDate", MapField<DateTime>(worker.PassportIssDate));
                     oGeneralData.SetProperty("U_PassportExpDate", MapField<DateTime>(worker.PassportExpDate));
+                    oGeneralData.SetProperty("U_PassportPoIssue", worker.PassportPoIssue);
                     oGeneralData.SetProperty("U_PassportNumber", MapField<string>(worker.PassportNumber));
 
                     if (photo.Equals("0"))
@@ -163,6 +180,7 @@
                 //TODO: REMOVE COMMENT TO ADD CARDCODE FILTER
                 //worker = instance.CurrentServicelayerInstance.WORKERSUDO.Where(x => x.Code == id && x.U_Agent == cardCode).FirstOrDefault();
                 worker = instance.CurrentServicelayerInstance.WORKERSUDO.Where(x => x.Code == id && x.U_Agent == cardCode).FirstOrDefault();
+               
                 if (worker != null)
                 {
                     instance.CurrentServicelayerInstance.DeleteObject(worker);
@@ -268,19 +286,19 @@
             List<Worker> workersList = new List<Worker>();
             try
             {
+                var attachmentPath = GetAttachmentPath();
                 var exp = GetExpressionSql(worker);
                 var databaseBame = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.DatabaseName);
 
                 var query = new StringBuilder();
                 query.Append(@"SELECT ""A"".""Code"",""A"".""U_WorkerName"",""A"".""Name"",""U_ItemCode"",""U_Serial"",""U_Agent"",""U_Age"",");
                 query.Append(@"""U_BirthDate"",""U_Gender"",""D"".""Name"" AS ""U_Nationality"",""D"".""U_NAME"" AS ""U_Nationality_AR"",""R"".""Name"" AS ""U_Religion"",""R"".""U_NAME"" AS ""U_Religion_AR"",");
-                query.Append(@"""C"".""Name"" AS ""U_Language"",""C"".""U_NAME"" AS ""U_Language_AR"",""U_Photo"",""U_Weight"",""U_Height"",""E"".""Name"" AS ""U_Education"",""E"".""U_NAME"" AS ""U_Education_AR"",");
+                query.Append(@"""U_Photo"", ""U_Weight"",""U_Height"",""E"".""Name"" AS ""U_Education"",""E"".""U_NAME"" AS ""U_Education_AR"",");
                 query.Append(@"""U_Passport"",""U_Video"",""U_PassportNumber"",""U_PassportIssDate"",""U_PassportExpDate"",""U_PassportPoIssue"",""U_Price"",""U_CivilId"",""U_Status"",");
                 query.Append($@"""B"".""Name"" AS ""U_MaritalStatus"",""B"".""U_NAME"" AS ""U_MaritalStatus_AR""");
                 query.Append($@" FROM ""{databaseBame}"".""@WORKERS"" as ""A""");
 
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@MARITALSTATUS"" AS ""B"" ON ""A"".""U_MaritalStatus"" = ""B"".""Code""");
-                query.Append($@" INNER JOIN ""{databaseBame}"".""@LANGUAGES"" AS ""C"" ON ""A"".""U_Language"" = ""C"".""Code""");
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@COUNTRIES"" AS ""D"" ON ""A"".""U_Nationality"" = ""D"".""Code""");
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@RELIGION"" AS ""R"" ON ""A"".""U_Religion"" = ""R"".""Code""");
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@EDUCATION"" AS ""E"" ON ""A"".""U_Education"" = ""E"".""Code""");
@@ -293,37 +311,95 @@
                 query.Append(exp);
                 var readerResult = dbHelper.ExecuteQuery(query.ToString());
 
-                while (readerResult.Read())
+                //while (readerResult.Read())
+                //{
+                //    var code = MapField<string>(readerResult["Code"]);
+                //    var langagesResult = dbHelper.ExecuteQuery($@"SELECT ""U_VALUE"",""U_NAME"" FROM ""{databaseBame}"".""@WORKERLNGS"" WHERE ""Code""='{code}'");
+                //    List<LookupItem> languages = new List<LookupItem>();
+
+                //    while (langagesResult.Read())
+                //    {
+                //        var name = MapField<string>(langagesResult["U_NAME"]);
+                //        var value = MapField<string>(langagesResult["U_VALUE"]);
+                //        languages.Add(new LookupItem(name, value));
+                //    }
+
+                //    workersList.Add(
+                //        new Worker()
+                //        {
+                //            Name = MapField<string>(readerResult["Name"]),
+                //            WorkerCode = MapField<string>(readerResult["Code"]),
+                //            WorkerName = MapField<string>(readerResult["U_WorkerName"]),
+                //            Agent = MapField<string>(readerResult["U_Agent"]),
+                //            Age = MapField<int>(readerResult["U_Age"]),
+                //            BirthDate = MapField<DateTime>(readerResult["U_BirthDate"]).ToShortDateString(),
+                //            CivilId = MapField<string>(readerResult["U_CivilId"]),
+                //            Code = MapField<string>(readerResult["U_ItemCode"]),
+                //            Education = MapField<string>(readerResult[Utilities.GetLocalizedField("U_Education")]),
+                //            Gender = Utilities.GetResourceValue(MapField<string>(readerResult["U_Gender"])),
+                //            Height = MapField<string>(readerResult["U_Height"]),
+                //            //Language = MapField<string>(readerResult[Utilities.GetLocalizedField("U_Language")]),
+                //            MaritalStatus = MapField<string>(readerResult[Utilities.GetLocalizedField("U_MaritalStatus")]),
+                //            Nationality = MapField<string>(readerResult[Utilities.GetLocalizedField("U_Nationality")]),
+                //            Passport = Utilities.ConvertImagePathToUrl(requestUrl, string.Concat(attachmentPath, MapField<string>(readerResult["U_Passport"]))),
+                //            PassportExpDate = MapField<DateTime>(readerResult["U_PassportExpDate"]).ToShortDateString(),
+                //            PassportIssDate = MapField<string>(readerResult["U_PassportIssDate"]),
+                //            PassportNumber = MapField<string>(readerResult["U_PassportNumber"]),
+                //            PassportPoIssue = MapField<string>(readerResult["U_PassportPoIssue"]),
+                //            Photo = Utilities.ConvertImagePathToUrl(requestUrl, string.Concat(attachmentPath, MapField<string>(readerResult["U_Photo"]))),
+                //            Religion = MapField<string>(readerResult[Utilities.GetLocalizedField("U_Religion")]),
+                //            SerialNumber = MapField<string>(readerResult["U_Serial"]),
+                //            Status = MapField<string>(readerResult["U_Status"]),
+                //            Video = MapField<string>(readerResult["U_Video"]),
+                //            Price = MapField<float>(readerResult["U_Price"]),
+                //            Weight = MapField<string>(readerResult["U_Weight"]),
+                //            Languages = languages
+                //        });
+                //}
+
+                foreach (DataRow drow in readerResult.Rows)
                 {
+                    var code = MapField<string>(drow["Code"]);
+                    var langagesResult = dbHelper.ExecuteQuery($@"SELECT ""U_VALUE"",""U_NAME"" FROM ""{databaseBame}"".""@WORKERLNGS"" WHERE ""Code""='{code}'");
+                    List<LookupItem> languages = new List<LookupItem>();
+
+                    foreach (DataRow langaugeRow in langagesResult.Rows)
+                    {
+                        var name = MapField<string>(langaugeRow["U_NAME"]);
+                        var value = MapField<string>(langaugeRow["U_VALUE"]);
+                        languages.Add(new LookupItem(name, value));
+                    }
+
                     workersList.Add(
                         new Worker()
                         {
-                            Name = MapField<string>(readerResult["Name"]),
-                            WorkerCode = MapField<string>(readerResult["Code"]),
-                            WorkerName = MapField<string>(readerResult["U_WorkerName"]),
-                            Agent = MapField<string>(readerResult["U_Agent"]),
-                            Age = MapField<int>(readerResult["U_Age"]),
-                            BirthDate = MapField<DateTime>(readerResult["U_BirthDate"]).ToShortDateString(),
-                            CivilId = MapField<string>(readerResult["U_CivilId"]),
-                            Code = MapField<string>(readerResult["U_ItemCode"]),
-                            Education = MapField<string>(readerResult[Utilities.GetLocalizedField("U_Education")]),
-                            Gender = Utilities.GetResourceValue(MapField<string>(readerResult["U_Gender"])),
-                            Height = MapField<string>(readerResult["U_Height"]),
-                            Language = MapField<string>(readerResult[Utilities.GetLocalizedField("U_Language")]),
-                            MaritalStatus = MapField<string>(readerResult[Utilities.GetLocalizedField("U_MaritalStatus")]),
-                            Nationality = MapField<string>(readerResult[Utilities.GetLocalizedField("U_Nationality")]),
-                            Passport = Utilities.ConvertImagePathToUrl(requestUrl, MapField<string>(readerResult["U_Passport"])),
-                            PassportExpDate = MapField<DateTime>(readerResult["U_PassportExpDate"]).ToShortDateString(),
-                            PassportIssDate = MapField<string>(readerResult["U_PassportIssDate"]),
-                            PassportNumber = MapField<string>(readerResult["U_PassportNumber"]),
-                            PassportPoIssue = MapField<string>(readerResult["U_PassportPoIssue"]),
-                            Photo = Utilities.ConvertImagePathToUrl(requestUrl, MapField<string>(readerResult["U_Photo"])),
-                            Religion = MapField<string>(readerResult[Utilities.GetLocalizedField("U_Religion")]),
-                            SerialNumber = MapField<string>(readerResult["U_Serial"]),
-                            Status = MapField<string>(readerResult["U_Status"]),
-                            Video = MapField<string>(readerResult["U_Video"]),
-                            Price = MapField<float>(readerResult["U_Price"]),
-                            Weight = MapField<string>(readerResult["U_Weight"])
+                            Name = MapField<string>(drow["Name"]),
+                            WorkerCode = MapField<string>(drow["Code"]),
+                            WorkerName = MapField<string>(drow["U_WorkerName"]),
+                            Agent = MapField<string>(drow["U_Agent"]),
+                            Age = MapField<int>(drow["U_Age"]),
+                            BirthDate = MapField<DateTime>(drow["U_BirthDate"]).ToShortDateString(),
+                            CivilId = MapField<string>(drow["U_CivilId"]),
+                            Code = MapField<string>(drow["U_ItemCode"]),
+                            Education = MapField<string>(drow[Utilities.GetLocalizedField("U_Education")]),
+                            Gender = Utilities.GetResourceValue(MapField<string>(drow["U_Gender"])),
+                            Height = MapField<string>(drow["U_Height"]),
+                            //Language = MapField<string>(drow[Utilities.GetLocalizedField("U_Language")]),
+                            MaritalStatus = MapField<string>(drow[Utilities.GetLocalizedField("U_MaritalStatus")]),
+                            Nationality = MapField<string>(drow[Utilities.GetLocalizedField("U_Nationality")]),
+                            Passport = Utilities.ConvertImagePathToUrl(requestUrl, string.Concat(attachmentPath, MapField<string>(drow["U_Passport"]))),
+                            PassportExpDate = MapField<DateTime>(drow["U_PassportExpDate"]).ToShortDateString(),
+                            PassportIssDate = MapField<string>(drow["U_PassportIssDate"]),
+                            PassportNumber = MapField<string>(drow["U_PassportNumber"]),
+                            PassportPoIssue = MapField<string>(drow["U_PassportPoIssue"]),
+                            Photo = Utilities.ConvertImagePathToUrl(requestUrl, string.Concat(attachmentPath, MapField<string>(drow["U_Photo"]))),
+                            Religion = MapField<string>(drow[Utilities.GetLocalizedField("U_Religion")]),
+                            SerialNumber = MapField<string>(drow["U_Serial"]),
+                            Status = MapField<string>(drow["U_Status"]),
+                            Video = MapField<string>(drow["U_Video"]),
+                            Price = MapField<float>(drow["U_Price"]),
+                            Weight = MapField<string>(drow["U_Weight"]),
+                            Languages = languages
                         });
                 }
             }
@@ -331,6 +407,7 @@
             {
                 Utilities.LogException(ex);
             }
+
             return workersList;
         }
 
@@ -339,57 +416,112 @@
             List<Worker> workersList = new List<Worker>();
             try
             {
+                var attachmentPath = GetAttachmentPath();
                 var databaseBame = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.DatabaseName);
 
                 var query = new StringBuilder();
                 query.Append(@"SELECT ""A"".""Code"",""A"".""U_WorkerName"",""A"".""Name"",""U_ItemCode"",""U_Serial"",""U_Agent"",""U_Age"",""U_WorkerName"", ");
                 query.Append(@"""U_BirthDate"",""U_Gender"",""D"".""Code"" AS ""U_NationalityCode"",""D"".""Name"" AS ""U_Nationality"",""D"".""U_NAME"" AS ""U_Nationality_AR"",""R"".""Code"" AS ""U_ReligionCode"",""R"".""Name"" AS ""U_Religion"",""R"".""U_NAME"" AS ""U_Religion_AR"",");
-                query.Append(@"""C"".""Code"" AS ""U_LanguageCode"",""C"".""Name"" AS ""U_Language"",""C"".""U_NAME"" AS ""U_Language_AR"",""U_Photo"",""U_Weight"",""U_Height"",""E"".""Name"" AS ""U_Education"",""E"".""U_NAME"" AS ""U_Education_AR"",");
+                query.Append(@"""U_Photo"",""U_Weight"",""U_Height"",""E"".""Name"" AS ""U_Education"",""E"".""U_NAME"" AS ""U_Education_AR"",");
                 query.Append(@"""U_Passport"",""U_Video"",""U_PassportNumber"",""U_PassportIssDate"",""U_PassportExpDate"",""U_PassportPoIssue"",""U_Price"",""U_CivilId"",""U_Status"",");
                 query.Append($@"""B"".""Code"" AS ""U_MaritalStatusCode"",""B"".""Name"" AS ""U_MaritalStatus"",""B"".""U_NAME"" AS ""U_MaritalStatus_AR""");
                 query.Append($@" FROM ""{databaseBame}"".""@WORKERS"" as ""A""");
 
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@MARITALSTATUS"" AS ""B"" ON ""A"".""U_MaritalStatus"" = ""B"".""Code""");
-                query.Append($@" INNER JOIN ""{databaseBame}"".""@LANGUAGES"" AS ""C"" ON ""A"".""U_Language"" = ""C"".""Code""");
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@COUNTRIES"" AS ""D"" ON ""A"".""U_Nationality"" = ""D"".""Code""");
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@RELIGION"" AS ""R"" ON ""A"".""U_Religion"" = ""R"".""Code""");
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@EDUCATION"" AS ""E"" ON ""A"".""U_Education"" = ""E"".""Code""");
                 query.Append($@" WHERE ""U_Agent""='{agent}'");
 
                 var readerResult = dbHelper.ExecuteQuery(query.ToString());
-                while (readerResult.Read())
+                foreach (DataRow drow in  readerResult.Rows)
                 {
+                    var code = MapField<string>(drow["Code"]);
+                    var langagesResult = dbHelper.ExecuteQuery($@"SELECT ""U_VALUE"",""U_NAME"" FROM ""{databaseBame}"".""@WORKERLNGS"" WHERE ""Code""='{code}'");
+                    List<LookupItem> languages = new List<LookupItem>();
+
+                    foreach (DataRow language in langagesResult.Rows )
+                    {
+                        var name = MapField<string>(language["U_NAME"]);
+                        var value = MapField<string>(language["U_VALUE"]);
+                        languages.Add(new LookupItem(name, value));
+                    }
+
                     workersList.Add(
                         new Worker()
                         {
-                            Name = MapField<string>(readerResult["Name"]),
-                            WorkerCode = MapField<string>(readerResult["Code"]),
-                            WorkerName = MapField<string>(readerResult["U_WorkerName"]),
-                            Agent = MapField<string>(readerResult["U_Agent"]),
-                            Age = MapField<int>(readerResult["U_Age"]),
-                            BirthDate = MapField<DateTime>(readerResult["U_BirthDate"]).ToShortDateString(),
-                            CivilId = MapField<string>(readerResult["U_CivilId"]),
-                            Code = MapField<string>(readerResult["U_ItemCode"]),
-                            Education = AddHashSeperator(readerResult["U_NationalityCode"].ToString(), MapField<string>(readerResult[Utilities.GetLocalizedField("U_Education")])),
-                            Gender = Utilities.GetResourceValue(MapField<string>(readerResult["U_Gender"])),
-                            Height = MapField<string>(readerResult["U_Height"]),
-                            Language = AddHashSeperator(readerResult["U_LanguageCode"].ToString(), MapField<string>(readerResult[Utilities.GetLocalizedField("U_Language")])),
-                            MaritalStatus = AddHashSeperator(readerResult["U_MaritalStatusCode"].ToString(), MapField<string>(readerResult[Utilities.GetLocalizedField("U_MaritalStatus")])),
-                            Nationality = AddHashSeperator(readerResult["U_NationalityCode"].ToString(), MapField<string>(readerResult[Utilities.GetLocalizedField("U_Nationality")])),
-                            Passport = Utilities.ConvertImagePathToUrl(requestUrl, MapField<string>(readerResult["U_Passport"])),
-                            PassportExpDate = MapField<DateTime>(readerResult["U_PassportExpDate"]).ToShortDateString(),
-                            PassportIssDate = MapField<string>(readerResult["U_PassportIssDate"]),
-                            PassportNumber = MapField<string>(readerResult["U_PassportNumber"]),
-                            PassportPoIssue = MapField<string>(readerResult["U_PassportPoIssue"]),
-                            Photo = Utilities.ConvertImagePathToUrl(requestUrl, MapField<string>(readerResult["U_Photo"])),
-                            Religion = AddHashSeperator(readerResult["U_ReligionCode"].ToString(), MapField<string>(readerResult[Utilities.GetLocalizedField("U_Religion")])),
-                            SerialNumber = MapField<string>(readerResult["U_Serial"]),
-                            Status = GetWorkerStatus(MapField<int>(readerResult["U_Status"])),
-                            Video = MapField<string>(readerResult["U_Video"]),
-                            Price = MapField<float>(readerResult["U_Price"]),
-                            Weight = MapField<string>(readerResult["U_Weight"])
+                            Name = MapField<string>(drow["Name"]),
+                            WorkerCode = MapField<string>(drow["Code"]),
+                            WorkerName = MapField<string>(drow["U_WorkerName"]),
+                            Agent = MapField<string>(drow["U_Agent"]),
+                            Age = MapField<int>(drow["U_Age"]),
+                            BirthDate = MapField<DateTime>(drow["U_BirthDate"]).ToShortDateString(),
+                            CivilId = MapField<string>(drow["U_CivilId"]),
+                            Code = MapField<string>(drow["U_ItemCode"]),
+                            Education = AddHashSeperator(drow["U_NationalityCode"].ToString(), MapField<string>(drow[Utilities.GetLocalizedField("U_Education")])),
+                            Gender = Utilities.GetResourceValue(MapField<string>(drow["U_Gender"])),
+                            Height = MapField<string>(drow["U_Height"]),
+                            MaritalStatus = AddHashSeperator(drow["U_MaritalStatusCode"].ToString(), MapField<string>(drow[Utilities.GetLocalizedField("U_MaritalStatus")])),
+                            Nationality = AddHashSeperator(drow["U_NationalityCode"].ToString(), MapField<string>(drow[Utilities.GetLocalizedField("U_Nationality")])),
+                            Passport = Utilities.ConvertImagePathToUrl(requestUrl, string.Concat(attachmentPath, MapField<string>(drow["U_Passport"]))),
+                            PassportExpDate = MapField<DateTime>(drow["U_PassportExpDate"]).ToShortDateString(),
+                            PassportIssDate = MapField<string>(drow["U_PassportIssDate"]),
+                            PassportNumber = MapField<string>(drow["U_PassportNumber"]),
+                            PassportPoIssue = MapField<string>(drow["U_PassportPoIssue"]),
+                            Photo = Utilities.ConvertImagePathToUrl(requestUrl, string.Concat(attachmentPath, MapField<string>(drow["U_Photo"]))),
+                            Religion = AddHashSeperator(drow["U_ReligionCode"].ToString(), MapField<string>(drow[Utilities.GetLocalizedField("U_Religion")])),
+                            SerialNumber = MapField<string>(drow["U_Serial"]),
+                            Status = GetWorkerStatus(MapField<int>(drow["U_Status"])),
+                            Video = MapField<string>(drow["U_Video"]),
+                            Price = MapField<float>(drow["U_Price"]),
+                            Weight = MapField<string>(drow["U_Weight"]),
+                            Languages = languages
                         });
                 }
+                //while (readerResult.Read())
+                //{
+                //    var code = MapField<string>(readerResult["Code"]);
+                //    var langagesResult = dbHelper.ExecuteQuery($@"SELECT ""U_VALUE"",""U_NAME"" FROM ""{databaseBame}"".""@WORKERLNGS"" WHERE ""Code""='{code}'");
+                //    List<LookupItem> languages = new List<LookupItem>();
+
+                //    while (langagesResult.Read())
+                //    {
+                //        var name = MapField<string>(langagesResult["U_NAME"]);
+                //        var value = MapField<string>(langagesResult["U_VALUE"]);
+                //        languages.Add(new LookupItem(name, value));
+                //    }
+
+                //    workersList.Add(
+                //        new Worker()
+                //        {
+                //            Name = MapField<string>(readerResult["Name"]),
+                //            WorkerCode = MapField<string>(readerResult["Code"]),
+                //            WorkerName = MapField<string>(readerResult["U_WorkerName"]),
+                //            Agent = MapField<string>(readerResult["U_Agent"]),
+                //            Age = MapField<int>(readerResult["U_Age"]),
+                //            BirthDate = MapField<DateTime>(readerResult["U_BirthDate"]).ToShortDateString(),
+                //            CivilId = MapField<string>(readerResult["U_CivilId"]),
+                //            Code = MapField<string>(readerResult["U_ItemCode"]),
+                //            Education = AddHashSeperator(readerResult["U_NationalityCode"].ToString(), MapField<string>(readerResult[Utilities.GetLocalizedField("U_Education")])),
+                //            Gender = Utilities.GetResourceValue(MapField<string>(readerResult["U_Gender"])),
+                //            Height = MapField<string>(readerResult["U_Height"]),
+                //            MaritalStatus = AddHashSeperator(readerResult["U_MaritalStatusCode"].ToString(), MapField<string>(readerResult[Utilities.GetLocalizedField("U_MaritalStatus")])),
+                //            Nationality = AddHashSeperator(readerResult["U_NationalityCode"].ToString(), MapField<string>(readerResult[Utilities.GetLocalizedField("U_Nationality")])),
+                //            Passport = Utilities.ConvertImagePathToUrl(requestUrl,string.Concat(attachmentPath, MapField<string>(readerResult["U_Passport"]))),
+                //            PassportExpDate = MapField<DateTime>(readerResult["U_PassportExpDate"]).ToShortDateString(),
+                //            PassportIssDate = MapField<string>(readerResult["U_PassportIssDate"]),
+                //            PassportNumber = MapField<string>(readerResult["U_PassportNumber"]),
+                //            PassportPoIssue = MapField<string>(readerResult["U_PassportPoIssue"]),
+                //            Photo = Utilities.ConvertImagePathToUrl(requestUrl, string.Concat(attachmentPath, MapField<string>(readerResult["U_Photo"]))),
+                //            Religion = AddHashSeperator(readerResult["U_ReligionCode"].ToString(), MapField<string>(readerResult[Utilities.GetLocalizedField("U_Religion")])),
+                //            SerialNumber = MapField<string>(readerResult["U_Serial"]),
+                //            Status = GetWorkerStatus(MapField<int>(readerResult["U_Status"])),
+                //            Video = MapField<string>(readerResult["U_Video"]),
+                //            Price = MapField<float>(readerResult["U_Price"]),
+                //            Weight = MapField<string>(readerResult["U_Weight"]),
+                //            Languages = languages
+                //        });
+                //}
             }
             catch (Exception ex)
             {
@@ -630,9 +762,13 @@
                 var conn = Factory.DeclareClass<DatabaseHelper<HanaConnection>>();
 
                 var result = conn.ExecuteQuery($@"SELECT IFNULL(""U_DownPay"",0) AS ""U_DownPay"" FROM ""{base.databaseName}"".""OADM""");
-                while (result.Read())
+                //while (result.Read())
+                //{
+                //    paymentAmount = MapField<double>(result["U_DownPay"]);
+                //}
+                foreach (DataRow drow in result.Rows)
                 {
-                    paymentAmount = MapField<double>(result["U_DownPay"]);
+                    paymentAmount = MapField<double>(drow["U_DownPay"]);
                 }
             }
             catch (Exception ex)
@@ -653,9 +789,13 @@
                 query.Append($@" WHERE ""U_PaymentID"" = '{paymentId}'");
 
                 var result = conn.ExecuteQuery(query.ToString());
-                while (result.Read())
+                //while (result.Read())
+                //{
+                //    itemCode = MapField<string>(result["ItemCode"]);
+                //}
+                foreach (DataRow drow in result.Rows)
                 {
-                    itemCode = MapField<string>(result["ItemCode"]);
+                    itemCode = MapField<string>(drow["ItemCode"]);
                 }
             }
             catch (Exception ex)
@@ -667,16 +807,22 @@
 
         public string GetAttachmentPath()
         {
+            var conn = Factory.DeclareClass<DatabaseHelper<HanaConnection>>();
             try
             {
                 var path = string.Empty;
-                var conn = Factory.DeclareClass<DatabaseHelper<HanaConnection>>();
+                
                 StringBuilder query = new StringBuilder($@"SELECT IFNULL(""AttachPath"",'') ""AttachPath"" FROM ""{base.databaseName}"".""OADP""");
                 var result = conn.ExecuteQuery(query.ToString());
 
-                while (result.Read())
+                //while (result.Read())
+                //{
+                //    path = MapField<string>(result["AttachPath"]);
+                //}
+
+                foreach (DataRow drow in result.Rows)
                 {
-                    path = MapField<string>(result["AttachPath"]);
+                    path = MapField<string>(drow["AttachPath"]);
                 }
                 return path;
             }

@@ -1,4 +1,6 @@
-﻿namespace Procons.Durrah.Common
+﻿using System.Collections.Generic;
+
+namespace Procons.Durrah.Common
 {
     public class Worker
     {
@@ -37,6 +39,7 @@
         public string PassportPoIssue { get; set; }
         public string CivilId { get; set; }
         public string Status { get; set; }
+        public List<LookupItem> Languages { get; set; }
 
     }
 }

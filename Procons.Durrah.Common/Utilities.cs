@@ -184,6 +184,11 @@
         {
             return $"{ requestUrl}/api/Workers/Image?path={Utilities.GetFileName(fileName)}";
         }
+
+        public static string RemoveGmtPartFromDate(this string time)
+        {
+            return time.Contains("+") ? time.Split('+').First() : time;
+        }
     }
 }
 

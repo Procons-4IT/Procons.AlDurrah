@@ -18,6 +18,7 @@
     using System.Drawing.Imaging;
     using System.Web.Hosting;
     using Procons.Durrah.Common.Enumerators;
+    using Newtonsoft.Json;
 
     public class WorkersController : BaseApiController
     {
@@ -220,7 +221,7 @@
         }
 
         [HttpPost]
-        [Authorize]
+        //[Authorize]
         public IHttpActionResult GetWorkers([FromBody]Catalogue worker)
         {
             var requestUrl = GetMainUrl();
@@ -387,6 +388,7 @@
             worker.Age = MapField<int>(provider.FormData["Age"]);
             worker.Agent = GetCurrentUserCardCode();
             worker.BirthDate = MapField<string>(provider.FormData["BirthDate"]);
+            worker.WorkerName = MapField<string>(provider.FormData["WorkerName"]);
             worker.CivilId = MapField<string>(provider.FormData["CivilId"]);
             worker.Name = MapField<string>(provider.FormData["Name"]);
             worker.Code = MapField<string>(provider.FormData["Code"]);
@@ -397,6 +399,7 @@
             worker.Nationality = MapField<string>(provider.FormData["Nationality"]);
             worker.PassportExpDate = MapField<string>(provider.FormData["PassportExpDate"]);
             worker.PassportIssDate = MapField<string>(provider.FormData["PassportIssDate"]);
+            worker.PassportPoIssue = MapField<string>(provider.FormData["PassportPoIssue"]);
             worker.PassportNumber = MapField<string>(provider.FormData["PassportNumber"]);
             worker.Religion = MapField<string>(provider.FormData["Religion"]);
             worker.Status = "1";
@@ -405,8 +408,25 @@
             worker.Height = MapField<string>(provider.FormData["Height"]);
             worker.Weight = MapField<string>(provider.FormData["Weight"]);
             worker.WorkerCode = MapField<string>(provider.FormData["WorkerCode"]);
+            worker.Languages = ConvertJsonStringToObject<List<LookupItem>>(MapField<string>(provider.FormData["Languages"]));
         }
 
+        private T ConvertJsonStringToObject<T>(string jsonString)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(jsonString))
+                {
+                    return JsonConvert.DeserializeObject<T>(jsonString);
+                }
+                else
+                    return default(T);
+            }
+            catch (Exception ex)
+            {
+                return default(T);
+            }
+        }
         #endregion
     }
 }

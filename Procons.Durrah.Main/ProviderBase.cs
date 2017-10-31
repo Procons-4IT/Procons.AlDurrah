@@ -290,13 +290,6 @@
                     }
 
                     instance.CurrentServicelayerInstance.AddToUserFieldsMD(userField);
-                    //instance.CurrentServicelayerInstance.SaveChanges();
-                    //DataServiceResponse response = instance.CurrentServicelayerInstance.SaveChanges();
-                    //if (null != response)
-                    //{
-                    //    ChangeOperationResponse opRes = (ChangeOperationResponse)response.SingleOrDefault();
-                    //    object retField = ((EntityDescriptor)(opRes.Descriptor)).Entity;
-                    //}
                 }
             }
             catch (Exception ex)

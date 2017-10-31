@@ -14552,6 +14552,35 @@
       <ComplexType Name="RELIGIONParams">
         <Property Name="Code" Type="Edm.String" />
       </ComplexType>
+      <EntityType Name="PARENTTABLE">
+        <Key>
+          <PropertyRef Name="Code" />
+        </Key>
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="Name" Type="Edm.String" />
+        <Property Name="DocEntry" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Canceled" Type="Edm.String" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="UserSign" Type="Edm.Int32" />
+        <Property Name="Transfered" Type="Edm.String" />
+        <Property Name="CreateDate" Type="Edm.DateTime" />
+        <Property Name="CreateTime" Type="Edm.DateTime" />
+        <Property Name="UpdateDate" Type="Edm.DateTime" />
+        <Property Name="UpdateTime" Type="Edm.DateTime" />
+        <Property Name="DataSource" Type="Edm.String" />
+        <Property Name="CHILDTABLECollection" Type="Collection(SAPB1.CHILDTABLE)" />
+      </EntityType>
+      <ComplexType Name="CHILDTABLE">
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="LineId" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="U_Name" Type="Edm.String" />
+      </ComplexType>
+      <ComplexType Name="PARENTTABLEParams">
+        <Property Name="Code" Type="Edm.String" />
+      </ComplexType>
       <EntityType Name="BOY_60_ANM">
         <Key>
           <PropertyRef Name="Code" />
@@ -15177,7 +15206,16 @@
         <Property Name="U_Gender" Type="Edm.String" />
         <Property Name="U_PassportExpDate" Type="Edm.DateTime" />
         <Property Name="U_WorkerName" Type="Edm.String" />
+        <Property Name="WORKERLNGSCollection" Type="Collection(SAPB1.WORKERLNGS)" />
       </EntityType>
+      <ComplexType Name="WORKERLNGS">
+        <Property Name="Code" Nullable="false" Type="Edm.String" />
+        <Property Name="LineId" Nullable="false" Type="Edm.Int32" />
+        <Property Name="Object" Type="Edm.String" />
+        <Property Name="LogInst" Type="Edm.Int32" />
+        <Property Name="U_VALUE" Type="Edm.String" />
+        <Property Name="U_NAME" Type="Edm.String" />
+      </ComplexType>
       <ComplexType Name="WORKERSParams">
         <Property Name="Code" Type="Edm.String" />
       </ComplexType>
@@ -21203,6 +21241,7 @@
         <EntitySet EntityType="SAPB1.NEWTABLE" Name="NewTable" />
         <EntitySet EntityType="SAPB1.PASSRESET" Name="PASSRESET" />
         <EntitySet EntityType="SAPB1.RELIGION" Name="RELIGION" />
+        <EntitySet EntityType="SAPB1.PARENTTABLE" Name="TestUdo" />
         <EntitySet EntityType="SAPB1.BOY_60_ANM" Name="U_BOY_60_ANM" />
         <EntitySet EntityType="SAPB1.BOY_60_EEM" Name="U_BOY_60_EEM" />
         <EntitySet EntityType="SAPB1.BOY_81_CONDITION" Name="U_BOY_81_CONDITION" />

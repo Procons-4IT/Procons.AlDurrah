@@ -132,7 +132,7 @@
             return email;
         }
 
-        protected T MapField<T>(object o)
+        protected T MapField<T>(object o) 
         {
             var result = default(T);
             if (o != DBNull.Value && o != null)
@@ -143,8 +143,9 @@
                     result = (T)Convert.ChangeType(o, typeof(T));
                 return result;
             }
-            else
-                return default(T);
+            else if (typeof(T) == typeof(string))
+                return (T)(dynamic)string.Empty;
+            return default(T);
         }
 
         protected string GetMainUrl()

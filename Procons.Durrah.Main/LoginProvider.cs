@@ -8,6 +8,8 @@
     using System.Linq;
 
     using System.Runtime.InteropServices;
+    using System.Data;
+
     public class LoginProvider : ProviderBase
     {
         public ApplicationUser FindUser(string userName, string password)
@@ -241,12 +243,16 @@
             {
                 var seriesCode = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.SeriesName);
                 var result = dbHelper.ExecuteQuery($"SELECT \"Series\" FROM \"{base.databaseName}\".\"NNM1\" WHERE \"SeriesName\" = '{seriesCode}' ");
-                while (result.Read())
+                //while (result.Read())
+                //{
+                //    int.TryParse(result["Series"].ToString(), out series);
+                //}
+                foreach (DataRow drow in result.Rows)
                 {
-                    int.TryParse(result["Series"].ToString(), out series);
+                    int.TryParse(drow["Series"].ToString(), out series);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Utilities.LogException(ex);
             }

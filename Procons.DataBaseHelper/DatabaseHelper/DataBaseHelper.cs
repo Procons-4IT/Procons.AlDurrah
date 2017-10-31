@@ -15,8 +15,18 @@
         {
             get
             {
-                _connection = (T)Activator.CreateInstance(typeof(T), ConnectionString);
-                _connection.Open();
+                if (_connection == null)
+                {
+                    _connection = (T)Activator.CreateInstance(typeof(T), ConnectionString);
+                    _connection.Open();
+                }
+                else if (_connection.State == ConnectionState.Closed)
+                {
+                    _connection = (T)Activator.CreateInstance(typeof(T), ConnectionString);
+                    _connection.Open();
+                }
+
+
                 return _connection;
             }
         }
@@ -30,37 +40,47 @@
         {
             ConnectionString = connString;
         }
-        public DbDataReader ExecuteQuery(string query, Parameters parameters)
+        public DataTable ExecuteQuery(string query, Parameters parameters)
         {
             try
             {
-                var command = Connection.CreateCommand();
-                command.CommandText = query;
-                if (parameters != null)
+                using (var conn = (T)Activator.CreateInstance(typeof(T), ConnectionString))
                 {
-                    object param;
-                    command.CommandType = CommandType.StoredProcedure;
-                    foreach (KeyValuePair<string, object> kvp in parameters.paramsList)
+                    conn.Open();
+                    var command = conn.CreateCommand();
+                    command.CommandText = query;
+                    if (parameters != null)
                     {
-                        if (typeof(T).Equals(typeof(HanaConnection)))
-                            param = new HanaParameter(kvp.Key, kvp.Value);
-                        else
-                            param = new SqlParameter(kvp.Key, kvp.Value);
-                        command.Parameters.Add(param);
+                        object param;
+                        command.CommandType = CommandType.StoredProcedure;
+                        foreach (KeyValuePair<string, object> kvp in parameters.paramsList)
+                        {
+                            if (typeof(T).Equals(typeof(HanaConnection)))
+                                param = new HanaParameter(kvp.Key, kvp.Value);
+                            else
+                                param = new SqlParameter(kvp.Key, kvp.Value);
+                            command.Parameters.Add(param);
+                        }
                     }
+                    var result = command.ExecuteReader();
+                    DataTable dt = new DataTable();
+                    dt.Load(result);
+                    conn.Close();
+                    return dt;
                 }
-                var result = command.ExecuteReader();
-                Connection.Close();
-                return result;
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Connection.Close();
                 return null;
+            }
+            finally
+            {
+
             }
 
         }
-        public DbDataReader ExecuteQuery(string query)
+        public DataTable ExecuteQuery(string query)
         {
             var result = ExecuteQuery(query, null);
             return result;
