@@ -18,9 +18,17 @@
 
                 <form (ngSubmit)="submitWorker(photoUpload,passportUpload);" method="post" id="profileEditForm" class="form-default has-upload"
                   #workerForm="ngForm">
+
+                  <div class="form-group">
+                    <label for="workerName">{{ 'name' | translate }}</label>
+                    <input required id="workerName" type="text" class="form-control" name="workerName" [(ngModel)]="state.worker.workerName"
+                      placeholder="John Doe" />
+                  </div>
+
+
                   <div class="form-group">
                     <label for="birthDate">{{ 'birthDate' | translate }}</label>
-                    <input required id="birthDate" type="date" class="form-control" name="birthDate" [value]="state.worker.birthDate | date: 'يوم-شهر-سنة'"
+                    <input required id="birthDate" type="date" class="form-control" name="birthDate" [value]="state.worker.birthDate | date: 'yyyy-MM-dd'"
                       (input)="state.worker.birthDate = $event.target.valueAsDate" />
                   </div>
 
@@ -123,7 +131,7 @@
 
                   <div class="form-group ">
                     <label for="passIssueDate">{{ 'passportIssueDate' | translate }}</label>
-                    <input required id="passIssueDate" name="passportIssueDate" type="date" [value]="state.worker.passportIssDate | date: 'يوم-شهر-سنة'"
+                    <input required id="passIssueDate" name="passportIssueDate" type="date" [value]="state.worker.passportIssDate | date: 'yyyy-MM-dd'"
                       (input)="state.worker.passportIssDate = $event.target.valueAsDate" class="form-control" />
                   </div>
 
@@ -136,14 +144,14 @@
 
                   <div class="form-group ">
                     <label for="passExpiry">{{ 'passportExpiry' | translate }}</label>
-                    <input required name="passportExpiry" type="date" [value]="state.worker.passportExpDate | date: 'يوم-شهر-سنة'" (input)="state.worker.passportExpDate = $event.target.valueAsDate"
+                    <input required name="passportExpiry" type="date" [value]="state.worker.passportExpDate | date: 'yyyy-MM-dd'" (input)="state.worker.passportExpDate = $event.target.valueAsDate"
                       class="form-control" />
                   </div>
 
 
                   <div class="form-group ">
                     <label for="civilID"> {{ 'civilID' | translate }}</label>
-                    <input required id="civilID" name="civilId" type="text" class="form-control" placeholder="ex. 1234" [(ngModel)]="state.worker.civilId"
+                    <input id="civilID" name="civilId" type="text" class="form-control" placeholder="ex. 1234" [(ngModel)]="state.worker.civilId"
                     />
                   </div>
                   <div class="form-group">
@@ -196,17 +204,19 @@
                       </ng-template>
                     </p-fileUpload>
                   </div>
-
-
                   <div class="form-group  text-right">
-                    <input type="submit" value="{{ 'save' | translate }}" class="btn btn-default" [disabled]="!workerForm.valid || !isFilesAttached()" *ngIf="state.isAddMode"
-                    />
-                    <input type="submit" value="Update" class="btn btn-default"  *ngIf="!state.isAddMode" />
+                    <input type="submit" value="{{ 'save' | translate }}" class="btn btn-default" [disabled]="!workerForm.valid || !isFilesAttached()"
+                      *ngIf="state.isAddMode" />
+                    <input type="submit" value="Update" class="btn btn-default" *ngIf="!state.isAddMode" />
 
                   </div>
                   <div class="form-group  text-right">
                     <div class="btn btn-default" (click)="back()">{{'back' | translate }}</div>
                   </div>
+                  <div class="form-group  text-left">
+                    <div class="btn btn-default" (click)="clearForm()">{{'clear' | translate }}</div>
+                  </div>
+
                 </form>
               </div>
             </div>

@@ -17,6 +17,7 @@
     "invalidPassword": "Passwords Don't Match",
     "invalidCaptcha": "Please Enter Recaptcha"
   },
+  "name": "الاسم",
   "back": "رجوع",
   "submit": "سجل",
   "send": "إرسال",
