@@ -18,6 +18,7 @@ export class AddProfileComponent implements OnInit {
     @Output() onBack = new EventEmitter<any>();
     @ViewChild("photoUpload") photoUpload;
     @ViewChild("passportUpload") passportUpload;
+    @ViewChild("workerForm") workerForm;
 
     photoFileText = "Select Photo File";
     passportFileText = "Select Passport File";
@@ -46,8 +47,7 @@ export class AddProfileComponent implements OnInit {
             this.passportServerMode = FileUploadMode.Edit;
             console.log('searchCriteria Params ', this.searchCriterias);
         } else {
-            let workerParams: any = Array.from({ length: 24 }, x => { return '' }) as any;
-            this.state.worker = new (<any>Worker)(...workerParams);
+            this.createEmptyWorkerState();
             this.state.isAddMode = true;
         }
     }
@@ -146,6 +146,14 @@ export class AddProfileComponent implements OnInit {
         }
         this.loading = false;
         this.myModal.showSuccessModal("Transaction Sucessful!", false);
+        console.log('state',this.state);
+        this.clearForm();
+    }
+    clearForm(){
+        console.log('clearing the form');
+        this.createEmptyWorkerState();
+        this.photoUpload.clear();
+        this.passportUpload.clear();
     }
     onErrorUpdate(onErrorMessage) {
         console.log(onErrorMessage);
@@ -155,7 +163,8 @@ export class AddProfileComponent implements OnInit {
     }
 
     getFormData(formData: FormData) {
-        formData.append('BirthDate', this.state.worker.birthDate);
+        formData.append('WorkerName', this.state.worker.workerName);
+        formData.append('BirthDate', this.state.worker.birthDate.toString());
         formData.append('Gender', this.state.worker.gender);
         formData.append('Nationality', this.state.worker.nationality);
         formData.append('Religion', this.state.worker.religion);
@@ -166,15 +175,18 @@ export class AddProfileComponent implements OnInit {
         formData.append('Education', this.state.worker.education);
         formData.append('Video', this.state.worker.video);
         formData.append('PassportNumber', this.state.worker.passportNumber);
-        formData.append('PassportIssDate', this.state.worker.passportIssDate);
-        formData.append('PassportExpDate', this.state.worker.passportExpDate);
+        formData.append('PassportIssDate', this.state.worker.passportIssDate.toString());
+        formData.append('PassportExpDate', this.state.worker.passportExpDate.toString());
         formData.append('CivilId', this.state.worker.civilId);
         let itemName: any[] = this.searchCriterias.workerTypes.filter(nameValuePair => nameValuePair.value === this.state.worker.code);
         formData.append('Name', itemName[0].name);
         formData.append('Code', this.state.worker.code);
     }
 
-
+    createEmptyWorkerState(){
+        let workerParams: any = Array.from({ length: 25 }, x => { return '' }) as any;
+        this.state.worker = new (<any>Worker)(...workerParams);
+    }
     isFilesAttached(): boolean {
 
         let photoFile = this.photoUpload.files;
@@ -182,46 +194,7 @@ export class AddProfileComponent implements OnInit {
 
         return (photoFile && photoFile[0] && passportFile && passportFile[0]);
     }
-    originalUploadFile(elFiles: ElementRef) {
 
-        let files = elFiles.nativeElement.files;
-        if (files && files[0]) {
-            const formData = new FormData();
-            for (var i = 0; i < files.length; i++) {
-                formData.append("Photo", files[i], files[i].name);
-                formData.append("Passport", files[i], files[i].name);
-            }
-            formData.append('BirthDate', '01-01-2000');
-            formData.append('Gender', '1');
-            formData.append('Nationality', '1');
-            formData.append('Religion', '1');
-            formData.append('MaritalStatus', '1');
-            formData.append('Language', '1');
-            //photo Missing
-            formData.append('Weight', '80');
-            formData.append('Height', '180');
-            formData.append('Education', '1');
-            formData.append('Video', '01-01-2000');
-            formData.append('PassportNumber', '01-01-2000');
-            formData.append('PassportIssDate', '01-01-2000');
-            formData.append('PassportExpDate', '01-01-2000');
-            formData.append('CivilId', '124542154215');
-            //type Missing ? is it code
-            formData.append('Age', '43'); //This is not needed
-            formData.append('Code', 'code');
-
-
-            this.myApi.addWorker(formData).subscribe(x => {
-                console.log('Somethign Happend ! ', formData)
-            }, onError => {
-
-            });
-        }
-    }
-    myUploader(event) {
-        //event.files == files to upload
-        console.log('I should upload the files!');
-    }
 
     deleteServerFile(isPhotoUpload: boolean) {
         if (isPhotoUpload) {
