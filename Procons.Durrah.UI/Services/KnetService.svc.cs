@@ -29,6 +29,7 @@ namespace Procons.Durrah.Api.Services
                 payment.Udf2 = transaction.CardCode;
                 payment.Udf3 = transaction.Code;
                 payment.Udf4 = transaction.WorkerCode;
+                payment.Udf5 = transaction.Amount;
 
                 TransVal = payment.PerformInitTransaction();
                 varRawResponse = payment.RawResponse;

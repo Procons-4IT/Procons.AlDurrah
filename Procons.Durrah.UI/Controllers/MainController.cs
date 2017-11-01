@@ -23,7 +23,6 @@ namespace Procons.Durrah.Api.Controllers
         {
             try
             {
-                System.Diagnostics.Debugger.Launch();
                 var paymentID = Request.Form["paymentid"];
                 var result = Request.Form["result"];
                 var postdate = Request.Form["postdate"];
@@ -34,14 +33,15 @@ namespace Procons.Durrah.Api.Controllers
                 var cardCode = Request.Form["udf2"];
                 var code = Request.Form["udf3"];
                 var workerCode = Request.Form["udf4"];
+                var amount = Request.Form["udf5"];
 
                 Transaction trans = new Transaction() { PaymentID = paymentID, Result = result, PostDate = postdate, TranID = tranid, Auth = auth, Ref = refr, TrackID = trackid, CardCode = cardCode, Code = code, WorkerCode = workerCode };
                 var paymentResult = await CallPayment(trans);
 
                 if (paymentResult)
-                    Response.Write($"REDIRECT={Utilities.GetConfigurationValue(Constants.ConfigurationKeys.ResultUrl)}?PaymentID={paymentID}&Result={ result }&PostDate={ postdate }&TranID={ tranid }&Auth={ auth }&Ref={refr }&TrackID={trackid}&Udf2={cardCode}&Udf3={code}&Udf4={workerCode}");
+                    Response.Write($"REDIRECT={Utilities.GetConfigurationValue(Constants.ConfigurationKeys.ResultUrl)}?PaymentID={paymentID}&Result={ result }&PostDate={ postdate }&TranID={ tranid }&Auth={ auth }&Ref={refr }&TrackID={trackid}&Udf2={cardCode}&Udf3={code}&Udf4={workerCode}&Udf5={amount}");
                 else
-                    Response.Write($"REDIRECT={Utilities.GetConfigurationValue(Constants.ConfigurationKeys.ErrorUrl)}");
+                    Response.Write($"REDIRECT={Utilities.GetConfigurationValue(Constants.ConfigurationKeys.ErrorUrl)}?PaymentID={paymentID}&Result={ result }&PostDate={ postdate }&TranID={ tranid }&Auth={ auth }&Ref={refr }&TrackID={trackid}&Udf2={cardCode}&Udf3={code}&Udf4={workerCode}&Udf5={amount}");
 
 
             }
