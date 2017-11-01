@@ -50,6 +50,12 @@ export class AddProfileComponent implements OnInit {
             this.createEmptyWorkerState();
             this.state.isAddMode = true;
         }
+        if (!this.state.worker.languages) {
+            this.state.worker.languages = [];
+        }
+        if (this.searchCriterias.languages && Array.isArray(this.searchCriterias.languages)) {
+            this.searchCriterias.languages = this.searchCriterias.languages.map(nameValuePair=>{return {"label":nameValuePair.name,"value":nameValuePair.value}}) as any;
+        }
     }
 
     tempData() {
@@ -146,10 +152,10 @@ export class AddProfileComponent implements OnInit {
         }
         this.loading = false;
         this.myModal.showSuccessModal("Transaction Sucessful!", false);
-        console.log('state',this.state);
+        console.log('state', this.state);
         this.clearForm();
     }
-    clearForm(){
+    clearForm() {
         console.log('clearing the form');
         this.createEmptyWorkerState();
         this.photoUpload.clear();
@@ -164,12 +170,13 @@ export class AddProfileComponent implements OnInit {
 
     getFormData(formData: FormData) {
         formData.append('WorkerName', this.state.worker.workerName);
+        formData.append('WorkerCode', this.state.worker.workerCode);
         formData.append('BirthDate', this.state.worker.birthDate.toString());
         formData.append('Gender', this.state.worker.gender);
         formData.append('Nationality', this.state.worker.nationality);
         formData.append('Religion', this.state.worker.religion);
         formData.append('MaritalStatus', this.state.worker.maritalStatus);
-        formData.append('Language', this.state.worker.language);
+        formData.append('Languages', JSON.stringify(this.state.worker.languages));
         formData.append('Weight', this.state.worker.weight);
         formData.append('Height', this.state.worker.height);
         formData.append('Education', this.state.worker.education);
@@ -183,8 +190,8 @@ export class AddProfileComponent implements OnInit {
         formData.append('Code', this.state.worker.code);
     }
 
-    createEmptyWorkerState(){
-        let workerParams: any = Array.from({ length: 25 }, x => { return '' }) as any;
+    createEmptyWorkerState() {
+        let workerParams: any = Array.from({ length: 26 }, x => { return '' }) as any;
         this.state.worker = new (<any>Worker)(...workerParams);
     }
     isFilesAttached(): boolean {

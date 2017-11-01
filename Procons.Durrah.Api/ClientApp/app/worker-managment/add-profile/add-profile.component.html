@@ -76,13 +76,9 @@
 
                   <div class="form-group ">
                     <label for="lang">{{ 'languages' | translate }}</label>
-                    <!-- <option>اللغات المتحدث بها</option> -->
-                    <select required id="lang" class="form-control" name="language" [(ngModel)]="state.worker.language">
-                      <option disabled selected value=""> {{state.selectOptionText}}</option>
-                      <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.languages;">
-                        {{nameValuePair.name}}
-                      </option>
-                    </select>
+                    <div>
+                      <p-multiSelect required name="lang" defaultLabel="اللغات المتحدث بها"  [options]="searchCriterias.languages"  [(ngModel)]="this.state.worker.languages" ></p-multiSelect>
+                    </div>
                   </div>
 
                   <div class="form-group ">
@@ -205,7 +201,7 @@
                     </p-fileUpload>
                   </div>
                   <div class="form-group  text-right">
-                    <input type="submit" value="{{ 'save' | translate }}" class="btn btn-default" [disabled]="!workerForm.valid || !isFilesAttached()"
+                    <input type="submit" value="{{ 'save' | translate }}" class="btn btn-default" [disabled]="!workerForm.valid || !isFilesAttached() || state.worker.languages.length === 0"
                       *ngIf="state.isAddMode" />
                     <input type="submit" value="Update" class="btn btn-default" *ngIf="!state.isAddMode" />
 

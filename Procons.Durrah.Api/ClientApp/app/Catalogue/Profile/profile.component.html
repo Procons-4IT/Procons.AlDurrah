@@ -6,6 +6,10 @@
         <div class="col-sm-6">
           <table class="table">
             <tbody>
+                <tr>
+                    <td>{{'name' | translate}}</td>
+                    <td>{{worker.workerName}}</td>
+                  </tr>
               <tr>
                 <td>{{'birthday' | translate}}</td>
                 <td>{{worker.birthDate}}</td>
@@ -21,7 +25,13 @@
               </tr>
               <tr>
                 <td>{{'language' | translate }}</td>
-                <td>{{worker.language}}</td>
+                <td>
+                  <ul>
+                    <li *ngFor="let language of worker.languages">
+                      {{language}}
+                    </li>
+                </ul>
+              </td>
               </tr>
               <tr>
                 <td>{{'work' | translate }}</td>
