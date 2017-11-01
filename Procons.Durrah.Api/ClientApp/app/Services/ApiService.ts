@@ -190,7 +190,9 @@ export class ApiService {
         for (var propertyIndex = 0; propertyIndex < workerProperties.length; propertyIndex++) {
             workerProperty = workerProperties[propertyIndex];
             let splitValue = this.splitProperties(workerServerNameValueHashData[workerProperty]);
-
+            if (workerProperty === 'languages') {
+                splitValue = workerServerNameValueHashData[workerProperty]
+            }
             if (Array.isArray(splitValue) && splitValue.length === 2) {
                 workerDisplayData[workerProperty] = splitValue[1]; //grab value after hash
                 workerKeyData[workerProperty] = splitValue[0]; //grab value after hash
@@ -276,11 +278,18 @@ export class ApiService {
     }
     public updateWorker(formData: any): Observable<any> {
         let url = this.config.baseUrl + this.config.updateWorkerUrl;
-        return this.uploadFile(formData, url);
+        return this.uploadFile(formData, url)
+            .map(response => {
+                return response._body;
+            });
+        ;
     }
     public addWorker(formData: any): Observable<any> {
         let url = this.config.baseUrl + this.config.addWorkerUrl;
-        return this.uploadFile(formData, url);
+        return this.uploadFile(formData, url)
+            .map(response => {
+                return response._body;
+            });
     }
     public deleteWorker(workerCode: String): Observable<any> {
         return this.httpPostHelper(this.config.deleteWorkerUrl, { "WorkerCode": workerCode });
