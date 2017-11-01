@@ -8,6 +8,7 @@ export class Worker {
         public religion: string,
         public maritalStatus: string,
         public language: string,
+        public languages: string[],
         public photo: string,
         public weight: string,
         public height: string,

@@ -21,6 +21,7 @@
                                     <div class="profile-data">
                                         <div class="row">
                                             <div class="col-sm-6"><h3 class="h5">{{worker.agent}}</h3></div>
+                                            <div class="col-sm-6"><h3 class="h5">{{worker.workerName}}</h3></div>
                                             <div class="col-sm-6"><small>{{worker.birthDate}}</small></div>
                                         </div>
                                         <hr />
@@ -31,6 +32,11 @@
                                                 <li>{{worker.nationality}}</li>
                                                 <li>{{worker.education}}</li>
                                                 <li>{{worker.serialNumber}}</li>
+                                                <ul >
+                                                <li *ngFor="let language of worker.languages">
+                                                    {{language?language:''}}
+                                                  </li>
+                                                </ul>
                                                 <li>{{worker.language}}</li>
                                                 <li>{{worker.religion}}</li>
                                                 <li>{{worker.maritalStatus}}</li>
@@ -44,7 +50,7 @@
                                                 <li>Passport Number: <strong>{{worker.passportNumber}}</strong></li>
                                                 <li>Passport Expiry Date: <strong>{{worker.passportExpDate}}</strong></li>
                                                 <li>Passport Issue Date: <strong>{{worker.passportIssDate}}</strong></li>
-                                                <li>Passport Place of Issue: <strong>NA</strong></li>
+                                                <li>Passport Place of Issue: <strong>{{worker.passportPoIssue}}</strong></li>
                                                 <li>Civil ID: <strong>{{worker.civilId}}</strong></li>
                                                 <li><span class="icon icon-ed-height icon-fw"></span>{{worker.height}}</li>
                                               </ul>
