@@ -31,6 +31,7 @@ namespace Procons.Durrah
         {
             HttpContext.Current.SetSessionStateBehavior(SessionStateBehavior.Required);//USED TO ENABLE SESSION
 
+
             HttpConfiguration httpConfig = new HttpConfiguration();
             RouteCollection routes = new RouteCollection();
 
@@ -39,7 +40,7 @@ namespace Procons.Durrah
             ConfigureRoutes(RouteTable.Routes);
             ConfigureOAuthTokenGeneration(app);
             ConfigureOAuthTokenConsumption(app);
-      
+
             app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
             app.UseWebApi(httpConfig);
 
@@ -59,7 +60,7 @@ namespace Procons.Durrah
                 AccessTokenExpireTimeSpan = TimeSpan.FromDays(1),
                 Provider = new ApplicationOAuthProvider(),
                 AccessTokenFormat = new ApplicationJwtFormat("self")
-            };      
+            };
             app.UseOAuthAuthorizationServer(OAuthServerOptions);
         }
 
@@ -89,12 +90,14 @@ namespace Procons.Durrah
             config.DependencyResolver = new UnityResolver(container);
             config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("multipart/form-data"));
             config.MessageHandlers.Add(new LanguageMessageHandler());
+            config.MessageHandlers.Add(new SessionIdHandler());
             config.MapHttpAttributeRoutes();
-            config.Routes.MapHttpRoute(
-                                        name: "DefaultApi",
-                                        routeTemplate: "api/{controller}/{action}/{id}",
-                                        defaults: new { id = RouteParameter.Optional }
-                                        );
+            var route = config.Routes.MapHttpRoute(
+                                         name: "DefaultApi",
+                                         routeTemplate: "api/{controller}/{action}/{id}",
+                                         defaults: new { id = RouteParameter.Optional }
+                                         );
+
             var jsonFormatter = config.Formatters.OfType<JsonMediaTypeFormatter>().First();
             jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
         }

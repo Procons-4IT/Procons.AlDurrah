@@ -19,8 +19,9 @@
     using System.Web.Hosting;
     using Procons.Durrah.Common.Enumerators;
     using Newtonsoft.Json;
+    using System.Web.SessionState;
 
-    public class WorkersController : BaseApiController
+    public class WorkersController : BaseApiController, IRequiresSessionState
     {
 
         B1Facade b1Facade = new B1Facade();

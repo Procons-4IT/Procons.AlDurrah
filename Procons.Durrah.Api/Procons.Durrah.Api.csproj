@@ -400,6 +400,7 @@
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Attributes\ClaimsAuthorizationAttribute.cs" />
     <Compile Include="Controllers\WorkersController.cs" />
+    <Compile Include="Handlers\DefaultController.cs" />
     <Compile Include="Handlers\LanguageMessageHandler.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\ClaimBindingModel.cs" />
