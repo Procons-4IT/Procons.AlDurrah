@@ -122,6 +122,9 @@ export class HomeComponent implements OnInit {
         this.loadingPayment = false;
         this.paymentModalText = x.udF1;
         this.amount = x && x.amount;
+        var stateObj = { foo: "bar" };
+        history.replaceState(stateObj, "page 3", "home");
+
       }, onError => {
         this.loadingPayment = false;
         this.paymentModalText = 'Something Went Wrong!'
