@@ -48,6 +48,11 @@
             return provider.CreateIncomingPayment(trans);
         }
 
+        public string GetEmailAddress(string cardCode)
+        {
+            return provider.GetEmailAddress(cardCode);
+        }
+
         public List<LookupItem> GetLanguagesLookups()
         {
             return provider.GetLookupValues<LANGUAGES>();

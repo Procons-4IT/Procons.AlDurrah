@@ -58,6 +58,10 @@
             IEnumerable<Claim> claims;
             var cardCode = string.Empty;
 
+            claims = ((ClaimsIdentity)User.Identity).Claims;
+            cardCode = claims.Where(x => x.Type == Constants.ServiceLayer.CardCode).FirstOrDefault().Value;
+            transaction.CardCode = cardCode;
+
             var knetSvc = new KnetService.KnetServiceClient();
             transaction.Amount = workersFacade.GetDownPaymentAmount().ToString();
             try
@@ -70,9 +74,6 @@
             }
 
             knetSvc.Close();
-
-            claims = ((ClaimsIdentity)User.Identity).Claims;
-            cardCode = claims.Where(x => x.Type == Constants.ServiceLayer.CardCode).FirstOrDefault().Value;
 
             if (returnedTrans == null)
             {
@@ -106,25 +107,32 @@
         {
             var paymentAmount = workersFacade.GetDownPaymentAmount().ToString();
             var isSalesOrderAvailable = workersFacade.CheckSalesOderAvailability(payment.PaymentID);
+            var userEmail = workersFacade.GetEmailAddress(payment.CardCode);
 
             payment.Amount = paymentAmount;
             if (payment.Result == "CAPTURED" && isSalesOrderAvailable)
             {
                 var itemCode = workersFacade.GetItemCodeByPaymentId(payment.PaymentID);
 
-                Utilities.LogException($"Captured Code {payment.Code}");
-                var tokens = new Dictionary<string, string>();
-                tokens.Add(Constants.KNET.MerchantTrackID, payment.TrackID);
-                tokens.Add(Constants.KNET.PaymentID, payment.PaymentID);
-                tokens.Add(Constants.KNET.ReferenceID, payment.Ref);
-                tokens.Add(Constants.KNET.TransactionAmount, payment.Amount);
-                tokens.Add(Constants.KNET.ItemCode, itemCode);
+                try
+                {
+                    var tokens = new Dictionary<string, string>();
+                    tokens.Add(Constants.KNET.MerchantTrackID, payment.TrackID);
+                    tokens.Add(Constants.KNET.PaymentID, payment.PaymentID);
+                    tokens.Add(Constants.KNET.ReferenceID, payment.Ref);
+                    tokens.Add(Constants.KNET.TransactionAmount, payment.Amount);
+                    tokens.Add(Constants.KNET.ItemCode, itemCode);
 
-                idMessage.Destination = base.GetCurrentUserEmail();
-                idMessage.Subject = Utilities.GetResourceValue(Constants.Resources.Transaction_Completed);
-                var messageBody = Utilities.GetResourceValue(Constants.Resources.KnetEmailConfirmation).GetMessageBody(tokens);
-                idMessage.Body = messageBody;
-                emailService.SendAsync(idMessage);
+                    idMessage.Destination = userEmail;
+                    idMessage.Subject = Utilities.GetResourceValue(Constants.Resources.Transaction_Completed);
+                    var messageBody = Utilities.GetResourceValue(Constants.Resources.KnetEmailConfirmation).GetMessageBody(tokens);
+                    idMessage.Body = messageBody;
+                    emailService.SendAsync(idMessage);
+                }
+                catch(Exception ex)
+                {
+                    Utilities.LogException(ex);
+                }
 
                 var result = workersFacade.SavePaymentDetails(payment);
 
@@ -141,7 +149,7 @@
                     return InternalServerError(new Exception(paymentString));
                 }
             }
-            else if (payment.Result == "canceled")
+            else if (payment.Result == "CANCELED")
             {
                 payment.UDF1 = Utilities.GetResourceValue(Constants.Resources.Transaction_Cancelled);
                 return Ok(payment);

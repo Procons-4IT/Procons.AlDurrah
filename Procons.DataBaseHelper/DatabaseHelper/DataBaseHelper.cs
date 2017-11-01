@@ -42,41 +42,30 @@
         }
         public DataTable ExecuteQuery(string query, Parameters parameters)
         {
-            try
+
+            using (var conn = (T)Activator.CreateInstance(typeof(T), ConnectionString))
             {
-                using (var conn = (T)Activator.CreateInstance(typeof(T), ConnectionString))
+                conn.Open();
+                var command = conn.CreateCommand();
+                command.CommandText = query;
+                if (parameters != null)
                 {
-                    conn.Open();
-                    var command = conn.CreateCommand();
-                    command.CommandText = query;
-                    if (parameters != null)
+                    object param;
+                    command.CommandType = CommandType.StoredProcedure;
+                    foreach (KeyValuePair<string, object> kvp in parameters.paramsList)
                     {
-                        object param;
-                        command.CommandType = CommandType.StoredProcedure;
-                        foreach (KeyValuePair<string, object> kvp in parameters.paramsList)
-                        {
-                            if (typeof(T).Equals(typeof(HanaConnection)))
-                                param = new HanaParameter(kvp.Key, kvp.Value);
-                            else
-                                param = new SqlParameter(kvp.Key, kvp.Value);
-                            command.Parameters.Add(param);
-                        }
+                        if (typeof(T).Equals(typeof(HanaConnection)))
+                            param = new HanaParameter(kvp.Key, kvp.Value);
+                        else
+                            param = new SqlParameter(kvp.Key, kvp.Value);
+                        command.Parameters.Add(param);
                     }
-                    var result = command.ExecuteReader();
-                    DataTable dt = new DataTable();
-                    dt.Load(result);
-                    conn.Close();
-                    return dt;
                 }
-
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
-            finally
-            {
-
+                var result = command.ExecuteReader();
+                DataTable dt = new DataTable();
+                dt.Load(result);
+                conn.Close();
+                return dt;
             }
 
         }

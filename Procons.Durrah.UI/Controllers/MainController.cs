@@ -43,7 +43,7 @@ namespace Procons.Durrah.Api.Controllers
                 else
                     Response.Write($"REDIRECT={Utilities.GetConfigurationValue(Constants.ConfigurationKeys.ErrorUrl)}");
 
-               
+
             }
             catch (Exception ex)
             {
@@ -54,11 +54,10 @@ namespace Procons.Durrah.Api.Controllers
 
         public async Task<bool> CallPayment(Transaction trans)
         {
-            var transaction = new Transaction();
             HttpResponseMessage response = new HttpResponseMessage();
             using (HttpClient client = new HttpClient())
             {
-                response = await client.PostAsJsonAsync($"{Utilities.GetConfigurationValue(Constants.ConfigurationKeys.ResultUrl)}/api/Workers/CreatePayment", transaction);
+                response = await client.PostAsJsonAsync($"{Utilities.GetConfigurationValue(Constants.ConfigurationKeys.ApiBase)}/api/Workers/CreatePayment", trans);
             }
             return response.IsSuccessStatusCode;
         }

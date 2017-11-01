@@ -47,7 +47,7 @@ namespace Procons.Durrah.Api.Services
                     return transaction;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Utilities.LogException(ex);
                 return null;

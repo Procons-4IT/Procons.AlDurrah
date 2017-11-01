@@ -89,6 +89,8 @@
             return workersList;
         }
 
+      
+
         public AspNet.IdentityResult CreateUser(ApplicationUser user)
         {
             AspNet.IdentityResult identityResult = null;
@@ -243,10 +245,7 @@
             {
                 var seriesCode = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.SeriesName);
                 var result = dbHelper.ExecuteQuery($"SELECT \"Series\" FROM \"{base.databaseName}\".\"NNM1\" WHERE \"SeriesName\" = '{seriesCode}' ");
-                //while (result.Read())
-                //{
-                //    int.TryParse(result["Series"].ToString(), out series);
-                //}
+
                 foreach (DataRow drow in result.Rows)
                 {
                     int.TryParse(drow["Series"].ToString(), out series);

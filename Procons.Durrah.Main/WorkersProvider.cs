@@ -687,7 +687,7 @@
             bool isAvailable = false;
             var conn = Factory.DeclareClass<DatabaseHelper<HanaConnection>>();
 
-            var result = conn.ExecuteQuery(string.Format("SELECT COUNT(\"DocEntry\") \"COUNT\" FROM \"ORDR\" WHERE \"U_PaymentID\"='{0}'", paymentId));
+            var result = conn.ExecuteQuery($"SELECT COUNT(\"DocEntry\") \"COUNT\" FROM \"{base.databaseName}\".\"ORDR\" WHERE \"U_PaymentID\"='{paymentId}'");
             var count = int.Parse(result.Rows[0]["COUNT"].ToString());
             if (count > 0)
                 isAvailable = true;
@@ -783,10 +783,6 @@
                 query.Append($@" WHERE ""U_PaymentID"" = '{paymentId}'");
 
                 var result = conn.ExecuteQuery(query.ToString());
-                //while (result.Read())
-                //{
-                //    itemCode = MapField<string>(result["ItemCode"]);
-                //}
                 foreach (DataRow drow in result.Rows)
                 {
                     itemCode = MapField<string>(drow["ItemCode"]);
@@ -808,12 +804,6 @@
                 
                 StringBuilder query = new StringBuilder($@"SELECT IFNULL(""AttachPath"",'') ""AttachPath"" FROM ""{base.databaseName}"".""OADP""");
                 var result = conn.ExecuteQuery(query.ToString());
-
-                //while (result.Read())
-                //{
-                //    path = MapField<string>(result["AttachPath"]);
-                //}
-
                 foreach (DataRow drow in result.Rows)
                 {
                     path = MapField<string>(drow["AttachPath"]);
@@ -824,6 +814,28 @@
             {
                 Utilities.LogException(ex);
                 return string.Empty;
+            }
+        }
+
+        public string GetEmailAddress(string cardCode)
+        {
+            var emailAddress = string.Empty;
+            try
+            {
+                var ServiceInstance = ServiceLayerProvider.GetInstance();
+                var user = ServiceInstance.CurrentServicelayerInstance.BusinessPartners.Where(x => x.CardCode == cardCode).FirstOrDefault();
+
+                if (user != null)
+                {
+                    if (user.EmailAddress != null)
+                        emailAddress = user.EmailAddress;
+                }
+                return emailAddress;
+            }
+            catch (Exception ex)
+            {
+                Utilities.LogException(ex);
+                return emailAddress;
             }
         }
 
