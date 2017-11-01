@@ -87,6 +87,11 @@
             return provider.GetAttachmentPath();
         }
 
+        public bool CheckSalesOderAvailability(string paymentId)
+        {
+            return provider.CheckSalesOrderAvailability(paymentId);
+        }
+
         #region Private Methods
 
 

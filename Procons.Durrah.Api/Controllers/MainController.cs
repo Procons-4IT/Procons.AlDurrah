@@ -32,7 +32,11 @@ namespace Procons.Durrah.Api.Controllers
             var auth = Request.Form["auth"];
             var refr = Request.Form["ref"];
             var trackid = Request.Form["trackid"];
-            Response.Write($"REDIRECT={Utilities.GetConfigurationValue(Constants.ConfigurationKeys.ResultUrl)}?PaymentID={paymentID}&Result={ result }&PostDate={ postdate }&TranID={ tranid }&Auth={ auth }&Ref={refr }&TrackID={trackid}");
+            var cardCode = Request.Form["udf2"];
+            var code = Request.Form["udf3"];
+            var workerCode = Request.Form["udf4"];
+
+            Response.Write($"REDIRECT={Utilities.GetConfigurationValue(Constants.ConfigurationKeys.ResultUrl)}?PaymentID={paymentID}&Result={ result }&PostDate={ postdate }&TranID={ tranid }&Auth={ auth }&Ref={refr }&TrackID={trackid}&Udf2={cardCode}&Udf3={code}&Udf4={workerCode}");
             return View();
         }
 

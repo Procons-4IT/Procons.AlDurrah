@@ -52,54 +52,6 @@
 
         [Authorize]
         [HttpPost]
-        public HttpResponseMessage CallKnetGatewayOld([FromBody]Transaction transaction)
-        {
-            KnetService.KnetServiceClient knetSvc = new KnetService.KnetServiceClient();
-            var returnedTrans = knetSvc.CallKnetGateway(transaction);
-            short TransVal;
-            string varPaymentID, varPaymentPage, varErrorMsg, varRawResponse;
-
-            var claims = ((ClaimsIdentity)User.Identity).Claims;
-            var cardCode = claims.Where(x => x.Type == Constants.ServiceLayer.CardCode).FirstOrDefault().Value;
-
-            transaction.TrackID = (new Random().Next(10000000) + 1).ToString();
-
-            e24PaymentPipeCtlClass payment = new e24PaymentPipeCtlClass();
-            payment.Action = "1";
-            payment.Amt = workersFacade.GetDownPaymentAmount().ToString();
-            payment.Currency = "414";
-            payment.Language = "USA";
-            payment.ResponseUrl = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.ResponseUrl);
-            payment.ErrorUrl = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.ErrorUrl);
-            payment.TrackId = transaction.TrackID;
-            payment.ResourcePath = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.ResourcePath);
-            payment.Alias = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.Alias); ;
-
-            TransVal = payment.PerformInitTransaction();
-            varRawResponse = payment.RawResponse;
-            varPaymentID = payment.PaymentId;
-            varPaymentPage = payment.PaymentPage;
-            varErrorMsg = payment.ErrorMsg;
-            transaction.PaymentID = varPaymentID;
-
-            if (TransVal != 0)
-            {
-                Utilities.LogException(varErrorMsg);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "/Error");
-            }
-            else
-            {
-                var result = workersFacade.CreateSalesOrder(transaction, cardCode);
-                if (result == double.MinValue)
-                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "/Error");
-                else
-                    return Request.CreateResponse(HttpStatusCode.OK, varPaymentPage + "?PaymentID=" + varPaymentID);
-            }
-
-        }
-
-        [Authorize]
-        [HttpPost]
         public HttpResponseMessage CallKnetGateway([FromBody]Transaction transaction)
         {
             Transaction returnedTrans = null;
@@ -119,7 +71,6 @@
 
             knetSvc.Close();
 
-
             claims = ((ClaimsIdentity)User.Identity).Claims;
             cardCode = claims.Where(x => x.Type == Constants.ServiceLayer.CardCode).FirstOrDefault().Value;
 
@@ -132,6 +83,7 @@
                 transaction.PaymentID = returnedTrans.PaymentID;
                 transaction.TrackID = returnedTrans.TrackID;
                 transaction.TranID = returnedTrans.TranID;
+
                 var result = workersFacade.CreateSalesOrder(transaction, cardCode);
                 if (result == double.MinValue)
                     return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "/Error");
@@ -149,14 +101,14 @@
         }
 
         [HttpPost]
-        [Authorize]
+        //[Authorize]
         public IHttpActionResult CreatePayment([FromBody]Transaction payment)
         {
             var paymentAmount = workersFacade.GetDownPaymentAmount().ToString();
-
+            var isSalesOrderAvailable = workersFacade.CheckSalesOderAvailability(payment.PaymentID);
 
             payment.Amount = paymentAmount;
-            if (payment.Result == "captured")
+            if (payment.Result == "CAPTURED" && isSalesOrderAvailable)
             {
                 var itemCode = workersFacade.GetItemCodeByPaymentId(payment.PaymentID);
 
@@ -173,6 +125,7 @@
                 var messageBody = Utilities.GetResourceValue(Constants.Resources.KnetEmailConfirmation).GetMessageBody(tokens);
                 idMessage.Body = messageBody;
                 emailService.SendAsync(idMessage);
+
                 var result = workersFacade.SavePaymentDetails(payment);
 
                 if (result != null)

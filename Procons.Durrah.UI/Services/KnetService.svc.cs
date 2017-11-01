@@ -26,6 +26,10 @@ namespace Procons.Durrah.Api.Services
                 payment.TrackId = transaction.TrackID;
                 payment.ResourcePath = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.ResourcePath);
                 payment.Alias = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.Alias);
+                payment.Udf2 = transaction.CardCode;
+                payment.Udf3 = transaction.Code;
+                payment.Udf4 = transaction.WorkerCode;
+
                 TransVal = payment.PerformInitTransaction();
                 varRawResponse = payment.RawResponse;
                 varPaymentID = payment.PaymentId;

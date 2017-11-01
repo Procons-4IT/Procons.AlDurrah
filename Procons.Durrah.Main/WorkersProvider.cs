@@ -603,18 +603,6 @@
                     var itemnumber = salesOrder.Lines.LineNum;
                     var itemcode = salesOrder.Lines.ItemCode;
 
-                    //Documents oDoc = base.B1Company.GetBusinessObject(BoObjectTypes.oInvoices) as Documents;
-                    //oDoc.CardCode = salesOrder.CardCode;
-                    //oDoc.Lines.BaseEntry = salesOrder.Lines.DocEntry;
-                    //oDoc.Lines.BaseLine = salesOrder.Lines.LineNum;
-                    //oDoc.Lines.BaseType = 17;
-                    //oDoc.Lines.Quantity = 1;
-                    //oDoc.Lines.UnitPrice = salesOrder.Lines.UnitPrice;
-                    //oDoc.Lines.SerialNumbers.InternalSerialNumber = salesOrder.Lines.SerialNumbers.InternalSerialNumber;
-                    //oDoc.Lines.SerialNumbers.ManufacturerSerialNumber = salesOrder.Lines.SerialNumbers.ManufacturerSerialNumber;
-                    //oDoc.Lines.SerialNumbers.SystemSerialNumber = salesOrder.Lines.SerialNumbers.SystemSerialNumber;
-                    //int RetCode = oDoc.Add();
-
                     SAPbobsCOM.Documents oDownPay = base.B1Company.GetBusinessObject(BoObjectTypes.oDownPayments) as Documents;
 
                     oDownPay.CardCode = salesOrder.CardCode;
@@ -625,9 +613,6 @@
                     oDownPay.Lines.BaseEntry = salesOrder.Lines.DocEntry;
                     oDownPay.Lines.BaseLine = salesOrder.Lines.LineNum;
                     oDownPay.Lines.UnitPrice = salesOrder.Lines.UnitPrice;
-                    //oDownPay.Lines.SerialNumbers.InternalSerialNumber = salesOrder.Lines.SerialNumbers.InternalSerialNumber;
-                    //oDownPay.Lines.SerialNumbers.ManufacturerSerialNumber = salesOrder.Lines.SerialNumbers.ManufacturerSerialNumber;
-                    //oDownPay.Lines.SerialNumbers.SystemSerialNumber = salesOrder.Lines.SerialNumbers.SystemSerialNumber;
 
                     int RetCode = oDownPay.Add();
 
@@ -697,6 +682,19 @@
             }
         }
 
+        public bool CheckSalesOrderAvailability(string paymentId)
+        {
+            bool isAvailable = false;
+            var conn = Factory.DeclareClass<DatabaseHelper<HanaConnection>>();
+
+            var result = conn.ExecuteQuery(string.Format("SELECT COUNT(\"DocEntry\") \"COUNT\" FROM \"ORDR\" WHERE \"U_PaymentID\"='{0}'", paymentId));
+            var count = int.Parse(result.Rows[0]["COUNT"].ToString());
+            if (count > 0)
+                isAvailable = true;
+
+            return isAvailable;
+        }
+
         public List<LookupItem> GetLookupValues<T>()
         {
             var _serviceInstance = ServiceLayerProvider.GetInstance();
@@ -762,10 +760,6 @@
                 var conn = Factory.DeclareClass<DatabaseHelper<HanaConnection>>();
 
                 var result = conn.ExecuteQuery($@"SELECT IFNULL(""U_DownPay"",0) AS ""U_DownPay"" FROM ""{base.databaseName}"".""OADM""");
-                //while (result.Read())
-                //{
-                //    paymentAmount = MapField<double>(result["U_DownPay"]);
-                //}
                 foreach (DataRow drow in result.Rows)
                 {
                     paymentAmount = MapField<double>(drow["U_DownPay"]);
