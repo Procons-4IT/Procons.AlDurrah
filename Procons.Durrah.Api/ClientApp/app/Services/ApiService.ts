@@ -189,11 +189,14 @@ export class ApiService {
         let tempPropertyValue;
         for (var propertyIndex = 0; propertyIndex < workerProperties.length; propertyIndex++) {
             workerProperty = workerProperties[propertyIndex];
-            let splitValue = this.splitProperties(workerServerNameValueHashData[workerProperty]);
+            let splitValue;
             if (workerProperty === 'languages') {
                 splitValue = workerServerNameValueHashData[workerProperty]
+            }else{
+                 splitValue = this.splitProperties(workerServerNameValueHashData[workerProperty]);
             }
-            if (Array.isArray(splitValue) && splitValue.length === 2) {
+ 
+           if (workerProperty !== 'languages' && Array.isArray(splitValue) && splitValue.length === 2) {
                 workerDisplayData[workerProperty] = splitValue[1]; //grab value after hash
                 workerKeyData[workerProperty] = splitValue[0]; //grab value after hash
 

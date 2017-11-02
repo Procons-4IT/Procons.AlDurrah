@@ -34,10 +34,9 @@
                                                 <li>{{worker.serialNumber}}</li>
                                                 <ul >
                                                 <li *ngFor="let language of worker.languages">
-                                                    {{language?language:''}}
+                                                    {{ language.name!}}
                                                   </li>
                                                 </ul>
-                                                <li>{{worker.language}}</li>
                                                 <li>{{worker.religion}}</li>
                                                 <li>{{worker.maritalStatus}}</li>
                                                 <li><span class="icon icon-ed-kg icon-fw"></span> {{worker.weight}}</li>
@@ -46,7 +45,7 @@
                                             <div class="col-sm-6">
                                               <ul class="list-unstyled">
                                                 <li><a [href]="worker.video">{{worker.video}}</a></li>
-                                                <li>Passport Copy <a href="#"><small>Download</small></a></li>
+                                                <li>Passport Copy <a [href]="worker.passport"><small>Download</small></a></li>
                                                 <li>Passport Number: <strong>{{worker.passportNumber}}</strong></li>
                                                 <li>Passport Expiry Date: <strong>{{worker.passportExpDate}}</strong></li>
                                                 <li>Passport Issue Date: <strong>{{worker.passportIssDate}}</strong></li>
