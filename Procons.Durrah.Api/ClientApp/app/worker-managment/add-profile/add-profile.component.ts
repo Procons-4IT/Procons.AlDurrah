@@ -52,6 +52,8 @@ export class AddProfileComponent implements OnInit {
         }
         if (!this.state.worker.languages) {
             this.state.worker.languages = [];
+        }else{
+            this.state.worker.languages = this.state.worker.languages.map(nameValuePair=>nameValuePair.value) as any;
         }
         if (this.searchCriterias.languages && Array.isArray(this.searchCriterias.languages)) {
             this.searchCriterias.languages = this.searchCriterias.languages.map(nameValuePair=>{return {"label":nameValuePair.name,"value":nameValuePair.value}}) as any;

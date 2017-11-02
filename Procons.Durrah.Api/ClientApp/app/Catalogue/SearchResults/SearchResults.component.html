@@ -1,7 +1,8 @@
 ﻿<div role="tabpanel" class="tab-pane fade active in" id="tabSearchResults">
     <div class="row">
         <div class="col-md-8 col-sm-offset-2">
-            <h3><span class="fa fa-search fa-fw fa-2x"></span> نتائج البحث المتقدمة</h3>
+            <h3>
+                <span class="fa fa-search fa-fw fa-2x"></span> نتائج البحث المتقدمة</h3>
             <p>الرجاء اختيار عامل واحد</p>
         </div>
     </div>
@@ -14,14 +15,22 @@
             <p-dataTable [value]="workers" [paginator]="true" rows="15" [responsive]="true">
                 <p-column field="image" header="{{'image' | translate }}">
                     <ng-template let-worker="rowData" pTemplate="body">
-                        <div (click)="GoToProfile(worker)" data-toggle="tab"><img src="{{worker.photo}}" width="80" class="img-thumbnail"></div>
+                        <div (click)="GoToProfile(worker)" data-toggle="tab">
+                            <img src="{{worker.photo}}" width="80" class="img-thumbnail">
+                        </div>
                     </ng-template>
                 </p-column>
                 <p-column field="age" header="{{'age' | translate }}"></p-column>
                 <p-column field="name" header="{{ 'type'| translate }}"></p-column>
                 <p-column field="gender" header="{{'gender' | translate }}"></p-column>
                 <p-column field="nationality" header="{{ 'nationality'| translate }}"></p-column>
-                <p-column field="language" header="{{ 'language' | translate }}"></p-column>
+                <p-column field="languages" header="{{ 'language' | translate }}">
+                    <ng-template let-col let-languages="rowData" let-ri="rowIndex" pTemplate="body">
+                        <ul>
+                            <li *ngFor="let language of languages.languages">{{language.name}} </li>
+                        </ul>
+                    </ng-template>
+                </p-column>
                 <p-column field="price" header="{{ 'price' | translate }}"></p-column>
                 <p-column field="education" header="{{ 'education' | translate }}"></p-column>
                 <!-- Video -->
@@ -35,7 +44,9 @@
                 <!-- Available -->
                 <p-column header="{{'status'| translate }}" [filter]="false">
                     <ng-template let-worker="rowData" pTemplate="body">
-                        <a (click)="GoToProfile(worker)" data-toggle="tab"><span [ngClass]="GetAvailableCSS(worker)"></span></a>
+                        <a (click)="GoToProfile(worker)" data-toggle="tab">
+                            <span [ngClass]="GetAvailableCSS(worker)"></span>
+                        </a>
                     </ng-template>
                 </p-column>
             </p-dataTable>
