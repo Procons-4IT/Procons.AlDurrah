@@ -102,7 +102,7 @@ export class HomeComponent implements OnInit {
   }
   // Ex.http://localhost:4200/paymentid=1394338331172790&result=not%20captured&postdate=1006&tranid=7630570331172790&auth=&ref=727911110230&trackid=9670186
   //Ex. http://localhost:4200/paymentconfirmation?paymentid=5904845091172790&result=not%20captured&postdate=1006&tranid=2624949101172790&auth=&ref=727911110228&trackid=6358289
-
+  // http://localhost:4200/paymentconfirmation?paymentid=7051302202373050&result=captured&postdate=1102&tranid=2544329212373050&auth=703383&ref=730523915761&trackid=5941653&udf2=cc004&udf3=dw00002&udf4=541254785&udf5=45            Udf1: CardCode---Udf2: ItemCode---Udf3 Worker Code----Udf5:Amount
   handlePaymentRoute() {
     
 
@@ -116,12 +116,12 @@ export class HomeComponent implements OnInit {
       })
       .mergeMap(x => { return this.utility.getKnetUrlProperties(this.activeRouter) })
       .do(x => { this.paymentParams = x; })
-      .mergeMap(params => { return this.myApi.createIncomingPayment(params) })
       .subscribe(x => {
         
         this.loadingPayment = false;
-        this.paymentModalText = x.udF1;
-        this.amount = x && x.amount;
+        this.paymentModalText = `CardCode ${x.CardCode}\nItemCode ${x.ItemCode}
+         \nWorkerCode ${x.WorkerCode}\n Amount ${x.Amount}`;
+        this.amount = x && x.Amount;
         var stateObj = { foo: "bar" };
         history.replaceState(stateObj, "page 3", "home");
 

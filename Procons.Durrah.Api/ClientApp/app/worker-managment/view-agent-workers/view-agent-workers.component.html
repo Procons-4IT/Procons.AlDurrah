@@ -29,7 +29,7 @@
                                                 </div>
                                             </div>
                                             <div class="profile-actions">
-                                                <a (click)="ShowEditWorker(worker,i)">Edit</a>
+                                                <button (click)="ShowEditWorker(worker,i)" [disabled]="worker.status !== '1'">Edit</button>
                                                 <div class="checkbox-custom">
                                                     <label>
                                                         <input type="checkbox" class="form-control" checked="checked" />

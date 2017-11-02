@@ -1,4 +1,5 @@
-import { SearchCriteriaParams } from './ApiRequestType';
+import { SearchCriteriaParams,NameValuePair } from './ApiRequestType';
+
 
 export class Worker {
     constructor(public workerName:string,public name: string,
@@ -8,7 +9,7 @@ export class Worker {
         public religion: string,
         public maritalStatus: string,
         public language: string,
-        public languages: string[],
+        public languages: NameValuePair[],
         public photo: string,
         public weight: string,
         public height: string,

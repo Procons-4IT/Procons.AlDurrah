@@ -18,6 +18,7 @@ declare var $;
 })
 export class LoginComponent implements OnInit {
     @ViewChild(ReCaptchaComponent) captcha: ReCaptchaComponent;
+    @ViewChild("createUserForm") createForm;
 
     public loading: boolean = false;
     public isLoggedIn: boolean = false;
@@ -84,6 +85,7 @@ export class LoginComponent implements OnInit {
             this.OpenModal();
             this.isLoggedIn = true;
             this.myApi.onUserLoggedIn().subscribe(x => {
+                this.createForm.reset();
                 this.isLoggedIn = x;
             })
         }, (errorMessage) => {
