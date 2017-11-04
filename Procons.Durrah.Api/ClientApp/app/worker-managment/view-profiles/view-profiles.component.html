@@ -20,9 +20,8 @@
                                   <div class="datas">
                                     <div class="profile-data">
                                         <div class="row">
-                                            <div class="col-sm-6"><h3 class="h5">{{worker.agent}}</h3></div>
                                             <div class="col-sm-6"><h3 class="h5">{{worker.workerName}}</h3></div>
-                                            <div class="col-sm-6"><small>{{worker.birthDate}}</small></div>
+                                            <div class="col-sm-6"><small>{{worker.birthDate | momentDate}}</small></div>
                                         </div>
                                         <hr />
                                         <div class="row">
@@ -47,11 +46,12 @@
                                                 <li><a [href]="worker.video">{{worker.video}}</a></li>
                                                 <li>Passport Copy <a [href]="worker.passport"><small>Download</small></a></li>
                                                 <li>Passport Number: <strong>{{worker.passportNumber}}</strong></li>
-                                                <li>Passport Expiry Date: <strong>{{worker.passportExpDate}}</strong></li>
-                                                <li>Passport Issue Date: <strong>{{worker.passportIssDate}}</strong></li>
+                                                <li>Passport Expiry Date: <strong>{{worker.passportExpDate | momentDate}}</strong></li>
+                                                <li>Passport Issue Date: <strong>{{worker.passportIssDate | momentDate}}</strong></li>
                                                 <li>Passport Place of Issue: <strong>{{worker.passportPoIssue}}</strong></li>
                                                 <li>Civil ID: <strong>{{worker.civilId}}</strong></li>
                                                 <li><span class="icon icon-ed-height icon-fw"></span>{{worker.height}}</li>
+                                                <li>Languages <strong> {{worker.languages | languageConvert }} </strong></li>
                                               </ul>
                                             </div>
                                         </div>
