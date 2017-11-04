@@ -124,7 +124,7 @@ export class AddProfileComponent implements OnInit {
         this.loading = false;
         this.myModal.showSuccessModal(onSuccessMessage, false);
         console.log('state', this.state);
-        // this.clearForm();
+        this.clearForm();
     }
     clearForm() {
         console.log('clearing the form');
@@ -173,7 +173,6 @@ export class AddProfileComponent implements OnInit {
     createEmptyWorkerState() {
         let workerParams: any = Array.from({ length: 26 }, x => { return '' }) as any;
         this.state.worker = new (<any>Worker)(...workerParams);
-        this.tempData();
     }
     isFilesAttached(): boolean {
 
