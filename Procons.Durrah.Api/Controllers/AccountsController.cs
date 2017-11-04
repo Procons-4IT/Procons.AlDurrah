@@ -27,8 +27,8 @@
         [Route("create")]
         public async Task<HttpResponseMessage> CreateUser(ApplicationUser user)
         {
-            //if (!base.GoogleReCaptcha(user.CaptchaCode))
-            //    return BadRequest("Verify Captcha!");
+            if (!base.GoogleReCaptcha(user.CaptchaCode))
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Verify Captcha!"); 
 
             //if (!ModelState.IsValid)
             //    return BadRequest(ModelState);

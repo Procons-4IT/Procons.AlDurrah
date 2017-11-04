@@ -198,15 +198,28 @@
             var cardCode = GetCurrentUserCardCode();
             var worker = await SaveFile();
             var result = workersFacade.CreateWorker(worker);
-            return Ok(result);
+            if (result)
+                return Ok("Created Successfully!");
+            else
+                return InternalServerError(new Exception("Worker already created!"));
+            
         }
 
         public async Task<IHttpActionResult> UpdateWorker()
         {
-            var cardCode = GetCurrentUserCardCode();
-            var worker = await UpdateFile();
-            var result = workersFacade.UpdateWorker(worker, cardCode);
-            return Ok(result);
+            try
+            {
+                var cardCode = GetCurrentUserCardCode();
+                var worker = await UpdateFile();
+                var result = workersFacade.UpdateWorker(worker, cardCode);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                Utilities.LogException(ex);
+                return InternalServerError(new Exception("Error Happened"));
+            }
+
         }
 
         [HttpPost]

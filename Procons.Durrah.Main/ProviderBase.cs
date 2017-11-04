@@ -88,6 +88,13 @@
                     result = (T)Convert.ChangeType(Convert.ToDecimal(o), typeof(T));
                 else if (o.GetType() == typeof(float))
                     result = (T)Convert.ChangeType(float.Parse(o.ToString()), typeof(T));
+                else if (typeof(T) == typeof(DateTime))
+                {
+                    var newDate = DateTime.MinValue;
+                    DateTime.TryParse(o.ToString(), out newDate);
+                    result = (T)(dynamic)newDate;
+                }
+
                 else
                     result = (T)Convert.ChangeType(o, typeof(T));
                 return result;
