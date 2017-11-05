@@ -119,8 +119,7 @@ export class HomeComponent implements OnInit {
       .subscribe(x => {
         
         this.loadingPayment = false;
-        this.paymentModalText = `CardCode ${x.CardCode}\nItemCode ${x.ItemCode}
-         \nWorkerCode ${x.WorkerCode}\n Amount ${x.Amount}`;
+        this.paymentModalText = 'Payment Complete!';
         this.amount = x && x.Amount;
         var stateObj = { foo: "bar" };
         history.replaceState(stateObj, "page 3", "home");
