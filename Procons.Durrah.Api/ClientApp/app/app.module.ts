@@ -49,6 +49,8 @@ import { LoginComponent } from './login/login.component';
 import { DataGridModule } from 'primeng/primeng';
 import { ModalModule} from 'ngx-modialog';
 import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
+import { MomentDatePipe } from './moment-date.pipe';
+import { LanguageConvertPipe } from './language-convert.pipe';
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, './Assets/i18n/', '.json');
 }
@@ -65,7 +67,9 @@ export function createTranslateLoader(http: HttpClient) {
         WorkerMangmentComponent,
         ViewProfilesComponent,
         ViewAgentWorkersComponent,
-        AddProfileComponent
+        AddProfileComponent,
+        MomentDatePipe,
+        LanguageConvertPipe
     ],
     imports: [
         BootstrapModalModule,

@@ -124,6 +124,11 @@ export class LoginComponent implements OnInit {
         })
 
     }
+    showLoginTab() {
+        console.log('showing Login Tab!');
+        $('#loginBack').click()
+    }
+
     CreateUser() {
         this.loading = true;
         this.newUser["CaptchaCode"] = this.recaptchaToken;
@@ -132,10 +137,12 @@ export class LoginComponent implements OnInit {
             this.recaptchaToken = null;
             this.captcha.reset();
             this.myModal.showSuccessModal(x);
+            this.createForm.clear();
+            this.showLoginTab();
         }, onError => {
-            
+
             this.loading = false;
-            this.myModal.showErrorModal(onError,false);
+            this.myModal.showErrorModal(onError, false);
             this.recaptchaToken = null;
             this.captcha.reset();
 

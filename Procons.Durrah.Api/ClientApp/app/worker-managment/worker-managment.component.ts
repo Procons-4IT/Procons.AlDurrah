@@ -22,17 +22,10 @@ export class WorkerMangmentComponent implements OnInit {
             .mergeMap(x => this.myApi.getWorkerManagmentData())
             .do(workerMangmentServerData => { this.bindServerState(workerMangmentServerData) })
             .map(workerMangmentServerData => { return this.state.workers }) //use the same object as parent component
-            .do(data => { this.loading = false })
+            .do(data => { this.loading = false });
 
-        this.state.$workers = $workerDisplayData;
+        this.state.$workers = $workerDisplayData.map(workerDisplayData => { return [workerDisplayData, this.state.workersServerData] });
         this.ShowWorkerAgents();
-
-        //DELETE-ME
-        // this.myApi.getWorkerManagmentData();
-        // $workerDisplayData.subscribe();
-        // this.loading = false;
-        // this.state.workersServerData = [{ a: 1 }];
-        // this.ShowEditWorker([{ a: 1 }], 0);
 
     }
 
