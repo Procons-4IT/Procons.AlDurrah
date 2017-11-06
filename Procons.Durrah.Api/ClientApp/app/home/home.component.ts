@@ -85,8 +85,7 @@ export class HomeComponent implements OnInit {
         this.loadingPayment = false;
         if (x) {
           this.jqueryModalHelper("route.email.emailConfirmed", null, () => {
-            var stateObj = { foo: "bar" };
-            history.replaceState(stateObj, "page 3", "home");
+            this.resetAddressBarToHome();
           });
         } else {
           this.jqueryModalHelper("route.email.invalidEmail", null);
@@ -111,8 +110,7 @@ export class HomeComponent implements OnInit {
         this.jqueryModalHelper("route.payment.complete", null, () => {
           this.loadingPayment = false;
           this.amount = x && x.Amount;
-          var stateObj = { foo: "bar" };
-          history.replaceState(stateObj, "page 3", "home");
+          this.resetAddressBarToHome();
         });
 
       }, onError => {
@@ -154,10 +152,11 @@ export class HomeComponent implements OnInit {
         .subscribe(isReset => {
           this.resetPassModalLoading = false;
           if (isReset) {
-            this.translate.get("resetPassword.reset").subscribe(message => { this.resetPassModalText = message; });
-            setTimeout(x => {
-              this.router.navigate(['/home']);
-            }, 3000);
+            this.translate.get("resetPassword.reset").subscribe(message => {
+               this.resetPassModalText = message;
+               this.resetAddressBarToHome();
+             });
+
 
           }
         }, onError => {
@@ -183,6 +182,11 @@ export class HomeComponent implements OnInit {
       if (typeof optionalCallBack === "function") { optionalCallBack(); }
     });
 
+  }
+
+  resetAddressBarToHome() {
+    var stateObj = { foo: "bar" };
+    window.history.replaceState(stateObj, "page 3", "home");
   }
 
 }
