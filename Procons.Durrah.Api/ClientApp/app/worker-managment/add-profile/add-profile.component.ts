@@ -19,11 +19,13 @@ export class AddProfileComponent implements OnInit {
     @Input() searchCriterias: SearchCriteriaParams;
     @Output() onBack = new EventEmitter<any>();
     @ViewChild("photoUpload") photoUpload;
+    @ViewChild("licenseUpload") licenseUpload;
     @ViewChild("passportUpload") passportUpload;
     @ViewChild("workerForm") workerForm;
 
     passportFileName = "";
     photoFileName= "";
+    licenseFileName= "";
     photoFileText = "Select Photo File";
     passportFileText = "Select Passport File";
 
@@ -36,7 +38,7 @@ export class AddProfileComponent implements OnInit {
     }
     photoServerMode: FileUploadMode = FileUploadMode.Add;
     passportServerMode: FileUploadMode = FileUploadMode.Add;
-
+    licenseServerMode: FileUploadMode = FileUploadMode.Add;
     constructor(public myApi: ApiService, public myModal: ProconsModalSerivce, public momentDatePipe: MomentDatePipe) {
     }
 
@@ -49,7 +51,9 @@ export class AddProfileComponent implements OnInit {
             // this.tempData();
             this.photoServerMode = FileUploadMode.Edit;
             this.passportServerMode = FileUploadMode.Edit;
+            this.licenseServerMode = FileUploadMode.Edit;
             this.photoFileName =  this.getFileImageName(this.state.worker.photo);
+            this.licenseFileName =  this.getFileImageName(this.state.worker.license);
             this.passportFileName = this.getFileImageName(this.state.worker.passport);
             console.log('searchCriteria Params ', this.searchCriterias);
 
@@ -71,21 +75,23 @@ export class AddProfileComponent implements OnInit {
     back() {
         this.onBack.emit();
     }
-    submitWorker(a, b) {
+    submitWorker(a, b, c) {
         if (this.state.isAddMode) {
-            this.addWorker(a, b);
+            this.addWorker(a, b, c);
         } else {
-            this.editWorker(a, b);
+            this.editWorker(a, b, c);
         }
     }
-    addWorker(photoInput: any, passInput: any) {
+    addWorker(photoInput: any, passInput: any, licenseInput: any) {
         let photoFile = photoInput.files;
         let passportFile = passInput.files;
+        let LicenseFile = licenseInput.files;
 
-        if (photoFile && photoFile[0] && passportFile && passportFile[0]) {
+        if (photoFile && photoFile[0] && passportFile && passportFile[0]&& LicenseFile && LicenseFile[0]) {
             const formData = new FormData();
             formData.append("Photo", photoFile[0], photoFile[0].name);
             formData.append("Passport", passportFile[0], passportFile[0].name);
+            formData.append("License", LicenseFile[0], passportFile[0].name);
             this.getFormData(formData);
             this.loading = true;
             this.myApi.addWorker(formData).subscribe(x => {
@@ -100,20 +106,24 @@ export class AddProfileComponent implements OnInit {
 
     }
 
-    editWorker(photoInput: any, passInput: any) {
+    editWorker(photoInput: any, passInput: any, licenseInput: any) {
         //entering editMode! 
         let photoFile = photoInput.files;
         let passportFile = passInput.files;
+        let licenseFile = licenseInput.files;
+
         const formData = new FormData();
 
         //new filese is uploaded
-        if (photoFile && photoFile[0] && passportFile && passportFile[0]) {
+        if (photoFile && photoFile[0] && passportFile && passportFile[0]&& licenseFile && licenseFile[0]) {
             formData.append("Photo", photoFile[0], photoFile[0].name);
             formData.append("Passport", passportFile[0], passportFile[0].name);
+            formData.append("License", licenseFile[0], licenseFile[0].name);
         } else {
             //edit or delete files
             formData.append("Photo", this.photoServerMode === FileUploadMode.Delete ? "0" : "1");
             formData.append("Passport", this.passportServerMode === FileUploadMode.Delete ? "0" : "1");
+            formData.append("License", this.licenseServerMode === FileUploadMode.Delete ? "0" : "1");
         }
 
         this.getFormData(formData);
@@ -135,6 +145,7 @@ export class AddProfileComponent implements OnInit {
         console.log('clearing the form');
         this.createEmptyWorkerState();
         this.photoUpload.clear();
+        this.licenseUpload.clear();
         this.passportUpload.clear();
     }
     onErrorUpdate(errorResponse) {
@@ -183,8 +194,9 @@ export class AddProfileComponent implements OnInit {
 
         let photoFile = this.photoUpload.files;
         let passportFile = this.passportUpload.files;
+        let licenseFile = this.licenseUpload.files;
 
-        return (photoFile && photoFile[0] && passportFile && passportFile[0]);
+        return (photoFile && photoFile[0] && passportFile && passportFile[0]&& licenseFile && licenseFile[0]);
     }
 
     getFileImageName(fileUrl):string {
@@ -196,11 +208,13 @@ export class AddProfileComponent implements OnInit {
     }
 
 
-    deleteServerFile(isPhotoUpload: boolean) {
-        if (isPhotoUpload) {
+    deleteServerFile(fileType: string) {
+        if (fileType=='PHOTO') {
             this.photoServerMode = FileUploadMode.Delete;
-        } else {
+        } else if (fileType=='PASSPORT')  {
             this.passportServerMode = FileUploadMode.Delete;
+        } else{
+            this.licenseServerMode = FileUploadMode.Delete;
         }
     }
     FUM = FileUploadMode;

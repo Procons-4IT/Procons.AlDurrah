@@ -97,6 +97,11 @@
             return provider.CheckSalesOrderAvailability(paymentId);
         }
 
+        public List<LookupItem> GetLanguagesById(string isonStringIds)
+        {
+            return provider.GetLanguagesById(isonStringIds);
+        }
+
         #region Private Methods
 
 

@@ -1,5 +1,6 @@
 ﻿namespace Procons.Durrah.Common
 {
+    using Newtonsoft.Json;
     using NLog;
     using Procons.Durrah.Common.Enumerators;
     using System;
@@ -188,6 +189,25 @@
         public static string RemoveGmtPartFromDate(this string time)
         {
             return time.Contains("+") ? time.Split('+').First() : time;
+        }
+
+
+        public static T ConvertJsonStringToObject<T>(string jsonString)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(jsonString))
+                {
+                    return JsonConvert.DeserializeObject<T>(jsonString);
+                }
+                else
+                    return default(T);
+            }
+            catch (Exception ex)
+            {
+                Utilities.LogException(ex);
+                return default(T);
+            }
         }
     }
 }

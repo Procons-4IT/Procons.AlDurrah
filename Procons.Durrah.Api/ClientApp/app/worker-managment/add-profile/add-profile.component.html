@@ -16,7 +16,7 @@
             <div class="row">
               <div class="col-md-6 col-md-offset-3">
 
-                <form (ngSubmit)="submitWorker(photoUpload,passportUpload);" method="post" id="profileEditForm" class="form-default has-upload"
+                <form (ngSubmit)="submitWorker(photoUpload,passportUpload,licenseUpload);" method="post" id="profileEditForm" class="form-default has-upload"
                   #workerForm="ngForm">
 
                   <div class="form-group">
@@ -152,7 +152,7 @@
                   </div>
                   <div class="form-group">
                     <label for="photoUpload">{{ 'photoUpload' | translate }}</label>
-                    <p-fileUpload id="photoUpload" name="myfile[]" customUpload="true" multiple="false" (onSelect)="deleteServerFile(true)" #photoUpload>
+                    <p-fileUpload id="photoUpload" name="myfile[]" customUpload="true" multiple="false" (onSelect)="deleteServerFile('PHOTO')" #photoUpload>
                       <ng-template pTemplate="content">
                         <div class="ui-fileupload-files" [style.display]="photoServerMode === FUM.Edit? 'block' : 'none'">
                           <div>
@@ -163,7 +163,7 @@
                               <div>{{photoFileName || "Saved File"}}</div>
                               <div></div>
                               <div>
-                                <button (click)="deleteServerFile(true)" icon="fa-close" pbutton="" type="button" ng-reflect-icon="fa-close" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only">
+                                <button (click)="deleteServerFile('PHOTO')" icon="fa-close" pbutton="" type="button" ng-reflect-icon="fa-close" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only">
                                   <span class="ui-button-icon-left ui-clickable fa fa-fw fa-close"></span>
                                   <span class="ui-button-text ui-clickable">ui-btn</span>
                                 </button>
@@ -177,7 +177,7 @@
                   </div>
                   <div class="form-group ">
                     <label for="passportUpload">{{ 'PassportUpload' | translate }}</label>
-                    <p-fileUpload id="passportUpload" name="myfile2[]" customUpload="true" [multiple]="false" (onSelect)="deleteServerFile(false)"
+                    <p-fileUpload id="passportUpload" name="myfile2[]" customUpload="true" [multiple]="false" (onSelect)="deleteServerFile('PASSPORT')"
                       #passportUpload>
                       <ng-template pTemplate="content">
                         <div class="ui-fileupload-files" [style.display]="passportServerMode === FUM.Edit? 'block' : 'none'">
@@ -189,7 +189,32 @@
                               <div>{{ passportFileName || "Saved File"}}</div>
                               <div></div>
                               <div>
-                                <button (click)="deleteServerFile(false)" icon="fa-close" pbutton="" type="button" ng-reflect-icon="fa-close" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only">
+                                <button (click)="deleteServerFile('PASSPORT')" icon="fa-close" pbutton="" type="button" ng-reflect-icon="fa-close" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only">
+                                  <span class="ui-button-icon-left ui-clickable fa fa-fw fa-close"></span>
+                                  <span class="ui-button-text ui-clickable">ui-btn</span>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-template>
+                    </p-fileUpload>
+                  </div>
+                  <div class="form-group ">
+                    <label for="licenseUpload">license</label>
+                    <p-fileUpload id="licenseUpload" name="myfile3[]" customUpload="true" [multiple]="false" (onSelect)="deleteServerFile('LICENSE')"
+                      #licenseUpload>
+                      <ng-template pTemplate="content">
+                        <div class="ui-fileupload-files" [style.display]="licenseServerMode === FUM.Edit? 'block' : 'none'">
+                          <div>
+                            <div class="ui-fileupload-row">
+                              <div>
+                                <img [src]="state.worker.license" width="50">
+                              </div>
+                              <div>{{ licenseFileName || "Saved File"}}</div>
+                              <div></div>
+                              <div>
+                                <button (click)="deleteServerFile('LICENSE')" icon="fa-close" pbutton="" type="button" ng-reflect-icon="fa-close" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only">
                                   <span class="ui-button-icon-left ui-clickable fa fa-fw fa-close"></span>
                                   <span class="ui-button-text ui-clickable">ui-btn</span>
                                 </button>

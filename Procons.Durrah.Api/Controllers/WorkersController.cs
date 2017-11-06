@@ -129,7 +129,7 @@
                     idMessage.Body = messageBody;
                     emailService.SendAsync(idMessage);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Utilities.LogException(ex);
                 }
@@ -195,14 +195,22 @@
         [Authorize]
         public async Task<IHttpActionResult> AddWorker()
         {
-            var cardCode = GetCurrentUserCardCode();
-            var worker = await SaveFile();
-            var result = workersFacade.CreateWorker(worker);
-            if (result)
-                return Ok("Created Successfully!");
-            else
-                return InternalServerError(new Exception("Worker already created!"));
-            
+            try
+            {
+                var cardCode = GetCurrentUserCardCode();
+                var worker = await SaveFile();
+                var result = workersFacade.CreateWorker(worker);
+                if (result)
+                    return Ok("Created Successfully!");
+                else
+                    return InternalServerError(new Exception("Worker already created!"));
+            }
+            catch(Exception ex)
+            {
+                Utilities.LogException(ex);
+                return InternalServerError(new Exception("Error Happened"));
+            }
+
         }
 
         public async Task<IHttpActionResult> UpdateWorker()
@@ -212,7 +220,10 @@
                 var cardCode = GetCurrentUserCardCode();
                 var worker = await UpdateFile();
                 var result = workersFacade.UpdateWorker(worker, cardCode);
-                return Ok(result);
+                if (result)
+                    return Ok("Updated Successfully!");
+                else
+                    return InternalServerError(new Exception("Worker already created!"));
             }
             catch (Exception ex)
             {
@@ -234,7 +245,7 @@
         public HttpResponseMessage Image(string path)
         {
             var defaultImagePth = HostingEnvironment.MapPath(@"\Assets\src\app\images\no_photo.png");
-             var attachmentsPath = workersFacade.GetAttachmentsPath();
+            var attachmentsPath = workersFacade.GetAttachmentsPath();
             var imagePath = string.Empty;
             if (File.Exists($"{attachmentsPath}{path}"))
                 imagePath = $"{attachmentsPath}{path}";
@@ -289,8 +300,10 @@
                          Uri fileFullPath = new Uri(baseuri, VirtualPathUtility.ToAbsolute(fileRelativePath));
                          if (item.Headers.ContentDisposition.Name.Trim('"').Equals("Photo"))
                              worker.Photo = fileRelativePath;
-                         else
+                         else if (item.Headers.ContentDisposition.Name.Trim('"').Equals("Passport"))
                              worker.Passport = fileRelativePath;
+                         else
+                             worker.License = fileRelativePath;
                      }
                      catch (Exception ex)
                      {
@@ -337,8 +350,10 @@
                         Uri fileFullPath = new Uri(baseuri, VirtualPathUtility.ToAbsolute(fileRelativePath));
                         if (item.Headers.ContentDisposition.Name.Trim('"').Equals("Photo"))
                             worker.Photo = fileRelativePath;
-                        else
+                        else if(item.Headers.ContentDisposition.Name.Trim('"').Equals("Passport"))
                             worker.Passport = fileRelativePath;
+                        else
+                            worker.License = fileRelativePath;
                     }
                     catch (Exception ex)
                     {
@@ -350,6 +365,8 @@
                     worker.Photo = MapField<string>(provider.FormData["Photo"]);
                 if (worker.Passport == null)
                     worker.Passport = MapField<string>(provider.FormData["Passport"]);
+                if (worker.License == null)
+                    worker.License = MapField<string>(provider.FormData["License"]);
 
                 PopulateWorker(provider, ref worker);
 
@@ -383,25 +400,9 @@
             worker.Height = MapField<string>(provider.FormData["Height"]);
             worker.Weight = MapField<string>(provider.FormData["Weight"]);
             worker.WorkerCode = MapField<string>(provider.FormData["WorkerCode"]);
-            worker.Languages = ConvertJsonStringToObject<List<LookupItem>>(MapField<string>(provider.FormData["Languages"]));
+            worker.Languages = workersFacade.GetLanguagesById(MapField<string>(provider.FormData["Languages"]));
         }
 
-        private T ConvertJsonStringToObject<T>(string jsonString)
-        {
-            try
-            {
-                if (!string.IsNullOrEmpty(jsonString))
-                {
-                    return JsonConvert.DeserializeObject<T>(jsonString);
-                }
-                else
-                    return default(T);
-            }
-            catch (Exception ex)
-            {
-                return default(T);
-            }
-        }
         #endregion
     }
 }

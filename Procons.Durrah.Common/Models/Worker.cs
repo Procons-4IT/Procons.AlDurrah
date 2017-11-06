@@ -27,6 +27,7 @@ namespace Procons.Durrah.Common
         public string MaritalStatus { get; set; }
         public string Language { get; set; }
         public string Photo { get; set; }
+        public string License { get; set; }
         public double Price { get; set; }
         public string Weight { get; set; }
         public string Height { get; set; }

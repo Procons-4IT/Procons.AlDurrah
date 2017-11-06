@@ -24,7 +24,7 @@
             var created = false;
 
             if (IsWorkerAvailable(worker.Code)) ;
-                return false;
+            return false;
             var attachmentPath = GetAttachmentPath();
             var passportCopy = worker.Passport != null && worker.Passport != string.Empty ? CreateAttachment(worker.Passport) : worker.Passport;
             var photo = worker.Photo != null && worker.Photo != string.Empty ? CreateAttachment(worker.Photo) : worker.Photo;
@@ -79,41 +79,41 @@
         public bool UpdateWorker(Worker worker, string cardCode)
         {
             var created = false;
-            try
+
+            var attachmentPath = GetAttachmentPath();
+            var passportCopy = worker.Passport != null && worker.Passport != string.Empty && worker.Passport != "0" && worker.Passport != "1" ? CreateAttachment(worker.Passport) : worker.Passport;
+            var photo = worker.Photo != null && worker.Photo != string.Empty && worker.Photo != "0" && worker.Photo != "1" ? CreateAttachment(worker.Photo) : worker.Passport;
+            var license = worker.License != null && worker.License != string.Empty && worker.License != "0" && worker.License != "1" ? CreateAttachment(worker.License) : worker.License;
+
+            var sCmp = B1Company.GetCompanyService();
+            var oGeneralService = sCmp.GetGeneralService("WORKERSUDO");
+
+            GeneralDataParams oParams = oGeneralService.GetDataInterface(GeneralServiceDataInterfaces.gsGeneralDataParams) as GeneralDataParams;
+            oParams.SetProperty("Code", worker.WorkerCode);
+            var oGeneralData = oGeneralService.GetByParams(oParams);
+
+
+            if (oGeneralData != null)
             {
-                var attachmentPath = GetAttachmentPath();
-                var passportCopy = worker.Passport != null && worker.Passport != string.Empty && worker.Passport != "0" && worker.Passport != "1" ? CreateAttachment(worker.Passport) : worker.Passport;
-                var photo = worker.Photo != null && worker.Photo != string.Empty && worker.Photo != "0" && worker.Photo != "1" ? CreateAttachment(worker.Photo) : worker.Passport;
+                List<string> languages = new List<string>();
 
-                var sCmp = B1Company.GetCompanyService();
-                var oGeneralService = sCmp.GetGeneralService("WORKERSUDO");
+                var gDataCollection = oGeneralData.Child("WORKERLNGS");
+                for (int i = gDataCollection.Count - 1; i >= 0; i--)
+                    gDataCollection.Remove(i);
 
-                GeneralDataParams oParams = oGeneralService.GetDataInterface(GeneralServiceDataInterfaces.gsGeneralDataParams) as GeneralDataParams;
-                oParams.SetProperty("Code", worker.WorkerCode);
-                var oGeneralData = oGeneralService.GetByParams(oParams);
-
-
-                if (oGeneralData != null)
+                if (worker.Languages != null)
                 {
-                    List<string> languages = new List<string>();
-                    
-                    var gDataCollection = oGeneralData.Child("WORKERLNGS");
-                    for (int i = gDataCollection.Count - 1; i >= 0; i--)
-                        gDataCollection.Remove(i);
-
-                    if (worker.Languages != null)
+                    foreach (var l in worker.Languages)
                     {
-                        foreach (var l in worker.Languages)
-                        {
-                            var newLanguage = gDataCollection.Add();
-                            newLanguage.SetProperty("U_Name", l.Name);
-                            newLanguage.SetProperty("U_Value", l.Value);
-                        }
+                        var newLanguage = gDataCollection.Add();
+                        newLanguage.SetProperty("U_NAME", l.Name);
+                        newLanguage.SetProperty("U_VALUE", l.Value);
                     }
+                }
 
 
-                    //if (oGeneralData.GetProperty("U_Status").ToString() == ((int)WorkerStatus.Opened).ToString() && oGeneralData.GetProperty("U_Agent").ToString() == cardCode)
-                    //{
+                if (oGeneralData.GetProperty("U_Status").ToString() == ((int)WorkerStatus.Opened).ToString() && oGeneralData.GetProperty("U_Agent").ToString() == cardCode)
+                {
                     oGeneralData.SetProperty("U_WorkerName", worker.WorkerName);
                     oGeneralData.SetProperty("U_Age", MapField<int>(worker.Age));
                     oGeneralData.SetProperty("U_BirthDate", MapField<DateTime>(worker.BirthDate));
@@ -141,6 +141,11 @@
                     else if (!passportCopy.Equals("1"))
                         oGeneralData.SetProperty("U_Passport", MapField<string>(string.Concat(attachmentPath, passportCopy)));
 
+                    if (license.Equals("0"))
+                        oGeneralData.SetProperty("U_License", string.Empty);
+                    else if (!license.Equals("1"))
+                        oGeneralData.SetProperty("U_License", MapField<string>(string.Concat(attachmentPath, license)));
+
                     oGeneralData.SetProperty("U_Religion", MapField<string>(worker.Religion));
                     oGeneralData.SetProperty("U_Serial", MapField<string>(worker.SerialNumber));
                     oGeneralData.SetProperty("U_Status", MapField<string>(worker.Status));
@@ -149,20 +154,16 @@
 
                     oGeneralService.Update(oGeneralData);
                     created = true;
-                    //}
-                    //else
-                    //    Utilities.LogException($"Worker {oGeneralData.GetProperty("Code")} is already {((WorkerStatus)Convert.ToInt16(oGeneralData.GetProperty("U_Status"))).ToString()} or agent {cardCode} dont have the permissions to edit this worker.");
                 }
                 else
-                {
-                    Utilities.LogException($"Agent dont have permissions to update worker: {worker.WorkerCode}");
-                    created = false;
-                }
+                    Utilities.LogException($"Worker {oGeneralData.GetProperty("Code")} is already {((WorkerStatus)Convert.ToInt16(oGeneralData.GetProperty("U_Status"))).ToString()} or agent {cardCode} dont have the permissions to edit this worker.");
             }
-            catch (Exception ex)
+            else
             {
-                Utilities.LogException(ex);
+                Utilities.LogException($"Agent dont have permissions to update worker: {worker.WorkerCode}");
+                created = false;
             }
+
             return created;
         }
 
@@ -176,7 +177,7 @@
                 //TODO: REMOVE COMMENT TO ADD CARDCODE FILTER
                 //worker = instance.CurrentServicelayerInstance.WORKERSUDO.Where(x => x.Code == id && x.U_Agent == cardCode).FirstOrDefault();
                 worker = instance.CurrentServicelayerInstance.WORKERSUDO.Where(x => x.Code == id && x.U_Agent == cardCode).FirstOrDefault();
-               
+
                 if (worker != null)
                 {
                     instance.CurrentServicelayerInstance.DeleteObject(worker);
@@ -248,7 +249,7 @@
                 var query = new StringBuilder();
                 query.Append(@"SELECT ""A"".""Code"",""A"".""U_WorkerName"",""A"".""Name"",""U_ItemCode"",""U_Serial"",""U_Agent"",""U_Age"",");
                 query.Append(@"""U_BirthDate"",""U_Gender"",""D"".""Name"" AS ""U_Nationality"",""D"".""U_NAME"" AS ""U_Nationality_AR"",""R"".""Name"" AS ""U_Religion"",""R"".""U_NAME"" AS ""U_Religion_AR"",");
-                query.Append(@"""U_Photo"", ""U_Weight"",""U_Height"",""E"".""Name"" AS ""U_Education"",""E"".""U_NAME"" AS ""U_Education_AR"",");
+                query.Append(@"""U_Photo"",""U_License"", ""U_Weight"",""U_Height"",""E"".""Name"" AS ""U_Education"",""E"".""U_NAME"" AS ""U_Education_AR"",");
                 query.Append(@"""U_Passport"",""U_Video"",""U_PassportNumber"",""U_PassportIssDate"",""U_PassportExpDate"",""U_PassportPoIssue"",""U_Price"",""U_CivilId"",""U_Status"",");
                 query.Append($@"""B"".""Name"" AS ""U_MaritalStatus"",""B"".""U_NAME"" AS ""U_MaritalStatus_AR""");
                 query.Append($@" FROM ""{databaseBame}"".""@WORKERS"" as ""A""");
@@ -301,6 +302,7 @@
                             PassportNumber = MapField<string>(drow["U_PassportNumber"]),
                             PassportPoIssue = MapField<string>(drow["U_PassportPoIssue"]),
                             Photo = Utilities.ConvertImagePathToUrl(requestUrl, MapField<string>(drow["U_Photo"])),
+                            License = Utilities.ConvertImagePathToUrl(requestUrl, MapField<string>(drow["U_License"])),
                             Religion = MapField<string>(drow[Utilities.GetLocalizedField("U_Religion")]),
                             SerialNumber = MapField<string>(drow["U_Serial"]),
                             Status = MapField<string>(drow["U_Status"]),
@@ -330,7 +332,7 @@
                 var query = new StringBuilder();
                 query.Append(@"SELECT ""A"".""Code"",""A"".""U_WorkerName"",""A"".""Name"",""U_ItemCode"",""U_Serial"",""U_Agent"",""U_Age"",""U_WorkerName"", ");
                 query.Append(@"""U_BirthDate"",""U_Gender"",""D"".""Code"" AS ""U_NationalityCode"",""D"".""Name"" AS ""U_Nationality"",""D"".""U_NAME"" AS ""U_Nationality_AR"",""R"".""Code"" AS ""U_ReligionCode"",""R"".""Name"" AS ""U_Religion"",""R"".""U_NAME"" AS ""U_Religion_AR"",");
-                query.Append(@"""U_Photo"",""U_Weight"",""U_Height"",""E"".""Name"" AS ""U_Education"",""E"".""U_NAME"" AS ""U_Education_AR"",");
+                query.Append(@"""U_Photo"",""U_License"",""U_Weight"",""U_Height"",""E"".""Name"" AS ""U_Education"",""E"".""U_NAME"" AS ""U_Education_AR"",");
                 query.Append(@"""U_Passport"",""U_Video"",""U_PassportNumber"",""U_PassportIssDate"",""U_PassportExpDate"",""U_PassportPoIssue"",""U_Price"",""U_CivilId"",""U_Status"",");
                 query.Append($@"""B"".""Code"" AS ""U_MaritalStatusCode"",""B"".""Name"" AS ""U_MaritalStatus"",""B"".""U_NAME"" AS ""U_MaritalStatus_AR""");
                 query.Append($@" FROM ""{databaseBame}"".""@WORKERS"" as ""A""");
@@ -342,13 +344,13 @@
                 query.Append($@" WHERE ""U_Agent""='{agent}'");
 
                 var readerResult = dbHelper.ExecuteQuery(query.ToString());
-                foreach (DataRow drow in  readerResult.Rows)
+                foreach (DataRow drow in readerResult.Rows)
                 {
                     var code = MapField<string>(drow["Code"]);
                     var langagesResult = dbHelper.ExecuteQuery($@"SELECT ""U_VALUE"",""U_NAME"" FROM ""{databaseBame}"".""@WORKERLNGS"" WHERE ""Code""='{code}'");
                     List<LookupItem> languages = new List<LookupItem>();
 
-                    foreach (DataRow language in langagesResult.Rows )
+                    foreach (DataRow language in langagesResult.Rows)
                     {
                         var name = MapField<string>(language["U_NAME"]);
                         var value = MapField<string>(language["U_VALUE"]);
@@ -371,12 +373,13 @@
                             Height = MapField<string>(drow["U_Height"]),
                             MaritalStatus = AddHashSeperator(drow["U_MaritalStatusCode"].ToString(), MapField<string>(drow[Utilities.GetLocalizedField("U_MaritalStatus")])),
                             Nationality = AddHashSeperator(drow["U_NationalityCode"].ToString(), MapField<string>(drow[Utilities.GetLocalizedField("U_Nationality")])),
-                            Passport = Utilities.ConvertImagePathToUrl(requestUrl,  MapField<string>(drow["U_Passport"])),
+                            Passport = Utilities.ConvertImagePathToUrl(requestUrl, MapField<string>(drow["U_Passport"])),
                             PassportExpDate = MapField<DateTime>(drow["U_PassportExpDate"]).ToShortDateString(),
                             PassportIssDate = MapField<string>(drow["U_PassportIssDate"]),
                             PassportNumber = MapField<string>(drow["U_PassportNumber"]),
                             PassportPoIssue = MapField<string>(drow["U_PassportPoIssue"]),
-                            Photo = Utilities.ConvertImagePathToUrl(requestUrl,  MapField<string>(drow["U_Photo"])),
+                            Photo = Utilities.ConvertImagePathToUrl(requestUrl, MapField<string>(drow["U_Photo"])),
+                            License = Utilities.ConvertImagePathToUrl(requestUrl, MapField<string>(drow["U_License"])),
                             Religion = AddHashSeperator(drow["U_ReligionCode"].ToString(), MapField<string>(drow[Utilities.GetLocalizedField("U_Religion")])),
                             SerialNumber = MapField<string>(drow["U_Serial"]),
                             Status = GetWorkerStatus(MapField<int>(drow["U_Status"])),
@@ -386,50 +389,7 @@
                             Languages = languages
                         });
                 }
-                //while (readerResult.Read())
-                //{
-                //    var code = MapField<string>(readerResult["Code"]);
-                //    var langagesResult = dbHelper.ExecuteQuery($@"SELECT ""U_VALUE"",""U_NAME"" FROM ""{databaseBame}"".""@WORKERLNGS"" WHERE ""Code""='{code}'");
-                //    List<LookupItem> languages = new List<LookupItem>();
 
-                //    while (langagesResult.Read())
-                //    {
-                //        var name = MapField<string>(langagesResult["U_NAME"]);
-                //        var value = MapField<string>(langagesResult["U_VALUE"]);
-                //        languages.Add(new LookupItem(name, value));
-                //    }
-
-                //    workersList.Add(
-                //        new Worker()
-                //        {
-                //            Name = MapField<string>(readerResult["Name"]),
-                //            WorkerCode = MapField<string>(readerResult["Code"]),
-                //            WorkerName = MapField<string>(readerResult["U_WorkerName"]),
-                //            Agent = MapField<string>(readerResult["U_Agent"]),
-                //            Age = MapField<int>(readerResult["U_Age"]),
-                //            BirthDate = MapField<DateTime>(readerResult["U_BirthDate"]).ToShortDateString(),
-                //            CivilId = MapField<string>(readerResult["U_CivilId"]),
-                //            Code = MapField<string>(readerResult["U_ItemCode"]),
-                //            Education = AddHashSeperator(readerResult["U_NationalityCode"].ToString(), MapField<string>(readerResult[Utilities.GetLocalizedField("U_Education")])),
-                //            Gender = Utilities.GetResourceValue(MapField<string>(readerResult["U_Gender"])),
-                //            Height = MapField<string>(readerResult["U_Height"]),
-                //            MaritalStatus = AddHashSeperator(readerResult["U_MaritalStatusCode"].ToString(), MapField<string>(readerResult[Utilities.GetLocalizedField("U_MaritalStatus")])),
-                //            Nationality = AddHashSeperator(readerResult["U_NationalityCode"].ToString(), MapField<string>(readerResult[Utilities.GetLocalizedField("U_Nationality")])),
-                //            Passport = Utilities.ConvertImagePathToUrl(requestUrl,string.Concat(attachmentPath, MapField<string>(readerResult["U_Passport"]))),
-                //            PassportExpDate = MapField<DateTime>(readerResult["U_PassportExpDate"]).ToShortDateString(),
-                //            PassportIssDate = MapField<string>(readerResult["U_PassportIssDate"]),
-                //            PassportNumber = MapField<string>(readerResult["U_PassportNumber"]),
-                //            PassportPoIssue = MapField<string>(readerResult["U_PassportPoIssue"]),
-                //            Photo = Utilities.ConvertImagePathToUrl(requestUrl, string.Concat(attachmentPath, MapField<string>(readerResult["U_Photo"]))),
-                //            Religion = AddHashSeperator(readerResult["U_ReligionCode"].ToString(), MapField<string>(readerResult[Utilities.GetLocalizedField("U_Religion")])),
-                //            SerialNumber = MapField<string>(readerResult["U_Serial"]),
-                //            Status = GetWorkerStatus(MapField<int>(readerResult["U_Status"])),
-                //            Video = MapField<string>(readerResult["U_Video"]),
-                //            Price = MapField<float>(readerResult["U_Price"]),
-                //            Weight = MapField<string>(readerResult["U_Weight"]),
-                //            Languages = languages
-                //        });
-                //}
             }
             catch (Exception ex)
             {
@@ -709,7 +669,7 @@
             try
             {
                 var path = string.Empty;
-                
+
                 StringBuilder query = new StringBuilder($@"SELECT IFNULL(""AttachPath"",'') ""AttachPath"" FROM ""{base.databaseName}"".""OADP""");
                 var result = conn.ExecuteQuery(query.ToString());
                 foreach (DataRow drow in result.Rows)
@@ -766,6 +726,31 @@
                 Utilities.LogException(ex);
                 return false;
             }
+        }
+
+        public List<LookupItem> GetLanguagesById(string jsonString)
+        {
+            var lookups = new List<LookupItem>();
+            try
+            {
+                var selectedIds = Utilities.ConvertJsonStringToObject<string[]>(jsonString);
+                var ids = String.Join(",", selectedIds);
+                var query = $@"SELECT ""Code"",""U_NAME"" FROM ""{base.databaseName}"".""@LANGUAGES"" WHERE ""Code"" IN ({ids})";
+                var conn = Factory.DeclareClass<DatabaseHelper<HanaConnection>>();
+                var result = conn.ExecuteQuery(query);
+                foreach (DataRow row in result.Rows)
+                {
+                    lookups.Add(new LookupItem(
+                        MapField<string>(row["U_NAME"]),
+                        MapField<string>(row["Code"])));
+                }
+            }
+            catch(Exception ex)
+            {
+                Utilities.LogException(ex);
+            }
+
+            return lookups;
         }
 
         #region PRIVATE METHODS

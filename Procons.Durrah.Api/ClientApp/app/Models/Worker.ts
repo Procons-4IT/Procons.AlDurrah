@@ -26,6 +26,7 @@ export class Worker {
         public code: string,
         public workerCode: string,
         public passport: string,
+        public license: string,
         public status: string,
         public passportCopy: any
 

@@ -192,11 +192,11 @@ export class ApiService {
             let splitValue;
             if (workerProperty === 'languages') {
                 splitValue = workerServerNameValueHashData[workerProperty]
-            }else{
-                 splitValue = this.splitProperties(workerServerNameValueHashData[workerProperty]);
+            } else {
+                splitValue = this.splitProperties(workerServerNameValueHashData[workerProperty]);
             }
- 
-           if (workerProperty !== 'languages' && Array.isArray(splitValue) && splitValue.length === 2) {
+
+            if (workerProperty !== 'languages' && Array.isArray(splitValue) && splitValue.length === 2) {
                 workerDisplayData[workerProperty] = splitValue[1]; //grab value after hash
                 workerKeyData[workerProperty] = splitValue[0]; //grab value after hash
 
@@ -283,7 +283,7 @@ export class ApiService {
         let url = this.config.baseUrl + this.config.updateWorkerUrl;
         return this.uploadFile(formData, url)
             .map(response => {
-                return response._body;
+                return response._body === undefined ? response : response._body;
             });
         ;
     }
@@ -291,7 +291,8 @@ export class ApiService {
         let url = this.config.baseUrl + this.config.addWorkerUrl;
         return this.uploadFile(formData, url)
             .map(response => {
-                return response._body;
+
+                return response._body === undefined ? response : response._body;
             });
     }
     public deleteWorker(workerCode: String): Observable<any> {

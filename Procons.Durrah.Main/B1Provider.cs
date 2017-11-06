@@ -24,6 +24,7 @@
                 base.AddFieldSL("MaritalStatus", "MaritalStatus", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
                 base.AddFieldSL("Language", "Language", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
                 base.AddFieldSL("Photo", "Photo", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 200, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
+                base.AddFieldSL("License", "License", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 200, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
                 base.AddFieldSL("Weight", "Weight", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Numeric.ToString(), SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
                 base.AddFieldSL("Height", "Height", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
                 base.AddFieldSL("Education", "Education", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
