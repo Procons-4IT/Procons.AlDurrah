@@ -12,7 +12,6 @@ import { ResetPasswordParams, KnetPayment } from '../Models/ApiRequestType';
 
 import { ApiService } from '../Services/ApiService';
 import { UtilityService } from '../Services/UtilityService';
-
 declare var $;
 
 @Component({
@@ -48,11 +47,13 @@ export class HomeComponent implements OnInit {
   };
 
   public loadingPayment: boolean = false;
+
+
   constructor(public myApi: ApiService,
     public utility: UtilityService,
     public activeRouter: ActivatedRoute,
     public router: Router,
-    public translate: TranslateService
+    public translate: TranslateService,
   ) { }
 
   ngOnInit() {
@@ -60,7 +61,7 @@ export class HomeComponent implements OnInit {
       .subscribe(isLoggedIn => {
         this.isLoggedIn = isLoggedIn;
       });
-    this.myApi.onUserTypeLoggedIn().subscribe(loginType=>{
+    this.myApi.onUserTypeLoggedIn().subscribe(loginType => {
       this.logInType = loginType;
     });
     this.handlePaymentRoute();
@@ -69,16 +70,13 @@ export class HomeComponent implements OnInit {
   }
 
 
+  //To-Do replace the Bootstrap modals with angular component
   handleConfirmEmailRoute() {
-    
 
     this.activeRouter.data
       .filter((data, idx) => { return data.isConfirmEmail; })
       .do(x => {
-        $('#modalIncomingPayment').modal('toggle');
-        this.loadingPayment = true;
-        this.paymentModalText = "Confirming Email Please Wait!";
-
+        this.jqueryModalHelper("route.email.emailWaiting", '#modalIncomingPayment');
       })
       .mergeMap(x => { return this.utility.getResetPasswordUrlProperties(this.activeRouter) })
       .mergeMap(params => { return this.myApi.confirmEmail(params) })
@@ -86,13 +84,12 @@ export class HomeComponent implements OnInit {
 
         this.loadingPayment = false;
         if (x) {
-          this.paymentModalText = 'Email Confirmed!';
-          var stateObj = { foo: "bar" };
-          history.replaceState(stateObj, "page 3", "home");
-
-
+          this.jqueryModalHelper("route.email.emailConfirmed", null, () => {
+            var stateObj = { foo: "bar" };
+            history.replaceState(stateObj, "page 3", "home");
+          });
         } else {
-          this.paymentModalText = 'Invalid Email!';
+          this.jqueryModalHelper("route.email.invalidEmail", null);
         }
       }, onError => {
         this.loadingPayment = false;
@@ -104,36 +101,29 @@ export class HomeComponent implements OnInit {
   //Ex. http://localhost:4200/paymentconfirmation?paymentid=5904845091172790&result=not%20captured&postdate=1006&tranid=2624949101172790&auth=&ref=727911110228&trackid=6358289
   // http://localhost:4200/paymentconfirmation?paymentid=7051302202373050&result=captured&postdate=1102&tranid=2544329212373050&auth=703383&ref=730523915761&trackid=5941653&udf2=cc004&udf3=dw00002&udf4=541254785&udf5=45            Udf1: CardCode---Udf2: ItemCode---Udf3 Worker Code----Udf5:Amount
   handlePaymentRoute() {
-    
-
     this.activeRouter.data
       .filter((data, idx) => { return data.isPayment; })
       .do(x => {
         $('#modalIncomingPayment').modal('toggle');
-        this.loadingPayment = true;
-        this.paymentModalText = "Proccesing Payment Please Wait!";
-
-      })
-      .mergeMap(x => { return this.utility.getKnetUrlProperties(this.activeRouter) })
+      }).mergeMap(x => { return this.utility.getKnetUrlProperties(this.activeRouter) })
       .do(x => { this.paymentParams = x; })
       .subscribe(x => {
-        
-        this.loadingPayment = false;
-        this.paymentModalText = 'Payment Complete!';
-        this.amount = x && x.Amount;
-        var stateObj = { foo: "bar" };
-        history.replaceState(stateObj, "page 3", "home");
+        this.jqueryModalHelper("route.payment.complete", null, () => {
+          this.loadingPayment = false;
+          this.amount = x && x.Amount;
+          var stateObj = { foo: "bar" };
+          history.replaceState(stateObj, "page 3", "home");
+        });
 
       }, onError => {
-        this.loadingPayment = false;
-        this.paymentModalText = 'Something Went Wrong!'
+        this.jqueryModalHelper("route.payment.error", null, () => {
+          this.loadingPayment = false;
+        });
       });
 
   }
 
   handlePasswordResetRoute() {
-    
-
     this.activeRouter.data
       .filter((data, idx) => { return data.isPasswordReset; })
       .do(x => {
@@ -141,7 +131,7 @@ export class HomeComponent implements OnInit {
       })
       .mergeMap(x => { return this.utility.getResetPasswordUrlProperties(this.activeRouter) })
       .subscribe(x => {
-        
+
         this.resetParams.EmailAddress = x.Email;
         this.resetParams.ValidationId = x.ValidationId;
       }, onError => {
@@ -153,7 +143,9 @@ export class HomeComponent implements OnInit {
 
   ResetPassword(password: string, confirmPassword: string) {
     if (password !== confirmPassword) {
-      this.resetPassInputError = "Error Passwords not matching";
+      this.translate.get("resetPassword.invalidPassword").subscribe(message => {
+        this.resetPassInputError = message;
+      });
     } else {
       this.resetPassModalLoading = true;
       this.resetParams.Password = password;
@@ -162,8 +154,7 @@ export class HomeComponent implements OnInit {
         .subscribe(isReset => {
           this.resetPassModalLoading = false;
           if (isReset) {
-            
-            this.resetPassModalText = 'Password was Reset!';
+            this.translate.get("resetPassword.reset").subscribe(message => { this.resetPassModalText = message; });
             setTimeout(x => {
               this.router.navigate(['/home']);
             }, 3000);
@@ -180,6 +171,18 @@ export class HomeComponent implements OnInit {
   }
 
 
+  jqueryModalHelper(messageKey: string, modalId: string, optionalCallBack?) {
+    this.translate.get(messageKey).subscribe(translateMessage => {
 
+      if (modalId) {
+        $(modalId).modal('toggle');
+        this.loadingPayment = true;
+      }
+      this.paymentModalText = translateMessage;
+
+      if (typeof optionalCallBack === "function") { optionalCallBack(); }
+    });
+
+  }
 
 }
