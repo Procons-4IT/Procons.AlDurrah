@@ -17,6 +17,24 @@
     "invalidPassword": "Passwords Don't Match",
     "invalidCaptcha": "Please Enter Recaptcha"
   },
+  "route": {
+    "email": {
+      "emailWaiting": "Confirming Email Please Wait!",
+      "emailConfirmed": "Email Confirmed!",
+      "invalidEmail": "Invalid Email!",
+      "emailError": "Something Went Wrong!"
+    },
+    "payment": {
+      "loading": "Proccesing Payment Please Wait!",
+      "complete": "Payment Complete!",
+      "error": "Something Went Wrong!"
+    }
+
+  },
+  "resetPassword": {
+    "invalidPassword": "Error Passwords not matching",
+    "reset": "Password was Reset!"
+  },
   "name": "الاسم",
   "back": "رجوع",
   "submit": "سجل",
@@ -49,20 +67,20 @@
   "ViewProfiles": "عرض الملفات",
   "Profiles": "الملفات",
   "Delete": "حذف",
-  "birthDate":"تاريخ الميلاد",
-  "languages":"اللغات",
-  "workerType":"نوع العامل",
-  "passportNumber":"رقم الجواز",
-  "passportIssueDate":"تاريخ اصدار الجواز",
-  "passportPlaceofIssue":"مكان اصدار الجواز",
-  "passportExpiry":"تاريخ انتهاء صلاحية الجواز",
-  "civilID":"رقم بطاقة الهوية",
-  "photoUpload":"تحميل الصورة",
-  "PassportUpload":"تحميل صورة الجواز",
-  "dateFormat":"يوم-شهر-سنة",
-  "maritalStatus":"الحالة الاجتماعية",
-  "addProfile":"اضافة ملف",
-  "save":"حفظ",
+  "birthDate": "تاريخ الميلاد",
+  "languages": "اللغات",
+  "workerType": "نوع العامل",
+  "passportNumber": "رقم الجواز",
+  "passportIssueDate": "تاريخ اصدار الجواز",
+  "passportPlaceofIssue": "مكان اصدار الجواز",
+  "passportExpiry": "تاريخ انتهاء صلاحية الجواز",
+  "civilID": "رقم بطاقة الهوية",
+  "photoUpload": "تحميل الصورة",
+  "PassportUpload": "تحميل صورة الجواز",
+  "dateFormat": "يوم-شهر-سنة",
+  "maritalStatus": "الحالة الاجتماعية",
+  "addProfile": "اضافة ملف",
+  "save": "حفظ",
   "error": {
     "default": "Something Went Wrong",
     "notLoggedIn": "Please Login!",
