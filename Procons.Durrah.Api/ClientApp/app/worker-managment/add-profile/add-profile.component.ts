@@ -22,6 +22,8 @@ export class AddProfileComponent implements OnInit {
     @ViewChild("passportUpload") passportUpload;
     @ViewChild("workerForm") workerForm;
 
+    passportFileName = "";
+    photoFileName= "";
     photoFileText = "Select Photo File";
     passportFileText = "Select Passport File";
 
@@ -47,7 +49,10 @@ export class AddProfileComponent implements OnInit {
             // this.tempData();
             this.photoServerMode = FileUploadMode.Edit;
             this.passportServerMode = FileUploadMode.Edit;
+            this.photoFileName =  this.getFileImageName(this.state.worker.photo);
+            this.passportFileName = this.getFileImageName(this.state.worker.passport);
             console.log('searchCriteria Params ', this.searchCriterias);
+
         } else {
             this.createEmptyWorkerState();
             this.state.isAddMode = true;
@@ -180,6 +185,14 @@ export class AddProfileComponent implements OnInit {
         let passportFile = this.passportUpload.files;
 
         return (photoFile && photoFile[0] && passportFile && passportFile[0]);
+    }
+
+    getFileImageName(fileUrl):string {
+        if(typeof fileUrl === "string"){
+         return (fileUrl as string).match(/\?path=(.*)/)[1];
+        }
+        return ;
+
     }
 
 
