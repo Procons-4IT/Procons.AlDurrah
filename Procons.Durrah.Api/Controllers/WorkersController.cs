@@ -201,14 +201,14 @@
                 var worker = await SaveFile();
                 var result = workersFacade.CreateWorker(worker);
                 if (result)
-                    return Ok("Created Successfully!");
+                    return Ok((Utilities.GetResourceValue(Constants.Resources.WorkerCreatedSuccessfully)));
                 else
-                    return InternalServerError(new Exception("Worker already created!"));
+                    return InternalServerError(new Exception(Utilities.GetResourceValue(Constants.Resources.WorkerAreadyCreated)));
             }
             catch(Exception ex)
             {
                 Utilities.LogException(ex);
-                return InternalServerError(new Exception("Error Happened"));
+                return InternalServerError(new Exception(Utilities.GetResourceValue(Constants.Resources.ErrorOccured)));
             }
 
         }
@@ -221,14 +221,14 @@
                 var worker = await UpdateFile();
                 var result = workersFacade.UpdateWorker(worker, cardCode);
                 if (result)
-                    return Ok("Updated Successfully!");
+                    return Ok(Utilities.GetResourceValue(Constants.Resources.WorkerUpdatedSuccessfully));
                 else
-                    return InternalServerError(new Exception("Worker already created!"));
+                    return InternalServerError(new Exception(Utilities.GetResourceValue(Constants.Resources.WorkerAreadyCreated)));
             }
             catch (Exception ex)
             {
                 Utilities.LogException(ex);
-                return InternalServerError(new Exception("Error Happened"));
+                return InternalServerError(new Exception(Utilities.GetResourceValue(Constants.Resources.ErrorOccured)));
             }
 
         }

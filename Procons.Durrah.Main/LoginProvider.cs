@@ -20,7 +20,7 @@
                 ServiceLayerProvider loginInstance = new ServiceLayerProvider();
                 loginInstance.Login();
                 var encryptedPassword = Utilities.Encrypt(password);
-                var result = loginInstance.CurrentServicelayerInstance.BusinessPartners.Where(x => x.U_UserName == userName & x.U_Password == encryptedPassword).FirstOrDefault();
+                var result = loginInstance.CurrentServicelayerInstance.BusinessPartners.Where(x => x.U_UserName == userName & x.U_Password == encryptedPassword && x.U_Confirmed == "Y").FirstOrDefault();
                 if (result != null)
                 {
                     user = new ApplicationUser()
@@ -39,7 +39,7 @@
             {
                 Utilities.LogException(ex);
             }
- 
+
             return user;
         }
 

@@ -129,6 +129,9 @@
   <data name="DurraPasswordReset" xml:space="preserve">
     <value>Durra Password Reset</value>
   </data>
+  <data name="ErrorOccured" xml:space="preserve">
+    <value>حصل خطأ!</value>
+  </data>
   <data name="F" xml:space="preserve">
     <value>Female</value>
   </data>
@@ -165,6 +168,12 @@
   <data name="Transaction_Completed" xml:space="preserve">
     <value>Transaction Completed</value>
   </data>
+  <data name="WorkerAreadyCreated" xml:space="preserve">
+    <value>العامل الذي تحاول اضافته موجود !</value>
+  </data>
+  <data name="WorkerCreatedSuccessfully" xml:space="preserve">
+    <value>تمت الاضافة بنجاح !</value>
+  </data>
   <data name="WorkerStatus_Available" xml:space="preserve">
     <value>متوفر</value>
   </data>
@@ -173,5 +182,8 @@
   </data>
   <data name="WorkerStatus_Unavailable" xml:space="preserve">
     <value>غير متوفر</value>
+  </data>
+  <data name="WorkerUpdatedSuccessfully" xml:space="preserve">
+    <value>تم التعديل بنجاح !</value>
   </data>
 </root>

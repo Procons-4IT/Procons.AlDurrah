@@ -97,6 +97,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to حصل خطأ!.
+        /// </summary>
+        internal static string ErrorOccured {
+            get {
+                return ResourceManager.GetString("ErrorOccured", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Female.
         /// </summary>
         internal static string F {
@@ -181,6 +190,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to العامل الذي تحاول اضافته موجود !.
+        /// </summary>
+        internal static string WorkerAreadyCreated {
+            get {
+                return ResourceManager.GetString("WorkerAreadyCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تمت الاضافة بنجاح !.
+        /// </summary>
+        internal static string WorkerCreatedSuccessfully {
+            get {
+                return ResourceManager.GetString("WorkerCreatedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to متوفر.
         /// </summary>
         internal static string WorkerStatus_Available {
@@ -204,6 +231,15 @@ namespace Resources {
         internal static string WorkerStatus_Unavailable {
             get {
                 return ResourceManager.GetString("WorkerStatus_Unavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تم التعديل بنجاح !.
+        /// </summary>
+        internal static string WorkerUpdatedSuccessfully {
+            get {
+                return ResourceManager.GetString("WorkerUpdatedSuccessfully", resourceCulture);
             }
         }
     }

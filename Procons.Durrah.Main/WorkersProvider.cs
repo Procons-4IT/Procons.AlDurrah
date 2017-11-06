@@ -23,11 +23,12 @@
         {
             var created = false;
 
-            if (IsWorkerAvailable(worker.Code)) ;
-            return false;
+            if (IsWorkerAvailable(worker.WorkerCode))
+                return false;
             var attachmentPath = GetAttachmentPath();
             var passportCopy = worker.Passport != null && worker.Passport != string.Empty ? CreateAttachment(worker.Passport) : worker.Passport;
             var photo = worker.Photo != null && worker.Photo != string.Empty ? CreateAttachment(worker.Photo) : worker.Photo;
+            var license = worker.License != null && worker.License != string.Empty ? CreateAttachment(worker.License) : worker.License;
 
             var sCmp = B1Company.GetCompanyService();
             var oGeneralService = sCmp.GetGeneralService("WORKERSUDO");
@@ -64,6 +65,7 @@
             oGeneralData.SetProperty("U_PassportExpDate", DateTime.ParseExact(worker.BirthDate, "dd-MM-yyyy", null));
             oGeneralData.SetProperty("U_PassportNumber", worker.PassportNumber);
             oGeneralData.SetProperty("U_Photo", string.Concat(attachmentPath, photo));
+            oGeneralData.SetProperty("U_License", string.Concat(attachmentPath, license));
             oGeneralData.SetProperty("U_Religion", worker.Religion);
             oGeneralData.SetProperty("U_Serial", worker.SerialNumber);
             oGeneralData.SetProperty("U_Status", worker.Status);
@@ -279,7 +281,7 @@
                         var value = MapField<string>(langaugeRow["U_VALUE"]);
                         languages.Add(new LookupItem(name, value));
                     }
-
+                    var age = DateTime.Now.Year - MapField<DateTime>(drow["U_BirthDate"]).Year;
                     workersList.Add(
                         new Worker()
                         {
@@ -287,7 +289,7 @@
                             WorkerCode = MapField<string>(drow["Code"]),
                             WorkerName = MapField<string>(drow["U_WorkerName"]),
                             Agent = MapField<string>(drow["U_Agent"]),
-                            Age = MapField<int>(drow["U_Age"]),
+                            Age = age,
                             BirthDate = MapField<DateTime>(drow["U_BirthDate"]).ToShortDateString(),
                             CivilId = MapField<string>(drow["U_CivilId"]),
                             Code = MapField<string>(drow["U_ItemCode"]),
@@ -356,7 +358,7 @@
                         var value = MapField<string>(language["U_VALUE"]);
                         languages.Add(new LookupItem(name, value));
                     }
-
+                    var age = DateTime.Now.Year - MapField<DateTime>(drow["U_BirthDate"]).Year;
                     workersList.Add(
                         new Worker()
                         {
@@ -364,7 +366,7 @@
                             WorkerCode = MapField<string>(drow["Code"]),
                             WorkerName = MapField<string>(drow["U_WorkerName"]),
                             Agent = MapField<string>(drow["U_Agent"]),
-                            Age = MapField<int>(drow["U_Age"]),
+                            Age = age,
                             BirthDate = MapField<DateTime>(drow["U_BirthDate"]).ToShortDateString(),
                             CivilId = MapField<string>(drow["U_CivilId"]),
                             Code = MapField<string>(drow["U_ItemCode"]),
@@ -837,12 +839,14 @@
                 if (wrk.Age != null)
                 {
                     var boundaries = wrk.Age.Trim().Split('-');
+                    var startYear = DateTime.Now.Year - int.Parse(boundaries[0]);
+                    var endYear = DateTime.Now.Year - int.Parse(boundaries[1]);
                     if (queryBuilder.Length > 0)
-                        queryBuilder.Append($" AND \"U_Age\" BETWEEN {boundaries[0]} AND {boundaries[1]}");
+                        queryBuilder.Append($" AND \"U_BirthDate\" BETWEEN {startYear} AND {endYear}");
                     else
                     {
                         queryBuilder = new StringBuilder("WHERE ");
-                        queryBuilder.Append($"\"U_Age\" BETWEEN {boundaries[0]} AND {boundaries[1]}");
+                        queryBuilder.Append($"\"U_BirthDate\" BETWEEN {startYear} AND {endYear}");
                     }
                 }
                 if (wrk.Gender != null)
@@ -909,7 +913,10 @@
                 if (wrk.Age != null)
                 {
                     var boundaries = wrk.Age.Trim().Split('-');
-                    queryBuilder.Append($" AND \"U_Age\" BETWEEN {boundaries[0]} AND {boundaries[1]}");
+                    //var startYear = DateTime.Now.Year - int.Parse(boundaries[1]);
+                    //var endYear = DateTime.Now.Year - int.Parse(boundaries[0]);
+
+                    queryBuilder.Append($" AND  {DateTime.Now.Year} - YEAR(\"U_BirthDate\") BETWEEN {boundaries[0]} AND {boundaries[1]}");
                 }
                 if (wrk.Gender != null)
                 {

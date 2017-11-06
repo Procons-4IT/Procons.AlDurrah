@@ -54,6 +54,11 @@
             public const string WorkerStatus_Unavailable = "WorkerStatus_Unavailable";
             public const string WorkerStatus_Available = "WorkerStatus_Available";
             public const string WorkerStatus_Booked = "WorkerStatus_Booked";
+
+            public const string WorkerUpdatedSuccessfully = "WorkerUpdatedSuccessfully";
+            public const string WorkerAreadyCreated = "WorkerAreadyCreated";
+            public const string WorkerCreatedSuccessfully = "WorkerCreatedSuccessfully";
+            public const string ErrorOccured = "ErrorOccured";
         }
         public struct KNET
         {
