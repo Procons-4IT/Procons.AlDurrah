@@ -115,7 +115,7 @@
 
                   <div class="form-group ">
                     <label for="video">{{ 'video' | translate }}</label>
-                    <input required name="videopublic" id="video" type="text" class="form-control" placeholder="http://Video Link" [(ngModel)]="state.worker.video"
+                    <input name="videopublic" id="video" type="text" class="form-control" placeholder="http://Video Link" [(ngModel)]="state.worker.video"
                     />
                   </div>
 
@@ -160,7 +160,7 @@
                               <div>
                                 <img [src]="state.worker.photo" width="50">
                               </div>
-                              <div>Saved File</div>
+                              <div>{{photoFileName || "Saved File"}}</div>
                               <div></div>
                               <div>
                                 <button (click)="deleteServerFile(true)" icon="fa-close" pbutton="" type="button" ng-reflect-icon="fa-close" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only">
@@ -186,7 +186,7 @@
                               <div>
                                 <img [src]="state.worker.passport" width="50">
                               </div>
-                              <div>Saved File</div>
+                              <div>{{ passportFileName || "Saved File"}}</div>
                               <div></div>
                               <div>
                                 <button (click)="deleteServerFile(false)" icon="fa-close" pbutton="" type="button" ng-reflect-icon="fa-close" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only">

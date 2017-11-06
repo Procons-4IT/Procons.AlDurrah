@@ -4,6 +4,7 @@ import { Worker } from "../../Models/Worker";
 import * as moment from 'moment';
 import { MomentDatePipe } from '../../moment-date.pipe';
 import { LanguageConvertPipe } from '../../language-convert.pipe';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
     selector: "view-profiles",
@@ -15,12 +16,20 @@ export class ViewProfilesComponent {
     @Input() workers: Worker[]
     @Output() onBack = new EventEmitter<any>();
 
+    videoUrl;
+    showVideoModal = false;
+
     languages: string = "";
-    constructor() { }
+    constructor(public sanitizer: DomSanitizer) { }
 
     back() {
         this.onBack.emit();
     }
+    public openRequestedPopup(url) {
+        
+        this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+        this.showVideoModal = true;
+      }
 
 
 
