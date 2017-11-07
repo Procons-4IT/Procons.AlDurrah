@@ -91,7 +91,7 @@ export class AddProfileComponent implements OnInit {
             const formData = new FormData();
             formData.append("Photo", photoFile[0], photoFile[0].name);
             formData.append("Passport", passportFile[0], passportFile[0].name);
-            formData.append("License", LicenseFile[0], passportFile[0].name);
+            formData.append("License", LicenseFile[0], LicenseFile[0].name);
             this.getFormData(formData);
             this.loading = true;
             this.myApi.addWorker(formData).subscribe(x => {

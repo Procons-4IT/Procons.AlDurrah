@@ -43,12 +43,12 @@ namespace Procons.Durrah.Api.Controllers
         public ActionResult Image(string path)
         {
             var image = System.Drawing.Image.FromFile(path);
-            byte[] imageBytes = null;
+            byte[] fileBytes = null;
             using (var ms = new MemoryStream())
             {
                 image.Save(ms, ImageFormat.Png);
-                imageBytes = ms.ToArray();
-                return base.File(ms.ToArray(), "image/png");
+                fileBytes = ms.ToArray();
+                return base.File(fileBytes, "image/png");
             }
         }
     }
