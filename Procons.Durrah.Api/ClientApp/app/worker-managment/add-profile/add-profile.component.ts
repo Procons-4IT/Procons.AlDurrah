@@ -187,8 +187,10 @@ export class AddProfileComponent implements OnInit {
     }
 
     createEmptyWorkerState() {
-        let workerParams: any = Array.from({ length: 26 }, x => { return '' }) as any;
-        this.state.worker = new (<any>Worker)(...workerParams);
+        let workerParams: any = Array.from({ length: 27 }, x => { return '' }) as any;
+        let tempWorker = new (<any>Worker)(...workerParams);
+        tempWorker.languages = [];
+        this.state.worker = tempWorker;
     }
     isFilesAttached(): boolean {
 
