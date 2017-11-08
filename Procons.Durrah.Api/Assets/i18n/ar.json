@@ -17,6 +17,21 @@
     "invalidPassword": "Passwords Don't Match",
     "invalidCaptcha": "Please Enter Recaptcha"
   },
+  "route": {
+    "email": {
+      "emailWaiting": "Confirming Email Please Wait!",
+      "emailConfirmed": "Email Confirmed!",
+      "invalidEmail": "Invalid Email!",
+      "emailError": "Something Went Wrong!"
+    },
+    "payment": {
+      "loading": "Proccesing Payment Please Wait!",
+      "complete": "Payment Complete!",
+      "error": "Something Went Wrong!"
+    },
+    "error": "Error Page 404"
+
+  },
   "name": "الاسم",
   "back": "رجوع",
   "submit": "سجل",
