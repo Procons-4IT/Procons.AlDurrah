@@ -28,7 +28,10 @@
       "loading": "Proccesing Payment Please Wait!",
       "complete": "Payment Complete!",
       "error": "Something Went Wrong!"
-    }
+    },
+    "error": "Error Page 404",
+    "cancel": "Transaction was cancelled"
+
 
   },
   "resetPassword": {

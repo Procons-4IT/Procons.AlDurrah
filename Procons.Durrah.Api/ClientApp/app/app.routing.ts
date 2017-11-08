@@ -14,6 +14,8 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'paymentconfirmation', data: { isPayment: true }, component: HomeComponent },
   { path: 'confirmemail', data: { isConfirmEmail: true }, component: HomeComponent },
+  { path: 'error', data: {isError:true }, component: HomeComponent },
+  { path: 'cancel', data: {isCancel:true }, component: HomeComponent },
   { path: 'resetpassword', data: { isPasswordReset: true }, component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: '', pathMatch: 'full', redirectTo: '/home' },

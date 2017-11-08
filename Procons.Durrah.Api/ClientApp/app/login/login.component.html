@@ -14,7 +14,7 @@
                                     <img src="/Assets/src/app/images/icon_login.png" height="120" width="120" data-appear-animation="fadeIn" />
                                 </p>
 
-                                <form (ngSubmit)="Login()" id="loginForm" class="form-primary" #createUserForm="ngForm">
+                                <form (ngSubmit)="Login()" id="loginForm" class="form-primary" #loginForm="ngForm">
                                     <div class="form-group">
                                         <input type="text" class="form-control" id="username" name="username" placeholder="{{'login.usernameP' | translate }}" [(ngModel)]="newUser.UserName"
                                             #userName="ngModel" />
@@ -84,6 +84,7 @@
                                         <a href="#tabLogin" class="btn btn-primary" aria-controls="tabLogin" role="tab" data-toggle="tab" id="loginBack">Back</a>
                                     </div>
                                 </form>
+                                
                             </div>
                         </div>
 

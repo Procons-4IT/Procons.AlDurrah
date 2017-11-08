@@ -24,8 +24,8 @@ export class AddProfileComponent implements OnInit {
     @ViewChild("workerForm") workerForm;
 
     passportFileName = "";
-    photoFileName= "";
-    licenseFileName= "";
+    photoFileName = "";
+    licenseFileName = "";
     photoFileText = "Select Photo File";
     passportFileText = "Select Passport File";
 
@@ -52,8 +52,8 @@ export class AddProfileComponent implements OnInit {
             this.photoServerMode = FileUploadMode.Edit;
             this.passportServerMode = FileUploadMode.Edit;
             this.licenseServerMode = FileUploadMode.Edit;
-            this.photoFileName =  this.getFileImageName(this.state.worker.photo);
-            this.licenseFileName =  this.getFileImageName(this.state.worker.license);
+            this.photoFileName = this.getFileImageName(this.state.worker.photo);
+            this.licenseFileName = this.getFileImageName(this.state.worker.license);
             this.passportFileName = this.getFileImageName(this.state.worker.passport);
             console.log('searchCriteria Params ', this.searchCriterias);
 
@@ -87,7 +87,7 @@ export class AddProfileComponent implements OnInit {
         let passportFile = passInput.files;
         let LicenseFile = licenseInput.files;
 
-        if (photoFile && photoFile[0] && passportFile && passportFile[0]&& LicenseFile && LicenseFile[0]) {
+        if (photoFile && photoFile[0] && passportFile && passportFile[0] && LicenseFile && LicenseFile[0]) {
             const formData = new FormData();
             formData.append("Photo", photoFile[0], photoFile[0].name);
             formData.append("Passport", passportFile[0], passportFile[0].name);
@@ -114,17 +114,10 @@ export class AddProfileComponent implements OnInit {
 
         const formData = new FormData();
 
-        //new filese is uploaded
-        if (photoFile && photoFile[0] && passportFile && passportFile[0]&& licenseFile && licenseFile[0]) {
-            formData.append("Photo", photoFile[0], photoFile[0].name);
-            formData.append("Passport", passportFile[0], passportFile[0].name);
-            formData.append("License", licenseFile[0], licenseFile[0].name);
-        } else {
-            //edit or delete files
-            formData.append("Photo", this.photoServerMode === FileUploadMode.Delete ? "0" : "1");
-            formData.append("Passport", this.passportServerMode === FileUploadMode.Delete ? "0" : "1");
-            formData.append("License", this.licenseServerMode === FileUploadMode.Delete ? "0" : "1");
-        }
+        this.appendOneFile(formData,"Photo",photoFile,this.photoServerMode);
+        this.appendOneFile(formData,"Passport",passportFile,this.passportServerMode);
+        this.appendOneFile(formData,"License",licenseFile,this.licenseServerMode);
+     
 
         this.getFormData(formData);
         this.loading = true;
@@ -134,12 +127,22 @@ export class AddProfileComponent implements OnInit {
             this.onErrorUpdate(onError);
         });
     }
+    appendOneFile(formData,property,file, fileMode: FileUploadMode){
+        // formData.append("Photo", photoFile[0], photoFile[0].name);
+        if (file && file[0]) {
+            formData.append(property,file[0],file[0].name);
+        } else {
+            formData.append(property,fileMode === FileUploadMode.Delete? "0":"1");
+        }
+    }
 
     onSucessfullUpdate(onSuccessMessage, resetForm: boolean = false) {
         this.loading = false;
         this.myModal.showSuccessModal(onSuccessMessage, false);
         console.log('state', this.state);
-        this.clearForm();
+        if(resetForm){
+            this.clearForm();
+        }
     }
     clearForm() {
         console.log('clearing the form');
@@ -198,24 +201,24 @@ export class AddProfileComponent implements OnInit {
         let passportFile = this.passportUpload.files;
         let licenseFile = this.licenseUpload.files;
 
-        return (photoFile && photoFile[0] && passportFile && passportFile[0]&& licenseFile && licenseFile[0]);
+        return (photoFile && photoFile[0] && passportFile && passportFile[0] && licenseFile && licenseFile[0]);
     }
 
-    getFileImageName(fileUrl):string {
-        if(typeof fileUrl === "string"){
-         return (fileUrl as string).match(/\?path=(.*)/)[1];
+    getFileImageName(fileUrl): string {
+        if (typeof fileUrl === "string") {
+            return (fileUrl as string).match(/\?path=(.*)/)[1];
         }
-        return ;
+        return;
 
     }
 
 
     deleteServerFile(fileType: string) {
-        if (fileType=='PHOTO') {
+        if (fileType == 'PHOTO') {
             this.photoServerMode = FileUploadMode.Delete;
-        } else if (fileType=='PASSPORT')  {
+        } else if (fileType == 'PASSPORT') {
             this.passportServerMode = FileUploadMode.Delete;
-        } else{
+        } else {
             this.licenseServerMode = FileUploadMode.Delete;
         }
     }
