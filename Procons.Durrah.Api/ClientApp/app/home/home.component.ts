@@ -1,3 +1,5 @@
+//TO-DO: Fix the routing remove redundancies
+
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router'
 import { Observable, ObservableInput } from 'rxjs/Observable';
@@ -67,6 +69,8 @@ export class HomeComponent implements OnInit {
     this.handlePaymentRoute();
     this.handleConfirmEmailRoute();
     this.handlePasswordResetRoute();
+    this.handleErrorRoute();
+    this.handleCancelRoute();
   }
 
 
@@ -82,7 +86,6 @@ export class HomeComponent implements OnInit {
       .mergeMap(params => { return this.myApi.confirmEmail(params) })
       .subscribe(x => {
 
-        this.loadingPayment = false;
         if (x) {
           this.jqueryModalHelper("route.email.emailConfirmed", null, () => {
             this.resetAddressBarToHome();
@@ -108,6 +111,48 @@ export class HomeComponent implements OnInit {
       .do(x => { this.paymentParams = x; })
       .subscribe(x => {
         this.jqueryModalHelper("route.payment.complete", null, () => {
+          this.loadingPayment = false;
+          this.amount = x && x.Amount;
+          this.resetAddressBarToHome();
+        });
+
+      }, onError => {
+        this.jqueryModalHelper("route.payment.error", null, () => {
+          this.loadingPayment = false;
+        });
+      });
+
+  }
+  handleErrorRoute() {
+    this.activeRouter.data
+      .filter((data, idx) => { return data.isError; })
+      .do(x => {
+        $('#modalIncomingPayment').modal('toggle');
+      }).mergeMap(x => { return this.utility.getKnetUrlProperties(this.activeRouter) })
+      .do(x => { this.paymentParams = x; })
+      .subscribe(x => {
+        this.jqueryModalHelper("route.error", null, () => {
+          this.loadingPayment = false;
+          this.amount = x && x.Amount;
+          this.resetAddressBarToHome();
+        });
+
+      }, onError => {
+        this.jqueryModalHelper("route.payment.error", null, () => {
+          this.loadingPayment = false;
+        });
+      });
+
+  }
+  handleCancelRoute() {
+    this.activeRouter.data
+      .filter((data, idx) => { return data.isCancel; })
+      .do(x => {
+        $('#modalIncomingPayment').modal('toggle');
+      }).mergeMap(x => { return this.utility.getKnetUrlProperties(this.activeRouter) })
+      .do(x => { this.paymentParams = x; })
+      .subscribe(x => {
+        this.jqueryModalHelper("route.cancel", null, () => {
           this.loadingPayment = false;
           this.amount = x && x.Amount;
           this.resetAddressBarToHome();
@@ -176,6 +221,8 @@ export class HomeComponent implements OnInit {
       if (modalId) {
         $(modalId).modal('toggle');
         this.loadingPayment = true;
+      }else{
+        this.loadingPayment = false;
       }
       this.paymentModalText = translateMessage;
 
