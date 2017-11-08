@@ -23,6 +23,7 @@
             public const string ResponseUrl = "ResponseUrl";
             public const string ResultUrl = "ResultUrl";
             public const string ErrorUrl = "ErrorUrl";
+            public const string CancelUrl = "CancelUrl";
             public const string ApiBase = "ApiBase";
             public const string Alias = "Alias";
             public const string ResourcePath = "ResourcePath";
