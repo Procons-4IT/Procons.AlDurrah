@@ -55,41 +55,50 @@
         public HttpResponseMessage CallKnetGateway([FromBody]Transaction transaction)
         {
             Transaction returnedTrans = null;
-            IEnumerable<Claim> claims;
-            var cardCode = string.Empty;
-
-            claims = ((ClaimsIdentity)User.Identity).Claims;
-            cardCode = claims.Where(x => x.Type == Constants.ServiceLayer.CardCode).FirstOrDefault().Value;
-            transaction.CardCode = cardCode;
-
-            var knetSvc = new KnetService.KnetServiceClient();
-            transaction.Amount = workersFacade.GetDownPaymentAmount().ToString();
             try
             {
-                returnedTrans = knetSvc.CallKnetGateway(transaction);
+               
+                IEnumerable<Claim> claims;
+                var cardCode = string.Empty;
+
+                claims = ((ClaimsIdentity)User.Identity).Claims;
+                cardCode = claims.Where(x => x.Type == Constants.ServiceLayer.CardCode).FirstOrDefault().Value;
+                transaction.CardCode = cardCode;
+
+                var knetSvc = new KnetService.KnetServiceClient();
+                transaction.Amount = workersFacade.GetDownPaymentAmount().ToString();
+                try
+                {
+                    returnedTrans = knetSvc.CallKnetGateway(transaction);
+                }
+                catch (Exception ex)
+                {
+                    Utilities.LogException(ex);
+                }
+
+                knetSvc.Close();
+
+                if (returnedTrans == null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "/Error");
+                }
+                else
+                {
+                    transaction.PaymentID = returnedTrans.PaymentID;
+                    transaction.TrackID = returnedTrans.TrackID;
+                    transaction.TranID = returnedTrans.TranID;
+                    var result = workersFacade.CreateSalesOrder(transaction, cardCode);
+                   
+                    if (result == double.MinValue)
+                        return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "/Error");
+                    else
+                        return Request.CreateResponse(HttpStatusCode.OK, returnedTrans.PaymentPage + "?PaymentID=" + returnedTrans.PaymentID);
+                }
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 Utilities.LogException(ex);
-            }
-
-            knetSvc.Close();
-
-            if (returnedTrans == null)
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "/Error");
-            }
-            else
-            {
-                transaction.PaymentID = returnedTrans.PaymentID;
-                transaction.TrackID = returnedTrans.TrackID;
-                transaction.TranID = returnedTrans.TranID;
-
-                var result = workersFacade.CreateSalesOrder(transaction, cardCode);
-                if (result == double.MinValue)
-                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "/Error");
-                else
-                    return Request.CreateResponse(HttpStatusCode.OK, returnedTrans.PaymentPage + "?PaymentID=" + returnedTrans.PaymentID);
+                return Request.CreateResponse(HttpStatusCode.OK, returnedTrans.PaymentPage + "?PaymentID=" + returnedTrans.PaymentID);
             }
 
         }
@@ -105,6 +114,7 @@
         //[Authorize]
         public IHttpActionResult CreatePayment([FromBody]Transaction payment)
         {
+            Utilities.LogException("ENTER PAYMENT" );
             var paymentAmount = workersFacade.GetDownPaymentAmount().ToString();
             var isSalesOrderAvailable = workersFacade.CheckSalesOderAvailability(payment.PaymentID);
             var userEmail = workersFacade.GetEmailAddress(payment.CardCode);

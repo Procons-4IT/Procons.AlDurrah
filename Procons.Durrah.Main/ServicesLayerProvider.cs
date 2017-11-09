@@ -38,7 +38,7 @@
 
         public static ServiceLayerProvider GetInstance()
         {
-            ServiceLayerProvider instance = new ServiceLayerProvider(); 
+            ServiceLayerProvider instance = new ServiceLayerProvider();
 
             var currentSession = HttpContext.Current != null ? HttpContext.Current.Session[sessionName] : null;
             if (currentSession != null)
@@ -48,6 +48,8 @@
                 instance.Login();
                 HttpContext.Current.Session.Add(sessionName, instance);
             }
+            //instance.Login();
+
             return instance;
         }
 

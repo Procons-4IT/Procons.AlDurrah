@@ -29,43 +29,49 @@
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-
-            var allowedOrigin = "*";
-
-            context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
-            var userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
-            ApplicationUser user = null; ;
             try
             {
-                user = await userManager.FindAsync(context.UserName, context.Password);
+                var allowedOrigin = "*";
+
+                context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
+                var userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
+                ApplicationUser user = null; ;
+                try
+                {
+                    user = await userManager.FindAsync(context.UserName, context.Password);
+                }
+                catch (Exception ex)
+                {
+                    Utilities.LogException(ex);
+                }
+
+                if (user == null)
+                {
+                    context.SetError("invalid_grant", "The user name or password is incorrect.");
+                    return;
+                }
+
+                if (!user.EmailConfirmed)
+                {
+                    context.SetError("invalid_grant", "User did not confirm email.");
+                    return;
+                }
+                _userType = user.UserType;
+                //ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(userManager, "JWT");
+                ClaimsIdentity oAuthIdentity = userManager.CreateIdentityAsync(user, "JWT").Result;
+                oAuthIdentity.AddClaims(ExtendedClaimsProvider.GetClaims(user));
+                oAuthIdentity.AddClaims(RolesFromClaims.CreateRolesBasedOnClaims(oAuthIdentity));
+
+                List<Claim> roles = oAuthIdentity.Claims.Where(c => c.Type == ClaimTypes.Role).ToList();
+                AuthenticationProperties properties = CreateProperties(user.UserName, Newtonsoft.Json.JsonConvert.SerializeObject(roles.Select(x => x.Value)));
+                var ticket = new AuthenticationTicket(oAuthIdentity, properties);
+
+                context.Validated(ticket);
             }
             catch (Exception ex)
             {
                 Utilities.LogException(ex);
             }
-
-            if (user == null)
-            {
-                context.SetError("invalid_grant", "The user name or password is incorrect.");
-                return;
-            }
-
-            if (!user.EmailConfirmed)
-            {
-                context.SetError("invalid_grant", "User did not confirm email.");
-                return;
-            }
-            _userType = user.UserType;
-            //ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(userManager, "JWT");
-            ClaimsIdentity oAuthIdentity = userManager.CreateIdentityAsync(user, "JWT").Result;
-            oAuthIdentity.AddClaims(ExtendedClaimsProvider.GetClaims(user));
-            oAuthIdentity.AddClaims(RolesFromClaims.CreateRolesBasedOnClaims(oAuthIdentity));
-
-            List<Claim> roles = oAuthIdentity.Claims.Where(c => c.Type == ClaimTypes.Role).ToList();
-            AuthenticationProperties properties = CreateProperties(user.UserName, Newtonsoft.Json.JsonConvert.SerializeObject(roles.Select(x => x.Value)));
-            var ticket = new AuthenticationTicket(oAuthIdentity, properties);
-
-            context.Validated(ticket);
 
         }
 

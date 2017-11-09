@@ -61,8 +61,8 @@
             oGeneralData.SetProperty("U_Nationality", worker.Nationality);
             oGeneralData.SetProperty("U_Passport", string.Concat(attachmentPath, passportCopy));
             oGeneralData.SetProperty("U_PassportPoIssue", worker.PassportPoIssue);
-            oGeneralData.SetProperty("U_PassportIssDate", DateTime.ParseExact(worker.BirthDate, "dd-MM-yyyy", null));
-            oGeneralData.SetProperty("U_PassportExpDate", DateTime.ParseExact(worker.BirthDate, "dd-MM-yyyy", null));
+            oGeneralData.SetProperty("U_PassportIssDate", DateTime.ParseExact(worker.PassportIssDate, "dd-MM-yyyy", null) );
+            oGeneralData.SetProperty("U_PassportExpDate", DateTime.ParseExact(worker.PassportExpDate, "dd-MM-yyyy", null));
             oGeneralData.SetProperty("U_PassportNumber", worker.PassportNumber);
             oGeneralData.SetProperty("U_Photo", string.Concat(attachmentPath, photo));
             oGeneralData.SetProperty("U_License", string.Concat(attachmentPath, license));
@@ -71,6 +71,7 @@
             oGeneralData.SetProperty("U_Status", worker.Status);
             oGeneralData.SetProperty("U_Video", worker.Video);
             oGeneralData.SetProperty("U_Weight", worker.Weight);
+
 
             oGeneralService.Add(oGeneralData);
             created = true;
@@ -421,8 +422,6 @@
                 salesOrder.DocDueDate = DateTime.Now;
 
                 salesOrderLine.ItemCode = trans.Code;
-                //dserialNum.SystemSerialNumber = serialDetails.SystemNumber;
-                //salesOrderLine.SerialNumbers.Add(dserialNum);
                 salesOrder.DocumentLines.Add(salesOrderLine);
 
                 instance.CurrentServicelayerInstance.AddToOrders(salesOrder);
