@@ -508,7 +508,7 @@
                         oPay.TransferSum = paymentAmount;
                         oPay.TransferAccount = "_SYS00000000035";
 
-                        oPay.CashSum = paymentAmount;
+                        //oPay.CashSum = paymentAmount;
                         int RetCode1 = oPay.Add();
 
                         if (RetCode1 != 0)
