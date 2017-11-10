@@ -256,24 +256,35 @@
         {
             var defaultImagePth = HostingEnvironment.MapPath(@"\Assets\src\app\images\no_photo.png");
             var attachmentsPath = workersFacade.GetAttachmentsPath();
-            var imagePath = string.Empty;
-            if (File.Exists($"{attachmentsPath}{path}"))
-                imagePath = $"{attachmentsPath}{path}";
-            else
-                imagePath = defaultImagePth;
+            var fileName = string.Empty;
 
-            using (var image = System.Drawing.Image.FromFile(imagePath))
+            using (var stream = new MemoryStream())
             {
-                byte[] imageBytes = null;
-                using (var ms = new MemoryStream())
+                System.IO.FileInfo attachmentFile = null;
+
+                if (System.IO.File.Exists($"{attachmentsPath}{path}"))
+                    fileName = $"{attachmentsPath}{path}";
+                else
+                    fileName = defaultImagePth;
+
+                attachmentFile = new System.IO.FileInfo(fileName);
+                using (FileStream fs = File.OpenRead(fileName))
                 {
-                    image.Save(ms, ImageFormat.Png);
-                    imageBytes = ms.ToArray();
-                    HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
-                    result.Content = new ByteArrayContent(imageBytes);
-                    result.Content.Headers.ContentType = new MediaTypeHeaderValue("image/png");
-                    return result;
+                    fs.CopyTo(stream);
                 }
+                var mimeType = MimeMapping.GetMimeMapping(attachmentFile.Extension);
+
+                var result = new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new ByteArrayContent(stream.ToArray())
+                };
+                result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("inline")
+                {
+                    FileName = attachmentFile.Name
+                };
+             
+                result.Content.Headers.ContentType = new MediaTypeHeaderValue(mimeType);
+                return result;
             }
         }
         #region Private Methods
