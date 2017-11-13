@@ -1,24 +1,21 @@
 ﻿namespace Procons.Durrah.Api.Controllers
 {
     using Common;
-    using e24PaymentPipeLib;
+    using Facade;
+    using Procons.Durrah.Common.Enumerators;
+    using Procons.Durrah.Controllers;
     using System;
     using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
     using System.Net;
     using System.Net.Http;
-    using System.Security.Claims;
-    using System.Web.Http;
-    using System.Linq;
-    using Facade;
-    using System.Web;
-    using Procons.Durrah.Controllers;
-    using System.IO;
-    using System.Threading.Tasks;
     using System.Net.Http.Headers;
-    using System.Drawing.Imaging;
+    using System.Security.Claims;
+    using System.Threading.Tasks;
+    using System.Web;
     using System.Web.Hosting;
-    using Procons.Durrah.Common.Enumerators;
-    using Newtonsoft.Json;
+    using System.Web.Http;
     using System.Web.SessionState;
 
     public class WorkersController : BaseApiController, IRequiresSessionState
@@ -111,10 +108,8 @@
         }
 
         [HttpPost]
-        //[Authorize]
         public IHttpActionResult CreatePayment([FromBody]Transaction payment)
         {
-            Utilities.LogException("ENTER PAYMENT" );
             var paymentAmount = workersFacade.GetDownPaymentAmount().ToString();
             var isSalesOrderAvailable = workersFacade.CheckSalesOderAvailability(payment.PaymentID);
             var userEmail = workersFacade.GetEmailAddress(payment.CardCode);
@@ -173,7 +168,25 @@
         }
 
         [HttpPost]
-        //[Authorize]
+        public IHttpActionResult CancelSalesOrder([FromBody]Transaction payment)
+        {
+            try
+            {
+                if (payment.Result == "CANCELED" || payment.Result == "NOT CAPTURED")
+                {
+                    workersFacade.CancelSalesOrder(payment.PaymentID, payment.Result);
+                }
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+
+       [HttpPost]
+        [Authorize]
         public IHttpActionResult GetAgentWorkers()
         {
             var cardCode = GetCurrentUserCardCode();
@@ -183,7 +196,7 @@
         }
 
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         public IHttpActionResult GetWorker(string code)
         {
             var cardCode = GetCurrentUserCardCode();
@@ -193,7 +206,7 @@
         }
 
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         public IHttpActionResult GetWorkers([FromBody]Catalogue worker)
         {
             var requestUrl = GetMainUrl();
@@ -244,6 +257,7 @@
         }
 
         [HttpPost]
+        [Authorize]
         public IHttpActionResult DeleteWorker([FromBody]Worker worker)
         {
             var cardCode = GetCurrentUserCardCode();
@@ -287,6 +301,7 @@
                 return result;
             }
         }
+
         #region Private Methods
 
         private async Task<Worker> SaveFile()

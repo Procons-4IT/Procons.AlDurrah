@@ -45,10 +45,14 @@ namespace Procons.Durrah.Api.Controllers
                     else
                         Response.Write($"REDIRECT={Utilities.GetConfigurationValue(Constants.ConfigurationKeys.ErrorUrl)}?PaymentID={paymentID}&Result={ result }&PostDate={ postdate }&TranID={ tranid }&Auth={ auth }&Ref={refr }&TrackID={trackid}&Udf2={cardCode}&Udf3={code}&Udf4={workerCode}&Udf5={amount}");
                 }
-                else if (result == "CANCELED")
-                    Response.Write($"REDIRECT={Utilities.GetConfigurationValue(Constants.ConfigurationKeys.CancelUrl)}?PaymentID={paymentID}&Result={ result }&PostDate={ postdate }&TranID={ tranid }&Auth={ auth }&Ref={refr }&TrackID={trackid}&Udf2={cardCode}&Udf3={code}&Udf4={workerCode}&Udf5={amount}");
                 else
-                    Response.Write($"REDIRECT={Utilities.GetConfigurationValue(Constants.ConfigurationKeys.ErrorUrl)}?PaymentID={paymentID}&Result={ result }&PostDate={ postdate }&TranID={ tranid }&Auth={ auth }&Ref={refr }&TrackID={trackid}&Udf2={cardCode}&Udf3={code}&Udf4={workerCode}&Udf5={amount}");
+                {
+                    await CancelSalesOrder(trans);
+                    if (result == "CANCELED")
+                        Response.Write($"REDIRECT={Utilities.GetConfigurationValue(Constants.ConfigurationKeys.CancelUrl)}?PaymentID={paymentID}&Result={ result }&PostDate={ postdate }&TranID={ tranid }&Auth={ auth }&Ref={refr }&TrackID={trackid}&Udf2={cardCode}&Udf3={code}&Udf4={workerCode}&Udf5={amount}");
+                    else
+                        Response.Write($"REDIRECT={Utilities.GetConfigurationValue(Constants.ConfigurationKeys.ErrorUrl)}?PaymentID={paymentID}&Result={ result }&PostDate={ postdate }&TranID={ tranid }&Auth={ auth }&Ref={refr }&TrackID={trackid}&Udf2={cardCode}&Udf3={code}&Udf4={workerCode}&Udf5={amount}");
+                }
             }
             catch (Exception ex)
             {
@@ -63,6 +67,16 @@ namespace Procons.Durrah.Api.Controllers
             using (HttpClient client = new HttpClient())
             {
                 response = await client.PostAsJsonAsync($"{Utilities.GetConfigurationValue(Constants.ConfigurationKeys.ApiBase)}/api/Workers/CreatePayment", trans);
+            }
+            return response.IsSuccessStatusCode;
+        }
+
+        public async Task<bool> CancelSalesOrder(Transaction trans)
+        {
+            HttpResponseMessage response = new HttpResponseMessage();
+            using (HttpClient client = new HttpClient())
+            {
+                response = await client.PostAsJsonAsync($"{Utilities.GetConfigurationValue(Constants.ConfigurationKeys.ApiBase)}/api/Workers/CancelSalesOrder", trans);
             }
             return response.IsSuccessStatusCode;
         }

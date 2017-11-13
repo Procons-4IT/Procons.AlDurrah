@@ -534,6 +534,31 @@
             return creationResult;
         }
 
+        public void CancelSalesOrder(string paymentId, string result)
+        {
+            Document oSalesOrder = new Document();
+            WORKERS worker = new WORKERS();
+            try
+            {
+                var instance = ServiceLayerProvider.GetInstance();
+                oSalesOrder = instance.CurrentServicelayerInstance.Orders.Where(x => x.U_PaymentID == paymentId).FirstOrDefault();
+                oSalesOrder.U_Status = result;
+                oSalesOrder.Cancelled = SAPbobsCOM.BoYesNoEnum.tYES.ToString();
+                instance.CurrentServicelayerInstance.UpdateObject(oSalesOrder);
+                var workerCode = oSalesOrder.U_WorkerID;
+                worker = instance.CurrentServicelayerInstance.WORKERSUDO.Where(x => x.Code == workerCode).FirstOrDefault();
+                worker.U_Status = "1";
+                instance.CurrentServicelayerInstance.UpdateObject(worker);
+                instance.CurrentServicelayerInstance.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                instance.CurrentServicelayerInstance.Detach(oSalesOrder);
+                instance.CurrentServicelayerInstance.Detach(worker);
+                Utilities.LogException(ex);
+            }
+        }
+
         public Documents GetSalesOrder(string paymentId)
         {
             try
