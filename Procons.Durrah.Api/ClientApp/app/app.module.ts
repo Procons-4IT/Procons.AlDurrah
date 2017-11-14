@@ -46,7 +46,7 @@ import { ContextService } from './Services/ContextService';
 
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
-import { DataGridModule } from 'primeng/primeng';
+import { DataGridModule, CalendarModule } from 'primeng/primeng';
 import { ModalModule} from 'ngx-modialog';
 import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
 import { MomentDatePipe } from './moment-date.pipe';
@@ -91,6 +91,7 @@ export function createTranslateLoader(http: HttpClient) {
         ButtonModule,
         DialogModule,
         DataGridModule,
+        CalendarModule,
         ReCaptchaModule,
         HttpClientModule,
         TranslateModule.forRoot({

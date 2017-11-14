@@ -6,7 +6,7 @@ import { ProconsModalSerivce } from '../../Services/ProconsModalService';
 import { Worker } from "../../Models/Worker";
 import { SearchCriteriaParams } from '../../Models/ApiRequestType'
 import { MomentDatePipe } from '../../moment-date.pipe';
-
+import * as moment from 'moment';
 
 @Component({
     selector: "add-profile",
@@ -55,6 +55,12 @@ export class AddProfileComponent implements OnInit {
             this.photoFileName = this.getFileImageName(this.state.worker.photo);
             this.licenseFileName = this.getFileImageName(this.state.worker.license);
             this.passportFileName = this.getFileImageName(this.state.worker.passport);
+
+            this.state.worker.birthDate =moment(this.state.worker.birthDate,'DD-MM-YYYY').toDate() as any ;
+            this.state.worker.passportExpDate = moment(this.state.worker.passportExpDate,'DD-MM-YYYY').toDate() as any;
+            this.state.worker.passportIssDate = moment(this.state.worker.passportIssDate,'DD-MM-YYYY').toDate() as any;
+
+            console.log('worker ', this.state.worker);
             console.log('searchCriteria Params ', this.searchCriterias);
 
         } else {
