@@ -12,6 +12,7 @@
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Security.Claims;
+    using System.ServiceModel.Channels;
     using System.Threading.Tasks;
     using System.Web;
     using System.Web.Hosting;
@@ -54,7 +55,7 @@
             Transaction returnedTrans = null;
             try
             {
-               
+
                 IEnumerable<Claim> claims;
                 var cardCode = string.Empty;
 
@@ -85,14 +86,14 @@
                     transaction.TrackID = returnedTrans.TrackID;
                     transaction.TranID = returnedTrans.TranID;
                     var result = workersFacade.CreateSalesOrder(transaction, cardCode);
-                   
+
                     if (result == double.MinValue)
                         return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "/Error");
                     else
                         return Request.CreateResponse(HttpStatusCode.OK, returnedTrans.PaymentPage + "?PaymentID=" + returnedTrans.PaymentID);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Utilities.LogException(ex);
                 return Request.CreateResponse(HttpStatusCode.OK, returnedTrans.PaymentPage + "?PaymentID=" + returnedTrans.PaymentID);
@@ -115,7 +116,7 @@
             var userEmail = workersFacade.GetEmailAddress(payment.CardCode);
 
             payment.Amount = paymentAmount;
-            if (payment.Result == "CAPTURED" && isSalesOrderAvailable)
+            if (payment.Result == KnetResults.CAPTURED.GetDescription() && isSalesOrderAvailable)
             {
                 var itemCode = workersFacade.GetItemCodeByPaymentId(payment.PaymentID);
 
@@ -154,7 +155,7 @@
                     return InternalServerError(new Exception(paymentString));
                 }
             }
-            else if (payment.Result == "CANCELED")
+            else if (payment.Result == KnetResults.CANCELED.GetDescription())
             {
                 payment.UDF1 = Utilities.GetResourceValue(Constants.Resources.Transaction_Cancelled);
                 return Ok(payment);
@@ -172,7 +173,7 @@
         {
             try
             {
-                if (payment.Result == "CANCELED" || payment.Result == "NOT CAPTURED")
+                if (payment.Result == KnetResults.CANCELED.GetDescription() || payment.Result == KnetResults.NOTCAPTURED.GetDescription())
                 {
                     workersFacade.CancelSalesOrder(payment.PaymentID, payment.Result);
                 }
@@ -185,7 +186,7 @@
         }
 
 
-       [HttpPost]
+        [HttpPost]
         [Authorize]
         public IHttpActionResult GetAgentWorkers()
         {
@@ -228,7 +229,7 @@
                 else
                     return InternalServerError(new Exception(Utilities.GetResourceValue(Constants.Resources.WorkerAreadyCreated)));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Utilities.LogException(ex);
                 return InternalServerError(new Exception(Utilities.GetResourceValue(Constants.Resources.ErrorOccured)));
@@ -296,7 +297,7 @@
                 {
                     FileName = attachmentFile.Name
                 };
-             
+
                 result.Content.Headers.ContentType = new MediaTypeHeaderValue(mimeType);
                 return result;
             }
@@ -386,7 +387,7 @@
                         Uri fileFullPath = new Uri(baseuri, VirtualPathUtility.ToAbsolute(fileRelativePath));
                         if (item.Headers.ContentDisposition.Name.Trim('"').Equals("Photo"))
                             worker.Photo = fileRelativePath;
-                        else if(item.Headers.ContentDisposition.Name.Trim('"').Equals("Passport"))
+                        else if (item.Headers.ContentDisposition.Name.Trim('"').Equals("Passport"))
                             worker.Passport = fileRelativePath;
                         else
                             worker.License = fileRelativePath;

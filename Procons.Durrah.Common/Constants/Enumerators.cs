@@ -46,6 +46,16 @@ namespace Procons.Durrah.Common.Enumerators
         Booked = 2
     }
 
+    public enum KnetResults
+    {
+        [Description("CAPTURED")]
+        CAPTURED,
+        [Description("CANCELED")]
+        CANCELED,
+        [Description("NOT CAPTURED")]
+        NOTCAPTURED
+    }
+
     //public enum Operation
     //{
     //    EqualTo,
