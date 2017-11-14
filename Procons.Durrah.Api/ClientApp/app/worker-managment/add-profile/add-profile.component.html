@@ -28,8 +28,10 @@
 
                   <div class="form-group">
                     <label for="birthDate">{{ 'birthDate' | translate }}</label>
-                    <input required id="birthDate" type="date" class="form-control" name="birthDate" [value]="state.worker.birthDate | date: 'yyyy-MM-dd'"
-                      (input)="state.worker.birthDate = $event.target.valueAsDate" />
+
+                    <div>
+                    <p-calendar  showIcon="true" [(ngModel)]= "state.worker.birthDate" name="birthDate" dateFormat="dd/mm/yy"></p-calendar>
+                    </div>
                   </div>
 
                   <div class="form-group">
@@ -127,8 +129,9 @@
 
                   <div class="form-group ">
                     <label for="passIssueDate">{{ 'passportIssueDate' | translate }}</label>
-                    <input required id="passIssueDate" name="passportIssueDate" type="date" [value]="state.worker.passportIssDate | date: 'yyyy-MM-dd'"
-                      (input)="state.worker.passportIssDate = $event.target.valueAsDate" class="form-control" />
+                    <div>
+                    <p-calendar  showIcon="true" [(ngModel)]= "state.worker.passportIssDate" name="passportIssueDate" dateFormat="dd/mm/yy"></p-calendar>
+                    </div>
                   </div>
 
 
@@ -140,8 +143,10 @@
 
                   <div class="form-group ">
                     <label for="passExpiry">{{ 'passportExpiry' | translate }}</label>
-                    <input required name="passportExpiry" type="date" [value]="state.worker.passportExpDate | date: 'yyyy-MM-dd'" (input)="state.worker.passportExpDate = $event.target.valueAsDate"
-                      class="form-control" />
+                    <div>
+                      <p-calendar  showIcon="true" [(ngModel)]= "state.worker.passportExpDate" name="passportExpiry" dateFormat="dd/mm/yy"></p-calendar>
+                      </div>
+
                   </div>
 
 
