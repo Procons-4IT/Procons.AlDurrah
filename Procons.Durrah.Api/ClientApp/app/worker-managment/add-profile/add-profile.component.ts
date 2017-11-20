@@ -1,6 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, Output, OnInit, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
-
+import { Subject } from 'rxjs/Subject';
 import { ApiService } from '../../Services/ApiService';
 import { ProconsModalSerivce } from '../../Services/ProconsModalService';
 import { Worker } from "../../Models/Worker";
@@ -19,7 +19,7 @@ export class AddProfileComponent implements OnInit {
     @Input() filteredItems: NameValuePair[];
     @Input() searchCriterias: SearchCriteriaParams;
     @Output() onBack = new EventEmitter<any>();
-    @Output() onWorkerTypeChange = new EventEmitter<any>();
+    @Output() onWorkerTypeChange: Subject<any> = new Subject();
     @ViewChild("photoUpload") photoUpload;
     @ViewChild("licenseUpload") licenseUpload;
     @ViewChild("passportUpload") passportUpload;
@@ -82,7 +82,7 @@ export class AddProfileComponent implements OnInit {
 
     onChange(workerType) {
 
-        this.onWorkerTypeChange.emit(workerType);
+        this.onWorkerTypeChange.next(workerType);
     }
 
     back() {
