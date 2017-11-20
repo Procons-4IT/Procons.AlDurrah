@@ -19,6 +19,10 @@
     using System.Web.Http;
     using System.Web.SessionState;
 
+    public class ParamBody
+    {
+        public string WorkerType { get; set; }
+    }
     public class WorkersController : BaseApiController, IRequiresSessionState
     {
 
@@ -45,6 +49,13 @@
             result.Add("MaritalStatus", maritalStatus);
             result.Add("WorkerTypes", workerTypes);
 
+            return Ok(result);
+        }
+
+        [HttpPost]
+        public IHttpActionResult GetItemsLookup([FromBody]ParamBody workerType)
+        {
+            var result = workersFacade.GetItemsByWorkerType(workerType.WorkerType);
             return Ok(result);
         }
 
@@ -205,6 +216,8 @@
             var workers = workersFacade.GetAgentWorkers(cardCode, requestUrl);
             return Ok(workers);
         }
+
+
 
         [HttpPost]
         [Authorize]

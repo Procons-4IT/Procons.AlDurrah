@@ -4,7 +4,7 @@ import { DatePipe } from '@angular/common';
 import { ApiService } from '../../Services/ApiService';
 import { ProconsModalSerivce } from '../../Services/ProconsModalService';
 import { Worker } from "../../Models/Worker";
-import { SearchCriteriaParams } from '../../Models/ApiRequestType'
+import { SearchCriteriaParams, NameValuePair } from '../../Models/ApiRequestType'
 import { MomentDatePipe } from '../../moment-date.pipe';
 import * as moment from 'moment';
 
@@ -16,13 +16,16 @@ import * as moment from 'moment';
 })
 export class AddProfileComponent implements OnInit {
     @Input() worker;
+    @Input() filteredItems: NameValuePair[];
     @Input() searchCriterias: SearchCriteriaParams;
     @Output() onBack = new EventEmitter<any>();
+    @Output() onWorkerTypeChange = new EventEmitter<any>();
     @ViewChild("photoUpload") photoUpload;
     @ViewChild("licenseUpload") licenseUpload;
     @ViewChild("passportUpload") passportUpload;
     @ViewChild("workerForm") workerForm;
 
+    itemCode = "";
     passportFileName = "";
     photoFileName = "";
     licenseFileName = "";
@@ -56,9 +59,9 @@ export class AddProfileComponent implements OnInit {
             this.licenseFileName = this.getFileImageName(this.state.worker.license);
             this.passportFileName = this.getFileImageName(this.state.worker.passport);
 
-            this.state.worker.birthDate =moment(this.state.worker.birthDate,'DD-MM-YYYY').toDate() as any ;
-            this.state.worker.passportExpDate = moment(this.state.worker.passportExpDate,'DD-MM-YYYY').toDate() as any;
-            this.state.worker.passportIssDate = moment(this.state.worker.passportIssDate,'DD-MM-YYYY').toDate() as any;
+            this.state.worker.birthDate = moment(this.state.worker.birthDate, 'DD-MM-YYYY').toDate() as any;
+            this.state.worker.passportExpDate = moment(this.state.worker.passportExpDate, 'DD-MM-YYYY').toDate() as any;
+            this.state.worker.passportIssDate = moment(this.state.worker.passportIssDate, 'DD-MM-YYYY').toDate() as any;
 
             console.log('worker ', this.state.worker);
             console.log('searchCriteria Params ', this.searchCriterias);
@@ -77,6 +80,10 @@ export class AddProfileComponent implements OnInit {
         }
     }
 
+    onChange(workerType) {
+
+        this.onWorkerTypeChange.emit(workerType);
+    }
 
     back() {
         this.onBack.emit();
@@ -120,10 +127,10 @@ export class AddProfileComponent implements OnInit {
 
         const formData = new FormData();
 
-        this.appendOneFile(formData,"Photo",photoFile,this.photoServerMode);
-        this.appendOneFile(formData,"Passport",passportFile,this.passportServerMode);
-        this.appendOneFile(formData,"License",licenseFile,this.licenseServerMode);
-     
+        this.appendOneFile(formData, "Photo", photoFile, this.photoServerMode);
+        this.appendOneFile(formData, "Passport", passportFile, this.passportServerMode);
+        this.appendOneFile(formData, "License", licenseFile, this.licenseServerMode);
+
 
         this.getFormData(formData);
         this.loading = true;
@@ -133,12 +140,12 @@ export class AddProfileComponent implements OnInit {
             this.onErrorUpdate(onError);
         });
     }
-    appendOneFile(formData,property,file, fileMode: FileUploadMode){
+    appendOneFile(formData, property, file, fileMode: FileUploadMode) {
         // formData.append("Photo", photoFile[0], photoFile[0].name);
         if (file && file[0]) {
-            formData.append(property,file[0],file[0].name);
+            formData.append(property, file[0], file[0].name);
         } else {
-            formData.append(property,fileMode === FileUploadMode.Delete? "0":"1");
+            formData.append(property, fileMode === FileUploadMode.Delete ? "0" : "1");
         }
     }
 
@@ -146,7 +153,7 @@ export class AddProfileComponent implements OnInit {
         this.loading = false;
         this.myModal.showSuccessModal(onSuccessMessage, false);
         console.log('state', this.state);
-        if(resetForm){
+        if (resetForm) {
             this.clearForm();
         }
     }

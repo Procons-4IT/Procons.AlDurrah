@@ -53,3 +53,7 @@ export interface ConfirmEmailParams {
     ValidationId: string,
     Email: string
 }
+
+export interface WorkerTypeParam {
+    workerType: string,
+}

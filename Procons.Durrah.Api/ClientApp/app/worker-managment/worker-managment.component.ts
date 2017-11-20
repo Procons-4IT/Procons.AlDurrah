@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import 'rxjs/add/operator/mergeMap';
 
 import { Worker, WorkerManagementData } from "../Models/Worker";
+import { Item } from "../Models/Item";
+import { WorkerTypeParam } from '../Models/ApiRequestType';
 import { ApiService } from "../Services/ApiService";
 import { ProconsModalSerivce } from "../Services/ProconsModalService";
 
@@ -14,7 +16,7 @@ import { ProconsModalSerivce } from "../Services/ProconsModalService";
     styles: ["./worker-managment.component.css"]
 })
 export class WorkerMangmentComponent implements OnInit {
-
+    public filteredItems: Item[];
     ngOnInit(): void {
         console.log('view loading!');
 
@@ -61,6 +63,16 @@ export class WorkerMangmentComponent implements OnInit {
         this.state.showAddProfile = false;
         this.state.showProfiles = false;
         this.state.showWorkerAgents = true;
+    }
+
+
+    getItemLookupsByType(workerType) {
+        debugger;
+        let workerTypeParam: WorkerTypeParam = { workerType: workerType };
+        this.myApi.getItemsByWorkerType(workerTypeParam).subscribe(x => {
+            debugger;
+            this.filteredItems = x;
+        });
     }
 
     ShowAddWorker() {

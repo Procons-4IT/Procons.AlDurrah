@@ -65,6 +65,11 @@
         {
             return provider.GetLookupValues<COUNTRIES>();
         }
+        public List<LookupItem> GetItemsByWorkerType(string workerType)
+        {
+            return provider.GetItemsByWorkerType(workerType);
+        }
+
         public List<LookupItem> GetEducationLookups()
         {
             return provider.GetLookupValues<EDUCATION>();

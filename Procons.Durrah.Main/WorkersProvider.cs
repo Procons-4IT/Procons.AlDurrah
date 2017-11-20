@@ -250,7 +250,7 @@
                 var databaseBame = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.DatabaseName);
 
                 var query = new StringBuilder();
-                query.Append(@"SELECT ""A"".""Code"",""A"".""U_WorkerName"",""A"".""Name"",""U_ItemCode"",""U_Serial"",""U_Agent"",""U_Age"",");
+                query.Append(@"SELECT ""A"".""Code"",""A"".""U_WorkerName"",""A"".""Name"",""U_ItemCode"",""U_WorkerType"",""U_Serial"",""U_Agent"",""U_Age"",");
                 query.Append(@"""U_BirthDate"",""U_Gender"",""D"".""Name"" AS ""U_Nationality"",""D"".""U_NAME"" AS ""U_Nationality_AR"",""R"".""Name"" AS ""U_Religion"",""R"".""U_NAME"" AS ""U_Religion_AR"",");
                 query.Append(@"""U_Photo"",""U_License"", ""U_Weight"",""U_Height"",""E"".""Name"" AS ""U_Education"",""E"".""U_NAME"" AS ""U_Education_AR"",");
                 query.Append(@"""U_Passport"",""U_Video"",""U_PassportNumber"",""U_PassportIssDate"",""U_PassportExpDate"",""U_PassportPoIssue"",""U_Price"",""U_CivilId"",""U_Status"",");
@@ -286,7 +286,7 @@
                     workersList.Add(
                         new Worker()
                         {
-                            Name = MapField<string>(drow["Name"]),
+                            Name = MapField<string>(drow["U_WorkerType"]),
                             WorkerCode = MapField<string>(drow["Code"]),
                             WorkerName = MapField<string>(drow["U_WorkerName"]),
                             Agent = MapField<string>(drow["U_Agent"]),
@@ -589,6 +589,22 @@
             return isAvailable;
         }
 
+        public List<LookupItem> GetItemsByWorkerType(string workerType)
+        {
+            try
+            {
+                var _serviceInstance = ServiceLayerProvider.GetInstance();
+                var results = _serviceInstance.CurrentServicelayerInstance.Items.Where(x => x.U_WorkerType == workerType).Select(x => new LookupItem(x.ItemCode, x.ItemName)).ToList();
+                return results;
+            }
+            catch (Exception ex)
+            {
+                Utilities.LogException(ex);
+                return new List<LookupItem>();
+            }
+
+        }
+
         public List<LookupItem> GetLookupValues<T>()
         {
             var _serviceInstance = ServiceLayerProvider.GetInstance();
@@ -609,14 +625,14 @@
                 var results = _serviceInstance.CurrentServicelayerInstance.MARITALSTATUSUDO.ToList<MARITALSTATUS>();
                 return GetLookups<MARITALSTATUS>(results);
             }
-            else if (typeof(T) == typeof(WORKERTYPES))
+            else if (typeof(T) == typeof(Item))
             {
                 var results = _serviceInstance.CurrentServicelayerInstance.WORKERTYPESUDO.ToList<WORKERTYPES>();
                 return GetLookups<WORKERTYPES>(results);
             }
             else if (typeof(T) == typeof(Item))
             {
-                var results = _serviceInstance.CurrentServicelayerInstance.Items.Select(x => new LookupItem(x.ItemName, x.ItemCode)).ToList();
+                var results = _serviceInstance.CurrentServicelayerInstance.Items.Select(x => new LookupItem(x.ItemCode, x.ItemName)).ToList();
                 return results;
             }
             else if (typeof(T) == typeof(RELIGION))
@@ -956,7 +972,7 @@
                 }
                 if (wrk.WorkerType != null)
                 {
-                    queryBuilder.Append($" AND \"U_ItemCode\" = '{wrk.WorkerType}'");
+                    queryBuilder.Append($" AND \"U_WorkerType\" = '{wrk.WorkerType}'");
                 }
                 if (wrk.Language != null)
                 {

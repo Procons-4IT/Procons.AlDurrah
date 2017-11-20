@@ -40,6 +40,7 @@ namespace Procons.Durrah.Common
         public string PassportPoIssue { get; set; }
         public string CivilId { get; set; }
         public string Status { get; set; }
+        public string WorkerType { get; set; }
         public List<LookupItem> Languages { get; set; }
 
     }

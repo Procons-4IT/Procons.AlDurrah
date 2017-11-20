@@ -13,7 +13,7 @@ import 'rxjs/add/operator/catch';
 
 
 import { Injectable, OnDestroy } from '@angular/core';
-import { WorkerFilterParams, ConfirmEmailParams, PaymentRedirectParams, KnetPayment, SearchCriteriaParams, ResetPasswordParams, CreateNewUserParams } from '../Models/ApiRequestType';
+import { WorkerFilterParams, ConfirmEmailParams, WorkerTypeParam, PaymentRedirectParams, KnetPayment, SearchCriteriaParams, ResetPasswordParams, CreateNewUserParams } from '../Models/ApiRequestType';
 import { Worker, WorkerManagementData } from '../Models/Worker';
 @Injectable()
 export class ApiService {
@@ -126,6 +126,7 @@ export class ApiService {
             });
         return actualData;
     }
+
     public getAllAgentWorkers(optionalFilterCritera: WorkerFilterParams | object): Observable<any[]> {
 
         var actualData = this.httpPostHelper(this.config.getAgentWorkerUrl, optionalFilterCritera)
@@ -135,6 +136,17 @@ export class ApiService {
             });
         return actualData;
     }
+
+    public getItemsByWorkerType(workerType: WorkerTypeParam): Observable<any[]> {
+        debugger;
+                var actualData = this.httpPostHelper(this.config.getItemsByWorkerType, workerType)
+                    .map(response => {
+                        var data: any[] = response.json();
+                        debugger;
+                        return data;
+                    });
+                return actualData;
+            }
 
     public getWorkerManagmentData(): Observable<WorkerManagementData> {
         let $workerKeyData = this.getAllAgentWorkers({});
@@ -146,6 +158,7 @@ export class ApiService {
 
         return $workerManagmentData
     }
+
     public convertToWorkerWorkerManagementData(workerServerData: Worker[], searchCriterParams: SearchCriteriaParams): WorkerManagementData {
         //fix performance! language -> languages mismatch, consider lodash, change server or hardcoding 
         let workerManagmentData = new WorkerManagementData();

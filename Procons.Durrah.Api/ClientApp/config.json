@@ -1,5 +1,5 @@
 {
-  "baseUrl": "https://rdsh.proconscloud.com:4545",
+  "baseUrl": "http://localhost:59822",
   "getSearchCriteriaUrl": "/api/Workers/GetSearchLookups",
   "getWorkersUrl": "/api/Workers/GetWorkers",
   "getAgentWorkerUrl":"/api/Workers/GetAgentWorkers",
@@ -12,5 +12,6 @@
   "emailValidationUrl": "/api/accounts/confirmEmail",
   "addWorkerUrl": "/api/Workers/AddWorker",
   "updateWorkerUrl":"/api/Workers/UpdateWorker",
-  "deleteWorkerUrl":"/api/Workers/DeleteWorker"
+  "deleteWorkerUrl":"/api/Workers/DeleteWorker",
+  "getItemsByWorkerType":"/api/Workers/GetItemsLookup"
 }   

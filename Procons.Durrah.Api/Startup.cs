@@ -90,6 +90,8 @@ namespace Procons.Durrah
             config.DependencyResolver = new UnityResolver(container);
             config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("multipart/form-data"));
             config.MessageHandlers.Add(new LanguageMessageHandler());
+            config.MessageHandlers.Add(new SessionIdHandler());
+
             config.MapHttpAttributeRoutes();
             var route = config.Routes.MapHttpRoute(
                                          name: "DefaultApi",
