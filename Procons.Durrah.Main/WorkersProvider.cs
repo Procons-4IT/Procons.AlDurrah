@@ -523,7 +523,7 @@
             try
             {
                 var _serviceInstance = ServiceLayerProvider.GetInstance();
-                var results = _serviceInstance.CurrentServicelayerInstance.Items.Where(x => x.U_WorkerType == workerType).Select(x => new LookupItem(x.ItemCode, x.ItemName)).ToList();
+                var results = _serviceInstance.CurrentServicelayerInstance.Items.Where(x => x.U_WorkerType == workerType).Select(x => new LookupItem(x.ItemName, x.ItemCode)).ToList();
                 return results;
             }
             catch (Exception ex)

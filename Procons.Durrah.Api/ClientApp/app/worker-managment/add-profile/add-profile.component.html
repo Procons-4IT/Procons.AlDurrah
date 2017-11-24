@@ -118,7 +118,7 @@
 
                   <div class="form-group ">
                     <label for="workerType">{{ 'workerType' | translate }}</label>
-                    <select required id="workerType" (change)="onChange($event.target.value)" class="form-control" name="workerType" [(ngModel)]="state.worker.code">
+                    <select required id="workerType" (change)="onChange($event.target.value)" class="form-control" name="workerType" [(ngModel)]="state.worker.workerType">
                       <option disabled selected value=""> {{state.selectOptionText}}</option>
                       <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.workerTypes;">
                         {{nameValuePair.name}}
@@ -128,7 +128,7 @@
 
                   <div class="form-group ">
                     <label for="Items">Item</label>
-                    <select required id="Items"  class="form-control" name="workerType" [(ngModel)]="itemCode">
+                    <select required id="Items"  class="form-control" name="code" [(ngModel)]="state.worker.code">
                       <option disabled selected value=""> {{state.selectOptionText}}</option>
                       <option [value]="nameValuePair.value" *ngFor="let nameValuePair of filteredItems;">
                         {{nameValuePair.name}}

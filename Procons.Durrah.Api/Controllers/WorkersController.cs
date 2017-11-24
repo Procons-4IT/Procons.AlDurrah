@@ -480,9 +480,9 @@
             worker.PassportNumber = MapField<string>(provider.FormData["PassportNumber"]);
             worker.Religion = MapField<string>(provider.FormData["Religion"]);
             worker.Status = "1";
-            worker.SerialNumber = MapField<string>(provider.FormData["WorkerType"]);
-            worker.Video = MapField<string>(provider.FormData["Price"]);
-            worker.Height = MapField<string>(provider.FormData["Salary"]);
+            worker.WorkerType = MapField<string>(provider.FormData["WorkerType"]);
+            worker.Price = MapField<float>(provider.FormData["Price"]);
+            worker.Salary = MapField<float>(provider.FormData["Salary"]);
             worker.SerialNumber = MapField<string>(provider.FormData["CivilId"]);
             worker.Video = MapField<string>(provider.FormData["Video"]);
             worker.Height = MapField<string>(provider.FormData["Height"]);

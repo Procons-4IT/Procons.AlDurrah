@@ -15,16 +15,16 @@ export interface PaymentRedirectParams {
 }
 export interface SearchCriteriaParams {
     languages: NameValuePair[],
-    nationality: NameValuePair[],
+    nationality: NameValuePair[],      
     gender: NameValuePair[],
     maritalStatus: NameValuePair[],
     workerTypes: NameValuePair[],
     education: NameValuePair[],
-    religion: NameValuePair[],
+    religion: NameValuePair[]
 }
 
 export interface NameValuePair {
-    name: string
+    name: string,
     value: string
 }
 export interface ResetPasswordParams {
@@ -40,7 +40,7 @@ export interface WorkerFilterParams {
     workerTypes: NameValuePair[]
 }
 export interface CreateNewUserParams {
-    FirstName: string
+    FirstName: string,
     LastName: string,
     UserName: string,
     CivilId: string,
@@ -55,5 +55,5 @@ export interface ConfirmEmailParams {
 }
 
 export interface WorkerTypeParam {
-    workerType: string,
+    workerType: string
 }

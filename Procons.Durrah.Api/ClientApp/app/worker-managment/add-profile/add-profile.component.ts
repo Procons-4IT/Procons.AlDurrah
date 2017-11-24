@@ -69,6 +69,7 @@ export class AddProfileComponent implements OnInit {
         } else {
             this.createEmptyWorkerState();
             this.state.isAddMode = true;
+
         }
         if (!this.state.worker.languages) {
             this.state.worker.languages = [];
@@ -177,6 +178,7 @@ export class AddProfileComponent implements OnInit {
     getFormData(formData: FormData) {
         formData.append('WorkerName', this.state.worker.workerName);
         formData.append('WorkerCode', this.state.worker.passportNumber);
+        formData.append('workerType', this.state.worker.workerType);
         formData.append('Salary', this.state.worker.salary.toString());
         formData.append('Price', this.state.worker.price.toString());
         formData.append('BirthDate', this.formatDate(this.state.worker.birthDate.toString()));
@@ -194,7 +196,7 @@ export class AddProfileComponent implements OnInit {
         formData.append("PassportPoIssue", this.state.worker.passportPoIssue);
         formData.append('PassportExpDate', this.formatDate(this.state.worker.passportExpDate.toString()));
         formData.append('CivilId', this.state.worker.civilId);
-        let itemName: any[] = this.searchCriterias.workerTypes.filter(nameValuePair => nameValuePair.value === this.state.worker.code);
+        let itemName: any[] = this.filteredItems.filter(nameValuePair => nameValuePair.value === this.state.worker.code);
         formData.append('Name', itemName[0].name);
         formData.append('Code', this.state.worker.code);
     }
