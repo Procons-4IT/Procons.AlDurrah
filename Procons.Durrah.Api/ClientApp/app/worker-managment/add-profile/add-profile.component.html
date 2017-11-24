@@ -82,6 +82,17 @@
                       <p-multiSelect required name="lang" defaultLabel="اللغات المتحدث بها"  [options]="searchCriterias.languages"  [(ngModel)]="this.state.worker.languages" ></p-multiSelect>
                     </div>
                   </div>
+                  
+                  <div class="form-group ">
+                    <label for="salary">{{ 'salary' | translate }}</label>
+                    <input required id="salary"  type="number" class="form-control"  name="salary" [(ngModel)]="state.worker.salary" />
+                  </div>
+
+                  <div class="form-group ">
+                    <label for="price">{{ 'price' | translate }}</label>
+                    <input required id="price"  type="number" class="form-control"  name="price" [(ngModel)]="state.worker.price" />
+                  </div>  
+
 
                   <div class="form-group ">
                     <label for="weight">{{ 'weight' | translate }}</label>

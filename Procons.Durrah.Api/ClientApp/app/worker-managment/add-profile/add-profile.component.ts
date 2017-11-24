@@ -177,6 +177,8 @@ export class AddProfileComponent implements OnInit {
     getFormData(formData: FormData) {
         formData.append('WorkerName', this.state.worker.workerName);
         formData.append('WorkerCode', this.state.worker.passportNumber);
+        formData.append('Salary', this.state.worker.salary.toString());
+        formData.append('Price', this.state.worker.price.toString());
         formData.append('BirthDate', this.formatDate(this.state.worker.birthDate.toString()));
         formData.append('Gender', this.state.worker.gender);
         formData.append('Nationality', this.state.worker.nationality);
