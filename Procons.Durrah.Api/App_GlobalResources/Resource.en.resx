@@ -165,6 +165,35 @@
   <data name="Successfull_Transaction" xml:space="preserve">
     <value>Transaction created successfully!!!</value>
   </data>
+  <data name="TransactionCancellationBody" xml:space="preserve">
+    <value>&lt;html&gt;
+	&lt;body&gt;
+		&lt;p&gt;
+		  A transaction has been cancelled informaiton: 
+		  &lt;div&gt;Item Code : [[ItemCode]] &lt;div&gt;
+		  &lt;div&gt;Amount: [[TransactionAmount]] KWD&lt;div&gt; 
+		  &lt;div&gt;Payment ID: [[PaymentID]] &lt;div&gt; 
+		  &lt;div&gt;Merchant track ID: [[MerchantTrackID]] &lt;div&gt; 
+&lt;div&gt;For help please contact: 00989987655&lt;/div&gt;
+		&lt;/p&gt;
+	&lt;body&gt;
+&lt;/html&gt;</value>
+  </data>
+  <data name="TransactionErrorBody" xml:space="preserve">
+    <value>&lt;html&gt;
+	&lt;body&gt;
+		&lt;p&gt;
+		  A transaction error has been occured: 
+		  &lt;div&gt;Item Code : [[ItemCode]] &lt;div&gt;
+		  &lt;div&gt;Amount: [[TransactionAmount]] KWD&lt;div&gt; 
+		  &lt;div&gt;Reference ID: [[ReferenceID]]&lt;div&gt; 
+		  &lt;div&gt;Payment ID: [[PaymentID]] &lt;div&gt; 
+		  &lt;div&gt;Merchant track ID: [[MerchantTrackID]] &lt;div&gt; 
+&lt;div&gt;For help please contact: 00989987655&lt;/div&gt;
+		&lt;/p&gt;
+	&lt;body&gt;
+&lt;/html&gt;</value>
+  </data>
   <data name="Transaction_Cancelled" xml:space="preserve">
     <value>Transaction Cancelled !</value>
   </data>

@@ -52,6 +52,7 @@
             return Ok(result);
         }
 
+        [Authorize]
         [HttpPost]
         public IHttpActionResult GetItemsLookup([FromBody]ParamBody workerType)
         {
@@ -133,6 +134,7 @@
 
                 try
                 {
+                 
                     var tokens = new Dictionary<string, string>();
                     tokens.Add(Constants.KNET.MerchantTrackID, payment.TrackID);
                     tokens.Add(Constants.KNET.PaymentID, payment.PaymentID);
@@ -184,9 +186,42 @@
         {
             try
             {
+                var paymentAmount = workersFacade.GetDownPaymentAmount().ToString();
+                var userEmail = workersFacade.GetEmailAddress(payment.CardCode);
+
                 if (payment.Result == KnetResults.CANCELED.GetDescription() || payment.Result == KnetResults.NOTCAPTURED.GetDescription())
                 {
-                    workersFacade.CancelSalesOrder(payment.PaymentID, payment.Result);
+                    workersFacade.CancelSalesOrder(payment);
+                    try
+                    {
+                        var tokens = new Dictionary<string, string>();
+                        tokens.Add(Constants.KNET.MerchantTrackID, payment.TrackID);
+                        tokens.Add(Constants.KNET.PaymentID, payment.PaymentID);
+                      
+                        tokens.Add(Constants.KNET.TransactionAmount, paymentAmount + payment.Amount);
+                        tokens.Add(Constants.KNET.ItemCode,payment.Code);
+
+                        idMessage.Destination = userEmail;
+                        string messageBody = string.Empty;
+                        if (payment.Result == KnetResults.CANCELED.GetDescription())
+                        {
+                            idMessage.Subject = Utilities.GetResourceValue(Constants.Resources.Transaction_Cancelled);
+                            messageBody = Utilities.GetResourceValue(Constants.Resources.TransactionCancellationBody).GetMessageBody(tokens);
+                        }
+                        else
+                        {
+                            tokens.Add(Constants.KNET.ReferenceID, payment.Ref);
+                            idMessage.Subject = Utilities.GetResourceValue(Constants.Resources.Failed_Transaction);
+                            messageBody = Utilities.GetResourceValue(Constants.Resources.TransactionErrorBody).GetMessageBody(tokens);
+                        }
+
+                        idMessage.Body = messageBody;
+                        emailService.SendAsync(idMessage);
+                    }
+                    catch (Exception ex)
+                    {
+                        Utilities.LogException(ex);
+                    }
                 }
                 return Ok();
             }
@@ -445,6 +480,9 @@
             worker.PassportNumber = MapField<string>(provider.FormData["PassportNumber"]);
             worker.Religion = MapField<string>(provider.FormData["Religion"]);
             worker.Status = "1";
+            worker.SerialNumber = MapField<string>(provider.FormData["WorkerType"]);
+            worker.Video = MapField<string>(provider.FormData["Price"]);
+            worker.Height = MapField<string>(provider.FormData["Salary"]);
             worker.SerialNumber = MapField<string>(provider.FormData["CivilId"]);
             worker.Video = MapField<string>(provider.FormData["Video"]);
             worker.Height = MapField<string>(provider.FormData["Height"]);

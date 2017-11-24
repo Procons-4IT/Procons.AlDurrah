@@ -71,6 +71,9 @@
             oGeneralData.SetProperty("U_Status", worker.Status);
             oGeneralData.SetProperty("U_Video", worker.Video);
             oGeneralData.SetProperty("U_Weight", worker.Weight);
+            oGeneralData.SetProperty("U_WorkerType", worker.WorkerType);
+            oGeneralData.SetProperty("U_Salary", worker.Salary);
+            oGeneralData.SetProperty("U_Price", worker.Price);
 
 
             oGeneralService.Add(oGeneralData);
@@ -133,6 +136,9 @@
                     oGeneralData.SetProperty("U_PassportExpDate", MapField<DateTime>(worker.PassportExpDate));
                     oGeneralData.SetProperty("U_PassportPoIssue", worker.PassportPoIssue);
                     oGeneralData.SetProperty("U_PassportNumber", MapField<string>(worker.PassportNumber));
+                    oGeneralData.SetProperty("U_WorkerType", worker.WorkerType);
+                    oGeneralData.SetProperty("U_Salary", worker.Salary);
+                    oGeneralData.SetProperty("U_Price", worker.Price);
 
                     if (photo.Equals("0"))
                         oGeneralData.SetProperty("U_Photo", string.Empty);
@@ -253,7 +259,7 @@
                 query.Append(@"SELECT ""A"".""Code"",""A"".""U_WorkerName"",""A"".""Name"",""U_ItemCode"",""U_WorkerType"",""U_Serial"",""U_Agent"",""U_Age"",");
                 query.Append(@"""U_BirthDate"",""U_Gender"",""D"".""Name"" AS ""U_Nationality"",""D"".""U_NAME"" AS ""U_Nationality_AR"",""R"".""Name"" AS ""U_Religion"",""R"".""U_NAME"" AS ""U_Religion_AR"",");
                 query.Append(@"""U_Photo"",""U_License"", ""U_Weight"",""U_Height"",""E"".""Name"" AS ""U_Education"",""E"".""U_NAME"" AS ""U_Education_AR"",");
-                query.Append(@"""U_Passport"",""U_Video"",""U_PassportNumber"",""U_PassportIssDate"",""U_PassportExpDate"",""U_PassportPoIssue"",""U_Price"",""U_CivilId"",""U_Status"",");
+                query.Append(@"""U_Passport"",""U_Video"",""U_PassportNumber"",""U_PassportIssDate"",""U_PassportExpDate"",""U_PassportPoIssue"",""U_Price"",""U_Salary"",""U_CivilId"",""U_Status"",");
                 query.Append($@"""B"".""Name"" AS ""U_MaritalStatus"",""B"".""U_NAME"" AS ""U_MaritalStatus_AR""");
                 query.Append($@" FROM ""{databaseBame}"".""@WORKERS"" as ""A""");
 
@@ -261,6 +267,9 @@
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@COUNTRIES"" AS ""D"" ON ""A"".""U_Nationality"" = ""D"".""Code""");
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@RELIGION"" AS ""R"" ON ""A"".""U_Religion"" = ""R"".""Code""");
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@EDUCATION"" AS ""E"" ON ""A"".""U_Education"" = ""E"".""Code""");
+
+
+
 
                 if (status == null)
                     query.Append($@"WHERE 1 = 1 ");
@@ -311,7 +320,9 @@
                             Status = MapField<string>(drow["U_Status"]),
                             Video = MapField<string>(drow["U_Video"]),
                             Price = MapField<float>(drow["U_Price"]),
+                            Salary = MapField<float>(drow["U_Salary"]),
                             Weight = MapField<string>(drow["U_Weight"]),
+                            WorkerType = MapField<string>(drow["U_WorkerType"]),
                             Languages = languages
                         });
                 }
@@ -324,6 +335,207 @@
             return workersList;
         }
 
+        #region Old Methods
+        //public List<Worker> GetWorkers(Catalogue worker, string requestUrl, WorkerStatus? status)
+        //{
+
+        //    List<Worker> workersList = new List<Worker>();
+        //    try
+        //    {
+
+        //        var attachmentPath = GetAttachmentPath();
+        //        var exp = GetExpressionSql(worker);
+        //        var databaseBame = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.DatabaseName);
+
+        //        var query = new StringBuilder();
+        //        query.Append(@"SELECT ""A"".""Code"",""A"".""U_WorkerName"",""A"".""Name"",""U_ItemCode"",""U_Serial"",""U_Agent"",""U_Age"",");
+        //        query.Append(@"""U_BirthDate"",""U_Gender"",""D"".""Name"" AS ""U_Nationality"",""D"".""U_NAME"" AS ""U_Nationality_AR"",""R"".""Name"" AS ""U_Religion"",""R"".""U_NAME"" AS ""U_Religion_AR"",");
+        //        query.Append(@"""U_Photo"",""U_License"", ""U_Weight"",""U_Height"",""E"".""Name"" AS ""U_Education"",""E"".""U_NAME"" AS ""U_Education_AR"",");
+        //        query.Append(@"""U_Passport"",""U_Video"",""U_PassportNumber"",""U_PassportIssDate"",""U_PassportExpDate"",""U_PassportPoIssue"",""U_Price"",""U_CivilId"",""U_Status"",");
+        //        query.Append($@"""B"".""Name"" AS ""U_MaritalStatus"",""B"".""U_NAME"" AS ""U_MaritalStatus_AR""");
+        //        query.Append($@" FROM ""{databaseBame}"".""@WORKERS"" as ""A""");
+
+        //        query.Append($@" INNER JOIN ""{databaseBame}"".""@MARITALSTATUS"" AS ""B"" ON ""A"".""U_MaritalStatus"" = ""B"".""Code""");
+        //        query.Append($@" INNER JOIN ""{databaseBame}"".""@COUNTRIES"" AS ""D"" ON ""A"".""U_Nationality"" = ""D"".""Code""");
+        //        query.Append($@" INNER JOIN ""{databaseBame}"".""@RELIGION"" AS ""R"" ON ""A"".""U_Religion"" = ""R"".""Code""");
+        //        query.Append($@" INNER JOIN ""{databaseBame}"".""@EDUCATION"" AS ""E"" ON ""A"".""U_Education"" = ""E"".""Code""");
+
+        //        if (status == null)
+        //            query.Append($@"WHERE 1 = 1 ");
+        //        else
+        //            query.Append($@"WHERE A.""U_Status"" = '{((int)status).ToString()}' ");
+
+        //        query.Append(exp);
+        //        var readerResult = dbHelper.ExecuteQuery(query.ToString());
+
+        //        foreach (DataRow drow in readerResult.Rows)
+        //        {
+        //            var code = MapField<string>(drow["Code"]);
+        //            var langagesResult = dbHelper.ExecuteQuery($@"SELECT ""U_VALUE"",""U_NAME"" FROM ""{databaseBame}"".""@WORKERLNGS"" WHERE ""Code""='{code}'");
+        //            List<LookupItem> languages = new List<LookupItem>();
+
+        //            foreach (DataRow langaugeRow in langagesResult.Rows)
+        //            {
+        //                var name = MapField<string>(langaugeRow["U_NAME"]);
+        //                var value = MapField<string>(langaugeRow["U_VALUE"]);
+        //                languages.Add(new LookupItem(name, value));
+        //            }
+        //            var age = DateTime.Now.Year - MapField<DateTime>(drow["U_BirthDate"]).Year;
+        //            workersList.Add(
+        //                new Worker()
+        //                {
+        //                    Name = MapField<string>(drow["Name"]),
+        //                    WorkerCode = MapField<string>(drow["Code"]),
+        //                    WorkerName = MapField<string>(drow["U_WorkerName"]),
+        //                    Agent = MapField<string>(drow["U_Agent"]),
+        //                    Age = age,
+        //                    BirthDate = MapField<DateTime>(drow["U_BirthDate"]).ToShortDateString(),
+        //                    CivilId = MapField<string>(drow["U_CivilId"]),
+        //                    Code = MapField<string>(drow["U_ItemCode"]),
+        //                    Education = MapField<string>(drow[Utilities.GetLocalizedField("U_Education")]),
+        //                    Gender = Utilities.GetResourceValue(MapField<string>(drow["U_Gender"])),
+        //                    Height = MapField<string>(drow["U_Height"]),
+        //                    MaritalStatus = MapField<string>(drow[Utilities.GetLocalizedField("U_MaritalStatus")]),
+        //                    Nationality = MapField<string>(drow[Utilities.GetLocalizedField("U_Nationality")]),
+        //                    Passport = Utilities.ConvertImagePathToUrl(requestUrl, MapField<string>(drow["U_Passport"])),
+        //                    PassportExpDate = MapField<DateTime>(drow["U_PassportExpDate"]).ToShortDateString(),
+        //                    PassportIssDate = MapField<string>(drow["U_PassportIssDate"]),
+        //                    PassportNumber = MapField<string>(drow["U_PassportNumber"]),
+        //                    PassportPoIssue = MapField<string>(drow["U_PassportPoIssue"]),
+        //                    Photo = Utilities.ConvertImagePathToUrl(requestUrl, MapField<string>(drow["U_Photo"])),
+        //                    License = Utilities.ConvertImagePathToUrl(requestUrl, MapField<string>(drow["U_License"])),
+        //                    Religion = MapField<string>(drow[Utilities.GetLocalizedField("U_Religion")]),
+        //                    SerialNumber = MapField<string>(drow["U_Serial"]),
+        //                    Status = MapField<string>(drow["U_Status"]),
+        //                    Video = MapField<string>(drow["U_Video"]),
+        //                    Price = MapField<float>(drow["U_Price"]),
+        //                    Weight = MapField<string>(drow["U_Weight"]),
+        //                    Languages = languages
+        //                });
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Utilities.LogException(ex);
+        //    }
+
+        //    return workersList;
+        //}
+
+        //public List<LookupItem> GetLookupValues<T>()
+        //{
+        //    var _serviceInstance = ServiceLayerProvider.GetInstance();
+
+
+        //    if (typeof(T) == typeof(COUNTRIES))
+        //    {
+        //        var results = _serviceInstance.CurrentServicelayerInstance.COUNTRIESUDO.ToList();
+        //        return GetLookups<COUNTRIES>(results);
+        //    }
+        //    else if (typeof(T) == typeof(LANGUAGES))
+        //    {
+        //        var results = _serviceInstance.CurrentServicelayerInstance.LANGUAGESUDO.ToList<LANGUAGES>();
+        //        return GetLookups<LANGUAGES>(results);
+        //    }
+        //    else if (typeof(T) == typeof(MARITALSTATUS))
+        //    {
+        //        var results = _serviceInstance.CurrentServicelayerInstance.MARITALSTATUSUDO.ToList<MARITALSTATUS>();
+        //        return GetLookups<MARITALSTATUS>(results);
+        //    }
+        //    else if (typeof(T) == typeof(WORKERTYPES))
+        //    {
+        //        var results = _serviceInstance.CurrentServicelayerInstance.WORKERTYPESUDO.ToList<WORKERTYPES>();
+        //        return GetLookups<WORKERTYPES>(results);
+        //    }
+        //    else if (typeof(T) == typeof(Item))
+        //    {
+        //        var results = _serviceInstance.CurrentServicelayerInstance.Items.Select(x => new LookupItem(x.ItemName, x.ItemCode)).ToList();
+        //        return results;
+        //    }
+        //    else if (typeof(T) == typeof(RELIGION))
+        //    {
+        //        var results = _serviceInstance.CurrentServicelayerInstance.RELIGION.ToList();
+        //        return GetLookups<RELIGION>(results);
+        //    }
+        //    else if (typeof(T) == typeof(EDUCATION))
+        //    {
+        //        var results = _serviceInstance.CurrentServicelayerInstance.EDUCATION.ToList();
+        //        return GetLookups<EDUCATION>(results);
+        //    }
+        //    else
+        //        return null;
+
+        //    List<LookupItem> GetLookups<Y>(List<Y> list)
+        //    {
+        //        var lookups = new List<LookupItem>();
+        //        foreach (dynamic r in list)
+        //        {
+        //            if (Utilities.GetCurrentLanguage() == Languages.English.GetDescription())
+        //                lookups.Add(new LookupItem(r.Name, r.Code));
+        //            else
+        //                lookups.Add(new LookupItem(r.U_NAME, r.Code));
+        //        }
+        //        return lookups;
+        //    }
+        //}
+
+        //private string GetExpressionSql(Catalogue wrk)
+        //{
+        //    StringBuilder queryBuilder = new StringBuilder();
+        //    if (wrk != null)
+        //    {
+        //        if (wrk.Age != null)
+        //        {
+        //            var boundaries = wrk.Age.Trim().Split('-');
+        //            //var startYear = DateTime.Now.Year - int.Parse(boundaries[1]);
+        //            //var endYear = DateTime.Now.Year - int.Parse(boundaries[0]);
+
+        //            queryBuilder.Append($" AND  {DateTime.Now.Year} - YEAR(\"U_BirthDate\") BETWEEN {boundaries[0]} AND {boundaries[1]}");
+        //        }
+        //        if (wrk.Gender != null)
+        //        {
+        //            queryBuilder.Append($" AND \"U_Gender\" = '{wrk.Gender}'");
+        //        }
+        //        if (wrk.Nationality != null)
+        //        {
+        //            queryBuilder.Append($" AND \"U_Nationality\" = '{wrk.Nationality}'");
+        //        }
+        //        if (wrk.MaritalStatus != null)
+        //        {
+        //            queryBuilder.Append($" AND \"U_MaritalStatus\" = '{wrk.MaritalStatus}'");
+        //        }
+        //        if (wrk.WorkerType != null)
+        //        {
+        //            queryBuilder.Append($" AND \"U_ItemCode\" = '{wrk.WorkerType}'");
+        //        }
+        //        if (wrk.Language != null)
+        //        {
+        //            queryBuilder.Append($" AND \"U_Language\" = '{wrk.Language}'");
+        //        }
+        //        return queryBuilder.ToString();
+        //    }
+        //    else
+        //        return null;
+        //}
+
+        public List<LookupItem> GetItemsByWorkerType(string workerType)
+        {
+            try
+            {
+                var _serviceInstance = ServiceLayerProvider.GetInstance();
+                var results = _serviceInstance.CurrentServicelayerInstance.Items.Where(x => x.U_WorkerType == workerType).Select(x => new LookupItem(x.ItemCode, x.ItemName)).ToList();
+                return results;
+            }
+            catch (Exception ex)
+            {
+                Utilities.LogException(ex);
+                return new List<LookupItem>();
+            }
+
+        }
+
+        #endregion
+
         public List<Worker> GetAgentWorkers(string agent, string requestUrl)
         {
             List<Worker> workersList = new List<Worker>();
@@ -333,10 +545,10 @@
                 var databaseBame = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.DatabaseName);
 
                 var query = new StringBuilder();
-                query.Append(@"SELECT ""A"".""Code"",""A"".""U_WorkerName"",""A"".""Name"",""U_ItemCode"",""U_Serial"",""U_Agent"",""U_Age"",""U_WorkerName"", ");
+                query.Append(@"SELECT ""A"".""Code"",""A"".""U_WorkerName"",""A"".""Name"",""U_ItemCode"",""U_Serial"",""U_Agent"",""U_Age"",""U_WorkerType"", ""U_WorkerName"", ");
                 query.Append(@"""U_BirthDate"",""U_Gender"",""D"".""Code"" AS ""U_NationalityCode"",""D"".""Name"" AS ""U_Nationality"",""D"".""U_NAME"" AS ""U_Nationality_AR"",""R"".""Code"" AS ""U_ReligionCode"",""R"".""Name"" AS ""U_Religion"",""R"".""U_NAME"" AS ""U_Religion_AR"",");
                 query.Append(@"""U_Photo"",""U_License"",""U_Weight"",""U_Height"",""E"".""Name"" AS ""U_Education"",""E"".""U_NAME"" AS ""U_Education_AR"",");
-                query.Append(@"""U_Passport"",""U_Video"",""U_PassportNumber"",""U_PassportIssDate"",""U_PassportExpDate"",""U_PassportPoIssue"",""U_Price"",""U_CivilId"",""U_Status"",");
+                query.Append(@"""U_Passport"",""U_Video"",""U_PassportNumber"",""U_PassportIssDate"",""U_PassportExpDate"",""U_PassportPoIssue"",""U_Price"", ""U_Salary"",""U_CivilId"",""U_Status"",");
                 query.Append($@"""B"".""Code"" AS ""U_MaritalStatusCode"",""B"".""Name"" AS ""U_MaritalStatus"",""B"".""U_NAME"" AS ""U_MaritalStatus_AR""");
                 query.Append($@" FROM ""{databaseBame}"".""@WORKERS"" as ""A""");
 
@@ -366,6 +578,8 @@
                             Name = MapField<string>(drow["Name"]),
                             WorkerCode = MapField<string>(drow["Code"]),
                             WorkerName = MapField<string>(drow["U_WorkerName"]),
+                            WorkerType = MapField<string>(drow["U_WorkerType"]),
+                            Salary = MapField<float>(drow["U_Salary"]),
                             Agent = MapField<string>(drow["U_Agent"]),
                             Age = age,
                             BirthDate = MapField<DateTime>(drow["U_BirthDate"]).ToShortDateString(),
@@ -440,8 +654,8 @@
             }
             catch (Exception ex)
             {
-                instance.CurrentServicelayerInstance.Detach(salesOrder);
                 Utilities.LogException(ex);
+                instance.CurrentServicelayerInstance.Detach(salesOrder);
             }
 
             return returnResult;
@@ -475,7 +689,6 @@
                     SAPbobsCOM.Documents oDownPay = base.B1Company.GetBusinessObject(BoObjectTypes.oDownPayments) as Documents;
 
                     oDownPay.CardCode = salesOrder.CardCode;
-                    //oDownPay.DownPaymentPercentage = 100
                     oDownPay.DownPaymentType = SAPbobsCOM.DownPaymentTypeEnum.dptInvoice;
                     oDownPay.DocTotal = paymentAmount;
                     oDownPay.Lines.BaseType = 17;
@@ -504,7 +717,6 @@
                         oPay.Invoices.SumApplied = paymentAmount;
                         oPay.Invoices.InvoiceType = BoRcptInvTypes.it_DownPayment;
                         oPay.DocDate = DateTime.Today;
-                        //TODO: Replace bank account with cach
                         oPay.TransferSum = paymentAmount;
                         oPay.TransferAccount = "_SYS00000000035";
 
@@ -534,27 +746,64 @@
             return creationResult;
         }
 
-        public void CancelSalesOrder(string paymentId, string result)
+        //public void CancelSalesOrder(Transaction payment)
+        //{
+        //    Utilities.LogException("Cancellation Starts");
+        //    Utilities.LogException($"Result:{payment.Result}, TrackId:{payment.TrackID},TranId:{payment.TranID },Ref:{payment.Ref}");
+        //    Document oSalesOrder = new Document();
+        //    WORKERS worker = new WORKERS();
+        //    try
+        //    {
+        //        var instance = ServiceLayerProvider.GetInstance();
+        //        oSalesOrder = instance.CurrentServicelayerInstance.Orders.Where(x => x.U_PaymentID == payment.PaymentID).FirstOrDefault();
+        //        oSalesOrder.U_Status = payment.Result;
+        //        oSalesOrder.U_TrackID = payment.TrackID == null ? string.Empty : payment.TrackID;
+        //        oSalesOrder.U_TranID = payment.TranID == null ? string.Empty : payment.TranID;
+        //        oSalesOrder.U_Ref = payment.Ref == null ? string.Empty : payment.Ref;
+
+        //        oSalesOrder.Cancelled = SAPbobsCOM.BoYesNoEnum.tYES.ToString();
+        //        instance.CurrentServicelayerInstance.UpdateObject(oSalesOrder);
+        //        var workerCode = oSalesOrder.U_WorkerID;
+        //        worker = instance.CurrentServicelayerInstance.WORKERSUDO.Where(x => x.Code == workerCode).FirstOrDefault();
+        //        worker.U_Status = "1";
+        //        instance.CurrentServicelayerInstance.UpdateObject(worker);
+        //        instance.CurrentServicelayerInstance.SaveChanges();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Utilities.LogException(ex);
+        //        instance.CurrentServicelayerInstance.Detach(oSalesOrder);
+        //        instance.CurrentServicelayerInstance.Detach(worker); 
+        //    }
+        //}
+
+        public void CancelSalesOrder(Transaction payment)
         {
+            Utilities.LogException("Cancellation Starts");
+            Utilities.LogException($"Result:{payment.Result}, TrackId:{payment.TrackID},TranId:{payment.TranID },Ref:{payment.Ref}");
             Document oSalesOrder = new Document();
             WORKERS worker = new WORKERS();
             try
             {
-                var instance = ServiceLayerProvider.GetInstance();
-                oSalesOrder = instance.CurrentServicelayerInstance.Orders.Where(x => x.U_PaymentID == paymentId).FirstOrDefault();
-                oSalesOrder.U_Status = result;
-                oSalesOrder.Cancelled = SAPbobsCOM.BoYesNoEnum.tYES.ToString();
-                instance.CurrentServicelayerInstance.UpdateObject(oSalesOrder);
-                var workerCode = oSalesOrder.U_WorkerID;
-                worker = instance.CurrentServicelayerInstance.WORKERSUDO.Where(x => x.Code == workerCode).FirstOrDefault();
-                worker.U_Status = "1";
-                instance.CurrentServicelayerInstance.UpdateObject(worker);
-                instance.CurrentServicelayerInstance.SaveChanges();
+                var salesOrder = base.B1Company.GetBusinessObject(BoObjectTypes.oOrders) as Documents;
+                var records = base.B1Company.GetBusinessObject(BoObjectTypes.BoRecordset) as Recordset;
+                records.DoQuery(string.Format("SELECT * FROM \"ORDR\" WHERE \"U_PaymentID\"='{0}'", payment.PaymentID));
+                salesOrder.Browser.Recordset = records;
+                salesOrder.UserFields.Fields.Item("U_Status").Value = payment.Result;
+                salesOrder.UserFields.Fields.Item("U_TrackID").Value = payment.TrackID == null ? string.Empty : payment.TrackID;
+                salesOrder.UserFields.Fields.Item("U_TranID").Value = payment.TranID == null ? string.Empty : payment.TranID;
+                salesOrder.UserFields.Fields.Item("U_Ref").Value = payment.Ref == null ? string.Empty : payment.Ref;
+               
+                string workerCode = salesOrder.UserFields.Fields.Item("U_WorkerID").Value.ToString();
+                records.DoQuery(string.Format($@"UPDATE ""@WORKERS"" SET ""U_Status"" = '1' WHERE ""Code"" = '{workerCode}'"));
+
+                if (salesOrder.Update() != 0)
+                    throw new Exception(base.B1Company.GetLastErrorDescription());
+                if (salesOrder.Cancel() != 0)
+                    throw new Exception(base.B1Company.GetLastErrorDescription());
             }
             catch (Exception ex)
             {
-                instance.CurrentServicelayerInstance.Detach(oSalesOrder);
-                instance.CurrentServicelayerInstance.Detach(worker);
                 Utilities.LogException(ex);
             }
         }
@@ -587,22 +836,6 @@
                 isAvailable = true;
 
             return isAvailable;
-        }
-
-        public List<LookupItem> GetItemsByWorkerType(string workerType)
-        {
-            try
-            {
-                var _serviceInstance = ServiceLayerProvider.GetInstance();
-                var results = _serviceInstance.CurrentServicelayerInstance.Items.Where(x => x.U_WorkerType == workerType).Select(x => new LookupItem(x.ItemCode, x.ItemName)).ToList();
-                return results;
-            }
-            catch (Exception ex)
-            {
-                Utilities.LogException(ex);
-                return new List<LookupItem>();
-            }
-
         }
 
         public List<LookupItem> GetLookupValues<T>()
@@ -734,7 +967,6 @@
             {
                 var ServiceInstance = ServiceLayerProvider.GetInstance();
                 var user = ServiceInstance.CurrentServicelayerInstance.BusinessPartners.Where(x => x.CardCode == cardCode).FirstOrDefault();
-
                 if (user != null)
                 {
                     if (user.EmailAddress != null)
@@ -953,8 +1185,6 @@
                 if (wrk.Age != null)
                 {
                     var boundaries = wrk.Age.Trim().Split('-');
-                    //var startYear = DateTime.Now.Year - int.Parse(boundaries[1]);
-                    //var endYear = DateTime.Now.Year - int.Parse(boundaries[0]);
 
                     queryBuilder.Append($" AND  {DateTime.Now.Year} - YEAR(\"U_BirthDate\") BETWEEN {boundaries[0]} AND {boundaries[1]}");
                 }

@@ -107,9 +107,9 @@
             return provider.GetLanguagesById(isonStringIds);
         }
 
-        public void CancelSalesOrder(string paymentId,string result)
+        public void CancelSalesOrder(Transaction payment)
         {
-            provider.CancelSalesOrder(paymentId, result);
+            provider.CancelSalesOrder( payment);
         }
 
         #region Private Methods
