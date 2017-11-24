@@ -49,6 +49,10 @@
                                                   <div (click)="openRequestedPopup(worker.video)" data-toggle="tab" [className]="'glyphicon glyphicon-play-circle icon-large'"></div>
                                                 </li>
                                                 <li><a [href]="worker.video">{{worker.video}}</a></li>
+                                                <li>Salary:<strong>{{worker.salary}}</strong></li>
+                                                <li>Price: <strong>{{worker.price}}</strong></li>
+                                                
+                                                <li>Passport Number: <strong>{{worker.passportNumber}}</strong></li>
                                                 <li>Passport Copy <a [href]="worker.passport"><small>Download</small></a></li>
                                                 <li>Passport Number: <strong>{{worker.passportNumber}}</strong></li>
                                                 <li>Passport Expiry Date: <strong>{{worker.passportExpDate | momentDate}}</strong></li>
