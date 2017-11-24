@@ -28,7 +28,12 @@ export class Worker {
         public passport: string,
         public license: string,
         public status: string,
-        public passportCopy: any
+        public passportCopy: any,
+
+        public salary: number,
+        public price:number,
+        public workerType:any
+
 
     ) { }
 }
