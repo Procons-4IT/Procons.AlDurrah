@@ -138,11 +138,11 @@ export class ApiService {
     }
 
     public getItemsByWorkerType(workerType: WorkerTypeParam): Observable<any[]> {
-        debugger;
+        
                 var actualData = this.httpPostHelper(this.config.getItemsByWorkerType, workerType)
                     .map(response => {
                         var data: any[] = response.json();
-                        debugger;
+                        
                         return data;
                     });
                 return actualData;

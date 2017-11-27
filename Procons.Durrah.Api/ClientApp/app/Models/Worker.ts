@@ -32,7 +32,8 @@ export class Worker {
 
         public salary: number,
         public price:number,
-        public workerType:any
+        public workerType:any,
+        public mobile:string
 
 
     ) { }

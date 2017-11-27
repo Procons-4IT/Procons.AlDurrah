@@ -12,7 +12,6 @@
                   <span class="icon icon-ed-search icon-3x"></span> {{state.title}}</h2>
               </div>
             </div>
-
             <div class="row">
               <div class="col-md-6 col-md-offset-3">
 
@@ -95,6 +94,11 @@
 
 
                   <div class="form-group ">
+                    <label for="mobile">{{ 'mobile' | translate }}</label>
+                    <input required id="mobile" type="number"  minlength="9" maxlength="9" class="form-control"  name="mobile" [(ngModel)]="state.worker.mobile" #mobileInput="ngModel"/>
+                  </div>
+
+                  <div class="form-group ">
                     <label for="weight">{{ 'weight' | translate }}</label>
                     <input required id="weight" type="text" class="form-control" placeholder="..kg" name="weight" [(ngModel)]="state.worker.weight"
                     />
@@ -118,7 +122,7 @@
 
                   <div class="form-group ">
                     <label for="workerType">{{ 'workerType' | translate }}</label>
-                    <select required id="workerType" (change)="onChange($event.target.value)" class="form-control" name="workerType" [(ngModel)]="state.worker.workerType">
+                    <select required id="workerType" (change)="onWorkerTypeSelected($event.target.value)" class="form-control" name="workerType" [(ngModel)]="state.worker.workerType">
                       <option disabled selected value=""> {{state.selectOptionText}}</option>
                       <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.workerTypes;">
                         {{nameValuePair.name}}
@@ -130,7 +134,7 @@
                     <label for="Items">Item</label>
                     <select required id="Items"  class="form-control" name="code" [(ngModel)]="state.worker.code">
                       <option disabled selected value=""> {{state.selectOptionText}}</option>
-                      <option [value]="nameValuePair.value" *ngFor="let nameValuePair of filteredItems;">
+                      <option [value]="nameValuePair.value" *ngFor="let nameValuePair of itemList;">
                         {{nameValuePair.name}}
                       </option>
                     </select>

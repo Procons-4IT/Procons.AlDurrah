@@ -4,6 +4,9 @@ import { Subject } from 'rxjs/Subject';
 import { ApiService } from '../../Services/ApiService';
 import { ProconsModalSerivce } from '../../Services/ProconsModalService';
 import { Worker } from "../../Models/Worker";
+import { WorkerTypeParam } from '../../Models/ApiRequestType';
+
+
 import { SearchCriteriaParams, NameValuePair } from '../../Models/ApiRequestType'
 import { MomentDatePipe } from '../../moment-date.pipe';
 import * as moment from 'moment';
@@ -16,15 +19,14 @@ import * as moment from 'moment';
 })
 export class AddProfileComponent implements OnInit {
     @Input() worker;
-    @Input() filteredItems: NameValuePair[];
     @Input() searchCriterias: SearchCriteriaParams;
     @Output() onBack = new EventEmitter<any>();
-    @Output() onWorkerTypeChange: Subject<any> = new Subject();
     @ViewChild("photoUpload") photoUpload;
     @ViewChild("licenseUpload") licenseUpload;
     @ViewChild("passportUpload") passportUpload;
     @ViewChild("workerForm") workerForm;
 
+    itemList = [];
     itemCode = "";
     passportFileName = "";
     photoFileName = "";
@@ -63,6 +65,10 @@ export class AddProfileComponent implements OnInit {
             this.state.worker.passportExpDate = moment(this.state.worker.passportExpDate, 'DD-MM-YYYY').toDate() as any;
             this.state.worker.passportIssDate = moment(this.state.worker.passportIssDate, 'DD-MM-YYYY').toDate() as any;
 
+            //Consider Case WorkerType and ItemType is set. How to prepopulate workerTypes? 
+            if (this.state.worker.workerType) {
+                this.getItemLookupsByType(this.state.worker.workerType);
+            }
             console.log('worker ', this.state.worker);
             console.log('searchCriteria Params ', this.searchCriterias);
 
@@ -81,9 +87,8 @@ export class AddProfileComponent implements OnInit {
         }
     }
 
-    onChange(workerType) {
-
-        this.onWorkerTypeChange.next(workerType);
+    onWorkerTypeSelected(workerType) {
+        this.getItemLookupsByType(workerType);
     }
 
     back() {
@@ -179,6 +184,7 @@ export class AddProfileComponent implements OnInit {
         formData.append('WorkerName', this.state.worker.workerName);
         formData.append('WorkerCode', this.state.worker.passportNumber);
         formData.append('workerType', this.state.worker.workerType);
+        formData.append('Mobile', this.state.worker.mobile);
         formData.append('Salary', this.state.worker.salary.toString());
         formData.append('Price', this.state.worker.price.toString());
         formData.append('BirthDate', this.formatDate(this.state.worker.birthDate.toString()));
@@ -196,7 +202,7 @@ export class AddProfileComponent implements OnInit {
         formData.append("PassportPoIssue", this.state.worker.passportPoIssue);
         formData.append('PassportExpDate', this.formatDate(this.state.worker.passportExpDate.toString()));
         formData.append('CivilId', this.state.worker.civilId);
-        let itemName: any[] = this.filteredItems.filter(nameValuePair => nameValuePair.value === this.state.worker.code);
+        let itemName: any[] = this.itemList.filter(nameValuePair => nameValuePair.value === this.state.worker.code);
         formData.append('Name', itemName[0].name);
         formData.append('Code', this.state.worker.code);
     }
@@ -207,7 +213,7 @@ export class AddProfileComponent implements OnInit {
     }
 
     createEmptyWorkerState() {
-        let workerParams: any = Array.from({ length: 27 }, x => { return '' }) as any;
+        let workerParams: any = Array.from({ length: 28 }, x => { return '' }) as any;
         let tempWorker = new (<any>Worker)(...workerParams);
         tempWorker.languages = [];
         this.state.worker = tempWorker;
@@ -241,37 +247,15 @@ export class AddProfileComponent implements OnInit {
     }
     FUM = FileUploadMode;
 
-    tempData() {
-        this.state.worker = {
-            "workerCode": null,
-            "serialNumber": "AB23102017",
-            "agent": "SA004",
-            "age": 47,
-            "name": "Maid Srilanka Sample",
-            "code": "DW00003",
-            "birthDate": "1/1/1970 12:00:00 AM",
-            "gender": "F",
-            "nationality": "2",
-            "religion": "2",
-            "maritalStatus": "1",
-            "language": "2",
-            "photo": "http://127.0.0.1:1357/minion2.jpeg",
-            "price": 237.0,
-            "weight": "65",
-            "height": "150",
-            "education": "1",
-            "passport": "http://127.0.0.1:1357/minion2.jpeg",
-            "video": null,
-            "passportNumber": "AB23102017",
-            "passportIssDate": "1/1/2016",
-            "passportExpDate": "12/31/2026",
-            "passportPoIssue": "Bandaranaiyak",
-            "civilId": null,
-            "status": "2"
-        } as any;
-        this.searchCriterias = { "languages": [{ "name": "English", "value": "1" }, { "name": "Arabic", "value": "2" }, { "name": "Hindi", "value": "3" }], "education": [{ "name": "University", "value": "1" }, { "name": "High School", "value": "2" }, { "name": "None", "value": "3" }, { "name": "Technical", "value": "4" }], "religion": [{ "name": "Christian", "value": "1" }, { "name": "Muslim", "value": "2" }, { "name": "Hindu", "value": "3" }], "nationality": [{ "name": "India", "value": "1" }, { "name": "Bengladish", "value": "2" }, { "name": "Philipin", "value": "3" }, { "name": "Ethioipia", "value": "4" }, { "name": "Srilanka", "value": "5" }, { "name": "Egypt", "value": "6" }], "gender": [{ "name": "Male", "value": "M" }, { "name": "Female", "value": "F" }], "maritalStatus": [{ "name": "Single", "value": "1" }, { "name": "Married", "value": "2" }, { "name": "Divorced", "value": "3" }], "workerTypes": [{ "name": "Domestic worker", "value": "DW00001" }, { "name": "Maid - Ethiopia", "value": "DW00002" }, { "name": "Maid - SriLanka", "value": "DW00003" }, { "name": "Driver Indian Fresh", "value": "DW00004" }, { "name": "Laptop Lenovo Thinkpad", "value": "FA00001" }, { "name": "Decoretion for main office", "value": "FA00002" }, { "name": "Laptop", "value": "FA00003" }] };
+    getItemLookupsByType(workerType) {
 
+        let workerTypeParam: WorkerTypeParam = { workerType: workerType };
+        this.myApi.getItemsByWorkerType(workerTypeParam).subscribe(x => {
+            this.itemList = x;
+        });
     }
+
+
 }
 
 enum FileUploadMode {

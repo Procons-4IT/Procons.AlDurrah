@@ -66,15 +66,6 @@ export class WorkerMangmentComponent implements OnInit {
     }
 
 
-    getItemLookupsByType(workerType) {
-        debugger;
-        let workerTypeParam: WorkerTypeParam = { workerType: workerType };
-        this.myApi.getItemsByWorkerType(workerTypeParam).subscribe(x => {
-            debugger;
-            this.filteredItems = x;
-        });
-    }
-
     ShowAddWorker() {
         this.state.showWorkerAgents = false;
         this.state.showProfiles = false;

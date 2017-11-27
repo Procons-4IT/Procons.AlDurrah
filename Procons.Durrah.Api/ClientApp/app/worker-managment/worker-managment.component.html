@@ -2,6 +2,6 @@
     <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <view-agent-workers (transitionEmitter)="performAction($event);" [$workers]="state.$workers" *ngIf="state.showWorkerAgents"> </view-agent-workers>
     <view-profiles [workers]="state.workers" (onBack)="ShowWorkerAgents()" *ngIf="state.showProfiles"></view-profiles>
-    <add-profile (onBack)="ShowWorkerAgents()" (onWorkerTypeChange)="getItemLookupsByType($event)" [filteredItems]="filteredItems" [worker]="state.selectedWorker" [searchCriterias]="state.searchCriteriaParams"
+    <add-profile (onBack)="ShowWorkerAgents()" [worker]="state.selectedWorker" [searchCriterias]="state.searchCriteriaParams"
         *ngIf="state.showAddProfile"></add-profile>
 </div>
