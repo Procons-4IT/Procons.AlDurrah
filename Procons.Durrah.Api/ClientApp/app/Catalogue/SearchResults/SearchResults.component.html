@@ -22,7 +22,7 @@
                 </p-column>
                 <p-column field="price" header="{{'price' | translate }}"></p-column>
                 <p-column field="age" header="{{'age' | translate }}"></p-column>
-                <p-column field="name" header="{{ 'type'| translate }}"></p-column>
+                <p-column field="workerType" header="{{ 'type'| translate }}" [filter]="true"></p-column>
                 <p-column field="gender" header="{{'gender' | translate }}"></p-column>
                 <p-column field="nationality" header="{{ 'nationality'| translate }}"></p-column>
                 <p-column field="languages" header="{{ 'language' | translate }}">
