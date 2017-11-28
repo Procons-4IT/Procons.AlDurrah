@@ -63,7 +63,7 @@ export class ViewAgentWorkersComponent implements OnInit {
 
     filterByWorkerName(workerName) {
         if (workerName) {
-            this.state.workers = this.state.completeListOfWorkers.filter(worker => { return worker["workerName"].includes(workerName);});
+            this.state.workers = this.state.completeListOfWorkers.filter(worker => { return worker["workerName"].toLowerCase().includes(workerName.toLowerCase());});
         } else {
             this.state.workers = this.state.completeListOfWorkers;
         }
