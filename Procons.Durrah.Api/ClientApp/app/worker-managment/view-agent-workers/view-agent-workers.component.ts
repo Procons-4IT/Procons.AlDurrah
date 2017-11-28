@@ -19,6 +19,7 @@ export class ViewAgentWorkersComponent implements OnInit {
         console.log("I was initialized");
         this.$workers.subscribe(viewAndServerworkers => {
             this.state.workers = viewAndServerworkers[0];
+            this.state.completeListOfWorkers = Object.assign([], viewAndServerworkers[0]);
             this.state.workersServerData = viewAndServerworkers[1];
             console.log('got workers', this.state.workersServerData);
 
@@ -32,6 +33,7 @@ export class ViewAgentWorkersComponent implements OnInit {
         ShowProfiles: false,
         ShowAddProfile: false,
         searchCriteriaParams: null,
+        completeListOfWorkers: null,
         workers: null,
         workersServerData: null,
         selectedWorker: null
@@ -59,4 +61,12 @@ export class ViewAgentWorkersComponent implements OnInit {
         this.transitionEmitter.emit({ action: action, value: value });
     }
 
+    filterByWorkerName(workerName) {
+        if (workerName) {
+            this.state.workers = this.state.completeListOfWorkers.filter(worker => { return worker["workerName"].includes(workerName);});
+        } else {
+            this.state.workers = this.state.completeListOfWorkers;
+        }
+
+    }
 }
