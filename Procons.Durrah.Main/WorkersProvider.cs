@@ -74,7 +74,7 @@
             oGeneralData.SetProperty("U_WorkerType", worker.WorkerType);
             oGeneralData.SetProperty("U_Salary", worker.Salary);
             oGeneralData.SetProperty("U_Price", worker.Price);
-
+            oGeneralData.SetProperty("U_Mobile", worker.Mobile);
 
             oGeneralService.Add(oGeneralData);
             created = true;
@@ -139,6 +139,7 @@
                     oGeneralData.SetProperty("U_WorkerType", worker.WorkerType);
                     oGeneralData.SetProperty("U_Salary", worker.Salary);
                     oGeneralData.SetProperty("U_Price", worker.Price);
+                    oGeneralData.SetProperty("U_Mobile", worker.Mobile);
 
                     if (photo.Equals("0"))
                         oGeneralData.SetProperty("U_Photo", string.Empty);
@@ -545,7 +546,7 @@
                 var databaseBame = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.DatabaseName);
 
                 var query = new StringBuilder();
-                query.Append(@"SELECT ""A"".""Code"",""A"".""U_WorkerName"",""A"".""Name"",""U_ItemCode"",""U_Serial"",""U_Agent"",""U_Age"",""U_WorkerType"", ""U_WorkerName"", ");
+                query.Append(@"SELECT ""A"".""Code"",""A"".""U_WorkerName"",""A"".""U_Mobile"", ""A"".""Name"",""U_ItemCode"",""U_Serial"",""U_Agent"",""U_Age"",""U_WorkerType"", ""U_WorkerName"", ");
                 query.Append(@"""U_BirthDate"",""U_Gender"",""D"".""Code"" AS ""U_NationalityCode"",""D"".""Name"" AS ""U_Nationality"",""D"".""U_NAME"" AS ""U_Nationality_AR"",""R"".""Code"" AS ""U_ReligionCode"",""R"".""Name"" AS ""U_Religion"",""R"".""U_NAME"" AS ""U_Religion_AR"",");
                 query.Append(@"""U_Photo"",""U_License"",""U_Weight"",""U_Height"",""E"".""Name"" AS ""U_Education"",""E"".""U_NAME"" AS ""U_Education_AR"",");
                 query.Append(@"""U_Passport"",""U_Video"",""U_PassportNumber"",""U_PassportIssDate"",""U_PassportExpDate"",""U_PassportPoIssue"",""U_Price"", ""U_Salary"",""U_CivilId"",""U_Status"",");
@@ -578,6 +579,7 @@
                             Name = MapField<string>(drow["Name"]),
                             WorkerCode = MapField<string>(drow["Code"]),
                             WorkerName = MapField<string>(drow["U_WorkerName"]),
+                            Mobile = MapField<string>(drow["U_Mobile"]),
                             WorkerType = MapField<string>(drow["U_WorkerType"]),
                             Salary = MapField<float>(drow["U_Salary"]),
                             Agent = MapField<string>(drow["U_Agent"]),

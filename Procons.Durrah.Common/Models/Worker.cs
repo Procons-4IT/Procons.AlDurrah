@@ -11,6 +11,7 @@ namespace Procons.Durrah.Common
         public string WorkerName { get; set; }
         public string SerialNumber { get; set; }
         public string Agent { get; set; }
+        public string Mobile { get; set; }
         public int Age { get; set; }
         /// <summary>
         /// Related Item Name

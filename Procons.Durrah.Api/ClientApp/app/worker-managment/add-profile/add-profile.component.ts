@@ -51,7 +51,7 @@ export class AddProfileComponent implements OnInit {
         if (this.worker) {
             //EditMode
             this.state.isAddMode = false;
-            this.state.title = "Edit Profile"
+            this.state.title = "تعديل الملف"
             this.state.worker = Object.assign({}, this.worker);
             // this.tempData();
             this.photoServerMode = FileUploadMode.Edit;

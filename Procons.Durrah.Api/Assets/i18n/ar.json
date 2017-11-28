@@ -66,6 +66,8 @@
   "ViewProfiles": "عرض الملفات",
   "Profiles": "الملفات",
   "Delete": "حذف",
+  "item": "المادة",
+  "mobile": "الجوال",
   "error": {
     "default": "Something Went Wrong",
     "notLoggedIn": "Please Login!",

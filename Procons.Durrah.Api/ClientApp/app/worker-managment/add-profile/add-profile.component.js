@@ -22,7 +22,7 @@ let AddProfileComponent = class AddProfileComponent {
     ngOnInit() {
         if (this.worker) {
             this.state.isAddMode = false;
-            this.state.title = "Edit Profile";
+            this.state.title = "تعديل الملف";
             this.state.worker = Object.assign({}, this.worker);
         }
         else {

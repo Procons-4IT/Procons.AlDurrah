@@ -131,7 +131,7 @@
                   </div>
 
                   <div class="form-group ">
-                    <label for="Items">Item</label>
+                    <label for="Items">{{ 'item' | translate }}</label>
                     <select required id="Items"  class="form-control" name="code" [(ngModel)]="state.worker.code">
                       <option disabled selected value=""> {{state.selectOptionText}}</option>
                       <option [value]="nameValuePair.value" *ngFor="let nameValuePair of itemList;">
@@ -258,7 +258,7 @@
                   <div class="form-group  text-right">
                     <input type="submit" value="{{ 'save' | translate }}" class="btn btn-default" [disabled]="!workerForm.valid || !isFilesAttached() || state.worker.languages.length === 0"
                       *ngIf="state.isAddMode" />
-                    <input type="submit" value="Update" class="btn btn-default" *ngIf="!state.isAddMode" />
+                    <input type="submit" value="{{ 'update' | translate }}" class="btn btn-default" *ngIf="!state.isAddMode" />
 
                   </div>
                   <div class="form-group  text-right">

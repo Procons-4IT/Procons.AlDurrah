@@ -465,7 +465,8 @@
             worker.Age = MapField<int>(provider.FormData["Age"]);
             worker.Agent = GetCurrentUserCardCode();
             worker.BirthDate = MapField<string>(provider.FormData["BirthDate"]);
-            worker.WorkerName = MapField<string>(provider.FormData["WorkerName"]);
+            worker.BirthDate = MapField<string>(provider.FormData["BirthDate"]);
+            worker.Mobile = MapField<string>(provider.FormData["Mobile"]);
             worker.CivilId = MapField<string>(provider.FormData["CivilId"]);
             worker.Name = MapField<string>(provider.FormData["Name"]);
             worker.Code = MapField<string>(provider.FormData["Code"]);

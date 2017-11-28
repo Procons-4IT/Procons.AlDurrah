@@ -44,8 +44,8 @@ namespace Procons.Durrah
             app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
             app.UseWebApi(httpConfig);
 
-            B1Facade b1Facade = new B1Facade();
-            var sessionId = b1Facade.InitializeTables();
+            //B1Facade b1Facade = new B1Facade();
+            //var sessionId = b1Facade.InitializeTables();
         }
 
         private void ConfigureOAuthTokenGeneration(IAppBuilder app)
