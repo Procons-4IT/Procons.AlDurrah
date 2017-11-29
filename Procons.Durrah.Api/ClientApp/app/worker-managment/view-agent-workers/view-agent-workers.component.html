@@ -13,11 +13,12 @@
                                     <a (click)="ShowAddWorker();" class="btn btn-default">+ {{'AddProfile' | translate }}</a>
                                 </div>
                                 <div class="row">
-                                    <div class="form-group ">
-                                        <label for="workerNameSearch">{{ 'workerName' | translate }}</label>
-                                        <input required id="workerNameSearch" (input)="filterByWorkerName($event.target.value)" class="form-control" name="workerName">
-                                    </div>
-
+                                        <div class="form-group  col-sm-6 ations">
+                                            <label for="workerNameSearch">{{ 'workernamesearch' | translate }}</label>
+                                            <input required id="workerNameSearch" (input)="filterByWorkerName($event.target.value)" class="form-control" name="workerName">
+                                        </div>
+                                </div>
+                                <div class="row">
                                     <div *ngFor="let worker  of state.workers;let i =index" class="col-sm-6">
                                         <div class="box profile-box clearfix">
                                             <div class="profile-main">

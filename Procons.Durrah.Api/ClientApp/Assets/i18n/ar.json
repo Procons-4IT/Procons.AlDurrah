@@ -89,6 +89,7 @@
   "save": "حفظ",
   "update": "تعديل",
   "clear":"مسح",
+  "workernamesearch":"بحث",
   "error": {
     "default": "Something Went Wrong",
     "notLoggedIn": "Please Login!",
