@@ -13,6 +13,7 @@
     using System.Collections.Generic;
     using System.Data;
     using System.Data.Services.Client;
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Text;
@@ -85,7 +86,7 @@
         public bool UpdateWorker(Worker worker, string cardCode)
         {
             var created = false;
-
+            Trace.WriteLine($"[PR]Update Starts...");
             var attachmentPath = GetAttachmentPath();
             var passportCopy = worker.Passport != null && worker.Passport != string.Empty && worker.Passport != "0" && worker.Passport != "1" ? CreateAttachment(worker.Passport) : worker.Passport;
             var photo = worker.Photo != null && worker.Photo != string.Empty && worker.Photo != "0" && worker.Photo != "1" ? CreateAttachment(worker.Photo) : worker.Passport;
@@ -106,40 +107,64 @@
                 var gDataCollection = oGeneralData.Child("WORKERLNGS");
                 for (int i = gDataCollection.Count - 1; i >= 0; i--)
                     gDataCollection.Remove(i);
-
+                Trace.WriteLine($"[PR]Chech languages...");
                 if (worker.Languages != null)
                 {
+                    Trace.WriteLine($"[PR] foreach (var l in worker.Languages)...");
                     foreach (var l in worker.Languages)
                     {
                         var newLanguage = gDataCollection.Add();
+                        Trace.WriteLine($"[PR] U_NAME: l.Name");
                         newLanguage.SetProperty("U_NAME", l.Name);
+                        Trace.WriteLine($"[PR] U_VALUE: l.Value");
                         newLanguage.SetProperty("U_VALUE", l.Value);
                     }
                 }
-
+                Trace.WriteLine($"[PR] Condition Done...");
 
                 if (oGeneralData.GetProperty("U_Status").ToString() == ((int)WorkerStatus.Opened).ToString() && oGeneralData.GetProperty("U_Agent").ToString() == cardCode)
                 {
+                    Trace.WriteLine($"[PR]U_WorkerName:{worker.WorkerName}");
                     oGeneralData.SetProperty("U_WorkerName", worker.WorkerName);
+                    Trace.WriteLine($"[PR]U_Age:{worker.Age}");
                     oGeneralData.SetProperty("U_Age", MapField<int>(worker.Age));
+                    Trace.WriteLine($"[PR]U_BirthDate:{worker.BirthDate}");
                     oGeneralData.SetProperty("U_BirthDate", MapField<DateTime>(worker.BirthDate));
+                    Trace.WriteLine($"[PR]U_CivilId:{worker.CivilId}");
                     oGeneralData.SetProperty("U_CivilId", MapField<string>(worker.CivilId));
+                    Trace.WriteLine($"[PR]U_ItemCode:{worker.Code}");
                     oGeneralData.SetProperty("U_ItemCode", MapField<string>(worker.Code));
+                    Trace.WriteLine($"[PR]Name:{worker.Name}");
                     oGeneralData.SetProperty("Name", MapField<string>(worker.Name));
+                    Trace.WriteLine($"[PR]U_Education:{worker.Education}");
                     oGeneralData.SetProperty("U_Education", MapField<string>(worker.Education));
+                    Trace.WriteLine($"[PR]U_Gender:{worker.Gender}");
                     oGeneralData.SetProperty("U_Gender", MapField<string>(worker.Gender));
+                    Trace.WriteLine($"[PR]U_Height:{worker.Height}");
                     oGeneralData.SetProperty("U_Height", MapField<string>(worker.Height));
+                    Trace.WriteLine($"[PR]U_Language:{worker.Language}");
                     oGeneralData.SetProperty("U_Language", MapField<string>(worker.Language));
+                    Trace.WriteLine($"[PR]U_MaritalStatus:{worker.MaritalStatus}");
                     oGeneralData.SetProperty("U_MaritalStatus", MapField<string>(worker.MaritalStatus));
+                    Trace.WriteLine($"[PR]U_Nationality:{worker.Nationality}");
                     oGeneralData.SetProperty("U_Nationality", MapField<string>(worker.Nationality));
+                    Trace.WriteLine($"[PR]U_PassportIssDate:{worker.PassportIssDate}");
                     oGeneralData.SetProperty("U_PassportIssDate", MapField<DateTime>(worker.PassportIssDate));
+                    Trace.WriteLine($"[PR]U_PassportExpDate:{worker.PassportExpDate}");
                     oGeneralData.SetProperty("U_PassportExpDate", MapField<DateTime>(worker.PassportExpDate));
+                    Trace.WriteLine($"[PR]U_PassportPoIssue:{worker.PassportPoIssue}");
                     oGeneralData.SetProperty("U_PassportPoIssue", worker.PassportPoIssue);
+                    Trace.WriteLine($"[PR]U_PassportNumber:{worker.PassportNumber}");
                     oGeneralData.SetProperty("U_PassportNumber", MapField<string>(worker.PassportNumber));
+                    Trace.WriteLine($"[PR]U_WorkerType:{worker.WorkerType}");
                     oGeneralData.SetProperty("U_WorkerType", worker.WorkerType);
+                    Trace.WriteLine($"[PR]U_Salary:{worker.Salary}");
                     oGeneralData.SetProperty("U_Salary", worker.Salary);
+                    Trace.WriteLine($"[PR]U_Price:{worker.Price}");
                     oGeneralData.SetProperty("U_Price", worker.Price);
+                    Trace.WriteLine($"[PR]U_Mobile:{worker.Mobile}");
                     oGeneralData.SetProperty("U_Mobile", worker.Mobile);
+                   
 
                     if (photo.Equals("0"))
                         oGeneralData.SetProperty("U_Photo", string.Empty);
@@ -166,11 +191,11 @@
                     created = true;
                 }
                 else
-                    Utilities.LogException($"Worker {oGeneralData.GetProperty("Code")} is already {((WorkerStatus)Convert.ToInt16(oGeneralData.GetProperty("U_Status"))).ToString()} or agent {cardCode} dont have the permissions to edit this worker.");
+                    Utilities.LogException($"[PR]Worker {oGeneralData.GetProperty("Code")} is already {((WorkerStatus)Convert.ToInt16(oGeneralData.GetProperty("U_Status"))).ToString()} or agent {cardCode} dont have the permissions to edit this worker.");
             }
             else
             {
-                Utilities.LogException($"Agent dont have permissions to update worker: {worker.WorkerCode}");
+                Utilities.LogException($"[PR]Agent dont have permissions to update worker: {worker.WorkerCode}");
                 created = false;
             }
 

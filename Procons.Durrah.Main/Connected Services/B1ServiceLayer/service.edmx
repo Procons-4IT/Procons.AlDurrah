@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
-
   <edmx:DataServices m:DataServiceVersion="3.0" m:MaxDataServiceVersion="3.0" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata">
     <Schema Namespace="SAPB1" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
       <EnumType Name="AccountCategorySourceEnum">
@@ -8450,6 +8449,9 @@
         <Property Name="U_Confirmed" Type="Edm.String"/>
         <Property Name="U_Item" Type="Edm.String"/>
         <Property Name="U_BOY_TB_0" Nullable="false" Type="Edm.String"/>
+        <Property Name="U_FamilyM" Type="Edm.String"/>
+        <Property Name="U_ResidenceTy" Type="Edm.String"/>
+        <Property Name="U_Occupation" Type="Edm.String"/>
         <Property Name="BPAddresses" Type="Collection(SAPB1.BPAddress)"/>
         <Property Name="ContactEmployees" Type="Collection(SAPB1.ContactEmployee)"/>
         <Property Name="BPAccountReceivablePaybleCollection" Type="Collection(SAPB1.BPAccountReceivablePayble)"/>
@@ -11189,6 +11191,7 @@
         <Property Name="AttachmentEntry" Type="Edm.Int32"/>
         <Property Name="LinkedResource" Type="Edm.String"/>
         <Property Name="U_BOY_TB_0" Nullable="false" Type="Edm.String"/>
+        <Property Name="U_WorkerType" Type="Edm.String"/>
         <Property Name="ItemPrices" Type="Collection(SAPB1.ItemPrice)"/>
         <Property Name="ItemWarehouseInfoCollection" Type="Collection(SAPB1.ItemWarehouseInfo)"/>
         <Property Name="ItemPreferredVendors" Type="Collection(SAPB1.ItemPreferredVendor)"/>
@@ -14947,6 +14950,9 @@
         <Property Name="U_WorkerName" Type="Edm.String"/>
         <Property Name="U_License" Type="Edm.String"/>
         <Property Name="U_PassportExpDate" Type="Edm.DateTime"/>
+        <Property Name="U_Mobile" Type="Edm.String"/>
+        <Property Name="U_Salary" Type="Edm.Double"/>
+        <Property Name="U_WorkerType" Type="Edm.String"/>
         <Property Name="WORKERLNGSCollection" Type="Collection(SAPB1.WORKERLNGS)"/>
       </EntityType>
       <ComplexType Name="WORKERLNGS">
@@ -25226,5 +25232,4 @@
       </EntityContainer>
     </Schema>
   </edmx:DataServices>
-
 </edmx:Edmx>

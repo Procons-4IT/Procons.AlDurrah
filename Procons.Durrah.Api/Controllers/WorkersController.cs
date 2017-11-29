@@ -489,6 +489,7 @@
             worker.Height = MapField<string>(provider.FormData["Height"]);
             worker.Weight = MapField<string>(provider.FormData["Weight"]);
             worker.WorkerCode = MapField<string>(provider.FormData["WorkerCode"]);
+            worker.WorkerName = MapField<string>(provider.FormData["WorkerName"]);
             worker.Languages = workersFacade.GetLanguagesById(MapField<string>(provider.FormData["Languages"]));
         }
 
