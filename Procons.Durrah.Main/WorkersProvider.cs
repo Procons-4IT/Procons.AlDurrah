@@ -293,6 +293,7 @@
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@COUNTRIES"" AS ""D"" ON ""A"".""U_Nationality"" = ""D"".""Code""");
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@RELIGION"" AS ""R"" ON ""A"".""U_Religion"" = ""R"".""Code""");
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@EDUCATION"" AS ""E"" ON ""A"".""U_Education"" = ""E"".""Code""");
+                query.Append($@" INNER JOIN ""{databaseBame}"".""@WORKERLNGS"" AS ""L"" ON ""L"".""Code"" = ""A"".""Code"""); 
 
 
 
@@ -303,6 +304,7 @@
                     query.Append($@"WHERE A.""U_Status"" = '{((int)status).ToString()}' ");
 
                 query.Append(exp);
+                Trace.WriteLine($"[PR]{query.ToString()}");
                 var readerResult = dbHelper.ExecuteQuery(query.ToString());
 
                 foreach (DataRow drow in readerResult.Rows)
@@ -1233,7 +1235,7 @@
                 }
                 if (wrk.Language != null)
                 {
-                    queryBuilder.Append($" AND \"U_Language\" = '{wrk.Language}'");
+                    queryBuilder.Append($" AND \"L\".\"U_VALUE\" = '{wrk.Language}'");
                 }
                 return queryBuilder.ToString();
             }
