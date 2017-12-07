@@ -275,14 +275,15 @@
                 if (result)
                     return Ok((Utilities.GetResourceValue(Constants.Resources.WorkerCreatedSuccessfully)));
                 else
-                    return InternalServerError(new Exception(Utilities.GetResourceValue(Constants.Resources.WorkerAreadyCreated)));
+                    return Ok(Utilities.GetResourceValue(Constants.Resources.WorkerAreadyCreated));
+                //return  InternalServerError(new Exception(Utilities.GetResourceValue(Constants.Resources.WorkerAreadyCreated)));
             }
             catch (Exception ex)
             {
                 Utilities.LogException(ex);
-                return InternalServerError(new Exception(Utilities.GetResourceValue(Constants.Resources.ErrorOccured)));
+                //return InternalServerError(new Exception(Utilities.GetResourceValue(Constants.Resources.ErrorOccured)));
+                return Ok(Utilities.GetResourceValue(Constants.Resources.ErrorOccured));
             }
-
         }
 
         public async Task<IHttpActionResult> UpdateWorker()
