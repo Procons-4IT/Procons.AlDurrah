@@ -21,6 +21,7 @@
                     </ng-template>
                 </p-column>
                 <p-column field="price" header="{{'price' | translate }}"></p-column>
+                <p-column field="salary" header="{{ 'salary' | translate }}"></p-column>
                 <p-column field="age" header="{{'age' | translate }}"></p-column>
                 <p-column field="name" header="{{ 'type'| translate }}"></p-column>
                 <p-column field="gender" header="{{'gender' | translate }}"></p-column>
@@ -32,7 +33,6 @@
                         </ul>
                     </ng-template>
                 </p-column>
-                <p-column field="price" header="{{ 'price' | translate }}"></p-column>
                 <p-column field="education" header="{{ 'education' | translate }}"></p-column>
                 <!-- Video -->
                 <p-column header="{{'video'| translate }}" [filter]="false">
