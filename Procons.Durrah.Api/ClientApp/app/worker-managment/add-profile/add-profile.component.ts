@@ -1,3 +1,4 @@
+//TODO: Issue with DateFormat server returning mm/dd/yyyy
 import { Component, ElementRef, EventEmitter, Input, Output, OnInit, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Subject } from 'rxjs/Subject';
@@ -61,9 +62,9 @@ export class AddProfileComponent implements OnInit {
             this.licenseFileName = this.getFileImageName(this.state.worker.license);
             this.passportFileName = this.getFileImageName(this.state.worker.passport);
 
-            this.state.worker.birthDate = moment(this.state.worker.birthDate, 'DD-MM-YYYY').toDate() as any;
-            this.state.worker.passportExpDate = moment(this.state.worker.passportExpDate, 'DD-MM-YYYY').toDate() as any;
-            this.state.worker.passportIssDate = moment(this.state.worker.passportIssDate, 'DD-MM-YYYY').toDate() as any;
+            this.state.worker.birthDate = moment(this.state.worker.birthDate, 'MM-DD-YYYY').toDate() as any;
+            this.state.worker.passportExpDate = moment(this.state.worker.passportExpDate, 'MM-DD-YYYY').toDate() as any;
+            this.state.worker.passportIssDate = moment(this.state.worker.passportIssDate, 'MM-DD-YYYY').toDate() as any;
 
             //Consider Case WorkerType and ItemType is set. How to prepopulate workerTypes? 
             if (this.state.worker.workerType) {
