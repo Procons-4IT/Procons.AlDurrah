@@ -27,6 +27,7 @@ export class ApiService {
     private language: string;
     private userLoggedIn: BehaviorSubject<boolean>;
     private userTypeLogIn: BehaviorSubject<string>;
+    private workerManagementCache: WorkerManagementData;
 
 
     public resetParams: ResetPasswordParams = {
@@ -138,24 +139,37 @@ export class ApiService {
     }
 
     public getItemsByWorkerType(workerType: WorkerTypeParam): Observable<any[]> {
-        
-                var actualData = this.httpPostHelper(this.config.getItemsByWorkerType, workerType)
-                    .map(response => {
-                        var data: any[] = response.json();
-                        
-                        return data;
-                    });
-                return actualData;
-            }
+
+        var actualData = this.httpPostHelper(this.config.getItemsByWorkerType, workerType)
+            .map(response => {
+                var data: any[] = response.json();
+
+                return data;
+            });
+        return actualData;
+    }
 
     public getWorkerManagmentData(): Observable<WorkerManagementData> {
+        let $workerData = Observable.create(observer => {
+            if (this.workerManagementCache) {
+                console.log('retrieving from cache')
+                observer.next(this.workerManagementCache);
+            }
+            this.getWorkerManagmentDataFromServer().subscribe(data=>{
+                this.workerManagementCache = data;
+                console.log('retriving from server');
+                observer.next(data)});
+        })
+        return $workerData;
+    }
+    public getWorkerManagmentDataFromServer(): Observable<WorkerManagementData> {
+
         let $workerKeyData = this.getAllAgentWorkers({});
         let $searchCritera = this.getSearchCriteriaParameters();
 
         let $workerManagmentData = Observable.zip($workerKeyData, $searchCritera, (workerData: Worker[], searchCriterParams: SearchCriteriaParams) => {
             return { w: workerData, s: searchCriterParams };
         }).map(data => this.convertToWorkerWorkerManagementData(data.w, data.s));
-
         return $workerManagmentData
     }
 
@@ -239,7 +253,6 @@ export class ApiService {
         return workerDisplayData;
     }
     public getNameFromProperty(key: string, propertyValue: any[]): string {
-        //[{name,value}] 
         let keyValuePair;
         for (let i = 0; i < propertyValue.length; i++) {
             keyValuePair = propertyValue[i];
@@ -259,12 +272,6 @@ export class ApiService {
         }
         let options: RequestOptions = new RequestOptions({ headers: headers });
         return this.http.post(this.config.baseUrl + url, body, options);
-        // .catch(tempCatch => {
-        //     var fakeObject = {
-        //         json: () => [1, 2, 3]
-        //     };
-        //     return Observable.of(<Response>fakeObject);
-        // });
     }
     public httpGetHelper(url: string): Observable<Response> {
         let headers = new Headers();
@@ -273,13 +280,6 @@ export class ApiService {
         let options: RequestOptions = new RequestOptions({ headers: headers });
 
         return this.http.get(this.config.baseUrl + url, options)
-        // .catch(tempCatch => {
-        //     var fakeObject = {
-        //         json: () => [1, 2, 3]
-        //     };
-        //     return Observable.of(<Response>fakeObject);
-
-        // });
     }
     public uploadFile(formData, url) {
         let headers = new Headers();
