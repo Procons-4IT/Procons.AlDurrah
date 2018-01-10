@@ -5,7 +5,7 @@ import 'rxjs/add/operator/mergeMap';
 
 import { Worker, WorkerManagementData } from "../Models/Worker";
 import { Item } from "../Models/Item";
-import { WorkerTypeParam } from '../Models/ApiRequestType';
+import { WorkerTypeParam, SearchCriteriaParams } from '../Models/ApiRequestType';
 import { ApiService } from "../Services/ApiService";
 import { ProconsModalSerivce } from "../Services/ProconsModalService";
 
@@ -18,7 +18,6 @@ import { ProconsModalSerivce } from "../Services/ProconsModalService";
 export class WorkerMangmentComponent implements OnInit {
     public filteredItems: Item[];
     ngOnInit(): void {
-        console.log('view loading!');
 
         let $workerDisplayData = Observable.of('').do(x => { this.loading = true })
             .mergeMap(x => this.myApi.getWorkerManagmentData())
@@ -28,7 +27,7 @@ export class WorkerMangmentComponent implements OnInit {
 
         this.state.$workers = $workerDisplayData.map(workerDisplayData => { return [workerDisplayData, this.state.workersServerData] });
         this.ShowWorkerAgents();
-
+        // this.InitializeAddWorkerForTesting();
     }
 
     bindServerState(allTheData) {
@@ -111,6 +110,14 @@ export class WorkerMangmentComponent implements OnInit {
                 this.loading = false;
                 this.myModal.showErrorModal("Failed to Delete Worker");
             });
+    }
+
+    //Testing Functions for quicker developemnt
+    InitializeAddWorkerForTesting(){
+        let mockData : SearchCriteriaParams = {"languages":[{"name":"English","value":"1"},{"name":"Arabic","value":"2"},{"name":"french","value":"3"}],"education":[{"name":"University","value":"1"},{"name":"High School","value":"2"},{"name":"None","value":"3"},{"name":"middle school","value":"4"}],"religion":[{"name":"Christian","value":"1"},{"name":"Muslim","value":"2"},{"name":"Hindu","value":"3"},{"name":"atheist","value":"4"}],"nationality":[{"name":"India","value":"1"},{"name":"Bengladish","value":"2"},{"name":"Philipin","value":"3"},{"name":"Ethioipia","value":"4"}],"gender":[{"name":"Male","value":"M"},{"name":"Female","value":"F"}],"maritalStatus":[{"name":"Single","value":"1"},{"name":"Married","value":"2"},{"name":"Divorced","value":"3"},{"name":"Single Mom","value":"4"}],"workerTypes":[{"name":"Driver","value":"Driver"},{"name":"Worker","value":"Worker"},{"name":"Maid","value":"Maid"},{"name":"House boy","value":"Houseboy"}]};
+        this.state.searchCriteriaParams = mockData;
+        this.loading = false;
+        this.ShowAddWorker();
     }
 }
 
