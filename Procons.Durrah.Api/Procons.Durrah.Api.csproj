@@ -253,6 +253,7 @@
     <Content Include="ClientApp\Assets\src\app\images\logo.png" />
     <Content Include="ClientApp\Assets\src\app\images\mask_message.svg" />
     <Content Include="ClientApp\Assets\src\app\images\menu_bg.png" />
+    <Content Include="ClientApp\Assets\src\app\images\no_photo.png" />
     <Content Include="ClientApp\Assets\src\app\images\overlay_bg.png" />
     <Content Include="ClientApp\Assets\src\app\images\profiles\image1.png" />
     <Content Include="ClientApp\Assets\src\app\images\profiles\image2.png" />
