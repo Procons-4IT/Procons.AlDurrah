@@ -51,6 +51,7 @@ import { ModalModule} from 'ngx-modialog';
 import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
 import { MomentDatePipe } from './moment-date.pipe';
 import { LanguageConvertPipe } from './language-convert.pipe';
+import { WorkerExperienceComponent } from './worker-experience/worker-experience.component';
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, './Assets/i18n/', '.json');
 }
@@ -69,7 +70,8 @@ export function createTranslateLoader(http: HttpClient) {
         ViewAgentWorkersComponent,
         AddProfileComponent,
         MomentDatePipe,
-        LanguageConvertPipe
+        LanguageConvertPipe,
+        WorkerExperienceComponent
     ],
     imports: [
         BootstrapModalModule,

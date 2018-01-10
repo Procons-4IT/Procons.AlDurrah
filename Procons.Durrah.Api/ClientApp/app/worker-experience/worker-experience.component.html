@@ -1,0 +1,35 @@
+<div class="form-group ">
+    <div class="box profile-box clearfix">
+      <div class="profile-main">
+        <h3 class="h5">{{ 'experience' | translate }}</h3>
+        <div class="datas">
+         <div class="form-group">
+          <label for="title"> {{ 'title' | translate }}</label>
+          <input required id="title" name="title" type="text" class="form-control" placeholder="XP" [(ngModel)]="worker.passportNumber">
+         </div> 
+         <div class="form-group">
+            <label for="description"> {{ 'description' | translate }}</label>
+            <input required id="description" name="title" type="text" class="form-control" placeholder="XP" [(ngModel)]="worker.passportNumber">
+           </div> 
+           <div class="form-group">
+              <label for="companyName"> {{ 'company-name' | translate }}</label>
+              <input required id="companyName" name="title" type="text" class="form-control" placeholder="XP" [(ngModel)]="worker.passportNumber">
+             </div> 
+          <div class="form-group ">
+            <label for="startDate">{{ 'startDate' | translate }}</label>
+            <div>
+              <p-calendar showIcon="true" [(ngModel)]="worker.passportExpDate" name="startDate" dateFormat="mm/dd/yy"></p-calendar>
+            </div>
+          </div>
+          <div class="form-group">
+              <label for="startDate">{{ 'endDate' | translate }}</label>
+              <div>
+                <p-calendar showIcon="true" [(ngModel)]="worker.passportExpDate" name="startDate" dateFormat="mm/dd/yy"></p-calendar>
+              </div>
+          </div>
+          <label for="experienece"> {{ 'experience' | translate }}</label>
+          <input required id="experienece" name="experienecem" type="text" class="form-control" placeholder="XP" [(ngModel)]="worker.passportNumber">
+        </div>
+      </div>
+    </div>
+  </div>
