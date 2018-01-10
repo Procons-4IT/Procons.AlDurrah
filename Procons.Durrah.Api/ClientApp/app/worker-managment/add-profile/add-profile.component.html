@@ -29,7 +29,7 @@
                     <label for="birthDate">{{ 'birthDate' | translate }}</label>
 
                     <div>
-                    <p-calendar  showIcon="true" [(ngModel)]= "state.worker.birthDate" name="birthDate" dateFormat="mm/dd/yy"></p-calendar>
+                      <p-calendar showIcon="true" [(ngModel)]="state.worker.birthDate" name="birthDate" dateFormat="mm/dd/yy"></p-calendar>
                     </div>
                   </div>
 
@@ -78,24 +78,25 @@
                   <div class="form-group ">
                     <label for="lang">{{ 'languages' | translate }}</label>
                     <div>
-                      <p-multiSelect required name="lang" defaultLabel="اللغات المتحدث بها"  [options]="searchCriterias.languages"  [(ngModel)]="this.state.worker.languages" ></p-multiSelect>
+                      <p-multiSelect required name="lang" defaultLabel="اللغات المتحدث بها" [options]="searchCriterias.languages" [(ngModel)]="this.state.worker.languages"></p-multiSelect>
                     </div>
                   </div>
-                  
+
                   <div class="form-group ">
                     <label for="salary">{{ 'salary' | translate }}</label>
-                    <input required id="salary"  type="number" class="form-control"  name="salary" [(ngModel)]="state.worker.salary" />
+                    <input required id="salary" type="number" class="form-control" name="salary" [(ngModel)]="state.worker.salary" />
                   </div>
 
                   <div class="form-group ">
                     <label for="price">{{ 'price' | translate }}</label>
-                    <input required id="price"  type="number" class="form-control"  name="price" [(ngModel)]="state.worker.price" />
-                  </div>  
+                    <input required id="price" type="number" class="form-control" name="price" [(ngModel)]="state.worker.price" />
+                  </div>
 
 
                   <div class="form-group ">
                     <label for="mobile">{{ 'mobile' | translate }}</label>
-                    <input required id="mobile" type="number"  minlength="9" maxlength="9" class="form-control"  name="mobile" [(ngModel)]="state.worker.mobile" #mobileInput="ngModel"/>
+                    <input required id="mobile" type="number" minlength="9" maxlength="9" class="form-control" name="mobile" [(ngModel)]="state.worker.mobile"
+                      #mobileInput="ngModel" />
                   </div>
 
                   <div class="form-group ">
@@ -122,7 +123,8 @@
 
                   <div class="form-group ">
                     <label for="workerType">{{ 'workerType' | translate }}</label>
-                    <select required id="workerType" (change)="onWorkerTypeSelected($event.target.value)" class="form-control" name="workerType" [(ngModel)]="state.worker.workerType">
+                    <select required id="workerType" (change)="onWorkerTypeSelected($event.target.value)" class="form-control" name="workerType"
+                      [(ngModel)]="state.worker.workerType">
                       <option disabled selected value=""> {{state.selectOptionText}}</option>
                       <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.workerTypes;">
                         {{nameValuePair.name}}
@@ -132,7 +134,7 @@
 
                   <div class="form-group ">
                     <label for="Items">{{ 'item' | translate }}</label>
-                    <select required id="Items"  class="form-control" name="code" [(ngModel)]="state.worker.code">
+                    <select required id="Items" class="form-control" name="code" [(ngModel)]="state.worker.code">
                       <option disabled selected value=""> {{state.selectOptionText}}</option>
                       <option [value]="nameValuePair.value" *ngFor="let nameValuePair of itemList;">
                         {{nameValuePair.name}}
@@ -155,7 +157,7 @@
                   <div class="form-group ">
                     <label for="passIssueDate">{{ 'passportIssueDate' | translate }}</label>
                     <div>
-                    <p-calendar  showIcon="true" [(ngModel)]= "state.worker.passportIssDate" name="passportIssueDate" dateFormat="mm/dd/yy"></p-calendar>
+                      <p-calendar showIcon="true" [(ngModel)]="state.worker.passportIssDate" name="passportIssueDate" dateFormat="mm/dd/yy"></p-calendar>
                     </div>
                   </div>
 
@@ -169,8 +171,8 @@
                   <div class="form-group ">
                     <label for="passExpiry">{{ 'passportExpiry' | translate }}</label>
                     <div>
-                      <p-calendar  showIcon="true" [(ngModel)]= "state.worker.passportExpDate" name="passportExpiry" dateFormat="mm/dd/yy"></p-calendar>
-                      </div>
+                      <p-calendar showIcon="true" [(ngModel)]="state.worker.passportExpDate" name="passportExpiry" dateFormat="mm/dd/yy"></p-calendar>
+                    </div>
 
                   </div>
 
@@ -182,7 +184,8 @@
                   </div>
                   <div class="form-group">
                     <label for="photoUpload">{{ 'photoUpload' | translate }}</label>
-                    <p-fileUpload id="photoUpload" name="myfile[]" customUpload="true" multiple="false" (onSelect)="deleteServerFile('PHOTO')" #photoUpload>
+                    <p-fileUpload id="photoUpload" name="myfile[]" customUpload="true" multiple="false" (onSelect)="deleteServerFile('PHOTO')"
+                      #photoUpload>
                       <ng-template pTemplate="content">
                         <div class="ui-fileupload-files" [style.display]="photoServerMode === FUM.Edit? 'block' : 'none'">
                           <div>
@@ -255,6 +258,10 @@
                       </ng-template>
                     </p-fileUpload>
                   </div>
+
+                  <!-- TO DO CREATE THIS INTO IT's Own Component-->
+                  <worker-experience [worker]="this.state.worker"></worker-experience>
+                  <button (click)="addExperience()">Add Experience</button>
                   <div class="form-group  text-right">
                     <input type="submit" value="{{ 'save' | translate }}" class="btn btn-default" [disabled]="!workerForm.valid || !isFilesAttached() || state.worker.languages.length === 0"
                       *ngIf="state.isAddMode" />

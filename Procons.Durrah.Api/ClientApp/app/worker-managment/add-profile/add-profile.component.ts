@@ -49,6 +49,7 @@ export class AddProfileComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        console.log('AddProfile DATA: ', JSON.stringify(this.worker));
         if (this.worker) {
             //EditMode
             this.state.isAddMode = false;
@@ -71,13 +72,14 @@ export class AddProfileComponent implements OnInit {
                 this.getItemLookupsByType(this.state.worker.workerType);
             }
             console.log('worker ', this.state.worker);
-            console.log('searchCriteria Params ', this.searchCriterias);
 
         } else {
             this.createEmptyWorkerState();
             this.state.isAddMode = true;
 
         }
+        console.log('searchCriteria Params ', JSON.stringify(this.searchCriterias));
+
         if (!this.state.worker.languages) {
             this.state.worker.languages = [];
         } else {
@@ -256,7 +258,10 @@ export class AddProfileComponent implements OnInit {
         });
     }
 
-
+    //TO-DO: Remove this and let the Experience component handle this
+    addExperience(){
+        alert("Still in Development");
+    }
 }
 
 enum FileUploadMode {
