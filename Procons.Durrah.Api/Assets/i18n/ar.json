@@ -1,4 +1,4 @@
-﻿{
+{
   "login": {
     "usernameP": "اسم المستخدم",
     "passwordP": "كلمه السر",
@@ -34,6 +34,10 @@
 
 
   },
+  "resetPassword": {
+    "invalidPassword": "Error Passwords not matching",
+    "reset": "Password was Reset!"
+  },
   "name": "الاسم",
   "back": "رجوع",
   "submit": "سجل",
@@ -52,9 +56,12 @@
   "price": "السعر",
   "education": "المستوى العلمي",
   "status": "الحالة",
-  "height": "الطول",
+  "mobile": "الجوال",
+  "salary": "الراتب",
   "weight": "الوزن",
+  "height": "الطول",
   "agent": "العميل",
+  "item": "المادة",
   "religion": "الديانة",
   "work": "الوظيفة",
   "birthday": "تاريخ الميلاد",
@@ -66,8 +73,23 @@
   "ViewProfiles": "عرض الملفات",
   "Profiles": "الملفات",
   "Delete": "حذف",
-  "item": "المادة",
-  "mobile": "الجوال",
+  "birthDate": "تاريخ الميلاد",
+  "languages": "اللغات",
+  "workerType": "نوع العامل",
+  "passportNumber": "رقم الجواز",
+  "passportIssueDate": "تاريخ اصدار الجواز",
+  "passportPlaceofIssue": "مكان اصدار الجواز",
+  "passportExpiry": "تاريخ انتهاء صلاحية الجواز",
+  "civilID": "رقم بطاقة الهوية",
+  "photoUpload": "تحميل الصورة",
+  "PassportUpload": "تحميل صورة الجواز",
+  "dateFormat": "يوم-شهر-سنة",
+  "maritalStatus": "الحالة الاجتماعية",
+  "addProfile": "اضافة ملف",
+  "save": "حفظ",
+  "update": "تعديل",
+  "clear":"مسح",
+  "workernamesearch":"بحث",
   "error": {
     "default": "Something Went Wrong",
     "notLoggedIn": "Please Login!",

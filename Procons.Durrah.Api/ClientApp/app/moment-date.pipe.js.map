@@ -1,0 +1,1 @@
+{"version":3,"file":"moment-date.pipe.js","sourceRoot":"","sources":["moment-date.pipe.ts"],"names":[],"mappings":";;;;;;;;AAAA,wCAAoD;AACpD,iCAAiC;AAKjC,IAAa,cAAc,GAA3B;IAEE,SAAS,CAAC,KAAU,EAAE,IAAU;QAC9B,MAAM,CAAC,MAAM,CAAC,KAAK,CAAC,CAAC,MAAM,CAAC,YAAY,CAAC,CAAC;IAC5C,CAAC;CAEF,CAAA;AANY,cAAc;IAH1B,WAAI,CAAC;QACJ,IAAI,EAAE,YAAY;KACnB,CAAC;GACW,cAAc,CAM1B;AANY,wCAAc"}

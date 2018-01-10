@@ -107,6 +107,7 @@
     <Compile Include="LogService.cs" />
     <Compile Include="Models\ApplicationRole.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
+    <Compile Include="Models\Experience.cs" />
     <Compile Include="Models\ReCaptchaResponse.cs" />
     <Compile Include="Models\ConfirmationModel.cs" />
     <Compile Include="Models\LookupItem.cs" />

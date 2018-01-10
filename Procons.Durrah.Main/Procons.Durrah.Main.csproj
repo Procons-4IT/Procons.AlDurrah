@@ -140,15 +140,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Connected Services\B1ServiceLayer\service.edmx" />
-  </ItemGroup>
-  <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
     <ServiceReferenceMetadataStorage Include="Connected Services\B1ServiceLayer\">
       <Type>datasvcmap</Type>
     </ServiceReferenceMetadataStorage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\B1ServiceLayer\service.edmx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Connected Services\B1ServiceLayer\Reference.datasvcmap">

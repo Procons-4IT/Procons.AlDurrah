@@ -39,6 +39,9 @@
                 base.AddFieldSL("Status", "Status", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
                 base.AddFieldSL("WorkerName", "Worker Name", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
 
+                base.AddFieldSL("Hobbies", "Worker Hobbies", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 250, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
+                base.AddFieldSL("Location", "Worker Location", "WORKERS", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 250, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), true);
+
                 base.AddFieldSL("PaymentID", "Payment Id", "ORDR", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 100, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), false);
                 base.AddFieldSL("Result", "Payment Result", "ORDR", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 20, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), false);
                 base.AddFieldSL("TranID", "Payment TranID", "ORDR", SAPbobsCOM.BoFieldTypes.db_Alpha.ToString(), 20, SAPbobsCOM.BoYesNoEnum.tNO.ToString(), false);

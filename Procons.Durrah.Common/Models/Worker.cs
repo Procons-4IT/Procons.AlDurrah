@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Procons.Durrah.Common.Models;
+using System.Collections.Generic;
 
 namespace Procons.Durrah.Common
 {
@@ -44,6 +45,10 @@ namespace Procons.Durrah.Common
         public string Status { get; set; }
         public string WorkerType { get; set; }
         public List<LookupItem> Languages { get; set; }
-
+        public string Hobbies { get; set; }
+        public string Location { get; set; }
+        public string IsNew { get; set; }
+        public int? Period { get; set; }
+        public ICollection<Experience> Experiences { get; set; }
     }
 }

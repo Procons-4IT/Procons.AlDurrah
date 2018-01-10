@@ -61,7 +61,7 @@
     <Reference Include="Interop.e24PaymentPipeLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>False</EmbedInteropTypes>
-      <HintPath>bin\Interop.e24PaymentPipeLib.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Desktop\Interop.e24PaymentPipeLib.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>

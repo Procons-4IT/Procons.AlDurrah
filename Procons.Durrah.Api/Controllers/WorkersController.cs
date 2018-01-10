@@ -3,6 +3,7 @@
     using Common;
     using Facade;
     using Procons.Durrah.Common.Enumerators;
+    using Procons.Durrah.Common.Models;
     using Procons.Durrah.Controllers;
     using System;
     using System.Collections.Generic;
@@ -34,7 +35,7 @@
 
             Dictionary<string, List<LookupItem>> result = new Dictionary<string, List<LookupItem>>();
             List<LookupItem> languages = workersFacade.GetLanguagesLookups();
-            List<LookupItem> age = new List<LookupItem>() { new LookupItem("18-25", "18-25"), new LookupItem("25-35", "25-35"), new LookupItem("35-45", "35-45"), new LookupItem("45-55", "45-55") };
+            List<LookupItem> age = new List<LookupItem>() { new LookupItem("21-25", "21-25"), new LookupItem("25-35", "25-35"), new LookupItem("35-45", "35-45"), new LookupItem("45-55", "45-55") };
             List<LookupItem> nationality = workersFacade.GetCountriesLookups();
             List<LookupItem> religion = workersFacade.GetReligionLookups();
             List<LookupItem> education = workersFacade.GetEducationLookups();
@@ -492,8 +493,14 @@
             worker.WorkerCode = MapField<string>(provider.FormData["WorkerCode"]);
             worker.WorkerName = MapField<string>(provider.FormData["WorkerName"]);
             worker.Languages = workersFacade.GetLanguagesById(MapField<string>(provider.FormData["Languages"]));
-        }
 
+            worker.Hobbies = MapField<string>(provider.FormData["Hobbies"]);
+            worker.Location = MapField<string>(provider.FormData["Location"]);
+            string inNew = MapField<string>(provider.FormData["IsNew"]) == "" ? "Y" : MapField<string>(provider.FormData["IsNew"]);
+            worker.IsNew = inNew;
+            worker.Period = MapField<int>(provider.FormData["Period"]);
+            worker.Experiences = Utilities.ConvertJsonStringToObject<ICollection<Experience>>(MapField<string>(provider.FormData["Experiences"]));
+        }
         #endregion
     }
 }

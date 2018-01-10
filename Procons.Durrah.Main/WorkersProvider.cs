@@ -6,6 +6,7 @@
     using ExpressionBuilder.Generics;
     using ExpressionBuilder.Interfaces;
     using Procons.Durrah.Common.Enumerators;
+    using Procons.Durrah.Common.Models;
     using Procons.Durrah.Main.B1ServiceLayer.SAPB1;
     using Sap.Data.Hana;
     using SAPbobsCOM;
@@ -46,6 +47,22 @@
                 }
             }
 
+            
+            if (worker.Experiences != null)
+            {
+                var expDataCollection = oGeneralData.Child("EXPERIENCE");
+                foreach (var e in worker.Experiences)
+                {
+                    var newExperience = expDataCollection.Add();
+                    newExperience.SetProperty("U_WorkerID", e.WorkerID);
+                    newExperience.SetProperty("U_StartDate", e.StartDate);
+                    newExperience.SetProperty("U_EndDate", e.EndDate);
+                    newExperience.SetProperty("U_Title", e.Title);
+                    newExperience.SetProperty("U_Description", e.Description);
+                    newExperience.SetProperty("U_CompanyName", e.CompanyName);
+                }
+            }
+
             oGeneralData.SetProperty("Code", worker.PassportNumber);
             oGeneralData.SetProperty("U_WorkerName", worker.WorkerName);
             oGeneralData.SetProperty("U_Agent", worker.Agent);
@@ -76,6 +93,11 @@
             oGeneralData.SetProperty("U_Salary", worker.Salary);
             oGeneralData.SetProperty("U_Price", worker.Price);
             oGeneralData.SetProperty("U_Mobile", worker.Mobile);
+
+            oGeneralData.SetProperty("U_Hobbies", worker.Hobbies);
+            oGeneralData.SetProperty("U_Location", worker.Location);
+            oGeneralData.SetProperty("U_IsNew", worker.IsNew);
+            oGeneralData.SetProperty("U_Period", worker.Period);
 
             oGeneralService.Add(oGeneralData);
             created = true;
@@ -118,6 +140,23 @@
                         newLanguage.SetProperty("U_NAME", l.Name);
                         Trace.WriteLine($"[PR] U_VALUE: l.Value");
                         newLanguage.SetProperty("U_VALUE", l.Value);
+                    }
+                }
+
+                var expDataCollection = oGeneralData.Child("EXPERIENCE");
+                for (int i = expDataCollection.Count - 1; i >= 0; i--)
+                    expDataCollection.Remove(i);
+                if (worker.Experiences != null)
+                {
+                    foreach (var e in worker.Experiences)
+                    {
+                        var newExperience = expDataCollection.Add();
+                        newExperience.SetProperty("U_WorkerID", e.WorkerID);
+                        newExperience.SetProperty("U_StartDate", e.StartDate);
+                        newExperience.SetProperty("U_EndDate", e.EndDate);
+                        newExperience.SetProperty("U_Title", e.Title);
+                        newExperience.SetProperty("U_Description", e.Description);
+                        newExperience.SetProperty("U_CompanyName", e.CompanyName);
                     }
                 }
                 Trace.WriteLine($"[PR] Condition Done...");
@@ -164,7 +203,16 @@
                     oGeneralData.SetProperty("U_Price", worker.Price);
                     Trace.WriteLine($"[PR]U_Mobile:{worker.Mobile}");
                     oGeneralData.SetProperty("U_Mobile", worker.Mobile);
-                   
+
+                    Trace.WriteLine($"[PR]U_Hobbies:{worker.Hobbies}");
+                    oGeneralData.SetProperty("U_Hobbies", worker.Hobbies);
+                    Trace.WriteLine($"[PR]U_Location:{worker.Location}");
+                    oGeneralData.SetProperty("U_Location", worker.Location);
+                    Trace.WriteLine($"[PR]U_IsNew:{worker.IsNew}");
+                    oGeneralData.SetProperty("U_IsNew", worker.IsNew);
+                    Trace.WriteLine($"[PR]U_Period:{worker.Period}");
+                    oGeneralData.SetProperty("U_Period", worker.Period);
+
 
                     if (photo.Equals("0"))
                         oGeneralData.SetProperty("U_Photo", string.Empty);
@@ -263,7 +311,11 @@
                         Status = w.U_Status,
                         Video = w.U_Video,
                         Price = MapField<int>(w.U_Price),
-                        Weight = w.U_Weight.ToString()
+                        Weight = w.U_Weight.ToString(),
+                        Hobbies = w.U_Hobbies,
+                        Location = w.U_Location,
+                        IsNew = w.U_IsNew,
+                        Period = w.U_Period
                     }
                     );
             }
@@ -286,17 +338,14 @@
                 query.Append(@"""U_BirthDate"",""U_Gender"",""D"".""Name"" AS ""U_Nationality"",""D"".""U_NAME"" AS ""U_Nationality_AR"",""R"".""Name"" AS ""U_Religion"",""R"".""U_NAME"" AS ""U_Religion_AR"",");
                 query.Append(@"""U_Photo"",""U_License"", ""U_Weight"",""U_Height"",""E"".""Name"" AS ""U_Education"",""E"".""U_NAME"" AS ""U_Education_AR"",");
                 query.Append(@"""U_Passport"",""U_Video"",""U_PassportNumber"",""U_PassportIssDate"",""U_PassportExpDate"",""U_PassportPoIssue"",""U_Price"",""U_Salary"",""U_CivilId"",""U_Status"",");
-                query.Append($@"""B"".""Name"" AS ""U_MaritalStatus"",""B"".""U_NAME"" AS ""U_MaritalStatus_AR""");
+                query.Append($@"""B"".""Name"" AS ""U_MaritalStatus"",""B"".""U_NAME"" AS ""U_MaritalStatus_AR"", ""U_Hobbies"", ""U_Location"", ""U_IsNew"", ""U_Period""");
                 query.Append($@" FROM ""{databaseBame}"".""@WORKERS"" as ""A""");
 
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@MARITALSTATUS"" AS ""B"" ON ""A"".""U_MaritalStatus"" = ""B"".""Code""");
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@COUNTRIES"" AS ""D"" ON ""A"".""U_Nationality"" = ""D"".""Code""");
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@RELIGION"" AS ""R"" ON ""A"".""U_Religion"" = ""R"".""Code""");
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@EDUCATION"" AS ""E"" ON ""A"".""U_Education"" = ""E"".""Code""");
-                query.Append($@" INNER JOIN ""{databaseBame}"".""@WORKERLNGS"" AS ""L"" ON ""L"".""Code"" = ""A"".""Code"""); 
-
-
-
+                query.Append($@" INNER JOIN ""{databaseBame}"".""@WORKERLNGS"" AS ""L"" ON ""L"".""Code"" = ""A"".""Code""");
 
                 if (status == null)
                     query.Append($@"WHERE 1 = 1 ");
@@ -319,6 +368,21 @@
                         var value = MapField<string>(langaugeRow["U_VALUE"]);
                         languages.Add(new LookupItem(name, value));
                     }
+
+                    var experiencesResult = dbHelper.ExecuteQuery($@"SELECT * FROM ""{databaseBame}"".""@EXPERIENCE"" WHERE ""Code""='{code}'");
+                    List<Experience> experiences = new List<Experience>();
+
+                    foreach (DataRow experienceRow in experiencesResult.Rows)
+                    {
+                        var workerId = MapField<string>(experienceRow["U_WorkerId"]);
+                        var startDate = MapField<string>(experienceRow["U_StartDate"]);
+                        var endDate = MapField<string>(experienceRow["U_EndDate"]);
+                        var title = MapField<string>(experienceRow["U_Title"]);
+                        var description = MapField<string>(experienceRow["U_Description"]);
+                        var companyName = MapField<string>(experienceRow["U_CompanyName"]);
+                        experiences.Add(new Experience{ WorkerID = workerId, StartDate = startDate, EndDate = endDate, Title = title, Description = description, CompanyName = companyName});
+                    }
+
                     var age = DateTime.Now.Year - MapField<DateTime>(drow["U_BirthDate"]).Year;
                     workersList.Add(
                         new Worker()
@@ -351,7 +415,13 @@
                             Salary = MapField<float>(drow["U_Salary"]),
                             Weight = MapField<string>(drow["U_Weight"]),
                             WorkerType = MapField<string>(drow["U_WorkerType"]),
-                            Languages = languages
+                            Languages = languages,
+
+                            Hobbies = MapField<string>(drow["U_Hobbies"]),
+                            Location = MapField<string>(drow["U_Location"]),
+                            IsNew = MapField<string>(drow["U_IsNew"]),
+                            Period = MapField<int>(drow["U_Period"]),
+                            Experiences = experiences
                         });
                 }
             }
@@ -577,7 +647,7 @@
                 query.Append(@"""U_BirthDate"",""U_Gender"",""D"".""Code"" AS ""U_NationalityCode"",""D"".""Name"" AS ""U_Nationality"",""D"".""U_NAME"" AS ""U_Nationality_AR"",""R"".""Code"" AS ""U_ReligionCode"",""R"".""Name"" AS ""U_Religion"",""R"".""U_NAME"" AS ""U_Religion_AR"",");
                 query.Append(@"""U_Photo"",""U_License"",""U_Weight"",""U_Height"",""E"".""Name"" AS ""U_Education"",""E"".""U_NAME"" AS ""U_Education_AR"",");
                 query.Append(@"""U_Passport"",""U_Video"",""U_PassportNumber"",""U_PassportIssDate"",""U_PassportExpDate"",""U_PassportPoIssue"",""U_Price"", ""U_Salary"",""U_CivilId"",""U_Status"",");
-                query.Append($@"""B"".""Code"" AS ""U_MaritalStatusCode"",""B"".""Name"" AS ""U_MaritalStatus"",""B"".""U_NAME"" AS ""U_MaritalStatus_AR""");
+                query.Append($@"""B"".""Code"" AS ""U_MaritalStatusCode"",""B"".""Name"" AS ""U_MaritalStatus"",""B"".""U_NAME"" AS ""U_MaritalStatus_AR"", ""U_Hobbies"", ""U_Location"", ""U_IsNew"", ""U_Period""");
                 query.Append($@" FROM ""{databaseBame}"".""@WORKERS"" as ""A""");
 
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@MARITALSTATUS"" AS ""B"" ON ""A"".""U_MaritalStatus"" = ""B"".""Code""");
@@ -599,6 +669,21 @@
                         var value = MapField<string>(language["U_VALUE"]);
                         languages.Add(new LookupItem(name, value));
                     }
+
+                    var experiencesResult = dbHelper.ExecuteQuery($@"SELECT * FROM ""{databaseBame}"".""@EXPERIENCE"" WHERE ""Code""='{code}'");
+                    List<Experience> experiences = new List<Experience>();
+
+                    foreach (DataRow experienceRow in experiencesResult.Rows)
+                    {
+                        var workerId = MapField<string>(experienceRow["U_WorkerId"]);
+                        var startDate = MapField<string>(experienceRow["U_StartDate"]);
+                        var endDate = MapField<string>(experienceRow["U_EndDate"]);
+                        var title = MapField<string>(experienceRow["U_Title"]);
+                        var description = MapField<string>(experienceRow["U_Description"]);
+                        var companyName = MapField<string>(experienceRow["U_CompanyName"]);
+                        experiences.Add(new Experience { WorkerID = workerId, StartDate = startDate, EndDate = endDate, Title = title, Description = description, CompanyName = companyName });
+                    }
+
                     var age = DateTime.Now.Year - MapField<DateTime>(drow["U_BirthDate"]).Year;
                     workersList.Add(
                         new Worker()
@@ -632,7 +717,13 @@
                             Video = MapField<string>(drow["U_Video"]),
                             Price = MapField<float>(drow["U_Price"]),
                             Weight = MapField<string>(drow["U_Weight"]),
-                            Languages = languages
+                            Languages = languages,
+
+                            Hobbies = MapField<string>(drow["U_Hobbies"]),
+                            Location = MapField<string>(drow["U_Location"]),
+                            IsNew = MapField<string>(drow["U_IsNew"]),
+                            Period = MapField<int>(drow["U_Period"]),
+                            Experiences = experiences
                         });
                 }
 
