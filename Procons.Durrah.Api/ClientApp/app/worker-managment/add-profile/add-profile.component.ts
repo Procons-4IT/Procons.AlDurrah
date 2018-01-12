@@ -75,6 +75,8 @@ export class AddProfileComponent implements OnInit {
 
         } else {
             this.createEmptyWorkerState();
+            //TODO: DELETE ME!! 
+            this.dontWantToFillManualyForTesting();
             this.state.isAddMode = true;
 
         }
@@ -184,6 +186,11 @@ export class AddProfileComponent implements OnInit {
     }
 
     getFormData(formData: FormData) {
+        //TODO : DELETE ME PLEASE ! 
+        console.log('worker',JSON.stringify(this.state.worker));
+        var tempExperience:any = [ { "WorkerID": "50090112", "StartDate": "05-06-2001", "EndDate": "05-06-2002", "Title": "Accountant", "Description": "Job Description", "CompanyName": "Procons" }, { "WorkerID": "50090112", "StartDate": "05-06-2001", "EndDate": "05-06-2002", "Title": "Developer", "Description": "Job Description", "CompanyName": "Procons 4 IT" } ];
+        formData.append('Experiences',JSON.stringify(tempExperience));
+
         formData.append('WorkerName', this.state.worker.workerName);
         formData.append('WorkerCode', this.state.worker.passportNumber);
         formData.append('workerType', this.state.worker.workerType);
@@ -261,6 +268,17 @@ export class AddProfileComponent implements OnInit {
     //TO-DO: Remove this and let the Experience component handle this
     addExperience(){
         alert("Still in Development");
+    }
+
+    dontWantToFillManualyForTesting(){
+        setTimeout( ()=>{
+            let oldWorker = Object.assign({},this.state.worker);
+            this.state.worker= JSON.parse("{\"workerName\":\"Houssam The Great\",\"name\":\"\",\"birthDate\":\"2018-01-31T08:00:00.000Z\",\"gender\":\"M\",\"nationality\":\"2\",\"religion\":\"4\",\"maritalStatus\":\"4\",\"language\":\"\",\"languages\":[\"3\",\"1\"],\"photo\":\"\",\"weight\":\"3000\",\"height\":\"0.5\",\"education\":\"3\",\"video\":\"google.com\",\"passportNumber\":\"222444555\",\"passportIssDate\":\"2018-01-29T08:00:00.000Z\",\"passportPoIssue\":\"GG\",\"passportExpDate\":\"2018-01-10T08:00:00.000Z\",\"civilId\":\"555333444\",\"serialNumber\":\"\",\"agent\":\"\",\"code\":\"DW00004\",\"workerCode\":\"\",\"passport\":\"\",\"license\":\"\",\"status\":\"\",\"passportCopy\":\"\",\"salary\":10,\"price\":500,\"workerType\":\"Driver\",\"mobile\":200}");
+            this.state.worker.birthDate = oldWorker.birthDate;
+            this.state.worker.passportExpDate = oldWorker.passportExpDate;
+            this.state.worker.passportIssDate = oldWorker.passportIssDate;
+        },0);
+
     }
 }
 

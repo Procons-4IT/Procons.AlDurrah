@@ -26,8 +26,9 @@ export class WorkerMangmentComponent implements OnInit {
             .do(data => { this.loading = false });
 
         this.state.$workers = $workerDisplayData.map(workerDisplayData => { return [workerDisplayData, this.state.workersServerData] });
-        this.ShowWorkerAgents();
-        // this.InitializeAddWorkerForTesting();
+        // this.ShowWorkerAgents();
+        //TODO: DISABLE ME
+        this.InitializeAddWorkerForTesting();
     }
 
     bindServerState(allTheData) {
