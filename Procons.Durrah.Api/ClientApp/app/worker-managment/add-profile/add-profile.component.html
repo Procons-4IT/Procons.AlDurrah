@@ -260,7 +260,7 @@
                   </div>
 
                   <!-- TO DO CREATE THIS INTO IT's Own Component-->
-                  <worker-experience [worker]="this.state.worker"></worker-experience>
+                  <!-- <worker-experience [worker]="this.state.worker"></worker-experience> -->
                   <button (click)="addExperience()">Add Experience</button>
                   <div class="form-group  text-right">
                     <input type="submit" value="{{ 'save' | translate }}" class="btn btn-default" [disabled]="!workerForm.valid || !isFilesAttached() || state.worker.languages.length === 0"
