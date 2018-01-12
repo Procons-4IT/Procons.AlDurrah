@@ -43,6 +43,7 @@
             List<LookupItem> maritalStatus = workersFacade.GetMaritalStatusLookups();
             List<LookupItem> workerTypes = workersFacade.GetWorkersTypesLookups();
             result.Add("Languages", languages);
+            result.Add("Age", age);
             result.Add("Education", education);
             result.Add("Religion", religion);
             result.Add("Nationality", nationality);

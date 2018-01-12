@@ -1,5 +1,5 @@
 {
-  "baseUrl": "http://localhost:59822",
+  "baseUrl": "http://localhost",
   "getSearchCriteriaUrl": "/api/Workers/GetSearchLookups",
   "getWorkersUrl": "/api/Workers/GetWorkers",
   "getAgentWorkerUrl":"/api/Workers/GetAgentWorkers",
