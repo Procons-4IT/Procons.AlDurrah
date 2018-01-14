@@ -15,6 +15,7 @@ export interface PaymentRedirectParams {
 }
 export interface SearchCriteriaParams {
     languages: NameValuePair[],
+    age: NameValuePair[],
     nationality: NameValuePair[],      
     gender: NameValuePair[],
     maritalStatus: NameValuePair[],

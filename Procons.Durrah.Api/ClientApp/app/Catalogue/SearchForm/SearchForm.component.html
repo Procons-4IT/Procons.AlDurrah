@@ -15,10 +15,9 @@
         <div class="form-group">
           <select class="form-control" #ageInput>
                      <option>العمر</option>
-                     <option value="18-25">18-25</option>
-                     <option value="25-35">25-35</option>
-                     <option value="35-45">35-45</option>
-                     <option value="45-55">45-55</option>
+                     <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriteriaParams.age;">
+                      {{nameValuePair.name}}
+                    </option>
                    </select>
         </div>
         <div class="form-group">
