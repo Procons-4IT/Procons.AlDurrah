@@ -14,39 +14,33 @@
             </div>
             <div class="row">
               <div class="col-md-6 col-md-offset-3">
-
-                <form (ngSubmit)="submitWorker(photoUpload, passportUpload, licenseUpload);" method="post" id="profileEditForm" class="form-default has-upload"
-                  #workerForm="ngForm">
+                <form [formGroup]="addWorkerForm" (ngSubmit)="submitWorker(photoUpload, passportUpload, licenseUpload)">
 
                   <div class="form-group">
-                    <label for="workerName">{{ 'name' | translate }}</label>
-                    <input required id="workerName" type="text" class="form-control" name="workerName" [(ngModel)]="state.worker.workerName"
-                      placeholder="John Doe" />
+                    <label for="workerName">{{ 'name' | translate }} </label>
+                    <input id="workerName" type="text" class="form-control" formControlName="name" />
                   </div>
-
 
                   <div class="form-group">
                     <label for="birthDate">{{ 'birthDate' | translate }}</label>
-
                     <div>
-                      <p-calendar showIcon="true" [(ngModel)]="state.worker.birthDate" name="birthDate" dateFormat="mm/dd/yy"></p-calendar>
+                      <p-calendar showIcon="true" name="birthDate" dateFormat="mm/dd/yy" formControlName="birthDate"></p-calendar>
                     </div>
                   </div>
 
                   <div class="form-group">
                     <label for="gender">{{ 'gender' | translate }}</label>
-                    <select required id="gender" class="form-control" name="gender" [(ngModel)]="state.worker.gender">
+                    <select required id="gender" class="form-control" name="gender" formControlName="gender">
                       <option disabled selected value=""> {{state.selectOptionText}}</option>
                       <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.gender;">
                         {{nameValuePair.name}}
                       </option>
                     </select>
                   </div>
-
                   <div class="form-group">
                     <label for="nationality">{{ 'nationality' | translate }}</label>
                     <!-- <option>الجنسية</option> -->
-                    <select required id="nationality" class="form-control" name="nationality" [(ngModel)]="state.worker.nationality">
+                    <select required id="nationality" class="form-control" name="nationality" formControlName="nationality">
                       <option disabled selected value=""> {{state.selectOptionText}}</option>
                       <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.nationality;">
                         {{nameValuePair.name}}
@@ -57,7 +51,7 @@
                   <div class="form-group">
                     <label for="religion">{{ 'religion' | translate }}</label>
                     <!-- <option>Religion</option> -->
-                    <select required id="religion" class="form-control" name="religion" [(ngModel)]="state.worker.religion">
+                    <select required id="religion" class="form-control" name="religion" formControlName="religion">
                       <option disabled selected value=""> {{state.selectOptionText}}</option>
                       <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.religion;">
                         {{nameValuePair.name}}
@@ -67,7 +61,7 @@
 
                   <div class="form-group ">
                     <label for="marital">{{ 'maritalStatus' | translate }}</label>
-                    <select required id="marital" class="form-control" name="maritalStatus" [(ngModel)]="state.worker.maritalStatus">
+                    <select required id="marital" class="form-control" name="maritalStatus" formControlName="marital">
                       <option disabled selected value=""> {{state.selectOptionText}}</option>
                       <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.maritalStatus;">
                         {{nameValuePair.name}}
@@ -78,63 +72,59 @@
                   <div class="form-group ">
                     <label for="lang">{{ 'languages' | translate }}</label>
                     <div>
-                      <p-multiSelect required name="lang" defaultLabel="اللغات المتحدث بها" [options]="searchCriterias.languages" [(ngModel)]="this.state.worker.languages"></p-multiSelect>
+                      <p-multiSelect required name="lang" defaultLabel="اللغات المتحدث بها" [options]="searchCriterias.languages" formControlName="language"></p-multiSelect>
                     </div>
                   </div>
 
                   <div class="form-group ">
                     <label for="salary">{{ 'salary' | translate }}</label>
-                    <input required id="salary" type="number" class="form-control" name="salary" [(ngModel)]="state.worker.salary" />
+                    <input required id="salary" type="number" class="form-control" name="salary" formControlName="salary" />
                   </div>
 
                   <div class="form-group ">
                     <label for="price">{{ 'price' | translate }}</label>
-                    <input required id="price" type="number" class="form-control" name="price" [(ngModel)]="state.worker.price" />
+                    <input required id="price" type="number" class="form-control" name="price" formControlName="price" />
                   </div>
 
 
                   <div class="form-group ">
                     <label for="mobile">{{ 'mobile' | translate }}</label>
-                    <input required id="mobile" type="number" minlength="9" maxlength="9" class="form-control" name="mobile" [(ngModel)]="state.worker.mobile"
-                      #mobileInput="ngModel" />
+                    <input required id="mobile" type="number" minlength="9" maxlength="9" class="form-control" name="mobile" formControlName="mobile"
+                    />
                   </div>
 
                   <div class="form-group ">
                     <label for="weight">{{ 'weight' | translate }}</label>
-                    <input required id="weight" type="text" class="form-control" placeholder="..kg" name="weight" [(ngModel)]="state.worker.weight"
-                    />
+                    <input required id="weight" type="text" class="form-control" placeholder="..kg" name="weight" formControlName="weight" />
                   </div>
 
                   <div class="form-group ">
                     <label for="height">{{ 'height' | translate }}</label>
-                    <input required name="height" id="height" type="text" class="form-control" placeholder="..cm" [(ngModel)]="state.worker.height"
-                    />
+                    <input required name="height" id="height" type="text" class="form-control" placeholder="..cm" formControlName="height" />
                   </div>
 
                   <div class="form-group ">
                     <label for="education">{{ 'education' | translate }}</label>
-                    <select required id="education" class="form-control" name="education" [(ngModel)]="state.worker.education">
+                    <select required id="education" class="form-control" name="education" formControlName="education">
                       <option disabled selected value=""> {{state.selectOptionText}}</option>
                       <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.education;">
                         {{nameValuePair.name}}
                       </option>
                     </select>
                   </div>
-
                   <div class="form-group ">
                     <label for="workerType">{{ 'workerType' | translate }}</label>
                     <select required id="workerType" (change)="onWorkerTypeSelected($event.target.value)" class="form-control" name="workerType"
-                      [(ngModel)]="state.worker.workerType">
+                      formControlName="workerType">
                       <option disabled selected value=""> {{state.selectOptionText}}</option>
                       <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.workerTypes;">
                         {{nameValuePair.name}}
                       </option>
                     </select>
                   </div>
-
                   <div class="form-group ">
                     <label for="Items">{{ 'item' | translate }}</label>
-                    <select required id="Items" class="form-control" name="code" [(ngModel)]="state.worker.code">
+                    <select required id="Items" class="form-control" name="code" formControlName="code">
                       <option disabled selected value=""> {{state.selectOptionText}}</option>
                       <option [value]="nameValuePair.value" *ngFor="let nameValuePair of itemList;">
                         {{nameValuePair.name}}
@@ -142,36 +132,37 @@
                     </select>
                   </div>
 
+
                   <div class="form-group ">
                     <label for="video">{{ 'video' | translate }}</label>
-                    <input name="videopublic" id="video" type="text" class="form-control" placeholder="http://Video Link" [(ngModel)]="state.worker.video"
+                    <input name="videopublic" id="video" type="text" class="form-control" placeholder="http://Video Link" formControlName="video"
                     />
                   </div>
 
                   <div class="form-group ">
                     <label for="passNumb"> {{ 'passportNumber' | translate }}</label>
-                    <input required id="passNumb" name="passortNumber" type="text" class="form-control" placeholder="ex. 12345" [(ngModel)]="state.worker.passportNumber"
+                    <input required id="passNumb" name="passortNumber" type="text" class="form-control" placeholder="ex. 12345" formControlName="passportNumber"
                     />
                   </div>
 
                   <div class="form-group ">
                     <label for="passIssueDate">{{ 'passportIssueDate' | translate }}</label>
                     <div>
-                      <p-calendar showIcon="true" [(ngModel)]="state.worker.passportIssDate" name="passportIssueDate" dateFormat="mm/dd/yy"></p-calendar>
+                      <p-calendar showIcon="true" formControlName="passportIssDate" name="passportIssueDate" dateFormat="mm/dd/yy"></p-calendar>
                     </div>
                   </div>
 
 
                   <div class="form-group ">
                     <label for="passPoIssue">{{ 'passportPlaceofIssue' | translate }}</label>
-                    <input required name="passportPoIssue" type="text" class="form-control" placeholder="ex. Germany" [(ngModel)]="state.worker.passportPoIssue"
+                    <input required name="passportPoIssue" type="text" class="form-control" placeholder="ex. Germany" formControlName="passportPOIssue"
                     />
                   </div>
 
                   <div class="form-group ">
                     <label for="passExpiry">{{ 'passportExpiry' | translate }}</label>
                     <div>
-                      <p-calendar showIcon="true" [(ngModel)]="state.worker.passportExpDate" name="passportExpiry" dateFormat="mm/dd/yy"></p-calendar>
+                      <p-calendar showIcon="true" formControlName="passportExpDate" name="passportExpiry" dateFormat="mm/dd/yy"></p-calendar>
                     </div>
 
                   </div>
@@ -179,9 +170,64 @@
 
                   <div class="form-group ">
                     <label for="civilID"> {{ 'civilID' | translate }}</label>
-                    <input id="civilID" name="civilId" type="text" class="form-control" placeholder="ex. 1234" [(ngModel)]="state.worker.civilId"
-                    />
+                    <input id="civilID" name="civilId" type="text" class="form-control" placeholder="ex. 1234" formControlName="civilId" />
                   </div>
+
+                  <div class="form-group ">
+                    <label for="hobbies">{{ 'hobbies' | translate }}</label>
+                    <input name="hobbies" id="hobbies" type="text" class="form-control" placeholder="dancing" formControlName="hobbies" />
+                  </div>
+
+
+                  <!--Experience TODO: Move into seperate component-->
+                  <form formArrayName="experience">
+                    <div *ngFor="let exp of experience.controls; let i = index" [formGroupName]="i">
+                      <div class="form-group ">
+                        <div class="box profile-box clearfix">
+                          <div class="profile-main">
+                            <h3 class="h5">{{ 'experience' | translate }}</h3>
+                            <div class="datas">
+                              <div class="form-group">
+                                <label for="title"> {{ 'title' | translate }}</label>
+                                <input id="title" name="title" type="text" class="form-control" formControlName="title">
+                              </div>
+                              <div class="form-group">
+                                <label for="description"> {{ 'description' | translate }}</label>
+                                <input id="description" name="title" type="text" class="form-control" formControlName="description">
+                              </div>
+                              <div class="form-group">
+                                <label for="companyName"> {{ 'company-name' | translate }}</label>
+                                <input id="companyName" name="title" type="text" class="form-control" formControlName="companyName">
+                              </div>
+                              <div class="form-group ">
+                                <label for="startDate">{{ 'startDate' | translate }}</label>
+                                <div>
+                                  <p-calendar showIcon="true" name="startDate" dateFormat="mm/dd/yy" formControlName="startDate"></p-calendar>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label for="endDate">{{ 'endDate' | translate }}</label>
+                                <div>
+                                  <p-calendar showIcon="true" name="endDate" dateFormat="mm/dd/yy" formControlName="endDate"></p-calendar>
+                                </div>
+                              </div>
+                              <label for="years"> {{ 'experience' | translate }}</label>
+                              <input required id="years" name="years" type="text" class="form-control" formControlName="yearsOfExperience">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                  <div class="form-group">
+                    <button class="btn btn-default" (click)="addXP()">{{'add' | translate}}</button>
+                    <button class="btn btn-default" (click)="removeXP()">{{'remove' | translate}}</button>
+                  </div>
+
+
+
+
+                  <!-- Add Upload Image -->
                   <div class="form-group">
                     <label for="photoUpload">{{ 'photoUpload' | translate }}</label>
                     <p-fileUpload id="photoUpload" name="myfile[]" customUpload="true" multiple="false" (onSelect)="deleteServerFile('PHOTO')"
@@ -259,23 +305,20 @@
                     </p-fileUpload>
                   </div>
 
-                  <!-- TO DO CREATE THIS INTO IT's Own Component-->
-                  <!-- <worker-experience [worker]="this.state.worker"></worker-experience> -->
-                  <button (click)="addExperience()">Add Experience</button>
-                  <div class="form-group  text-right">
-                    <input type="submit" value="{{ 'save' | translate }}" class="btn btn-default" [disabled]="!workerForm.valid || !isFilesAttached() || state.worker.languages.length === 0"
-                      *ngIf="state.isAddMode" />
-                    <input type="submit" value="{{ 'update' | translate }}" class="btn btn-default" *ngIf="!state.isAddMode" />
 
-                  </div>
+                  <!-- Save and Delete Buttons -->
                   <div class="form-group  text-right">
-                    <div class="btn btn-default" (click)="back()">{{'back' | translate }}</div>
+                    <button type="submit" class="btn btn-default"> {{ isAddMode? 'save':'update' | translate }}</button>
                   </div>
-                  <div class="form-group  text-left">
-                    <div class="btn btn-default" (click)="clearForm()">{{'clear' | translate }}</div>
-                  </div>
-
                 </form>
+                <div class="form-group  text-right">
+                  <div class="btn btn-default" (click)="back()">{{'back' | translate }}</div>
+                </div>
+
+                <p>FormValue : {{addWorkerForm.value | json}}</p>
+                <p>FormStatus : {{addWorkerForm.status | json}}</p>
+                <p>FormErrors : {{addWorkerForm.valid | json}}</p>
+
               </div>
             </div>
           </div>
