@@ -1,10 +1,11 @@
 //TODO: Issue with DateFormat server returning mm/dd/yyyy
-import { Component, ElementRef, EventEmitter, Input, Output, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, OnInit, OnChanges, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, FormArray, Validators } from "@angular/forms";
 import { DatePipe } from '@angular/common';
 import { Subject } from 'rxjs/Subject';
 import { ApiService } from '../../Services/ApiService';
 import { ProconsModalSerivce } from '../../Services/ProconsModalService';
-import { Worker } from "../../Models/Worker";
+import { Worker, Experience } from "../../Models/Worker";
 import { WorkerTypeParam } from '../../Models/ApiRequestType';
 
 
@@ -18,7 +19,8 @@ import * as moment from 'moment';
     styleUrls: ["./add-profile.component.css"],
     providers: [DatePipe, MomentDatePipe]
 })
-export class AddProfileComponent implements OnInit {
+//mobile # [0-9]{8}
+export class AddProfileComponent implements OnInit, OnChanges {
     @Input() worker;
     @Input() searchCriterias: SearchCriteriaParams;
     @Output() onBack = new EventEmitter<any>();
@@ -45,10 +47,78 @@ export class AddProfileComponent implements OnInit {
     photoServerMode: FileUploadMode = FileUploadMode.Add;
     passportServerMode: FileUploadMode = FileUploadMode.Add;
     licenseServerMode: FileUploadMode = FileUploadMode.Add;
-    constructor(public myApi: ApiService, public myModal: ProconsModalSerivce, public momentDatePipe: MomentDatePipe) {
+    constructor(private formBuilder: FormBuilder, public myApi: ApiService, public myModal: ProconsModalSerivce, public momentDatePipe: MomentDatePipe) { }
+
+
+    addWorkerForm: FormGroup;
+    isAddMode: Boolean = true;
+    ngOnInit(): void {
+        //TODO: check if new Worker or update Worker
+        this.createEmptyWorkerState();
+        this.state.isAddMode = true;
+
+        //newWorker
+        this.createForm();
+
+        if (!this.state.worker.languages) {
+            this.state.worker.languages = [];
+        } else {
+            this.state.worker.languages = this.state.worker.languages.map(nameValuePair => nameValuePair.value) as any;
+        }
+        if (this.searchCriterias.languages && Array.isArray(this.searchCriterias.languages)) {
+            this.searchCriterias.languages = this.searchCriterias.languages.map(nameValuePair => { return { "label": nameValuePair.name, "value": nameValuePair.value } }) as any;
+        }
+    }
+    createForm() {
+        this.addWorkerForm = this.formBuilder.group({
+            name: ['', Validators.required],
+            birthDate: ['', Validators.required],
+            gender: ['', Validators.required],
+            nationality: ['', Validators.required],
+            religion: ['', Validators.required],
+            marital: ['', Validators.required],
+            language: [[]],
+            salary: ['', Validators.required],
+            price: ['', Validators.required],
+            mobile: ['', Validators.pattern('[0-9]*8')],
+            weight: ['', Validators.required],
+            height: ['', Validators.required],
+            education: ['', Validators.required],
+            workerType: [''],
+            code: [''], //not required but not letting me proceed without it
+            video: [''],
+            passportNumber: [''],
+            passportIssDate: ['', Validators.required],
+            passportPOIssue: ['', Validators.required],
+            passportExpDate: ['', Validators.required],
+            civilId: ['', Validators.required],
+            hobbies: [''],
+            experience: this.formBuilder.array([]),
+        });
+        this.addXP();
+
+    }
+    get experience(): FormArray {
+        return this.addWorkerForm.get('experience') as FormArray;
+    }
+    addXP(): void {
+        this.experience.push(this.formBuilder.group(new Experience()))
+    }
+    removeXP(): void {
+        if (this.experience.length !== 1) {
+            this.experience.removeAt(this.experience.length - 1);
+        }
+    }
+    onSubmit(fileA, fileB, fileC) {
+        this.addWorker(fileA, fileB, fileC);
     }
 
-    ngOnInit(): void {
+    ngOnChanges() {
+        //TODO: Revert old Worker State if Exists
+        console.log('changing!')
+        // this.addWorkerForm.reset();
+    }
+    ngOnInitOld(): void {
         console.log('AddProfile DATA: ', JSON.stringify(this.worker));
         if (this.worker) {
             //EditMode
@@ -75,8 +145,6 @@ export class AddProfileComponent implements OnInit {
 
         } else {
             this.createEmptyWorkerState();
-            //TODO: DELETE ME!! 
-            this.dontWantToFillManualyForTesting();
             this.state.isAddMode = true;
 
         }
@@ -116,7 +184,8 @@ export class AddProfileComponent implements OnInit {
             formData.append("Photo", photoFile[0], photoFile[0].name);
             formData.append("Passport", passportFile[0], passportFile[0].name);
             formData.append("License", LicenseFile[0], LicenseFile[0].name);
-            this.getFormData(formData);
+            // this.getFormData(formData);
+            this.appendFormDataToForm(formData);
             this.loading = true;
             this.myApi.addWorker(formData).subscribe(x => {
                 this.onSucessfullUpdate(x, true);
@@ -185,12 +254,36 @@ export class AddProfileComponent implements OnInit {
 
     }
 
-    getFormData(formData: FormData) {
-        //TODO : DELETE ME PLEASE ! 
-        console.log('worker',JSON.stringify(this.state.worker));
-        var tempExperience:any = [ { "WorkerID": "50090112", "StartDate": "05-06-2001", "EndDate": "05-06-2002", "Title": "Accountant", "Description": "Job Description", "CompanyName": "Procons" }, { "WorkerID": "50090112", "StartDate": "05-06-2001", "EndDate": "05-06-2002", "Title": "Developer", "Description": "Job Description", "CompanyName": "Procons 4 IT" } ];
-        formData.append('Experiences',JSON.stringify(tempExperience));
+    appendFormDataToForm(formData: FormData) {
+        const formValues = this.addWorkerForm.value;
+        console.log('User inpued form values ', formValues);
 
+        formData.append('WorkerName', formValues.workerName);
+        formData.append('WorkerCode', formValues.passportNumber);
+        formData.append('workerType', formValues.workerType);
+        formData.append('Mobile', formValues.mobile);
+        formData.append('Salary', formValues.salary.toString());
+        formData.append('Price', formValues.price.toString());
+        formData.append('BirthDate', this.formatDate(formValues.birthDate.toString()));
+        formData.append('Gender', formValues.gender);
+        formData.append('Nationality', formValues.nationality);
+        formData.append('Religion', formValues.religion);
+        formData.append('MaritalStatus', formValues.maritalStatus);
+        formData.append('Languages', JSON.stringify(formValues.languages));
+        formData.append('Weight', formValues.weight);
+        formData.append('Height', formValues.height);
+        formData.append('Education', formValues.education);
+        formData.append('Video', formValues.video);
+        formData.append('PassportNumber', formValues.passportNumber);
+        formData.append('PassportIssDate', this.formatDate(formValues.passportIssDate.toString()));
+        formData.append("PassportPoIssue", formValues.passportPoIssue);
+        formData.append('PassportExpDate', this.formatDate(formValues.passportExpDate.toString()));
+        formData.append('CivilId', formValues.civilId);
+        let itemName: any[] = this.itemList.filter(nameValuePair => nameValuePair.value === formValues.code);
+        formData.append('Name', itemName[0].name);
+        formData.append('Code', formValues.code);
+    }
+    getFormData(formData: FormData) {
         formData.append('WorkerName', this.state.worker.workerName);
         formData.append('WorkerCode', this.state.worker.passportNumber);
         formData.append('workerType', this.state.worker.workerType);
@@ -265,21 +358,7 @@ export class AddProfileComponent implements OnInit {
         });
     }
 
-    //TO-DO: Remove this and let the Experience component handle this
-    addExperience(){
-        alert("Still in Development");
-    }
 
-    dontWantToFillManualyForTesting(){
-        setTimeout( ()=>{
-            let oldWorker = Object.assign({},this.state.worker);
-            this.state.worker= JSON.parse("{\"workerName\":\"Houssam The Great\",\"name\":\"\",\"birthDate\":\"2018-01-31T08:00:00.000Z\",\"gender\":\"M\",\"nationality\":\"2\",\"religion\":\"4\",\"maritalStatus\":\"4\",\"language\":\"\",\"languages\":[\"3\",\"1\"],\"photo\":\"\",\"weight\":\"3000\",\"height\":\"0.5\",\"education\":\"3\",\"video\":\"google.com\",\"passportNumber\":\"222444555\",\"passportIssDate\":\"2018-01-29T08:00:00.000Z\",\"passportPoIssue\":\"GG\",\"passportExpDate\":\"2018-01-10T08:00:00.000Z\",\"civilId\":\"555333444\",\"serialNumber\":\"\",\"agent\":\"\",\"code\":\"DW00004\",\"workerCode\":\"\",\"passport\":\"\",\"license\":\"\",\"status\":\"\",\"passportCopy\":\"\",\"salary\":10,\"price\":500,\"workerType\":\"Driver\",\"mobile\":200}");
-            this.state.worker.birthDate = oldWorker.birthDate;
-            this.state.worker.passportExpDate = oldWorker.passportExpDate;
-            this.state.worker.passportIssDate = oldWorker.passportIssDate;
-        },0);
-
-    }
 }
 
 enum FileUploadMode {

@@ -1,58 +1,52 @@
 ﻿<div role="tabpanel" class="tab-pane fade in active">
   <div class="row">
     <div class="col-sm-6 col-sm-offset-2">
-      <h3><span class="fa fa-search fa-fw fa-2x"></span> البحث المتقدم</h3>
-      <form action="#" (ngSubmit)="GotoResults(workTypeInput,ageInput ,genderInput ,nationalityInput ,martialStatusInput ,languageInput )"
+      <h3>
+        <span class="fa fa-search fa-fw fa-2x"></span> البحث المتقدم</h3>
+      <form action="#" (ngSubmit)="GotoResults(workTypeInput,ageInput ,genderInput ,nationalityInput ,martialStatusInputlanguageInput )"
         method="post" id="searchForm" name="searchForm" #f="ngForm">
         <div class="form-group">
-             <select class="form-control" #workTypeInput>
-                     <option>نوع العامل</option>
-                     <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriteriaParams.workerTypes;">
-                       {{nameValuePair.name}}
-                     </option>
-                   </select>
+          <select class="form-control" #workTypeInput>
+            <option>نوع العامل</option>
+            <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriteriaParams.workerTypes;">
+              {{nameValuePair.name}}
+            </option>
+          </select>
         </div>
         <div class="form-group">
           <select class="form-control" #ageInput>
-                     <option>العمر</option>
-                     <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriteriaParams.age;">
-                      {{nameValuePair.name}}
-                    </option>
-                   </select>
+            <option>العمر</option>
+            <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriteriaParams.age;">
+              {{nameValuePair.name}}
+            </option>
+          </select>
         </div>
         <div class="form-group">
           <select class="form-control" #genderInput>
-                     <option>الجنس</option>
-                     <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriteriaParams.gender;">
-                        {{nameValuePair.name}}
-                      </option>
-                   </select>
+            <option>الجنس</option>
+            <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriteriaParams.gender;">
+              {{nameValuePair.name}}
+            </option>
+          </select>
         </div>
         <div class="form-group">
           <select class="form-control" #nationalityInput>
-                     <option>الجنسية</option>
-                     <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriteriaParams.nationality;">
-                        {{nameValuePair.name}}
-                      </option>
-                   </select>
+            <option>الجنسية</option>
+            <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriteriaParams.nationality;">
+              {{nameValuePair.name}}
+            </option>
+          </select>
         </div>
         <div class="form-group">
           <select class="form-control" #martialStatusInput>
-                     <option>الحالة الاجتماعية</option>
-                     <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriteriaParams.maritalStatus;">
-                        {{nameValuePair.name}}
-                      </option>
-                   </select>
+            <option>الحالة الاجتماعية</option>
+            <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriteriaParams.maritalStatus;">
+              {{nameValuePair.name}}
+            </option>
+          </select>
         </div>
-        <div class="form-group" >
-          <select class="form-control" #languageInput>
-                     <option>اللغات المتحدث بها</option>
-                     <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriteriaParams.languages;">
-                        {{nameValuePair.name}}
-                      </option>
-                    </select>
-        </div>
-
+        <p-multiSelect required name="lang" defaultLabel="اللغات المتحدث بها" [options]="searchCriteriaParams.languages" [(ngModel)]="selectedLanguages">
+        </p-multiSelect>
         <div class="form-group">
           <input type="submit" value="{{'search' | translate}}" class="btn btn-default" id="submitSearchForm" />
         </div>

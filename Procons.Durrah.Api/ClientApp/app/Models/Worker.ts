@@ -1,8 +1,8 @@
-import { SearchCriteriaParams,NameValuePair } from './ApiRequestType';
+import { SearchCriteriaParams, NameValuePair } from './ApiRequestType';
 
 
 export class Worker {
-    constructor(public workerName:string,public name: string,
+    constructor(public workerName: string, public name: string,
         public birthDate: string,
         public gender: string,
         public nationality: string,
@@ -31,8 +31,8 @@ export class Worker {
         public passportCopy: any,
 
         public salary: number,
-        public price:number,
-        public workerType:any,
+        public price: number,
+        public workerType: any,
         public mobile: string
     ) { }
 }
@@ -42,6 +42,15 @@ export class WorkerManagementData {
     workerServerData: Worker[];
     workerDisplayData: Worker[];
     constructor() { }
+}
+
+export class Experience {
+    title = ''
+    description = ''
+    companyName = ''
+    startDate = ''
+    endDate = ''
+    yearsOfExperience = ''
 }
 
 //Problem is that some views expect worker keys and othe expect worker values ? 
