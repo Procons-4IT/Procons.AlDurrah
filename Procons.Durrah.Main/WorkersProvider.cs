@@ -1328,6 +1328,11 @@
                 {
                     queryBuilder.Append($" AND \"L\".\"U_VALUE\" = '{wrk.Language}'");
                 }
+                if (wrk.Languages != null)
+                {
+                    var ids = String.Join(",", wrk.Languages);
+                    queryBuilder.Append($" AND \"L\".\"U_VALUE\" IN ({ids})");
+                }
                 return queryBuilder.ToString();
             }
             else
