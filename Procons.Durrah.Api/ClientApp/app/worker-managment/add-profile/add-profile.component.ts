@@ -72,12 +72,12 @@ export class AddProfileComponent implements OnInit {
     //TODO: Remove state.worker since only uploads are using it.
     ngOnInit(): void {
         //TODO: DELETE ME 
-        // this.tempData();
+        this.tempData();
 
 
         console.log('AddProfile DATA: ', JSON.stringify(this.worker));
         this.createForm();
-        
+
         if (this.worker) {
             //EditMode
             this.state.isAddMode = false;
