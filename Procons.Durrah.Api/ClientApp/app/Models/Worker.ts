@@ -33,7 +33,11 @@ export class Worker {
         public salary: number,
         public price: number,
         public workerType: any,
-        public mobile: string
+        public mobile: string,
+
+        public hobbies: string,
+        public location: string,
+        public experiences?: Experience[]
     ) { }
 }
 
@@ -50,7 +54,6 @@ export class Experience {
     companyName = ''
     startDate = ''
     endDate = ''
-    yearsOfExperience = ''
 }
 
 //Problem is that some views expect worker keys and othe expect worker values ? 

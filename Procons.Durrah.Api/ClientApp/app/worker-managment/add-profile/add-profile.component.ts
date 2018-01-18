@@ -1,5 +1,5 @@
 //TODO: Issue with DateFormat server returning mm/dd/yyyy
-import { Component, ElementRef, EventEmitter, Input, Output, OnInit, OnChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from "@angular/forms";
 import { DatePipe } from '@angular/common';
 import { Subject } from 'rxjs/Subject';
@@ -20,7 +20,7 @@ import * as moment from 'moment';
     providers: [DatePipe, MomentDatePipe]
 })
 //mobile # [0-9]{8}
-export class AddProfileComponent implements OnInit, OnChanges {
+export class AddProfileComponent implements OnInit {
     @Input() worker;
     @Input() searchCriterias: SearchCriteriaParams;
     @Output() onBack = new EventEmitter<any>();
@@ -52,13 +52,12 @@ export class AddProfileComponent implements OnInit, OnChanges {
 
     addWorkerForm: FormGroup;
     isAddMode: Boolean = true;
-    ngOnInit(): void {
-        //TODO: check if new Worker or update Worker
-        this.createEmptyWorkerState();
+    ngOnInitNewDepricated(): void {
         this.state.isAddMode = true;
 
-        //newWorker
+        this.createEmptyWorkerState();
         this.createForm();
+
 
         if (!this.state.worker.languages) {
             this.state.worker.languages = [];
@@ -69,63 +68,22 @@ export class AddProfileComponent implements OnInit, OnChanges {
             this.searchCriterias.languages = this.searchCriterias.languages.map(nameValuePair => { return { "label": nameValuePair.name, "value": nameValuePair.value } }) as any;
         }
     }
-    createForm() {
-        this.addWorkerForm = this.formBuilder.group({
-            name: ['', Validators.required],
-            birthDate: ['', Validators.required],
-            gender: ['', Validators.required],
-            nationality: ['', Validators.required],
-            religion: ['', Validators.required],
-            marital: ['', Validators.required],
-            language: [[]],
-            salary: ['', Validators.required],
-            price: ['', Validators.required],
-            mobile: ['', Validators.pattern('[0-9]*8')],
-            weight: ['', Validators.required],
-            height: ['', Validators.required],
-            education: ['', Validators.required],
-            workerType: [''],
-            code: [''], //not required but not letting me proceed without it
-            video: [''],
-            passportNumber: [''],
-            passportIssDate: ['', Validators.required],
-            passportPOIssue: ['', Validators.required],
-            passportExpDate: ['', Validators.required],
-            civilId: ['', Validators.required],
-            hobbies: [''],
-            experience: this.formBuilder.array([]),
-        });
-        this.addXP();
 
-    }
-    get experience(): FormArray {
-        return this.addWorkerForm.get('experience') as FormArray;
-    }
-    addXP(): void {
-        this.experience.push(this.formBuilder.group(new Experience()))
-    }
-    removeXP(): void {
-        if (this.experience.length !== 1) {
-            this.experience.removeAt(this.experience.length - 1);
-        }
-    }
-    onSubmit(fileA, fileB, fileC) {
-        this.addWorker(fileA, fileB, fileC);
-    }
+    //TODO: Remove state.worker since only uploads are using it.
+    ngOnInit(): void {
+        //TODO: DELETE ME 
+        this.tempData();
 
-    ngOnChanges() {
-        //TODO: Revert old Worker State if Exists
-        console.log('changing!')
-        // this.addWorkerForm.reset();
-    }
-    ngOnInitOld(): void {
+
         console.log('AddProfile DATA: ', JSON.stringify(this.worker));
+        this.createForm();
+
         if (this.worker) {
             //EditMode
             this.state.isAddMode = false;
             this.state.title = "تعديل الملف"
             this.state.worker = Object.assign({}, this.worker);
-            // this.tempData();
+
             this.photoServerMode = FileUploadMode.Edit;
             this.passportServerMode = FileUploadMode.Edit;
             this.licenseServerMode = FileUploadMode.Edit;
@@ -133,10 +91,7 @@ export class AddProfileComponent implements OnInit, OnChanges {
             this.licenseFileName = this.getFileImageName(this.state.worker.license);
             this.passportFileName = this.getFileImageName(this.state.worker.passport);
 
-            this.state.worker.birthDate = moment(this.state.worker.birthDate, 'MM-DD-YYYY').toDate() as any;
-            this.state.worker.passportExpDate = moment(this.state.worker.passportExpDate, 'MM-DD-YYYY').toDate() as any;
-            this.state.worker.passportIssDate = moment(this.state.worker.passportIssDate, 'MM-DD-YYYY').toDate() as any;
-
+            this.fillFormWithWorkerData(this.worker);
             //Consider Case WorkerType and ItemType is set. How to prepopulate workerTypes? 
             if (this.state.worker.workerType) {
                 this.getItemLookupsByType(this.state.worker.workerType);
@@ -145,6 +100,7 @@ export class AddProfileComponent implements OnInit, OnChanges {
 
         } else {
             this.createEmptyWorkerState();
+            this.createForm();
             this.state.isAddMode = true;
 
         }
@@ -159,6 +115,98 @@ export class AddProfileComponent implements OnInit, OnChanges {
             this.searchCriterias.languages = this.searchCriterias.languages.map(nameValuePair => { return { "label": nameValuePair.name, "value": nameValuePair.value } }) as any;
         }
     }
+    fillFormWithWorkerData(existingWorker: Worker) {
+        //this.state.worker.birthDate = moment(this.state.worker.birthDate, 'MM-DD-YYYY').toDate() as any;
+        let momentToDate = str => moment(str, 'MM-DD-YYYY').toDate() as any;
+        //Convert from Server Data Object to FormData Array or Array to Array.
+        let handleXP = xp => {
+            let perXP = xp => {
+                return { workerID: xp.workerID, title: xp.title, description: xp.description, companyName: xp.companyName, startDate: momentToDate(xp.startDate), endDate: momentToDate(xp.endDate) }
+            }
+            if (xp) {
+                if (Array.isArray(xp)) {
+                    return xp.map(p => perXP(p));
+                } else {
+                    return [perXP(xp)];
+                }
+            } else {
+                return [new Experience()];
+            }
+        };
+        const workerData =
+            {
+                workerName: existingWorker.workerName,
+                birthDate: momentToDate(existingWorker.birthDate),
+                gender: existingWorker.gender,
+                nationality: existingWorker.nationality,
+                religion: existingWorker.religion,
+                maritalStatus: existingWorker.maritalStatus,
+                languages: existingWorker.languages.map(lang => lang.value), //?null
+                salary: existingWorker.salary,
+                price: existingWorker.price,
+                mobile: existingWorker.mobile,
+                weight: existingWorker.weight,
+                height: existingWorker.height,
+                education: existingWorker.education,
+                workerType: existingWorker.workerType,
+                code: existingWorker.code, //not required but not letting me proceed without it
+                video: existingWorker.video,
+                passportNumber: existingWorker.passportNumber,
+                passportIssDate: momentToDate(existingWorker.passportIssDate),
+                passportPOIssue: existingWorker.passportPoIssue,
+                passportExpDate: momentToDate(existingWorker.passportExpDate),
+                civilId: existingWorker.civilId,
+                hobbies: existingWorker.hobbies,
+                location: existingWorker.location,
+                experience: handleXP(existingWorker.experiences)
+                // experience: this.formBuilder.array([]), existingWorker.experiences.map(xp => { return { title: xp.title, description: xp.description, companyName: xp.companyName, startDate: momentToDate(xp.startDate), endDate: momentToDate(xp.endDate) } }),
+            };
+        this.addWorkerForm.patchValue(workerData);
+    }
+    createForm() {
+        const workerFields =
+            {
+                workerName: ['', Validators.required],
+                birthDate: ['', Validators.required],
+                gender: ['', Validators.required],
+                nationality: ['', Validators.required],
+                religion: ['', Validators.required],
+                maritalStatus: ['', Validators.required],
+                languages: [[]],
+                salary: ['', Validators.required],
+                price: ['', Validators.required],
+                mobile: ['', Validators.pattern('[0-9]{8}')],
+                weight: ['', Validators.required],
+                height: ['', Validators.required],
+                education: ['', Validators.required],
+                workerType: [''],
+                code: [''], //not required but not letting me proceed without it
+                video: [''],
+                passportNumber: [''],
+                passportIssDate: ['', Validators.required],
+                passportPOIssue: ['', Validators.required],
+                passportExpDate: ['', Validators.required],
+                civilId: ['', Validators.required],
+                hobbies: [''],
+                location: [''],
+                experience: this.formBuilder.array([]),
+            };
+        this.addWorkerForm = this.formBuilder.group(workerFields);
+        this.addXP();
+    }
+
+    get experience(): FormArray {
+        return this.addWorkerForm.get('experience') as FormArray;
+    }
+    addXP(): void {
+        this.experience.push(this.formBuilder.group(new Experience()))
+    }
+    removeXP(): void {
+        if (this.experience.length !== 1) {
+            this.experience.removeAt(this.experience.length - 1);
+        }
+    }
+
 
     onWorkerTypeSelected(workerType) {
         this.getItemLookupsByType(workerType);
@@ -212,7 +260,8 @@ export class AddProfileComponent implements OnInit, OnChanges {
         this.appendOneFile(formData, "License", licenseFile, this.licenseServerMode);
 
 
-        this.getFormData(formData);
+        this.appendFormDataToForm(formData);
+        // this.DepricatedgetFormDataD(formData);
         this.loading = true;
         this.myApi.updateWorker(formData).subscribe(x => {
             this.onSucessfullUpdate(x, false);
@@ -276,14 +325,17 @@ export class AddProfileComponent implements OnInit, OnChanges {
         formData.append('Video', formValues.video);
         formData.append('PassportNumber', formValues.passportNumber);
         formData.append('PassportIssDate', this.formatDate(formValues.passportIssDate.toString()));
-        formData.append("PassportPoIssue", formValues.passportPoIssue);
+        formData.append("PassportPoIssue", formValues.passportPOIssue);
         formData.append('PassportExpDate', this.formatDate(formValues.passportExpDate.toString()));
         formData.append('CivilId', formValues.civilId);
         let itemName: any[] = this.itemList.filter(nameValuePair => nameValuePair.value === formValues.code);
         formData.append('Name', itemName[0].name);
         formData.append('Code', formValues.code);
+        formData.append('Hobbies', formValues.hobbies);
+        formData.append('Location', formValues.location);
+        formData.append('Experiences', JSON.stringify(formValues.experience));
     }
-    getFormData(formData: FormData) {
+    DepricatedgetFormDataD(formData: FormData) {
         formData.append('WorkerName', this.state.worker.workerName);
         formData.append('WorkerCode', this.state.worker.passportNumber);
         formData.append('workerType', this.state.worker.workerType);
@@ -316,7 +368,7 @@ export class AddProfileComponent implements OnInit, OnChanges {
     }
 
     createEmptyWorkerState() {
-        let workerParams: any = Array.from({ length: 28 }, x => { return '' }) as any;
+        let workerParams: any = Array.from({ length: 30 }, x => { return '' }) as any;
         let tempWorker = new (<any>Worker)(...workerParams);
         tempWorker.languages = [];
         this.state.worker = tempWorker;
@@ -358,6 +410,10 @@ export class AddProfileComponent implements OnInit, OnChanges {
         });
     }
 
+    //DELETE ME PLEASE !!!
+    tempData() {
+        this.worker = { "workerCode": "500901123", "workerName": "Test123", "serialNumber": "123456789106", "agent": "SA004", "mobile": "215554685", "age": 27, "name": "Maid - SriLanka", "code": "50090112", "birthDate": "5/6/1991", "gender": "M", "nationality": "3", "religion": "2", "maritalStatus": "1", "language": null, "photo": "https://dev.procons-scloud.com:443/api/Workers/Image?path=ben.d6d4e55c-8306-45fa-9e28-48e6ad3ef657.jpg", "license": "https://dev.procons-scloud.com:443/api/Workers/Image?path=ben.4c26c13b-d310-4ae4-a764-6682e8ffca14.jpg", "price": 550, "salary": 100, "weight": "60", "height": "190", "education": "3", "passport": "https://dev.procons-scloud.com:443/api/Workers/Image?path=ben.ef7ca69a-7f77-4780-89bb-c50067ab42ec.jpg", "video": "https://www.youtube.com/watch?v=H7DGigU3V2I", "passportNumber": "500901123", "passportIssDate": "5/6/1991 12:00:00 AM", "passportExpDate": "5/6/1991", "passportPoIssue": "Germany", "civilId": "123456789106", "status": "1", "workerType": "Maid", "languages": [{ "name": "الانكليزية", "value": "1" }], "hobbies": "", "location": "", "isNew": "N", "period": 0, "experiences": { "workerID": "50090112", "startDate": "5/6/2001 12:00:00 AM", "endDate": "5/6/2002 12:00:00 AM", "title": "Maid", "description": "Job Description", "companyName": "Procons" } };
+    }
 
 }
 

@@ -24,7 +24,7 @@ export class searchFormComponent implements OnInit {
             x => { return { label: x.name, value: x.value } }) as any;
     }
 
-    GotoResults(workType, age, sex, nationality, maritalStatus, language) {
+    GotoResults(workType, age, sex, nationality, maritalStatus) {
         let argumentKeys = ["WorkerType", "Age", "Gender", "Nationality", "MaritalStatus"];
         let workerFilterParams = {};
         for (var i = 0; i < arguments.length; i++) {
