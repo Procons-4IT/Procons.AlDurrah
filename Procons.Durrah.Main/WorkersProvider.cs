@@ -54,7 +54,7 @@
                 foreach (var e in worker.Experiences)
                 {
                     var newExperience = expDataCollection.Add();
-                    newExperience.SetProperty("U_WorkerID", e.WorkerID);
+                    newExperience.SetProperty("U_WorkerID", worker.PassportNumber);
                     newExperience.SetProperty("U_StartDate", e.StartDate);
                     newExperience.SetProperty("U_EndDate", e.EndDate);
                     newExperience.SetProperty("U_Title", e.Title);
@@ -151,7 +151,7 @@
                     foreach (var e in worker.Experiences)
                     {
                         var newExperience = expDataCollection.Add();
-                        newExperience.SetProperty("U_WorkerID", e.WorkerID);
+                        newExperience.SetProperty("U_WorkerID", worker.PassportNumber);
                         newExperience.SetProperty("U_StartDate", e.StartDate);
                         newExperience.SetProperty("U_EndDate", e.EndDate);
                         newExperience.SetProperty("U_Title", e.Title);
