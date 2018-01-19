@@ -15,12 +15,14 @@ export class searchFormComponent implements OnInit {
 
     @Output() onSearchFilterCriteria = new EventEmitter<object>();
     @Input() searchCriteriaParams: SearchCriteriaParams;
+    scp: SearchCriteriaParams;
     selectedLanguages = [];
 
     constructor() { }
 
     ngOnInit() {
-        this.searchCriteriaParams.languages = this.searchCriteriaParams.languages.map(
+        this.scp = Object.assign({}, this.searchCriteriaParams);
+        this.scp.languages = this.searchCriteriaParams.languages.map(
             x => { return { label: x.name, value: x.value } }) as any;
     }
 

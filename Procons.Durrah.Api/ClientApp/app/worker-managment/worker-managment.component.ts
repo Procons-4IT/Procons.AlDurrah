@@ -25,14 +25,12 @@ export class WorkerMangmentComponent implements OnInit {
             .map(workerMangmentServerData => { return this.state.workers }) //use the same object as parent component
             .do(data => { this.loading = false });
 
-        this.state.$workers = $workerDisplayData.map(workerDisplayData => { return [workerDisplayData, this.state.workersServerData] });
-        // this.ShowWorkerAgents();
-        //TODO: DISABLE ME
-        this.InitializeAddWorkerForTesting();
+        this.state.$workers = $workerDisplayData.map(workerDisplayData => { return [workerDisplayData, this.state.workersServerData] })
+
+        this.ShowWorkerAgents();
     }
 
     bindServerState(allTheData) {
-        console.log('i got a bunch of workers ', allTheData);
         this.state.workers = allTheData.workerDisplayData;
         this.state.workersServerData = allTheData.workerServerData;
         this.state.searchCriteriaParams = allTheData.searchCriteria;
@@ -113,13 +111,6 @@ export class WorkerMangmentComponent implements OnInit {
             });
     }
 
-    //Testing Functions for quicker developemnt
-    InitializeAddWorkerForTesting(){
-        let mockData : SearchCriteriaParams = { "age": [{"name": "30", "value": "3"}] ,"languages":[{"name":"English","value":"1"},{"name":"Arabic","value":"2"},{"name":"french","value":"3"}],"education":[{"name":"University","value":"1"},{"name":"High School","value":"2"},{"name":"None","value":"3"},{"name":"middle school","value":"4"}],"religion":[{"name":"Christian","value":"1"},{"name":"Muslim","value":"2"},{"name":"Hindu","value":"3"},{"name":"atheist","value":"4"}],"nationality":[{"name":"India","value":"1"},{"name":"Bengladish","value":"2"},{"name":"Philipin","value":"3"},{"name":"Ethioipia","value":"4"}],"gender":[{"name":"Male","value":"M"},{"name":"Female","value":"F"}],"maritalStatus":[{"name":"Single","value":"1"},{"name":"Married","value":"2"},{"name":"Divorced","value":"3"},{"name":"Single Mom","value":"4"}],"workerTypes":[{"name":"Driver","value":"Driver"},{"name":"Worker","value":"Worker"},{"name":"Maid","value":"Maid"},{"name":"House boy","value":"Houseboy"}]};
-        this.state.searchCriteriaParams = mockData;
-        this.loading = false;
-        this.ShowAddWorker();
-    }
 }
 
 

@@ -49,6 +49,11 @@
                   </div>
 
                   <div class="form-group">
+                    <label for="location">{{ 'location' | translate }}</label>
+                    <input name="location" id="location" type="text" class="form-control" placeholder="dancing" formControlName="location" />
+                  </div>
+
+                  <div class="form-group">
                     <label for="religion">{{ 'religion' | translate }}</label>
                     <!-- <option>Religion</option> -->
                     <select required id="religion" class="form-control" name="religion" formControlName="religion">
@@ -68,7 +73,20 @@
                       </option>
                     </select>
                   </div>
-
+                  <div class="form-group">
+                    <label for="isKuwait">{{'isKuwait' | translate}}</label>
+                    <p-checkbox name="isKuwait" [formControl]="addWorkerForm.get('isKuwait')" binary="true"></p-checkbox>
+                    <div *ngIf="isFromKuwait">
+                      <label for="kuwaitFromDate">{{ 'fromDate' | translate }}</label>
+                      <div>
+                        <p-calendar showIcon="true" formControlName="kuwaitFromDate" name="kuwaitFromDate" dateFormat="mm/dd/yy"></p-calendar>
+                      </div>
+                      <label for="kuwaitToDate">{{ 'toDate' | translate }}</label>
+                      <div>
+                        <p-calendar showIcon="true" formControlName="kuwaitToDate" name="kuwaitToDate" dateFormat="mm/dd/yy"></p-calendar>
+                      </div>
+                    </div>
+                  </div>
                   <div class="form-group ">
                     <label for="lang">{{ 'languages' | translate }}</label>
                     <div>
@@ -177,10 +195,7 @@
                     <label for="hobbies">{{ 'hobbies' | translate }}</label>
                     <input name="hobbies" id="hobbies" type="text" class="form-control" placeholder="dancing" formControlName="hobbies" />
                   </div>
-                  <div class="form-group ">
-                    <label for="location">{{ 'location' | translate }}</label>
-                    <input name="location" id="location" type="text" class="form-control" placeholder="dancing" formControlName="location" />
-                  </div>
+
 
                   <!--Experience TODO: Move into seperate component-->
                   <form formArrayName="experience">
@@ -309,7 +324,7 @@
 
                   <!-- Save and Delete Buttons -->
                   <div class="form-group  text-right">
-                    <button type="submit" class="btn btn-default"> {{ isAddMode? 'save':'update' | translate }}</button>
+                    <button type="submit" class="btn btn-default" [disabled]="!addWorkerForm.valid || (isAddMode && !isFilesAttached())"> {{ isAddMode? 'save':'update' | translate }}</button>
                   </div>
                 </form>
                 <div class="form-group  text-right">
