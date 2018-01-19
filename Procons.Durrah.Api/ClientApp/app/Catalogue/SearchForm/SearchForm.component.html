@@ -8,7 +8,7 @@
         <div class="form-group">
           <select class="form-control" #workTypeInput>
             <option>نوع العامل</option>
-            <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriteriaParams.workerTypes;">
+            <option [value]="nameValuePair.value" *ngFor="let nameValuePair of scp.workerTypes;">
               {{nameValuePair.name}}
             </option>
           </select>
@@ -16,7 +16,7 @@
         <div class="form-group">
           <select class="form-control" #ageInput>
             <option>العمر</option>
-            <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriteriaParams.age;">
+            <option [value]="nameValuePair.value" *ngFor="let nameValuePair of scp.age;">
               {{nameValuePair.name}}
             </option>
           </select>
@@ -24,7 +24,7 @@
         <div class="form-group">
           <select class="form-control" #genderInput>
             <option>الجنس</option>
-            <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriteriaParams.gender;">
+            <option [value]="nameValuePair.value" *ngFor="let nameValuePair of scp.gender;">
               {{nameValuePair.name}}
             </option>
           </select>
@@ -32,7 +32,7 @@
         <div class="form-group">
           <select class="form-control" #nationalityInput>
             <option>الجنسية</option>
-            <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriteriaParams.nationality;">
+            <option [value]="nameValuePair.value" *ngFor="let nameValuePair of scp.nationality;">
               {{nameValuePair.name}}
             </option>
           </select>
@@ -40,12 +40,12 @@
         <div class="form-group">
           <select class="form-control" #martialStatusInput>
             <option>الحالة الاجتماعية</option>
-            <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriteriaParams.maritalStatus;">
+            <option [value]="nameValuePair.value" *ngFor="let nameValuePair of scp.maritalStatus;">
               {{nameValuePair.name}}
             </option>
           </select>
         </div>
-        <p-multiSelect required name="lang" defaultLabel="اللغات المتحدث بها" [options]="searchCriteriaParams.languages" [(ngModel)]="selectedLanguages">
+        <p-multiSelect required name="lang" defaultLabel="اللغات المتحدث بها" [options]="scp.languages" [(ngModel)]="selectedLanguages">
         </p-multiSelect>
         <div class="form-group">
           <input type="submit" value="{{'search' | translate}}" class="btn btn-default" id="submitSearchForm" />
