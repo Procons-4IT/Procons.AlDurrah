@@ -78,7 +78,6 @@ export class AddProfileComponent implements OnInit {
     ngOnInit(): void {
 
 
-        console.log('AddProfile DATA: ', JSON.stringify(this.worker));
         this.createForm();
 
         if (this.worker) {
@@ -107,7 +106,6 @@ export class AddProfileComponent implements OnInit {
             this.state.isAddMode = true;
 
         }
-        console.log('searchCriteria Params ', JSON.stringify(this.searchCriterias));
 
         if (!this.state.worker.languages) {
             this.state.worker.languages = [];

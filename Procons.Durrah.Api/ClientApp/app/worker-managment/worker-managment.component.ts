@@ -31,7 +31,6 @@ export class WorkerMangmentComponent implements OnInit {
     }
 
     bindServerState(allTheData) {
-        console.log('i got a bunch of workers ', JSON.stringify(allTheData));
         this.state.workers = allTheData.workerDisplayData;
         this.state.workersServerData = allTheData.workerServerData;
         this.state.searchCriteriaParams = allTheData.searchCriteria;
