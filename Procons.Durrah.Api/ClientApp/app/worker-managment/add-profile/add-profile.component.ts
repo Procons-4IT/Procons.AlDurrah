@@ -1,4 +1,3 @@
-//TODO: Issue with DateFormat server returning mm/dd/yyyy
 import { Component, ElementRef, EventEmitter, Input, Output, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from "@angular/forms";
 import { DatePipe } from '@angular/common';
@@ -47,10 +46,16 @@ export class AddProfileComponent implements OnInit {
     photoServerMode: FileUploadMode = FileUploadMode.Add;
     passportServerMode: FileUploadMode = FileUploadMode.Add;
     licenseServerMode: FileUploadMode = FileUploadMode.Add;
-    constructor(private formBuilder: FormBuilder, public myApi: ApiService, public myModal: ProconsModalSerivce, public momentDatePipe: MomentDatePipe) { }
+    constructor(private formBuilder: FormBuilder, public myApi: ApiService, public myModal: ProconsModalSerivce, public momentDatePipe: MomentDatePipe) {
+        this.createForm();
+
+    }
 
 
     addWorkerForm: FormGroup;
+    get isFromKuwait(): Boolean {
+        return this.addWorkerForm.get('isKuwait').value;
+    }
     isAddMode: Boolean = true;
     ngOnInitNewDepricated(): void {
         this.state.isAddMode = true;
@@ -71,8 +76,6 @@ export class AddProfileComponent implements OnInit {
 
     //TODO: Remove state.worker since only uploads are using it.
     ngOnInit(): void {
-        //TODO: DELETE ME 
-        this.tempData();
 
 
         console.log('AddProfile DATA: ', JSON.stringify(this.worker));
@@ -189,6 +192,9 @@ export class AddProfileComponent implements OnInit {
                 civilId: ['', Validators.required],
                 hobbies: [''],
                 location: [''],
+                isKuwait: [false],
+                kuwaitFromDate: [''],
+                kuwaitToDate: [''],
                 experience: this.formBuilder.array([]),
             };
         this.addWorkerForm = this.formBuilder.group(workerFields);
@@ -334,6 +340,12 @@ export class AddProfileComponent implements OnInit {
         formData.append('Hobbies', formValues.hobbies);
         formData.append('Location', formValues.location);
         formData.append('Experiences', JSON.stringify(formValues.experience));
+
+        if(this.isFromKuwait){
+            formData.append('KuwaitFromDate', this.formatDate(formValues.kuwaitFromDate.toString()));
+            formData.append('KuwaitToDate', this.formatDate(formValues.kuwaitToDate.toString()));
+            
+        }
     }
     DepricatedgetFormDataD(formData: FormData) {
         formData.append('WorkerName', this.state.worker.workerName);

@@ -32,7 +32,8 @@ import {
     MenuItem,
     ButtonModule,
     DialogModule,
-    FileUploadModule
+    FileUploadModule,
+    CheckboxModule
 } from 'primeng/primeng';
 
 import { ApiService } from './Services/ApiService';
@@ -89,6 +90,7 @@ export function createTranslateLoader(http: HttpClient) {
         DropdownModule,
         MultiSelectModule,
         FileUploadModule,
+        CheckboxModule,
         ButtonModule,
         DialogModule,
         DataGridModule,
