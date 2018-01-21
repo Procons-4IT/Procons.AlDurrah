@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { MenuItem } from 'primeng/primeng';
-import { Worker } from '../../Models/Worker';
+import { Worker,Experience } from '../../Models/Worker';
 
 @Component({
   selector: 'profile',
@@ -26,5 +26,15 @@ export class profileComponent implements OnInit {
   Book() {
     this.onBook.emit(true);
   }
-
+  transformXptoArray(xp): Experience[] {
+    if (xp) {
+        if (Array.isArray(xp))
+            return xp;
+        else {
+            return [xp];
+        }
+    } else {
+        return xp;
+    }
+}
 }

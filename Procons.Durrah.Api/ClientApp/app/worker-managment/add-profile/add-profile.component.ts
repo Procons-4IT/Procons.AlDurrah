@@ -76,8 +76,6 @@ export class AddProfileComponent implements OnInit {
 
     //TODO: Remove state.worker since only uploads are using it.
     ngOnInit(): void {
-
-
         this.createForm();
 
         if (this.worker) {
@@ -93,7 +91,7 @@ export class AddProfileComponent implements OnInit {
             this.licenseFileName = this.getFileImageName(this.state.worker.license);
             this.passportFileName = this.getFileImageName(this.state.worker.passport);
 
-            this.fillFormWithWorkerData(this.worker);
+            this.fillFormWithWorkerData(this.state.worker);
             //Consider Case WorkerType and ItemType is set. How to prepopulate workerTypes? 
             if (this.state.worker.workerType) {
                 this.getItemLookupsByType(this.state.worker.workerType);
@@ -103,6 +101,7 @@ export class AddProfileComponent implements OnInit {
         } else {
             this.createEmptyWorkerState();
             this.createForm();
+            this.addXP();
             this.state.isAddMode = true;
 
         }
@@ -120,9 +119,9 @@ export class AddProfileComponent implements OnInit {
         //this.state.worker.birthDate = moment(this.state.worker.birthDate, 'MM-DD-YYYY').toDate() as any;
         let momentToDate = str => moment(str, 'MM-DD-YYYY').toDate() as any;
         //Convert from Server Data Object to FormData Array or Array to Array.
-        let handleXP = xp => {
+        let handleXP = function (xp): Experience[] {
             let perXP = xp => {
-                return { workerID: xp.workerID, title: xp.title, description: xp.description, companyName: xp.companyName, startDate: momentToDate(xp.startDate), endDate: momentToDate(xp.endDate) }
+                return { title: xp.title, description: xp.description, companyName: xp.companyName, startDate: momentToDate(xp.startDate), endDate: momentToDate(xp.endDate) }
             }
             if (xp) {
                 if (Array.isArray(xp)) {
@@ -159,9 +158,15 @@ export class AddProfileComponent implements OnInit {
                 civilId: existingWorker.civilId,
                 hobbies: existingWorker.hobbies,
                 location: existingWorker.location,
-                experience: handleXP(existingWorker.experiences)
+                period: existingWorker.period,
+                isFromKuwait: existingWorker.isNew === "Y" ? false : true
+                // experience: handleXP(existingWorker.experiences)
                 // experience: this.formBuilder.array([]), existingWorker.experiences.map(xp => { return { title: xp.title, description: xp.description, companyName: xp.companyName, startDate: momentToDate(xp.startDate), endDate: momentToDate(xp.endDate) } }),
             };
+        //Add Experience Array to Form
+        handleXP(existingWorker.experiences).forEach(xp => {
+            this.experience.push(this.formBuilder.group(xp));
+        })
         this.addWorkerForm.patchValue(workerData);
     }
     createForm() {
@@ -191,12 +196,10 @@ export class AddProfileComponent implements OnInit {
                 hobbies: [''],
                 location: [''],
                 isKuwait: [false],
-                kuwaitFromDate: [''],
-                kuwaitToDate: [''],
+                period: [0],
                 experience: this.formBuilder.array([]),
             };
         this.addWorkerForm = this.formBuilder.group(workerFields);
-        this.addXP();
     }
 
     get experience(): FormArray {
@@ -308,7 +311,7 @@ export class AddProfileComponent implements OnInit {
     }
 
     appendFormDataToForm(formData: FormData) {
-        const formValues = this.addWorkerForm.value;
+        const formValues = Object.assign({}, this.addWorkerForm.value);
         console.log('User inpued form values ', formValues);
 
         formData.append('WorkerName', formValues.workerName);
@@ -338,13 +341,16 @@ export class AddProfileComponent implements OnInit {
         formData.append('Hobbies', formValues.hobbies);
         formData.append('Location', formValues.location);
         formData.append('Experiences', JSON.stringify(formValues.experience));
+        formData.append('isNew', this.isFromKuwait ? 'N' : 'Y');
 
-        if(this.isFromKuwait){
-            formData.append('KuwaitFromDate', this.formatDate(formValues.kuwaitFromDate.toString()));
-            formData.append('KuwaitToDate', this.formatDate(formValues.kuwaitToDate.toString()));
-            
+
+        let period = 0;
+        if (this.isFromKuwait) {
+            period = formValues.period
         }
+        formData.append('Period', period.toString());
     }
+
     DepricatedgetFormDataD(formData: FormData) {
         formData.append('WorkerName', this.state.worker.workerName);
         formData.append('WorkerCode', this.state.worker.passportNumber);

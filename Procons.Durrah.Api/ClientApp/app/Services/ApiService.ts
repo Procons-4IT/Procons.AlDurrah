@@ -155,10 +155,11 @@ export class ApiService {
                 console.log('retrieving from cache')
                 observer.next(this.workerManagementCache);
             }
-            this.getWorkerManagmentDataFromServer().subscribe(data=>{
+            this.getWorkerManagmentDataFromServer().subscribe(data => {
                 this.workerManagementCache = data;
                 console.log('retriving from server');
-                observer.next(data)});
+                observer.next(data)
+            });
         })
         return $workerData;
     }
@@ -214,16 +215,17 @@ export class ApiService {
         let workerProperties: string[] = Object.getOwnPropertyNames(workerServerNameValueHashData);
         var workerProperty;
         let tempPropertyValue;
+        let workerPropertyIgnoreList = ['languages', 'experiences'];
         for (var propertyIndex = 0; propertyIndex < workerProperties.length; propertyIndex++) {
             workerProperty = workerProperties[propertyIndex];
             let splitValue;
-            if (workerProperty === 'languages') {
+            if (workerPropertyIgnoreList.includes(workerProperty)) {
                 splitValue = workerServerNameValueHashData[workerProperty]
             } else {
                 splitValue = this.splitProperties(workerServerNameValueHashData[workerProperty]);
             }
 
-            if (workerProperty !== 'languages' && Array.isArray(splitValue) && splitValue.length === 2) {
+            if (!workerPropertyIgnoreList.includes(workerProperty) && Array.isArray(splitValue) && splitValue.length === 2) {
                 workerDisplayData[workerProperty] = splitValue[1]; //grab value after hash
                 workerKeyData[workerProperty] = splitValue[0]; //grab value after hash
 
