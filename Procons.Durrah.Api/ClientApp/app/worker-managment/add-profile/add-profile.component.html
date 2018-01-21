@@ -50,7 +50,7 @@
 
                   <div class="form-group">
                     <label for="location">{{ 'location' | translate }}</label>
-                    <input name="location" id="location" type="text" class="form-control" placeholder="dancing" formControlName="location" />
+                    <input name="location" id="location" type="text" class="form-control" placeholder="location" formControlName="location" />
                   </div>
 
                   <div class="form-group">
@@ -77,13 +77,9 @@
                     <label for="isKuwait">{{'isKuwait' | translate}}</label>
                     <p-checkbox name="isKuwait" [formControl]="addWorkerForm.get('isKuwait')" binary="true"></p-checkbox>
                     <div *ngIf="isFromKuwait">
-                      <label for="kuwaitFromDate">{{ 'fromDate' | translate }}</label>
+                      <label for="period">{{ 'period' | translate }}</label>
                       <div>
-                        <p-calendar showIcon="true" formControlName="kuwaitFromDate" name="kuwaitFromDate" dateFormat="mm/dd/yy"></p-calendar>
-                      </div>
-                      <label for="kuwaitToDate">{{ 'toDate' | translate }}</label>
-                      <div>
-                        <p-calendar showIcon="true" formControlName="kuwaitToDate" name="kuwaitToDate" dateFormat="mm/dd/yy"></p-calendar>
+                        <input required id="period" type="number" class="form-control" name="" formControlName="period" />
                       </div>
                     </div>
                   </div>
@@ -193,7 +189,7 @@
 
                   <div class="form-group ">
                     <label for="hobbies">{{ 'hobbies' | translate }}</label>
-                    <input name="hobbies" id="hobbies" type="text" class="form-control" placeholder="dancing" formControlName="hobbies" />
+                    <input name="hobbies" id="hobbies" type="text" class="form-control" placeholder="hobbies" formControlName="hobbies" />
                   </div>
 
 
@@ -206,16 +202,16 @@
                             <h3 class="h5">{{ 'experience' | translate }}</h3>
                             <div class="datas">
                               <div class="form-group">
-                                <label for="title"> {{ 'title' | translate }}</label>
-                                <input id="title" name="title" type="text" class="form-control" formControlName="title">
+                                <label [for]="'title'+i"> {{ 'title' | translate }}</label>
+                                <input [id]="'title'+i" name="title" type="text" class="form-control" formControlName="title">
                               </div>
                               <div class="form-group">
-                                <label for="description"> {{ 'description' | translate }}</label>
-                                <input id="description" name="title" type="text" class="form-control" formControlName="description">
+                                <label [for]="'description'+i"> {{ 'description' | translate }}</label>
+                                <input [id]="'description'+i" name="title" type="text" class="form-control" formControlName="description">
                               </div>
                               <div class="form-group">
-                                <label for="companyName"> {{ 'company-name' | translate }}</label>
-                                <input id="companyName" name="title" type="text" class="form-control" formControlName="companyName">
+                                <label [for]="'companyName'+i"> {{ 'company-name' | translate }}</label>
+                                <input [id]="'companyName'+i" name="title" type="text" class="form-control" formControlName="companyName">
                               </div>
                               <div class="form-group ">
                                 <label for="startDate">{{ 'startDate' | translate }}</label>
@@ -330,10 +326,10 @@
                 <div class="form-group  text-right">
                   <div class="btn btn-default" (click)="back()">{{'back' | translate }}</div>
                 </div>
-
+<!-- 
                 <p>FormValue : {{addWorkerForm.value | json}}</p>
                 <p>FormStatus : {{addWorkerForm.status | json}}</p>
-                <p>FormErrors : {{addWorkerForm.valid | json}}</p>
+                <p>FormErrors : {{addWorkerForm.valid | json}}</p> -->
 
               </div>
             </div>

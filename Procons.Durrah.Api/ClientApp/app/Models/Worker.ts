@@ -37,6 +37,8 @@ export class Worker {
 
         public hobbies: string,
         public location: string,
+        public isNew: string,
+        public period: boolean,
         public experiences?: Experience[]
     ) { }
 }

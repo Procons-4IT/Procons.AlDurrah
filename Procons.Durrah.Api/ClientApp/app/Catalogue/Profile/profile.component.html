@@ -1,19 +1,19 @@
 ﻿<div role="tabpanel" class="tab-pane fade active in" id="tabProfile">
   <div class="row">
     <div class="col-md-8 col-sm-offset-2">
-    <h3>{{worker.workerName}}</h3>
+      <h3>{{worker.workerName}}</h3>
       <div class="row">
         <div class="col-sm-6">
           <table class="table">
             <tbody>
-                <tr>
-                    <td>{{'name' | translate}}</td>
-                    <td>{{worker.workerName}}</td>
-                  </tr>
-                  <tr>
-                      <td>{{'price' | translate}}</td>
-                      <td>{{worker.price}}</td>
-                  </tr>
+              <tr>
+                <td>{{'name' | translate}}</td>
+                <td>{{worker.workerName}}</td>
+              </tr>
+              <tr>
+                <td>{{'price' | translate}}</td>
+                <td>{{worker.price}}</td>
+              </tr>
               <tr>
                 <td>{{'birthday' | translate}}</td>
                 <td>{{worker.birthDate}}</td>
@@ -34,8 +34,8 @@
                     <li *ngFor="let language of worker.languages">
                       {{language.name}}
                     </li>
-                </ul>
-              </td>
+                  </ul>
+                </td>
               </tr>
               <tr>
                 <td>{{'work' | translate }}</td>
@@ -57,16 +57,40 @@
                 <td>{{'weight' | translate }}</td>
                 <td>{{worker.weight}}</td>
               </tr>
+              <tr>
+                <td>{{'Hobbies' | translate }}</td>
+                <td> {{worker.hobbies}}</td>
+              </tr>
+              <tr>
+                <td>{{'Period' | translate }}</td>
+                <td> {{worker.period}}</td>
+              </tr>
+              <tr>
+                <td>{{'Experience' | translate}}</td>
+                <td>
+                  <div class="box" *ngFor="let exp of transformXptoArray(worker.experiences)">
+                    <li>{{'title' | translate }} {{exp.title}}</li>
+                    <li>{{'companyName' | translate }} {{exp.companyName}}</li>
+                    <li>{{'description' | translate }} {{exp.description}}</li>
+                    <li>{{'startDate' | translate }} {{exp.startDate | momentDate}}</li>
+                    <li>{{'endDate' | translate }} {{exp.endDate | momentDate}}</li>
+                  </div>
+                </td>
+              </tr>
 
             </tbody>
           </table>
 
         </div>
         <div class="col-sm-6">
-          <p><img [src]="worker.photo" class="img-thumbnail img-responsive" width="100%" /></p>
+          <p>
+            <img [src]="worker.photo" class="img-thumbnail img-responsive" width="100%" />
+          </p>
         </div>
-        <p><input type="submit" value="{{'submit'| translate }}" [disabled]="!worker.status" (click)="Book()" class="btn btn-default"
-            id="bookProfile" /></p>
+        <p>
+          <input type="submit" value="{{'submit'| translate }}" [disabled]="!worker.status" (click)="Book()" class="btn btn-default"
+            id="bookProfile" />
+        </p>
         <div class="btn btn-default" (click)="GoBack()">{{'back' | translate }}</div>
       </div>
     </div>
