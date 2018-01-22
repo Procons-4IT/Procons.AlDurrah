@@ -88,8 +88,10 @@
   "addProfile": "اضافة ملف",
   "save": "حفظ",
   "update": "تعديل",
-  "clear":"مسح",
-  "workernamesearch":"بحث",
+  "clear": "مسح",
+  "workernamesearch": "بحث",
+  "location": "الموقع",
+  "hobbies": "الهوايات",
   "error": {
     "default": "Something Went Wrong",
     "notLoggedIn": "Please Login!",

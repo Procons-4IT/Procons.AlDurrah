@@ -127,7 +127,7 @@ describe('MyApiService', () => {
     })), 30000);
 
     it('createNewUser ', async(inject([ApiService], (service: ApiService) => {
-        let param: CreateNewUserParams = { "Email": "houssam.saghir1234@procons-4it.com", "UserName": "Rami1234", "Password": "1234", "FirstName": "Rami", "LastName": "Chalhoob", "CivilId": "1234" };
+        let param: CreateNewUserParams = { "Email": "houssam.saghir1234@procons-4it.com", "UserName": "Rami1234", "Password": "1234", "FirstName": "Rami", "LastName": "Chalhoob", "CivilId": "1234", "Mobile": "12345678" };
 
         service.createNewUser(param).subscribe(response => {
 

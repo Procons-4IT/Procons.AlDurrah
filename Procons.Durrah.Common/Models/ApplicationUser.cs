@@ -28,7 +28,7 @@
 
         public string UserType { get; set; }
         public string CardCode { get; set; }
-
+        public string Mobile { get; set; }
         public string Password { get; set; }
         public string CaptchaCode { get; set; }
 

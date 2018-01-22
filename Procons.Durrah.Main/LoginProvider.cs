@@ -31,7 +31,8 @@
                         LastName = result.CardName,
                         Email = result.EmailAddress,
                         UserType = result.CardType,
-                        CardCode = result.CardCode
+                        CardCode = result.CardCode,
+                        Mobile = result.Cellular
                     };
                 }
             }
@@ -112,6 +113,7 @@
                     oDoc.EmailAddress = user.Email;
                     oDoc.CardName = $"{user.FirstName} {user.LastName}";
                     oDoc.EmailAddress = user.Email;
+                    oDoc.Cellular = user.Mobile;
                     if (oDoc.Add() != 0)
                     {
                         var err = base.B1Company.GetLastErrorDescription();
