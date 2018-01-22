@@ -73,6 +73,11 @@
                                         <input type="email" required class="form-control" id="regemail" name="regemail" placeholder="{{'login.emailP' | translate }}"
                                             required="true" [(ngModel)]="newUser.Email" #email="ngModel" />
                                     </div>
+
+                                    <div class="form-group ">
+                                        <label for="mobile">{{ 'mobile' | translate }}</label>
+                                        <input required id="mobile" type="number" minlength="9" maxlength="9" class="form-control" name="mobile" [(ngModel)]="newUser.Mobile" />
+                                      </div>
                                     <div class="form-group">
                                         <re-captcha (captchaResponse)="captchaSubmitted($event)" site_key="6LfQ0jMUAAAAAIjaj2GJWeXajhX3GmCeYKTiYBRw"></re-captcha>
                                         <span class="help-block" *ngIf="!recaptchaToken"> {{'login.invalidCaptcha' | translate }}</span>
