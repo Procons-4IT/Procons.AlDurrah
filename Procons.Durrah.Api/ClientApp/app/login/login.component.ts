@@ -43,7 +43,8 @@ export class LoginComponent implements OnInit {
         UserName: "",
         CivilId: "",
         Password: "",
-        Email: ""
+        Email: "",
+        Mobile: ""
     };
 
     public resetParams: ResetPasswordParams = {
@@ -132,6 +133,10 @@ export class LoginComponent implements OnInit {
     }
 
     CreateUser() {
+        if(this.newUser.Mobile.length !== 8){
+            this.myModal.showErrorModal("error.mobileLength",true);
+            return;
+        }
         this.loading = true;
         this.newUser["CaptchaCode"] = this.recaptchaToken;
         this.myApi.createNewUser(this.newUser).subscribe(x => {

@@ -16,7 +16,7 @@ export interface PaymentRedirectParams {
 export interface SearchCriteriaParams {
     languages: NameValuePair[],
     age: NameValuePair[],
-    nationality: NameValuePair[],      
+    nationality: NameValuePair[],
     gender: NameValuePair[],
     maritalStatus: NameValuePair[],
     workerTypes: NameValuePair[],
@@ -47,6 +47,7 @@ export interface CreateNewUserParams {
     CivilId: string,
     Password: string,
     Email: string,
+    Mobile: string,
     "g-recaptcha-response"?: string
 }
 
