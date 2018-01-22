@@ -24,7 +24,7 @@
                   <div class="form-group">
                     <label for="birthDate">{{ 'birthDate' | translate }}</label>
                     <div>
-                      <p-calendar showIcon="true" name="birthDate" dateFormat="mm/dd/yy" formControlName="birthDate"></p-calendar>
+                      <p-calendar showIcon="true" name="birthDate" dateFormat="dd/mm/yy" formControlName="birthDate"></p-calendar>
                     </div>
                   </div>
 
@@ -74,9 +74,9 @@
                     </select>
                   </div>
                   <div class="form-group">
-                    <label for="isKuwait">{{'isKuwait' | translate}}</label>
-                    <p-checkbox name="isKuwait" [formControl]="addWorkerForm.get('isKuwait')" binary="true"></p-checkbox>
-                    <div *ngIf="isFromKuwait">
+                    <label for="isNew">{{'isNew' | translate}}</label>
+                    <p-checkbox name="isNew" [formControl]="addWorkerForm.get('isNew')" binary="true"></p-checkbox>
+                    <div *ngIf="!isNew">
                       <label for="period">{{ 'period' | translate }}</label>
                       <div>
                         <input required id="period" type="number" class="form-control" name="" formControlName="period" />
@@ -162,7 +162,7 @@
                   <div class="form-group ">
                     <label for="passIssueDate">{{ 'passportIssueDate' | translate }}</label>
                     <div>
-                      <p-calendar showIcon="true" formControlName="passportIssDate" name="passportIssueDate" dateFormat="mm/dd/yy"></p-calendar>
+                      <p-calendar showIcon="true" formControlName="passportIssDate" name="passportIssueDate" dateFormat="dd/mm/yy"></p-calendar>
                     </div>
                   </div>
 
@@ -176,7 +176,7 @@
                   <div class="form-group ">
                     <label for="passExpiry">{{ 'passportExpiry' | translate }}</label>
                     <div>
-                      <p-calendar showIcon="true" formControlName="passportExpDate" name="passportExpiry" dateFormat="mm/dd/yy"></p-calendar>
+                      <p-calendar showIcon="true" formControlName="passportExpDate" name="passportExpiry" dateFormat="dd/mm/yy"></p-calendar>
                     </div>
 
                   </div>
@@ -216,13 +216,13 @@
                               <div class="form-group ">
                                 <label for="startDate">{{ 'startDate' | translate }}</label>
                                 <div>
-                                  <p-calendar showIcon="true" name="startDate" dateFormat="mm/dd/yy" formControlName="startDate"></p-calendar>
+                                  <p-calendar showIcon="true" name="startDate" dateFormat="dd/mm/yy" formControlName="startDate"></p-calendar>
                                 </div>
                               </div>
                               <div class="form-group">
                                 <label for="endDate">{{ 'endDate' | translate }}</label>
                                 <div>
-                                  <p-calendar showIcon="true" name="endDate" dateFormat="mm/dd/yy" formControlName="endDate"></p-calendar>
+                                  <p-calendar showIcon="true" name="endDate" dateFormat="dd/mm/yy" formControlName="endDate"></p-calendar>
                                 </div>
                               </div>
                             </div>
@@ -326,10 +326,11 @@
                 <div class="form-group  text-right">
                   <div class="btn btn-default" (click)="back()">{{'back' | translate }}</div>
                 </div>
-<!-- 
+
                 <p>FormValue : {{addWorkerForm.value | json}}</p>
                 <p>FormStatus : {{addWorkerForm.status | json}}</p>
-                <p>FormErrors : {{addWorkerForm.valid | json}}</p> -->
+                <p>FormValid : {{addWorkerForm.valid | json}}</p>
+
 
               </div>
             </div>

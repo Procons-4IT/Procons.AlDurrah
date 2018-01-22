@@ -19,6 +19,8 @@ import * as moment from 'moment';
     providers: [DatePipe, MomentDatePipe]
 })
 //mobile # [0-9]{8}
+// TODO: Fix the dateFormat's Issue
+// FIx the NAN and make sure that we are sending the correct format => Date picker and all dates should be DD/MM/YYYYY (fix that for all of them!)
 export class AddProfileComponent implements OnInit {
     @Input() worker;
     @Input() searchCriterias: SearchCriteriaParams;
@@ -53,8 +55,8 @@ export class AddProfileComponent implements OnInit {
 
 
     addWorkerForm: FormGroup;
-    get isFromKuwait(): Boolean {
-        return this.addWorkerForm.get('isKuwait').value;
+    get isNew(): Boolean {
+        return this.addWorkerForm.get('isNew').value;
     }
     isAddMode: Boolean = true;
     ngOnInitNewDepricated(): void {
@@ -116,28 +118,32 @@ export class AddProfileComponent implements OnInit {
             this.searchCriterias.languages = this.searchCriterias.languages.map(nameValuePair => { return { "label": nameValuePair.name, "value": nameValuePair.value } }) as any;
         }
     }
+    //Weird Behaviour Convert To MM-DD-YYYY from server returns this format
+    momentToDate(str) {
+        return moment(str, 'MM-DD-YYYY').toDate() as any;
+    }
+    convertXP(xp, stringToDate = true): Experience[] {
+        let dateConversion = stringToDate ? this.momentToDate : this.formatDate;
+        let perXP = (xp, dateConversion) => {
+            return { title: xp.title, description: xp.description, companyName: xp.companyName, startDate: dateConversion(xp.startDate.toString()), endDate: dateConversion(xp.endDate.toString()) }
+        }
+        if (xp) {
+            if (Array.isArray(xp)) {
+                return xp.map(p => perXP(p, dateConversion));
+            } else {
+                return [perXP(xp,dateConversion)];
+            }
+        } else {
+            return [new Experience()];
+        }
+    }
     fillFormWithWorkerData(existingWorker: Worker) {
         //this.state.worker.birthDate = moment(this.state.worker.birthDate, 'MM-DD-YYYY').toDate() as any;
-        let momentToDate = str => moment(str, 'MM-DD-YYYY').toDate() as any;
         //Convert from Server Data Object to FormData Array or Array to Array.
-        let handleXP = function (xp): Experience[] {
-            let perXP = xp => {
-                return { title: xp.title, description: xp.description, companyName: xp.companyName, startDate: momentToDate(xp.startDate), endDate: momentToDate(xp.endDate) }
-            }
-            if (xp) {
-                if (Array.isArray(xp)) {
-                    return xp.map(p => perXP(p));
-                } else {
-                    return [perXP(xp)];
-                }
-            } else {
-                return [new Experience()];
-            }
-        };
         const workerData =
             {
                 workerName: existingWorker.workerName,
-                birthDate: momentToDate(existingWorker.birthDate),
+                birthDate: this.momentToDate(existingWorker.birthDate),
                 gender: existingWorker.gender,
                 nationality: existingWorker.nationality,
                 religion: existingWorker.religion,
@@ -153,19 +159,17 @@ export class AddProfileComponent implements OnInit {
                 code: existingWorker.code, //not required but not letting me proceed without it
                 video: existingWorker.video,
                 passportNumber: existingWorker.passportNumber,
-                passportIssDate: momentToDate(existingWorker.passportIssDate),
+                passportIssDate: this.momentToDate(existingWorker.passportIssDate),
                 passportPOIssue: existingWorker.passportPoIssue,
-                passportExpDate: momentToDate(existingWorker.passportExpDate),
+                passportExpDate: this.momentToDate(existingWorker.passportExpDate),
                 civilId: existingWorker.civilId,
                 hobbies: existingWorker.hobbies,
                 location: existingWorker.location,
                 period: existingWorker.period,
-                isFromKuwait: existingWorker.isNew === "Y" ? false : true
-                // experience: handleXP(existingWorker.experiences)
-                // experience: this.formBuilder.array([]), existingWorker.experiences.map(xp => { return { title: xp.title, description: xp.description, companyName: xp.companyName, startDate: momentToDate(xp.startDate), endDate: momentToDate(xp.endDate) } }),
+                isNew: existingWorker.isNew === "Y" ? true : false
             };
         //Add Experience Array to Form
-        handleXP(existingWorker.experiences).forEach(xp => {
+        this.convertXP(existingWorker.experiences).forEach(xp => {
             this.experience.push(this.formBuilder.group(xp));
         })
         this.addWorkerForm.patchValue(workerData);
@@ -196,7 +200,7 @@ export class AddProfileComponent implements OnInit {
                 civilId: ['', Validators.required],
                 hobbies: [''],
                 location: [''],
-                isKuwait: [false],
+                isNew: [true],
                 period: [0],
                 experience: this.formBuilder.array([]),
             };
@@ -341,12 +345,13 @@ export class AddProfileComponent implements OnInit {
         formData.append('Code', formValues.code);
         formData.append('Hobbies', formValues.hobbies);
         formData.append('Location', formValues.location);
+        formValues.experience = this.convertXP(formValues.experience, false);
         formData.append('Experiences', JSON.stringify(formValues.experience));
-        formData.append('isNew', this.isFromKuwait ? 'N' : 'Y');
+        formData.append('isNew', this.isNew ? 'Y' : 'N');
 
 
         let period = 0;
-        if (this.isFromKuwait) {
+        if (!this.isNew) {
             period = formValues.period
         }
         formData.append('Period', period.toString());
@@ -381,7 +386,9 @@ export class AddProfileComponent implements OnInit {
 
 
     formatDate(dateValue): string {
-        return this.momentDatePipe.transform(dateValue);
+        // return this.momentDatePipe.transform(dateValue);
+        return moment(dateValue).format("DD-MM-YYYY");
+
     }
 
     createEmptyWorkerState() {
