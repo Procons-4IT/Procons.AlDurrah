@@ -141,6 +141,11 @@
   <data name="KnetEmailConfirmation" xml:space="preserve">
     <value>&lt;html&gt;
 	&lt;body&gt;
+ &lt;p&gt;
+      	&lt;a href="http://www.al-durra.com.kw"&gt;
+		&lt;img src="Assets\src\app\images\DurraLogo.jpg" alt="Al-Durra"&gt;
+		&lt;/a&gt;
+      &lt;/p&gt;
 		&lt;p&gt;
 		  A transaction has been successfully submitted with the following informaiton: 
 		  &lt;div&gt;Item Code : [[ItemCode]] &lt;div&gt;
@@ -165,6 +170,11 @@
   <data name="TransactionCancellationBody" xml:space="preserve">
     <value>&lt;html&gt;
 	&lt;body&gt;
+      &lt;p&gt;
+      	&lt;a href="http://www.al-durra.com.kw"&gt;
+		&lt;img src="Assets\src\app\images\DurraLogo.jpg" alt="Al-Durra"&gt;
+		&lt;/a&gt;
+      &lt;/p&gt;
 		&lt;p&gt;
 		  A transaction has been cancelled informaiton: 
 		  &lt;div&gt;Item Code : [[ItemCode]] &lt;div&gt;
@@ -179,7 +189,13 @@
   <data name="TransactionErrorBody" xml:space="preserve">
     <value>&lt;html&gt;
 	&lt;body&gt;
-		&lt;p&gt;
+ &lt;p&gt;
+      	&lt;a href="http://www.al-durra.com.kw"&gt;
+		&lt;img src="Assets\src\app\images\DurraLogo.jpg" alt="Al-Durra"&gt;
+		&lt;/a&gt;
+      &lt;/p&gt;
+		
+&lt;p&gt;
 		  A transaction error has been occured: 
 		  &lt;div&gt;Item Code : [[ItemCode]] &lt;div&gt;
 		  &lt;div&gt;Amount: [[TransactionAmount]] KWD&lt;div&gt; 
@@ -192,7 +208,7 @@
 &lt;/html&gt;</value>
   </data>
   <data name="Transaction_Cancelled" xml:space="preserve">
-    <value>Transaction Cancelled !</value>
+    <value>Transaction Cancelled</value>
   </data>
   <data name="Transaction_Completed" xml:space="preserve">
     <value>Transaction Completed</value>

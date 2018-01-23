@@ -126,6 +126,11 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to &lt;html&gt;
         ///	&lt;body&gt;
+        /// &lt;p&gt;
+        ///      	&lt;a href=&quot;http://www.al-durra.com.kw&quot;&gt;
+        ///		&lt;img src=&quot;Assets\src\app\images\DurraLogo.jpg&quot; alt=&quot;Al-Durra&quot;&gt;
+        ///		&lt;/a&gt;
+        ///      &lt;/p&gt;
         ///		&lt;p&gt;
         ///		  A transaction has been successfully submitted with the following informaiton: 
         ///		  &lt;div&gt;Item Code : [[ItemCode]] &lt;div&gt;
@@ -133,10 +138,7 @@ namespace Resources {
         ///		  &lt;div&gt;Reference ID: [[ReferenceID]]&lt;div&gt; 
         ///		  &lt;div&gt;Payment ID: [[PaymentID]] &lt;div&gt; 
         ///		  &lt;div&gt;Merchant track ID: [[MerchantTrackID]] &lt;div&gt; 
-        ///&lt;div&gt;For help please contact: 00989987655&lt;/div&gt;
-        ///		&lt;/p&gt;
-        ///	&lt;body&gt;
-        ///&lt;/html&gt;.
+        ///&lt;div&gt;For help please contact:  [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string KnetEmailConfirmation {
             get {
@@ -174,6 +176,11 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to &lt;html&gt;
         ///	&lt;body&gt;
+        ///      &lt;p&gt;
+        ///      	&lt;a href=&quot;http://www.al-durra.com.kw&quot;&gt;
+        ///		&lt;img src=&quot;Assets\src\app\images\DurraLogo.jpg&quot; alt=&quot;Al-Durra&quot;&gt;
+        ///		&lt;/a&gt;
+        ///      &lt;/p&gt;
         ///		&lt;p&gt;
         ///		  A transaction has been cancelled informaiton: 
         ///		  &lt;div&gt;Item Code : [[ItemCode]] &lt;div&gt;
@@ -194,7 +201,13 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to &lt;html&gt;
         ///	&lt;body&gt;
-        ///		&lt;p&gt;
+        /// &lt;p&gt;
+        ///      	&lt;a href=&quot;http://www.al-durra.com.kw&quot;&gt;
+        ///		&lt;img src=&quot;Assets\src\app\images\DurraLogo.jpg&quot; alt=&quot;Al-Durra&quot;&gt;
+        ///		&lt;/a&gt;
+        ///      &lt;/p&gt;
+        ///		
+        ///&lt;p&gt;
         ///		  A transaction error has been occured: 
         ///		  &lt;div&gt;Item Code : [[ItemCode]] &lt;div&gt;
         ///		  &lt;div&gt;Amount: [[TransactionAmount]] KWD&lt;div&gt; 
@@ -204,7 +217,7 @@ namespace Resources {
         ///&lt;div&gt;For help please contact: 00989987655&lt;/div&gt;
         ///		&lt;/p&gt;
         ///	&lt;body&gt;
-        ///&lt;/html&gt;.
+        ///&lt;/ [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string TransactionErrorBody {
             get {
@@ -213,7 +226,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Transaction Cancelled !.
+        ///   Looks up a localized string similar to Transaction Cancelled.
         /// </summary>
         internal static string Transaction_Cancelled {
             get {

@@ -50,7 +50,7 @@
 
                   <div class="form-group">
                     <label for="location">{{ 'location' | translate }}</label>
-                    <input name="location" id="location" type="text" class="form-control" placeholder="location" formControlName="location" />
+                    <input name="location" id="location" type="text" class="form-control" formControlName="location" />
                   </div>
 
                   <div class="form-group">
@@ -189,7 +189,7 @@
 
                   <div class="form-group ">
                     <label for="hobbies">{{ 'hobbies' | translate }}</label>
-                    <input name="hobbies" id="hobbies" type="text" class="form-control" placeholder="hobbies" formControlName="hobbies" />
+                    <input name="hobbies" id="hobbies" type="text" class="form-control" formControlName="hobbies" />
                   </div>
 
 
@@ -292,7 +292,7 @@
                     </p-fileUpload>
                   </div>
                   <div class="form-group ">
-                    <label for="licenseUpload">license</label>
+                    <label for="licenseUpload">{{ 'license' | translate }}</label>
                     <p-fileUpload id="licenseUpload" name="myfile3[]" customUpload="true" [multiple]="false" (onSelect)="deleteServerFile('LICENSE')"
                       #licenseUpload>
                       <ng-template pTemplate="content">
@@ -327,9 +327,9 @@
                   <div class="btn btn-default" (click)="back()">{{'back' | translate }}</div>
                 </div>
 
-                <p>FormValue : {{addWorkerForm.value | json}}</p>
+                <!--<p>FormValue : {{addWorkerForm.value | json}}</p>
                 <p>FormStatus : {{addWorkerForm.status | json}}</p>
-                <p>FormValid : {{addWorkerForm.valid | json}}</p>
+                <p>FormValid : {{addWorkerForm.valid | json}}</p>-->
 
 
               </div>
