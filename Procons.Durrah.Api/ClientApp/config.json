@@ -1,5 +1,5 @@
 {
-  "baseUrl": "https://rdsh.proconscloud.com:4545/",
+  "baseUrl": "https://rdsh.proconscloud.com:4545",
   "getSearchCriteriaUrl": "/api/Workers/GetSearchLookups",
   "getWorkersUrl": "/api/Workers/GetWorkers",
   "getAgentWorkerUrl":"/api/Workers/GetAgentWorkers",

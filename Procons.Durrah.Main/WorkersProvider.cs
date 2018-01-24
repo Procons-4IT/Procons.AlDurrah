@@ -47,7 +47,7 @@
                 }
             }
 
-            
+
             if (worker.Experiences != null)
             {
                 var expDataCollection = oGeneralData.Child("EXPERIENCE");
@@ -79,7 +79,7 @@
             oGeneralData.SetProperty("U_Nationality", worker.Nationality);
             oGeneralData.SetProperty("U_Passport", string.Concat(attachmentPath, passportCopy));
             oGeneralData.SetProperty("U_PassportPoIssue", worker.PassportPoIssue);
-            oGeneralData.SetProperty("U_PassportIssDate", DateTime.ParseExact(worker.PassportIssDate, "dd-MM-yyyy", null) );
+            oGeneralData.SetProperty("U_PassportIssDate", DateTime.ParseExact(worker.PassportIssDate, "dd-MM-yyyy", null));
             oGeneralData.SetProperty("U_PassportExpDate", DateTime.ParseExact(worker.PassportExpDate, "dd-MM-yyyy", null));
             oGeneralData.SetProperty("U_PassportNumber", worker.PassportNumber);
             oGeneralData.SetProperty("U_Photo", string.Concat(attachmentPath, photo));
@@ -334,7 +334,7 @@
                 var databaseBame = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.DatabaseName);
 
                 var query = new StringBuilder();
-                query.Append(@"SELECT ""A"".""Code"",""A"".""U_WorkerName"",""A"".""Name"",""U_ItemCode"",""U_WorkerType"",""U_Serial"",""U_Agent"",""U_Age"",");
+                query.Append(@"SELECT DISTINCT ""A"".""Code"",""A"".""U_WorkerName"",""A"".""Name"",""U_ItemCode"",""U_WorkerType"",""U_Serial"",""U_Agent"",""U_Age"",");
                 query.Append(@"""U_BirthDate"",""U_Gender"",""D"".""Name"" AS ""U_Nationality"",""D"".""U_NAME"" AS ""U_Nationality_AR"",""R"".""Name"" AS ""U_Religion"",""R"".""U_NAME"" AS ""U_Religion_AR"",");
                 query.Append(@"""U_Photo"",""U_License"", ""U_Weight"",""U_Height"",""E"".""Name"" AS ""U_Education"",""E"".""U_NAME"" AS ""U_Education_AR"",");
                 query.Append(@"""U_Passport"",""U_Video"",""U_PassportNumber"",""U_PassportIssDate"",""U_PassportExpDate"",""U_PassportPoIssue"",""U_Price"",""U_Salary"",""U_CivilId"",""U_Status"",");
@@ -380,7 +380,7 @@
                         var title = MapField<string>(experienceRow["U_Title"]);
                         var description = MapField<string>(experienceRow["U_Description"]);
                         var companyName = MapField<string>(experienceRow["U_CompanyName"]);
-                        experiences.Add(new Experience{ WorkerID = workerId, StartDate = startDate, EndDate = endDate, Title = title, Description = description, CompanyName = companyName});
+                        experiences.Add(new Experience { WorkerID = workerId, StartDate = startDate, EndDate = endDate, Title = title, Description = description, CompanyName = companyName });
                     }
 
                     var age = DateTime.Now.Year - MapField<DateTime>(drow["U_BirthDate"]).Year;
@@ -913,7 +913,7 @@
                 salesOrder.UserFields.Fields.Item("U_TrackID").Value = payment.TrackID == null ? string.Empty : payment.TrackID;
                 salesOrder.UserFields.Fields.Item("U_TranID").Value = payment.TranID == null ? string.Empty : payment.TranID;
                 salesOrder.UserFields.Fields.Item("U_Ref").Value = payment.Ref == null ? string.Empty : payment.Ref;
-               
+
                 string workerCode = salesOrder.UserFields.Fields.Item("U_WorkerID").Value.ToString();
                 records.DoQuery(string.Format($@"UPDATE ""@WORKERS"" SET ""U_Status"" = '1' WHERE ""Code"" = '{workerCode}'"));
 
@@ -1139,7 +1139,7 @@
                         MapField<string>(row["Code"])));
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Utilities.LogException(ex);
             }
