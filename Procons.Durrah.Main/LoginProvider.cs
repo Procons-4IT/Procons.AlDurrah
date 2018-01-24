@@ -32,7 +32,8 @@
                         Email = result.EmailAddress,
                         UserType = result.CardType,
                         CardCode = result.CardCode,
-                        Mobile = result.Cellular
+                        Mobile = result.Cellular,
+                        CivilId = result.AdditionalID
                     };
                 }
             }
@@ -114,6 +115,7 @@
                     oDoc.CardName = $"{user.FirstName} {user.LastName}";
                     oDoc.EmailAddress = user.Email;
                     oDoc.Cellular = user.Mobile;
+                    oDoc.AdditionalID = user.CivilId;
                     if (oDoc.Add() != 0)
                     {
                         var err = base.B1Company.GetLastErrorDescription();
@@ -121,7 +123,7 @@
                         throw new Exception(err);
                     }
                     else
-                        identityResult = AspNet.IdentityResult.Success; ;
+                        identityResult = AspNet.IdentityResult.Success;
                 }
                 else
                     identityResult = new AspNet.IdentityResult("Username or Email are already in use!");
