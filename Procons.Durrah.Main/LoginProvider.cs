@@ -104,7 +104,7 @@
                 oDoc = base.B1Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oBusinessPartners) as SAPbobsCOM.BusinessPartners;
                 oRecords = base.B1Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.BoRecordset) as SAPbobsCOM.Recordset;
 
-                oRecords.DoQuery($@"SELECT ""CardCode"" FROM OCRD WHERE ""U_UserName"" = '{user.UserName}' OR ""E_Mail"" = '{user.Email}'");
+                oRecords.DoQuery($@"SELECT ""CardCode"" FROM ""OCRD"" WHERE ""U_UserName"" = '{user.UserName}' OR ""E_Mail"" = '{user.Email}' OR ""Cellular"" = '{user.Mobile}'");
                 if (oRecords.RecordCount == 0)
                 {
                     oDoc.CardType = SAPbobsCOM.BoCardTypes.cCustomer;

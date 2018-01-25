@@ -42,6 +42,7 @@
             List<LookupItem> gender = new List<LookupItem>() { new LookupItem(Utilities.GetResourceValue("M"), "M"), new LookupItem(Utilities.GetResourceValue("F"), "F") };
             List<LookupItem> maritalStatus = workersFacade.GetMaritalStatusLookups();
             List<LookupItem> workerTypes = workersFacade.GetWorkersTypesLookups();
+            List<LookupItem> countries = workersFacade.GetCountriesLookups();
             result.Add("Languages", languages);
             result.Add("Age", age);
             result.Add("Education", education);
@@ -50,7 +51,7 @@
             result.Add("Gender", gender);
             result.Add("MaritalStatus", maritalStatus);
             result.Add("WorkerTypes", workerTypes);
-
+            result.Add("Country", countries);
             return Ok(result);
         }
 

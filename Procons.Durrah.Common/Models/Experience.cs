@@ -14,5 +14,7 @@ namespace Procons.Durrah.Common.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public string CompanyName { get; set; }
+        public string Country { get; set; }
+        public string Location { get; set; }
     }
 }

@@ -60,6 +60,8 @@
                     newExperience.SetProperty("U_Title", e.Title);
                     newExperience.SetProperty("U_Description", e.Description);
                     newExperience.SetProperty("U_CompanyName", e.CompanyName);
+                    newExperience.SetProperty("U_Location", e.Location);
+                    newExperience.SetProperty("U_Country", e.Country);
                 }
             }
 
@@ -157,6 +159,8 @@
                         newExperience.SetProperty("U_Title", e.Title);
                         newExperience.SetProperty("U_Description", e.Description);
                         newExperience.SetProperty("U_CompanyName", e.CompanyName);
+                        newExperience.SetProperty("U_Location", e.Location);
+                        newExperience.SetProperty("U_Country", e.Country);
                     }
                 }
                 Trace.WriteLine($"[PR] Condition Done...");
@@ -338,7 +342,7 @@
                 query.Append(@"""U_BirthDate"",""U_Gender"",""D"".""Name"" AS ""U_Nationality"",""D"".""U_NAME"" AS ""U_Nationality_AR"",""R"".""Name"" AS ""U_Religion"",""R"".""U_NAME"" AS ""U_Religion_AR"",");
                 query.Append(@"""U_Photo"",""U_License"", ""U_Weight"",""U_Height"",""E"".""Name"" AS ""U_Education"",""E"".""U_NAME"" AS ""U_Education_AR"",");
                 query.Append(@"""U_Passport"",""U_Video"",""U_PassportNumber"",""U_PassportIssDate"",""U_PassportExpDate"",""U_PassportPoIssue"",""U_Price"",""U_Salary"",""U_CivilId"",""U_Status"",");
-                query.Append($@"""B"".""Name"" AS ""U_MaritalStatus"",""B"".""U_NAME"" AS ""U_MaritalStatus_AR"", ""U_Hobbies"", ""U_Location"", ""U_IsNew"", ""U_Period""");
+                query.Append($@"""B"".""Name"" AS ""U_MaritalStatus"",""B"".""U_NAME"" AS ""U_MaritalStatus_AR"", ""U_Hobbies"", ""A"".""U_Location"", ""U_IsNew"", ""U_Period""");
                 query.Append($@" FROM ""{databaseBame}"".""@WORKERS"" as ""A""");
 
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@MARITALSTATUS"" AS ""B"" ON ""A"".""U_MaritalStatus"" = ""B"".""Code""");
@@ -346,6 +350,7 @@
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@RELIGION"" AS ""R"" ON ""A"".""U_Religion"" = ""R"".""Code""");
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@EDUCATION"" AS ""E"" ON ""A"".""U_Education"" = ""E"".""Code""");
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@WORKERLNGS"" AS ""L"" ON ""L"".""Code"" = ""A"".""Code""");
+                query.Append($@" INNER JOIN ""{databaseBame}"".""@EXPERIENCE"" AS ""EX"" ON ""EX"".""Code"" = ""A"".""Code""");
 
                 if (status == null)
                     query.Append($@"WHERE 1 = 1 ");
@@ -380,7 +385,9 @@
                         var title = MapField<string>(experienceRow["U_Title"]);
                         var description = MapField<string>(experienceRow["U_Description"]);
                         var companyName = MapField<string>(experienceRow["U_CompanyName"]);
-                        experiences.Add(new Experience { WorkerID = workerId, StartDate = startDate, EndDate = endDate, Title = title, Description = description, CompanyName = companyName });
+                        var location = MapField<string>(experienceRow["U_Location"]);
+                        var country = MapField<string>(experienceRow["U_Country"]);
+                        experiences.Add(new Experience { WorkerID = workerId, StartDate = startDate, EndDate = endDate, Title = title, Description = description, CompanyName = companyName, Country = country, Location = location });
                     }
 
                     var age = DateTime.Now.Year - MapField<DateTime>(drow["U_BirthDate"]).Year;
@@ -647,7 +654,7 @@
                 query.Append(@"""U_BirthDate"",""U_Gender"",""D"".""Code"" AS ""U_NationalityCode"",""D"".""Name"" AS ""U_Nationality"",""D"".""U_NAME"" AS ""U_Nationality_AR"",""R"".""Code"" AS ""U_ReligionCode"",""R"".""Name"" AS ""U_Religion"",""R"".""U_NAME"" AS ""U_Religion_AR"",");
                 query.Append(@"""U_Photo"",""U_License"",""U_Weight"",""U_Height"",""E"".""Name"" AS ""U_Education"",""E"".""U_NAME"" AS ""U_Education_AR"",");
                 query.Append(@"""U_Passport"",""U_Video"",""U_PassportNumber"",""U_PassportIssDate"",""U_PassportExpDate"",""U_PassportPoIssue"",""U_Price"", ""U_Salary"",""U_CivilId"",""U_Status"",");
-                query.Append($@"""B"".""Code"" AS ""U_MaritalStatusCode"",""B"".""Name"" AS ""U_MaritalStatus"",""B"".""U_NAME"" AS ""U_MaritalStatus_AR"", ""U_Hobbies"", ""U_Location"", ""U_IsNew"", ""U_Period""");
+                query.Append($@"""B"".""Code"" AS ""U_MaritalStatusCode"",""B"".""Name"" AS ""U_MaritalStatus"",""B"".""U_NAME"" AS ""U_MaritalStatus_AR"", ""U_Hobbies"", ""A"".""U_Location"", ""U_IsNew"", ""U_Period""");
                 query.Append($@" FROM ""{databaseBame}"".""@WORKERS"" as ""A""");
 
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@MARITALSTATUS"" AS ""B"" ON ""A"".""U_MaritalStatus"" = ""B"".""Code""");
@@ -681,7 +688,9 @@
                         var title = MapField<string>(experienceRow["U_Title"]);
                         var description = MapField<string>(experienceRow["U_Description"]);
                         var companyName = MapField<string>(experienceRow["U_CompanyName"]);
-                        experiences.Add(new Experience { WorkerID = workerId, StartDate = startDate, EndDate = endDate, Title = title, Description = description, CompanyName = companyName });
+                        var location = MapField<string>(experienceRow["U_Location"]);
+                        var country = MapField<string>(experienceRow["U_Country"]);
+                        experiences.Add(new Experience { WorkerID = workerId, StartDate = startDate, EndDate = endDate, Title = title, Description = description, CompanyName = companyName, Country = country, Location = location });
                     }
 
                     var age = DateTime.Now.Year - MapField<DateTime>(drow["U_BirthDate"]).Year;
@@ -1332,6 +1341,30 @@
                 {
                     var ids = String.Join(",", wrk.Languages);
                     queryBuilder.Append($" AND \"L\".\"U_VALUE\" IN ({ids})");
+                }
+                if (wrk.Location != null)
+                {
+                    queryBuilder.Append($" AND UPPER(\"U_Location\") LIKE '%{wrk.Location.ToUpper()}%'");
+                }
+                if (wrk.Hobbies != null)
+                {
+                    queryBuilder.Append($" AND UPPER(\"U_Hobbies\") LIKE '%{wrk.Hobbies.ToUpper()}%'");
+                }
+                if (wrk.IsNew != null)
+                {
+                    queryBuilder.Append($" AND \"U_IsNew\" = '{wrk.IsNew}'");
+                }
+                if (wrk.Period != null && wrk.Period > 0)
+                {
+                    queryBuilder.Append($" AND \"U_Period\" = '{wrk.Period}'");
+                }
+                if (wrk.YearsOfExperience != null && wrk.YearsOfExperience > 0)
+                {
+                    queryBuilder.Append($" AND (YEAR(\"EX\".\"U_EndDate\") - YEAR(\"EX\".\"U_StartDate\")) = '{wrk.YearsOfExperience}'");
+                }
+                if (wrk.Country != null)
+                {
+                    queryBuilder.Append($" AND (\"EX\".\"U_Country\") = '{wrk.Country}'");
                 }
                 return queryBuilder.ToString();
             }

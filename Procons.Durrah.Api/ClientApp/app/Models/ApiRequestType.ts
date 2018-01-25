@@ -21,7 +21,13 @@ export interface SearchCriteriaParams {
     maritalStatus: NameValuePair[],
     workerTypes: NameValuePair[],
     education: NameValuePair[],
-    religion: NameValuePair[]
+    religion: NameValuePair[],
+    location: string,
+    hobbies: string,
+    isNew: string,
+    period: number,
+    country: NameValuePair[],
+    yearsOfExperience: number
 }
 
 export interface NameValuePair {
