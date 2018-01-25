@@ -6,6 +6,19 @@
             <p>الرجاء اختيار عامل واحد</p>
         </div>
     </div>
+    <!-- Advanced Search -->
+    <button (click)="toggleAdvanced()">
+        Advanced
+      </button>
+      <div *ngIf="showSearchForm">
+        <div class="row">
+          <div class="form-group  col-sm-6 ations">
+            <label for="workerNameSearch">{{ 'workernamesearch' | translate }}</label>
+            <input required id="workerNameSearch" (input)="filterByWorkerName($event.target.value)" class="form-control" name="workerName">
+          </div>
+        </div>
+      </div>
+    <!-- Table Result -->
     <div class="row">
         <div class="col-md-1"></div>
         <div class="col-md-10">
@@ -20,7 +33,7 @@
                         </div>
                     </ng-template>
                 </p-column>
-                <p-column field="price" header="{{'price' | translate }}"></p-column>
+                <p-column filter="true" field="price" header="{{'price' | translate }}"></p-column>
                 <p-column field="salary" header="{{ 'salary' | translate }}"></p-column>
                 <p-column field="age" header="{{'age' | translate }}"></p-column>
                 <p-column field="name" header="{{ 'type'| translate }}"></p-column>
