@@ -15,18 +15,22 @@ export class SearchResultsComponent implements OnInit {
   @Output() onBack = new EventEmitter<any>();
 
   public showVideoModal: boolean = false;
+  showSearchForm = false;
+
   public videoUrl;
+  public completeListOfWorkers;
 
   constructor(public sanitizer: DomSanitizer, public myModal: ProconsModalSerivce) { }
 
   ngOnInit() {
-    
+    this.completeListOfWorkers = Object.assign([], this.workers);
+
   }
   GoBack() {
     this.onBack.emit();
   }
   GoToProfile(selectedWorker: Worker) {
-    
+
     this.onSelectedWorker.emit(selectedWorker);
   }
   GetAvailableCSS(worker: Worker) {
@@ -38,11 +42,23 @@ export class SearchResultsComponent implements OnInit {
     };
   }
   public openRequestedPopup(url) {
-    
+
     this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
     this.showVideoModal = true;
   }
 
+  //If you want to add more than one searchField than traverse the entire inputs and reset if they are all empty
+  //If one is empty of many then don't apply filter
+  filterByWorkerName(workerName) {
+    if (workerName) {
+      this.workers = this.completeListOfWorkers.filter(worker => { return worker["workerName"].toLowerCase().includes(workerName.toLowerCase()); });
+    } else {
+      this.workers = this.completeListOfWorkers;
+    }
+  }
 
+  toggleAdvanced() {
+    this.showSearchForm = !this.showSearchForm;
+  }
 
 }
