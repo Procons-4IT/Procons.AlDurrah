@@ -55,8 +55,10 @@
                 {
                     var newExperience = expDataCollection.Add();
                     newExperience.SetProperty("U_WorkerID", worker.PassportNumber);
-                    newExperience.SetProperty("U_StartDate", e.StartDate);
-                    newExperience.SetProperty("U_EndDate", e.EndDate);
+                    if (e.StartDate != null)
+                        newExperience.SetProperty("U_StartDate", e.StartDate);
+                    if (e.EndDate != null)
+                        newExperience.SetProperty("U_EndDate", e.EndDate);
                     newExperience.SetProperty("U_Title", e.Title);
                     newExperience.SetProperty("U_Description", e.Description);
                     newExperience.SetProperty("U_CompanyName", e.CompanyName);
@@ -154,8 +156,10 @@
                     {
                         var newExperience = expDataCollection.Add();
                         newExperience.SetProperty("U_WorkerID", worker.PassportNumber);
-                        newExperience.SetProperty("U_StartDate", e.StartDate);
-                        newExperience.SetProperty("U_EndDate", e.EndDate);
+                        if(e.StartDate !=null)
+                            newExperience.SetProperty("U_StartDate", e.StartDate);
+                        if (e.EndDate != null)
+                            newExperience.SetProperty("U_EndDate", e.EndDate);
                         newExperience.SetProperty("U_Title", e.Title);
                         newExperience.SetProperty("U_Description", e.Description);
                         newExperience.SetProperty("U_CompanyName", e.CompanyName);
@@ -967,6 +971,23 @@
             return isAvailable;
         }
 
+        public List<LookupItem> GetAllCountries()
+        {
+            var databaseBame = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.DatabaseName);
+
+            var result = dbHelper.ExecuteQuery($@"SELECT ""Code"", ""Name"" FROM ""{databaseBame}"".""OCRY""");
+            List<LookupItem> countries = new List<LookupItem>();
+
+            foreach (DataRow country in result.Rows)
+            {
+                var name = MapField<string>(country["Code"]);
+                var value = MapField<string>(country["Name"]);
+                countries.Add(new LookupItem(name, value));
+            }
+            return countries;
+
+        }
+
         public List<LookupItem> GetLookupValues<T>()
         {
             var _serviceInstance = ServiceLayerProvider.GetInstance();
@@ -976,6 +997,23 @@
             {
                 var results = _serviceInstance.CurrentServicelayerInstance.COUNTRIESUDO.ToList();
                 return GetLookups<COUNTRIES>(results);
+            }
+            else if (typeof(T) == typeof(B1ServiceLayer.SAPB1.Country))
+            {
+                //var results = _serviceInstance.CurrentServicelayerInstance.Countries.ToList();
+                //return GetLookups<B1ServiceLayer.SAPB1.Country>(results);
+                var databaseBame = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.DatabaseName);
+
+                var result = dbHelper.ExecuteQuery($@"SELECT ""Code"", ""Name"" FROM ""{databaseBame}"".""OCRY""");
+                List<LookupItem> countries = new List<LookupItem>();
+
+                foreach (DataRow country in result.Rows)
+                {
+                    var name = MapField<string>(country["Name"]);
+                    var value = MapField<string>(country["Name"]);
+                    countries.Add(new LookupItem(name, value));
+                }
+                return countries;
             }
             else if (typeof(T) == typeof(LANGUAGES))
             {
@@ -1350,13 +1388,13 @@
                 {
                     queryBuilder.Append($" AND UPPER(\"U_Hobbies\") LIKE '%{wrk.Hobbies.ToUpper()}%'");
                 }
-                if (wrk.IsNew != null)
+                if (wrk.IsNew != null && wrk.IsNew.Equals("Y"))
                 {
-                    queryBuilder.Append($" AND \"U_IsNew\" = '{wrk.IsNew}'");
+                    queryBuilder.Append($" AND \"U_IsNew\" = 'Y'");
                 }
                 if (wrk.Period != null && wrk.Period > 0)
                 {
-                    queryBuilder.Append($" AND \"U_Period\" = '{wrk.Period}'");
+                    queryBuilder.Append($" AND \"U_IsNew\" = 'N' AND \"U_Period\" = '{wrk.Period}'");
                 }
                 if (wrk.YearsOfExperience != null && wrk.YearsOfExperience > 0)
                 {

@@ -105,6 +105,7 @@
   "license": "الرخصه",
   "reference": "المرجع",
   "yearsOfExperience": "سنوات الخبرة",
+  "country": "البلد",
   "error": {
     "default": "Something Went Wrong",
     "notLoggedIn": "Please Login!",

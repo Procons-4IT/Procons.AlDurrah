@@ -54,6 +54,8 @@ export class Experience {
     title = ''
     description = ''
     companyName = ''
+    country = ''
+    location = ''
     startDate = ''
     endDate = ''
 }

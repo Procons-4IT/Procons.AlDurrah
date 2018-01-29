@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="7e7a6ad2-ebab-47ce-bb7d-06aab65a13c1" xmlns="urn:schemas-microsoft-com:xml-dataservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="0173750a-90c3-4886-991f-3583b7f7b29a" xmlns="urn:schemas-microsoft-com:xml-dataservicemap">
   <MetadataSources>
-    <MetadataSource Address="C:\Users\mazen.khowise\Documents\Visual Studio 2017\Projects\Mazen\service-test.xml" Protocol="file" SourceId="1" />
+    <MetadataSource Address="C:\Users\mazen.khowise\Documents\Visual Studio 2017\Projects\Mazen\service.xml" Protocol="file" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="service.edmx" MetadataType="Edmx" ID="60453f84-aaa0-4d64-aa17-935f401da138" SourceId="1" SourceUrl="C:\Users\mazen.khowise\Documents\Visual Studio 2017\Projects\Mazen\service-test.xml" />
+    <MetadataFile FileName="service.edmx" MetadataType="Edmx" ID="22f0cf37-35de-4b66-815e-ba4cab140aa5" SourceId="1" SourceUrl="C:\Users\mazen.khowise\Documents\Visual Studio 2017\Projects\Mazen\service.xml" />
   </Metadata>
   <Extensions />
   <Parameters>

@@ -125,7 +125,9 @@ export class AddProfileComponent implements OnInit {
     convertXP(xp, stringToDate = true): Experience[] {
         let dateConversion = stringToDate ? this.momentToDate : this.formatDate;
         let perXP = (xp, dateConversion) => {
-            return { title: xp.title, description: xp.description, companyName: xp.companyName, startDate: dateConversion(xp.startDate.toString()), endDate: dateConversion(xp.endDate.toString()) }
+            let startDateExp = (xp.startDate) ? dateConversion(xp.startDate.toString()) : null;
+            let endDateExp = (xp.endDate) ? dateConversion(xp.endDate.toString()) : null;
+            return { title: xp.title, description: xp.description, companyName: xp.companyName, country: xp.country, location: xp.location, startDate: startDateExp, endDate: endDateExp }
         }
         if (xp) {
             if (Array.isArray(xp)) {
@@ -185,7 +187,7 @@ export class AddProfileComponent implements OnInit {
                 maritalStatus: ['', Validators.required],
                 languages: [[]],
                 salary: ['', Validators.required],
-                price: ['', Validators.required],
+                price: [''],
                 mobile: ['', Validators.pattern('[0-9]{8}')],
                 weight: ['', Validators.required],
                 height: ['', Validators.required],
@@ -345,6 +347,7 @@ export class AddProfileComponent implements OnInit {
         formData.append('Code', formValues.code);
         formData.append('Hobbies', formValues.hobbies);
         formData.append('Location', formValues.location);
+        console.log(">>>>>>>>>>" + formValues.experience);
         formValues.experience = this.convertXP(formValues.experience, false);
         formData.append('Experiences', JSON.stringify(formValues.experience));
         formData.append('isNew', this.isNew ? 'Y' : 'N');

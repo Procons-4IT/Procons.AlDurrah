@@ -42,7 +42,7 @@
             List<LookupItem> gender = new List<LookupItem>() { new LookupItem(Utilities.GetResourceValue("M"), "M"), new LookupItem(Utilities.GetResourceValue("F"), "F") };
             List<LookupItem> maritalStatus = workersFacade.GetMaritalStatusLookups();
             List<LookupItem> workerTypes = workersFacade.GetWorkersTypesLookups();
-            List<LookupItem> countries = workersFacade.GetCountriesLookups();
+            List<LookupItem> countries = workersFacade.GetAllCountriesLookups();
             result.Add("Languages", languages);
             result.Add("Age", age);
             result.Add("Education", education);
@@ -137,7 +137,7 @@
 
                 try
                 {
-                 
+
                     var tokens = new Dictionary<string, string>();
                     tokens.Add(Constants.KNET.MerchantTrackID, payment.TrackID);
                     tokens.Add(Constants.KNET.PaymentID, payment.PaymentID);
@@ -200,9 +200,9 @@
                         var tokens = new Dictionary<string, string>();
                         tokens.Add(Constants.KNET.MerchantTrackID, payment.TrackID);
                         tokens.Add(Constants.KNET.PaymentID, payment.PaymentID);
-                      
+
                         tokens.Add(Constants.KNET.TransactionAmount, paymentAmount + payment.Amount);
-                        tokens.Add(Constants.KNET.ItemCode,payment.Code);
+                        tokens.Add(Constants.KNET.ItemCode, payment.Code);
 
                         idMessage.Destination = userEmail;
                         string messageBody = string.Empty;
@@ -486,7 +486,8 @@
             worker.Religion = MapField<string>(provider.FormData["Religion"]);
             worker.Status = "1";
             worker.WorkerType = MapField<string>(provider.FormData["WorkerType"]);
-            worker.Price = MapField<float>(provider.FormData["Price"]);
+            if (!string.IsNullOrEmpty(provider.FormData["Price"]))
+                worker.Price = MapField<float>(provider.FormData["Price"]);
             worker.Salary = MapField<float>(provider.FormData["Salary"]);
             worker.SerialNumber = MapField<string>(provider.FormData["CivilId"]);
             worker.Video = MapField<string>(provider.FormData["Video"]);
