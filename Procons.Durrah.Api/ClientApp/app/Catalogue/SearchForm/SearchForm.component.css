@@ -1,3 +1,6 @@
 .Housam{
 color: red;
 }
+.ui-multiselect .ui-multiselect-label ,.ui-state-default { 
+    background: #ecedf2 !IMPORTANT; 
+}
