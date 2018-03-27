@@ -69,6 +69,51 @@
             }
 
         }
+
+        T connection = null;
+        public DataTable Execute(string query, Parameters parameters)
+        {
+            var command = connection.CreateCommand();
+            command.CommandText = query;
+            if (parameters != null)
+            {
+                object param;
+                command.CommandType = CommandType.StoredProcedure;
+                foreach (KeyValuePair<string, object> kvp in parameters.paramsList)
+                {
+                    if (typeof(T).Equals(typeof(HanaConnection)))
+                        param = new HanaParameter(kvp.Key, kvp.Value);
+                    else
+                        param = new SqlParameter(kvp.Key, kvp.Value);
+                    command.Parameters.Add(param);
+                }
+            }
+            var result = command.ExecuteReader();
+            DataTable dt = new DataTable();
+            dt.Load(result);
+            return dt;
+        }
+
+        public void OpenConnection()
+        {
+            connection = (T)Activator.CreateInstance(typeof(T), ConnectionString);
+            connection.Open();
+        }
+
+        public void CloseConnection()
+        {
+            connection.Close();
+        }
+
+        public DataTable Execute(string query)
+        {
+            var result = Execute(query, null);
+            return result;
+        }
+
+
+
+
         public DataTable ExecuteQuery(string query)
         {
             var result = ExecuteQuery(query, null);

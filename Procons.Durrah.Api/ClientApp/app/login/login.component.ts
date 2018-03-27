@@ -80,7 +80,7 @@ export class LoginComponent implements OnInit {
 
 
     Login() {
-
+debugger;
         this.loading = true;
 
         this.myApi.login(this.newUser.UserName, this.newUser.Password).subscribe(isLoggedIn => {

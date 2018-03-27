@@ -18,12 +18,15 @@
 .ui-multiselect-trigger.ui-state-default.ui-corner-right {
     border: 0px;
 }
-body.navbar-is-fixed-top{
+/* body.navbar-is-fixed-top{
 direction: rtl;
-}
+} */
 search-form .col-sm-6.col-sm-offset-2 {
 direction: ltr;
 }
 .ClassisNew label,.ClassisNew p-checkbox{
     float: right;
 } 
+.tabpanel body.navbar-is-fixed-top {
+    direction: ltr;
+}

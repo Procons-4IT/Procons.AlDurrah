@@ -48,6 +48,8 @@ export class AddProfileComponent implements OnInit {
     photoServerMode: FileUploadMode = FileUploadMode.Add;
     passportServerMode: FileUploadMode = FileUploadMode.Add;
     licenseServerMode: FileUploadMode = FileUploadMode.Add;
+    //check if driver;
+    IsDriver:boolean;
     constructor(private formBuilder: FormBuilder, public myApi: ApiService, public myModal: ProconsModalSerivce, public momentDatePipe: MomentDatePipe) {
         this.createForm();
 
@@ -79,7 +81,7 @@ export class AddProfileComponent implements OnInit {
     //TODO: Remove state.worker since only uploads are using it.
     ngOnInit(): void {
         this.createForm();
-
+        this.IsDriver=false;
         if (this.worker) {
             //EditMode
             this.state.isAddMode = false;
@@ -188,9 +190,9 @@ export class AddProfileComponent implements OnInit {
                 languages: [[]],
                 salary: ['', Validators.required],
                 price: [''],
-                mobile: ['', Validators.pattern('[0-9]{8}')],
-                weight: ['', Validators.required],
-                height: ['', Validators.required],
+                mobile: ['', Validators.pattern('(\\+?([0-9]|\\-){7,15})')],
+                weight: [''],
+                height: [''],
                 education: ['', Validators.required],
                 workerType: [''],
                 code: [''], //not required but not letting me proceed without it
@@ -199,7 +201,7 @@ export class AddProfileComponent implements OnInit {
                 passportIssDate: ['', Validators.required],
                 passportPOIssue: ['', Validators.required],
                 passportExpDate: ['', Validators.required],
-                civilId: ['', Validators.required],
+                civilId: [''],
                 hobbies: [''],
                 location: [''],
                 isNew: [true],
@@ -241,11 +243,13 @@ export class AddProfileComponent implements OnInit {
         let passportFile = passInput.files;
         let LicenseFile = licenseInput.files;
 
-        if (photoFile && photoFile[0] && passportFile && passportFile[0] && LicenseFile && LicenseFile[0]) {
+        debugger;
+        if (photoFile && photoFile[0] && passportFile && passportFile[0] && (this.IsDriver?( LicenseFile && LicenseFile[0]):true)) {
             const formData = new FormData();
             formData.append("Photo", photoFile[0], photoFile[0].name);
             formData.append("Passport", passportFile[0], passportFile[0].name);
-            formData.append("License", LicenseFile[0], LicenseFile[0].name);
+            if(LicenseFile.length>0)
+                formData.append("License", LicenseFile[0], LicenseFile[0].name);
             // this.getFormData(formData);
             this.appendFormDataToForm(formData);
             this.loading = true;
@@ -271,7 +275,9 @@ export class AddProfileComponent implements OnInit {
 
         this.appendOneFile(formData, "Photo", photoFile, this.photoServerMode);
         this.appendOneFile(formData, "Passport", passportFile, this.passportServerMode);
-        this.appendOneFile(formData, "License", licenseFile, this.licenseServerMode);
+        debugger;
+        if(licenseFile.length>0)
+            this.appendOneFile(formData, "License", licenseFile, this.licenseServerMode);
 
 
         this.appendFormDataToForm(formData);
@@ -343,7 +349,8 @@ export class AddProfileComponent implements OnInit {
         formData.append('PassportExpDate', this.formatDate(formValues.passportExpDate.toString()));
         formData.append('CivilId', formValues.civilId);
         let itemName: any[] = this.itemList.filter(nameValuePair => nameValuePair.value === formValues.code);
-        formData.append('Name', itemName[0].name);
+        if(itemName.length>0)
+            formData.append('Name', itemName[0].name);
         formData.append('Code', formValues.code);
         formData.append('Hobbies', formValues.hobbies);
         formData.append('Location', formValues.location);
@@ -404,9 +411,8 @@ export class AddProfileComponent implements OnInit {
 
         let photoFile = this.photoUpload.files;
         let passportFile = this.passportUpload.files;
-        let licenseFile = this.licenseUpload.files;
-
-        return (photoFile && photoFile[0] && passportFile && passportFile[0] && licenseFile && licenseFile[0]);
+        let licenseFile = this.licenseUpload.files; 
+        return (photoFile && photoFile[0] && passportFile && passportFile[0] &&(this.IsDriver?( licenseFile && licenseFile[0]):true));
     }
 
     getFileImageName(fileUrl): string {
@@ -429,8 +435,14 @@ export class AddProfileComponent implements OnInit {
     }
     FUM = FileUploadMode;
 
-    getItemLookupsByType(workerType) {
-
+    getItemLookupsByType(workerType) { 
+        if(workerType=="Driver")
+        {
+            this.IsDriver=true;
+        }
+        else{
+            this.IsDriver=false;
+        }
         let workerTypeParam: WorkerTypeParam = { workerType: workerType };
         this.myApi.getItemsByWorkerType(workerTypeParam).subscribe(x => {
             this.itemList = x;

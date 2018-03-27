@@ -37,7 +37,7 @@
   "resetPassword": {
     "invalidPassword": "Error Passwords not matching",
     "reset": "Password was Reset!"
-  },
+  },  
   "name": "الاسم",
   "back": "رجوع",
   "submit": "سجل",
@@ -85,8 +85,7 @@
   "PassportUpload": "تحميل صورة الجواز",
   "passportCopy": "صورة جواز السفر",
   "dateFormat": "يوم-شهر-سنة",
-  "maritalStatus": "الحالة الاجتماعية",
-  "addProfile": "اضافة ملف",
+  "maritalStatus": "الحالة الاجتماعية", 
   "save": "حفظ",
   "update": "تعديل",
   "clear": "مسح",
@@ -106,6 +105,7 @@
   "reference": "المرجع",
   "yearsOfExperience": "سنوات الخبرة",
   "country": "البلد",
+  "a":"a1",
   "error": {
     "default": "Something Went Wrong",
     "notLoggedIn": "Please Login!",

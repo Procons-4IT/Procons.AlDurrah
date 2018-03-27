@@ -37,7 +37,7 @@
   "resetPassword": {
     "invalidPassword": "Error Passwords not matching",
     "reset": "Password was Reset!"
-  },
+  },  
   "name": "الاسم",
   "back": "رجوع",
   "submit": "سجل",
@@ -83,13 +83,29 @@
   "civilID": "رقم بطاقة الهوية",
   "photoUpload": "تحميل الصورة",
   "PassportUpload": "تحميل صورة الجواز",
+  "passportCopy": "صورة جواز السفر",
   "dateFormat": "يوم-شهر-سنة",
-  "maritalStatus": "الحالة الاجتماعية",
-  "addProfile": "اضافة ملف",
+  "maritalStatus": "الحالة الاجتماعية", 
   "save": "حفظ",
   "update": "تعديل",
-  "clear":"مسح",
-  "workernamesearch":"بحث",
+  "clear": "مسح",
+  "workernamesearch": "بحث",
+  "location": "الموقع",
+  "hobbies": "الهوايات",
+  "isNew": "جديد في الكويت",
+  "period": "الفترة",
+  "title": "المسمى الوظيفي",
+  "description": "وصف",
+  "company-name": "اسم الشركة",
+  "startDate": "تاريخ البدء",
+  "endDate": "تاريخ الانتهاء",
+  "add": "إضافة",
+  "remove": "حذف",
+  "license": "الرخصه",
+  "reference": "المرجع",
+  "yearsOfExperience": "سنوات الخبرة",
+  "country": "البلد",
+  "a":"a1",
   "error": {
     "default": "Something Went Wrong",
     "notLoggedIn": "Please Login!",
@@ -107,7 +123,8 @@
     "bookWorker": "Something went wrong!",
     "getWorkers": "Something went wrong!"
 
-  }
+  },
+  "experience": "الخبرة"
 
 
 }

@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
         , private userService: UserService
         , private myApi: ApiService
         , private translate: TranslateService) {
-
+ 
         translate.setDefaultLang('ar');
         translate.use('ar');
         this.context.loginPageFollower.subscribe(value => { this.isLoginPage = value });
