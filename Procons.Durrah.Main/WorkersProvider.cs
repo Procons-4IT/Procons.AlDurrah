@@ -363,25 +363,52 @@
 
                 query.Append(exp);
                 Trace.WriteLine($"[PR]{query.ToString()}");
-                var readerResult = dbHelper.ExecuteQuery(query.ToString());
+                //var readerResult = dbHelper.ExecuteQuery(query.ToString());
+
+
+                dbHelper.OpenConnection();
+                var readerResult = dbHelper.Execute(query.ToString());
+                List<string> codeList = new List<string>();
+                foreach (DataRow drow in readerResult.Rows)
+                {
+                    var code = MapField<string>(drow["Code"]);
+                    codeList.Add(code);
+                }
+                StringBuilder codeQueryStat = new StringBuilder();
+                for (int i = 0; i < codeList.Count; i++) //string item in codeList)
+                {
+                    if (i == codeList.Count - 1)
+                        codeQueryStat.Append("'" + codeList[i] + "'");
+                    else
+                        codeQueryStat.Append("'"+codeList[i] +"'"+ ',');
+                }
+                var langagesResult = dbHelper.Execute($@"SELECT ""Code"",""U_VALUE"",""U_NAME"",* FROM ""{databaseBame}"".""@WORKERLNGS"" WHERE ""Code"" in({codeQueryStat.ToString()})");
+                var experiencesResult = dbHelper.Execute($@"SELECT * FROM ""{databaseBame}"".""@EXPERIENCE"" WHERE ""Code"" in({codeQueryStat.ToString()})");
+
+
+
 
                 foreach (DataRow drow in readerResult.Rows)
                 {
                     var code = MapField<string>(drow["Code"]);
-                    var langagesResult = dbHelper.ExecuteQuery($@"SELECT ""U_VALUE"",""U_NAME"" FROM ""{databaseBame}"".""@WORKERLNGS"" WHERE ""Code""='{code}'");
+                    //var langagesResult = dbHelper.ExecuteQuery($@"SELECT ""U_VALUE"",""U_NAME"" FROM ""{databaseBame}"".""@WORKERLNGS"" WHERE ""Code""='{code}'");
+
+                    var langagesResult1 = langagesResult.AsEnumerable().Where(x => x.Field<string>("Code") == code);
                     List<LookupItem> languages = new List<LookupItem>();
 
-                    foreach (DataRow langaugeRow in langagesResult.Rows)
+                    foreach (DataRow langaugeRow in langagesResult1)
                     {
                         var name = MapField<string>(langaugeRow["U_NAME"]);
                         var value = MapField<string>(langaugeRow["U_VALUE"]);
                         languages.Add(new LookupItem(name, value));
                     }
 
-                    var experiencesResult = dbHelper.ExecuteQuery($@"SELECT * FROM ""{databaseBame}"".""@EXPERIENCE"" WHERE ""Code""='{code}'");
+                    //var experiencesResult = dbHelper.ExecuteQuery($@"SELECT * FROM ""{databaseBame}"".""@EXPERIENCE"" WHERE ""Code""='{code}'");
+
+                    var experiencesResult1 = experiencesResult.AsEnumerable().Where(x => x.Field<string>("Code") == code);
                     List<Experience> experiences = new List<Experience>();
 
-                    foreach (DataRow experienceRow in experiencesResult.Rows)
+                    foreach (DataRow experienceRow in experiencesResult1)
                     {
                         var workerId = MapField<string>(experienceRow["U_WorkerId"]);
                         var startDate = MapField<string>(experienceRow["U_StartDate"]);
@@ -439,6 +466,10 @@
             catch (Exception ex)
             {
                 Utilities.LogException(ex);
+            }
+            finally
+            {
+                dbHelper.CloseConnection();
             }
 
             return workersList;
@@ -677,13 +708,13 @@
                 StringBuilder codeQueryStat = new StringBuilder();
                 for(int i=0; i<codeList.Count;i++) //string item in codeList)
                 {
-                    if (i == codeList.Count - 1) 
-                        codeQueryStat.Append(codeList[i] ); 
+                    if (i == codeList.Count - 1)
+                        codeQueryStat.Append("'" + codeList[i] + "'");
                     else
-                    codeQueryStat.Append(codeList[i] + ',');
+                        codeQueryStat.Append("'" + codeList[i] + "'" + ',');
                 }
-                    var langagesResult = dbHelper.Execute($@"SELECT ""U_VALUE"",""U_NAME"" FROM ""{databaseBame}"".""@WORKERLNGS"" WHERE ""Code""in('{codeQueryStat.ToString()}')");
-                     var experiencesResult = dbHelper.Execute($@"SELECT * FROM ""{databaseBame}"".""@EXPERIENCE"" WHERE ""Code""in('{codeQueryStat.ToString()}')");
+                    var langagesResult = dbHelper.Execute($@"SELECT ""Code"",""U_VALUE"",""U_NAME"" FROM ""{databaseBame}"".""@WORKERLNGS"" WHERE ""Code""in({codeQueryStat.ToString()})");
+                     var experiencesResult = dbHelper.Execute($@"SELECT * FROM ""{databaseBame}"".""@EXPERIENCE"" WHERE ""Code""in({codeQueryStat.ToString()})");
 
                 foreach (DataRow drow in readerResult.Rows)
                 {

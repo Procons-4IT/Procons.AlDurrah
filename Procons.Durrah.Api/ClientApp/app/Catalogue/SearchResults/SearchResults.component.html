@@ -29,7 +29,7 @@
                 <p-column field="languages" header="{{ 'language' | translate }}">
                     <ng-template let-col let-languages="rowData" let-ri="rowIndex" pTemplate="body">
                         <ul>
-                            <li *ngFor="let language of languages.languages">{{language.name}} </li>
+                            <li *ngFor="let language of languages.languages" value="language.value">{{language.name}} </li>
                         </ul>
                     </ng-template>
                 </p-column>

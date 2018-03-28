@@ -73,13 +73,41 @@ export class CatalogueComponent implements OnInit {
         }
     }
 
-    GoToResults(workerFilter: Worker) {
-        debugger;
+    GoToResults(workerFilter: Worker) { 
         this.loading = true;
         this.myApi.getAllWorkers(workerFilter).subscribe(workers => {
-            debugger;
+             
             this.loading = false
             this.workers = workers;
+            workers.forEach(element => {
+                element.yearsOfExperience=0;
+                element.experiences.forEach(e=>{
+                    if(e.startDate!="")
+                {  
+                    let date1 = new Date(e.startDate).getTime();
+                    let date2 = new Date(e.endDate).getTime();
+                    let time = date2 - date1;  //msec
+                    let hours = Math.abs((time) / 3600000);
+                    let days= Math.abs((hours) / 24);
+                    let numberofYears=Math.abs((days) / 365).toFixed(2);
+                   // let hoursDiff = time / (3600 * 1000);
+                    element.yearsOfExperience= Number(numberofYears); //e.startDate - e.endDate;
+                }
+                //workers.push("yearsOfExperience",)
+                });
+                
+                if (this.searchCriteriaParams.languages && Array.isArray(this.searchCriteriaParams.languages)) {
+                   //filling the language name
+                   // element.languages = 
+                    element.languages.forEach( ele=> { 
+                        this.searchCriteriaParams.languages.forEach(nameValuePair=>{
+                            if(ele.value==nameValuePair.value)
+                                ele.name=nameValuePair.name;
+                                
+                        });
+                     }) as any;
+                }
+            });
             this.showSearchForm = false;
             this.showSearchResultTable = true;
         }
@@ -100,7 +128,7 @@ export class CatalogueComponent implements OnInit {
     }
 
     ngOnInit() {
-        // this.GetLookups();
+        // this.GetLookups(); 
     }
 
     GetLookups() {
