@@ -26,11 +26,11 @@
                 <p-column field="name" header="{{ 'type'| translate }}"></p-column>
                 <p-column field="gender" header="{{'gender' | translate }}"></p-column>
                 <p-column field="nationality" header="{{ 'nationality'| translate }}"></p-column>
-                <p-column field="languages" header="{{ 'language' | translate }}">
+                <p-column field="languages" header="{{ 'language' | translate }}" >
                     <ng-template let-col let-languages="rowData" let-ri="rowIndex" pTemplate="body">
-                        <ul>
-                            <li *ngFor="let language of languages.languages" value="language.value">{{language.name}} </li>
-                        </ul>
+                        <!-- <ul> -->
+                            <span *ngFor="let language of languages.languages" value="language.value">{{language.name}} </span>
+                        <!-- </ul> -->
                     </ng-template>
                 </p-column>
                 <p-column field="education" header="{{ 'education' | translate }}"></p-column>

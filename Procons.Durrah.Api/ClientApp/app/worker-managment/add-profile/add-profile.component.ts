@@ -242,8 +242,7 @@ export class AddProfileComponent implements OnInit {
         let photoFile = photoInput.files;
         let passportFile = passInput.files;
         let LicenseFile = licenseInput.files;
-
-        debugger;
+ 
         if (photoFile && photoFile[0] && passportFile && passportFile[0] && (this.IsDriver?( LicenseFile && LicenseFile[0]):true)) {
             const formData = new FormData();
             formData.append("Photo", photoFile[0], photoFile[0].name);
@@ -275,7 +274,7 @@ export class AddProfileComponent implements OnInit {
 
         this.appendOneFile(formData, "Photo", photoFile, this.photoServerMode);
         this.appendOneFile(formData, "Passport", passportFile, this.passportServerMode);
-        debugger;
+     
         if(licenseFile.length>0)
             this.appendOneFile(formData, "License", licenseFile, this.licenseServerMode);
 

@@ -85,7 +85,8 @@ export class WorkerMangmentComponent implements OnInit {
                 this.ShowEditWorker(navigateAction.value[0], navigateAction.value[1]);
                 break;
             case WorkerManagmentTransition.DeleteWorker:
-                this.Delete(navigateAction.value as Worker);
+              //  this.Delete(navigateAction.value as Worker);
+              this.Delete(navigateAction.value[0], navigateAction.value[1])
                 break;
             case WorkerManagmentTransition.ViewProfiles:
                 this.ShowProfiles();
@@ -97,11 +98,12 @@ export class WorkerMangmentComponent implements OnInit {
 
     }
 
-    Delete(worker: Worker, index: number = 0) {
+    //Delete(worker: Worker, index: number = 0) 
+    Delete(worker, index){
         //fix delete!
         this.state.workers.splice(index, 1);
         this.loading = true;
-        this.myApi.deleteWorker(worker.code).subscribe(
+        this.myApi.deleteWorker(worker.workerCode).subscribe(
             onSucces => {
                 this.loading = false;
                 this.myModal.showSuccessModal("Worker Deleted!");

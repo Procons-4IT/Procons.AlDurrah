@@ -53,7 +53,8 @@ export class ViewAgentWorkersComponent implements OnInit {
     ShowEditWorker(worker: Worker, index: number) {
         this.NavigateTo(WorkerManagmentTransition.EditProfile, [worker, index]);
     }
-    Delete(worker, i) {
+    Delete(worker: Worker, index: number) { 
+        this.NavigateTo(WorkerManagmentTransition.DeleteWorker, [worker, index]);
 
     }
 

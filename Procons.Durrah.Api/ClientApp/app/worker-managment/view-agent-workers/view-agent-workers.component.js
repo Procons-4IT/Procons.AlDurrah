@@ -44,6 +44,7 @@ let ViewAgentWorkersComponent = class ViewAgentWorkersComponent {
         this.NavigateTo(worker_managment_component_1.WorkerManagmentTransition.EditProfile, [worker, index]);
     }
     Delete(worker, i) {
+        
     }
     NavigateTo(action, value = null) {
         this.transitionEmitter.emit({ action: action, value: value });

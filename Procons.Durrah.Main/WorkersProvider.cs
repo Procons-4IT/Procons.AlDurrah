@@ -1044,6 +1044,84 @@
 
         }
 
+        //ServiceLayerProvider _serviceInstance; //= ServiceLayerProvider.GetInstance();
+        public ServiceLayerProvider GetServiceInstance()
+        {
+            return ServiceLayerProvider.GetInstance();
+        }
+        public List<LookupItem> GetLookupValues<T>(ServiceLayerProvider _serviceInstance)
+        {
+            //var _serviceInstance = ServiceLayerProvider.GetInstance();
+
+
+            if (typeof(T) == typeof(COUNTRIES))
+            {
+                var results = _serviceInstance.CurrentServicelayerInstance.COUNTRIESUDO.ToList();
+                return GetLookups<COUNTRIES>(results);
+            }
+            else if (typeof(T) == typeof(B1ServiceLayer.SAPB1.Country))
+            {
+                //var results = _serviceInstance.CurrentServicelayerInstance.Countries.ToList();
+                //return GetLookups<B1ServiceLayer.SAPB1.Country>(results);
+                var databaseBame = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.DatabaseName);
+
+                var result = dbHelper.ExecuteQuery($@"SELECT ""Code"", ""Name"" FROM ""{databaseBame}"".""OCRY""");
+                List<LookupItem> countries = new List<LookupItem>();
+
+                foreach (DataRow country in result.Rows)
+                {
+                    var name = MapField<string>(country["Name"]);
+                    var value = MapField<string>(country["Name"]);
+                    countries.Add(new LookupItem(name, value));
+                }
+                return countries;
+            }
+            else if (typeof(T) == typeof(LANGUAGES))
+            {
+                var results = _serviceInstance.CurrentServicelayerInstance.LANGUAGESUDO.ToList<LANGUAGES>();
+                return GetLookups<LANGUAGES>(results);
+            }
+            else if (typeof(T) == typeof(MARITALSTATUS))
+            {
+                var results = _serviceInstance.CurrentServicelayerInstance.MARITALSTATUSUDO.ToList<MARITALSTATUS>();
+                return GetLookups<MARITALSTATUS>(results);
+            }
+            else if (typeof(T) == typeof(Item))
+            {
+                var results = _serviceInstance.CurrentServicelayerInstance.WORKERTYPESUDO.ToList<WORKERTYPES>();
+                return GetLookups<WORKERTYPES>(results);
+            }
+            else if (typeof(T) == typeof(Item))
+            {
+                var results = _serviceInstance.CurrentServicelayerInstance.Items.Select(x => new LookupItem(x.ItemCode, x.ItemName)).ToList();
+                return results;
+            }
+            else if (typeof(T) == typeof(RELIGION))
+            {
+                var results = _serviceInstance.CurrentServicelayerInstance.RELIGION.ToList();
+                return GetLookups<RELIGION>(results);
+            }
+            else if (typeof(T) == typeof(EDUCATION))
+            {
+                var results = _serviceInstance.CurrentServicelayerInstance.EDUCATION.ToList();
+                return GetLookups<EDUCATION>(results);
+            }
+            else
+                return null;
+
+            List<LookupItem> GetLookups<Y>(List<Y> list)
+            {
+                var lookups = new List<LookupItem>();
+                foreach (dynamic r in list)
+                {
+                    if (Utilities.GetCurrentLanguage() == Languages.English.GetDescription())
+                        lookups.Add(new LookupItem(r.Name, r.Code));
+                    else
+                        lookups.Add(new LookupItem(r.U_NAME, r.Code));
+                }
+                return lookups;
+            }
+        }
         public List<LookupItem> GetLookupValues<T>()
         {
             var _serviceInstance = ServiceLayerProvider.GetInstance();
