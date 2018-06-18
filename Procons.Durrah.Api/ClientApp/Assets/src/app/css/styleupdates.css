@@ -21,12 +21,36 @@
 /* body.navbar-is-fixed-top{
 direction: rtl;
 } */
-search-form .col-sm-6.col-sm-offset-2 {
-direction: ltr;
-}
 .ClassisNew label,.ClassisNew p-checkbox{
     float: right;
 } 
 .tabpanel body.navbar-is-fixed-top {
     direction: ltr;
 }
+form.ng-untouched.ng-pristine.ng-invalid,
+form.ng-invalid.ng-dirty.ng-touched,
+form.ng-dirty.ng-touched.ng-valid {
+    direction: ltr;
+}
+#loginForm input {
+    direction: rtl;
+}
+
+/*******************for multi select***********************/
+search-form .col-sm-6.col-sm-offset-2,form#searchForm {
+    direction: rtl;
+    }
+.ui-multiselect-panel .ui-multiselect-item {
+    text-align: right;
+}
+
+.ui-multiselect-header .ui-multiselect-close {
+    right: 97% !important;
+}
+.ui-multiselect-header .ui-multiselect-filter-container .fa { 
+    right: .125em;
+}
+.ui-multiselect-header { 
+    text-align: right;
+}
+/*************************************************************/

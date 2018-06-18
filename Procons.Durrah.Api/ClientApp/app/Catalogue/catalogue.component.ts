@@ -91,7 +91,7 @@ export class CatalogueComponent implements OnInit {
                     let days= Math.abs((hours) / 24);
                     let numberofYears=Math.abs((days) / 365).toFixed(2);
                    // let hoursDiff = time / (3600 * 1000);
-                    element.yearsOfExperience= Number(numberofYears); //e.startDate - e.endDate;
+                    element.yearsOfExperience+= Number(numberofYears); //e.startDate - e.endDate;
                 }
                 //workers.push("yearsOfExperience",)
                 });

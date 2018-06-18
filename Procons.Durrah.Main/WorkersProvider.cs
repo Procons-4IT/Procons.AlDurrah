@@ -1546,13 +1546,19 @@
 
         private string CreateAttachment(string fileName)
         {
+            Debug.WriteLine($"[PR] {fileName}");
             SAPbobsCOM.Attachments2 oATT = base.B1Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oAttachments2) as SAPbobsCOM.Attachments2;
             string FileName = fileName;
             oATT.Lines.Add();
+            Debug.WriteLine($"[PR] oATT.Lines.Add()");
             oATT.Lines.FileName = System.IO.Path.GetFileNameWithoutExtension(FileName);
+            Debug.WriteLine($"[PR] oATT.Lines.FileName ");
             oATT.Lines.FileExtension = System.IO.Path.GetExtension(FileName).Substring(1);
+            Debug.WriteLine($"[PR] {System.IO.Path.GetExtension(FileName).Substring(1)} ");
             oATT.Lines.SourcePath = Path.GetDirectoryName(System.Web.Hosting.HostingEnvironment.MapPath(FileName));// System.IO.Path.GetDirectoryName(FileName);
+            Debug.WriteLine($"[PR] {Path.GetDirectoryName(System.Web.Hosting.HostingEnvironment.MapPath(FileName))} ");
             oATT.Lines.Override = SAPbobsCOM.BoYesNoEnum.tYES;
+       
             if (oATT.Add() == 0)
                 return System.IO.Path.GetFileName(fileName);
             else

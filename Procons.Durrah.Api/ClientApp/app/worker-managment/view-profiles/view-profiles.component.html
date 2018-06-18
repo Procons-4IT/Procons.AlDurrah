@@ -50,13 +50,13 @@
                                 <li>{{'experience' | translate}}</li>
                                 <ul *ngFor="let exp of transformXptoArray(worker.experiences)">
                                   <div class="box">
-                                    <li>{{'title' | translate }} {{exp.title}}</li>
-                                    <li>{{'company-name' | translate }} {{exp.companyName}}</li>
-                                      <li>{{'description' | translate }} {{exp.description}}</li>
-                                      <li>{{'country' | translate }} {{exp.country}}</li>
-                                    <li>{{'location' | translate }} {{exp.location}}</li>
-                                    <li>{{'startDate' | translate }} {{exp.startDate | momentDate}}</li>
-                                    <li>{{'endDate' | translate }} {{exp.endDate | momentDate}}</li>
+                                    <li>{{'title' | translate }} : {{exp.title}}</li>
+                                    <li>{{'company-name' | translate }} : {{exp.companyName}}</li>
+                                      <li>{{'description' | translate }} : {{exp.description}}</li>
+                                      <li>{{'country' | translate }} : {{exp.country}}</li>
+                                    <li>{{'location' | translate }} : {{exp.location}}</li>
+                                    <li>{{'startDate' | translate }} : {{exp.startDate | momentDate}}</li>
+                                    <li>{{'endDate' | translate }} : {{exp.endDate | momentDate}}</li>
                                   </div>
                                 </ul>
                               </ul>

@@ -154,10 +154,24 @@
 
         <div class="tab-content">
           <div role="tabpanel" class="tab-pane fade in active" id="tabWebshop">
-            <div class="content">
+            <div class="content" *ngIf='!IscomingSoon' style="  cursor:  pointer; " (click)='showComingSoon()'>
               <h2>سوق الدرة</h2>
-              <p><a href="https://suzannakompaktor.github.io/eldurra2/dist/comingsoon.html"><img src="/Assets/src/app/images/icon_webshop.png" width="164" data-appear-animation="fadeIn" /></a></p>
-            </div><!-- href="/Assets/src/app/categories.html"-->
+              <p>
+                <a >
+                  <img src="/Assets/src/app/images/icon_webshop.png" width="164" data-appear-animation="fadeIn" />
+                </a>
+              </p>
+            </div><!-- href="/Assets/src/app/categories.html" href="https://suzannakompaktor.github.io/eldurra2/dist/comingsoon.html"-->
+            
+          </div>
+          <div  class="tab-content"  *ngIf='IscomingSoon'>  
+              <div role="tabpanel" class="tab-pane fade in active" id="tabWebshop">
+                <div class="content alert alert-info text-center">
+                  <h3>
+                  Coming soon / قريباً
+                  </h3>
+                </div> 
+            </div>
           </div>
           <div role="tabpanel" class="tab-pane fade" id="tabCategories">
             <div class="">

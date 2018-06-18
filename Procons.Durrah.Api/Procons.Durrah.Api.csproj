@@ -350,6 +350,7 @@
     <None Include="Connected Services\KnetService\KnetService2.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Views\Main\Index.cshtml" />
     <Content Include="tsconfig.json" />

@@ -25,6 +25,7 @@ export class HomeComponent implements OnInit {
 
   isLoggedIn = false;
   logInType = '';
+  IscomingSoon:boolean;
 
   public paymentModalText: string = "";
   public paymentParams: KnetPayment = {
@@ -71,6 +72,7 @@ export class HomeComponent implements OnInit {
     this.handlePasswordResetRoute();
     this.handleErrorRoute();
     this.handleCancelRoute();
+    this.IscomingSoon=false;
   }
 
 
@@ -234,6 +236,10 @@ export class HomeComponent implements OnInit {
   resetAddressBarToHome() {
     var stateObj = { foo: "bar" };
     window.history.replaceState(stateObj, "page 3", "home");
+  }
+
+  showComingSoon(){
+    this.IscomingSoon=true;
   }
 
 }

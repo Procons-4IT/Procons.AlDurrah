@@ -232,6 +232,7 @@ export class AddProfileComponent implements OnInit {
         this.onBack.emit();
     }
     submitWorker(a, b, c) {
+         
         if (this.state.isAddMode) {
             this.addWorker(a, b, c);
         } else {
