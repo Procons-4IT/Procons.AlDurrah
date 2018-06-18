@@ -20,6 +20,7 @@ export class Worker {
         public passportPoIssue: string,
         public passportExpDate: string,
         public civilId: string,
+        public yearsOfExperience:number,
 
         public serialNumber: string,
         public agent: string,

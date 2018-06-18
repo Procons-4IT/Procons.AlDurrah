@@ -18,19 +18,19 @@
                                 <form [formGroup]="addWorkerForm" (ngSubmit)="submitWorker(photoUpload, passportUpload, licenseUpload)">
 
                                     <div class="form-group">
-                                        <label for="workerName">{{ 'name' | translate }} </label>
+                                        <label for="workerName">Name _ الاسم</label>
                                         <input id="workerName" type="text" class="form-control" formControlName="workerName" />
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="birthDate">{{ 'birthDate' | translate }}</label>
+                                        <label for="birthDate">Date of Birth _ تاريخ الميلاد</label>
                                         <div>
                                             <p-calendar showIcon="true" name="birthDate" dateFormat="dd/mm/yy" formControlName="birthDate"></p-calendar>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="gender">{{ 'gender' | translate }}</label>
+                                        <label for="gender">Gender _ الجنس</label>
                                         <select required id="gender" class="form-control" name="gender" formControlName="gender">
                                             <option disabled selected value=""> {{state.selectOptionText}}</option>
                                             <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.gender;">
@@ -39,7 +39,7 @@
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <label for="nationality">{{ 'nationality' | translate }}</label>
+                                        <label for="nationality">Nationality _ الجنسية</label>
                                         <!-- <option>الجنسية</option> -->
                                         <select required id="nationality" class="form-control" name="nationality" formControlName="nationality">
                                             <option disabled selected value=""> {{state.selectOptionText}}</option>
@@ -50,12 +50,12 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="location">{{ 'location' | translate }}</label>
+                                        <label for="location">Location _ الموقع</label>
                                         <input name="location" id="location" type="text" class="form-control" formControlName="location" />
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="religion">{{ 'religion' | translate }}</label>
+                                        <label for="religion">Religion _ الديانة</label>
                                         <!-- <option>Religion</option> -->
                                         <select required id="religion" class="form-control" name="religion" formControlName="religion">
                                             <option disabled selected value=""> {{state.selectOptionText}}</option>
@@ -66,7 +66,7 @@
                                     </div>
 
                                     <div class="form-group ">
-                                        <label for="marital">{{ 'maritalStatus' | translate }}</label>
+                                        <label for="marital">Marital Status _ الحالة الاجتماعية</label>
                                         <select required id="marital" class="form-control" name="maritalStatus" formControlName="maritalStatus">
                                             <option disabled selected value=""> {{state.selectOptionText}}</option>
                                             <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.maritalStatus;">
@@ -75,50 +75,50 @@
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <label for="isNew">{{'isNew' | translate}}</label>
+                                        <label for="isNew">New in Kuwait _ جديد في الكويت</label>
                                         <p-checkbox name="isNew" [formControl]="addWorkerForm.get('isNew')" binary="true"></p-checkbox>
                                         <div *ngIf="!isNew">
-                                            <label for="period">{{ 'period' | translate }}</label>
+                                            <label for="period">period _ الفترة</label>
                                             <div>
                                                 <input required id="period" type="number" class="form-control" name="" formControlName="period" />
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-group ">
-                                        <label for="lang">{{ 'languages' | translate }}</label>
+                                        <label for="lang">Languages _ اللغات</label>
                                         <div>
                                             <p-multiSelect required name="lang" defaultLabel="اللغات المتحدث بها" [options]="searchCriterias.languages" formControlName="languages"></p-multiSelect>
                                         </div>
                                     </div>
 
                                     <div class="form-group ">
-                                        <label for="salary">{{ 'salary' | translate }}</label>
+                                        <label for="salary">Salary _ الراتب</label>
                                         <input required id="salary" type="number" class="form-control" name="salary" formControlName="salary" />
                                     </div>
 
                                     <div class="form-group ">
-                                        <label for="price">{{ 'price' | translate }}</label>
+                                        <label for="price">Price _ السعر</label>
                                         <input id="price" type="number" class="form-control" name="price" formControlName="price" />
                                     </div>
 
 
                                     <div class="form-group ">
-                                        <label for="mobile">{{ 'mobile' | translate }}</label>
-                                        <input required id="mobile" type="number" minlength="8" maxlength="9" class="form-control" name="mobile" formControlName="mobile" />
+                                        <label for="mobile">Mobile _ الجوال</label>
+                                        <input id="mobile" type="text" minlength="8" maxlength="15" class="form-control" name="mobile" formControlName="mobile" />
                                     </div>
 
                                     <div class="form-group ">
-                                        <label for="weight">{{ 'weight' | translate }}</label>
-                                        <input required id="weight" type="text" class="form-control" placeholder="..kg" name="weight" formControlName="weight" />
+                                        <label for="weight">Weight _ الوزن</label>
+                                        <input  id="weight" type="text" class="form-control" placeholder="..kg" name="weight" formControlName="weight" />
                                     </div>
 
                                     <div class="form-group ">
-                                        <label for="height">{{ 'height' | translate }}</label>
-                                        <input required name="height" id="height" type="text" class="form-control" placeholder="..cm" formControlName="height" />
+                                        <label for="height">height _ الطول</label>
+                                        <input  name="height" id="height" type="text" class="form-control" placeholder="..cm" formControlName="height" />
                                     </div>
 
                                     <div class="form-group ">
-                                        <label for="education">{{ 'education' | translate }}</label>
+                                        <label for="education">Education _ المستوى العلمي</label>
                                         <select required id="education" class="form-control" name="education" formControlName="education">
                                             <option disabled selected value=""> {{state.selectOptionText}}</option>
                                             <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.education;">
@@ -127,7 +127,7 @@
                                         </select>
                                     </div>
                                     <div class="form-group ">
-                                        <label for="workerType">{{ 'workerType' | translate }}</label>
+                                        <label for="workerType">Worker Type _ نوع العامل</label>
                                         <select required id="workerType" (change)="onWorkerTypeSelected($event.target.value)" class="form-control" name="workerType"
                                                 formControlName="workerType">
                                             <option disabled selected value=""> {{state.selectOptionText}}</option>
@@ -137,7 +137,7 @@
                                         </select>
                                     </div>
                                     <div class="form-group ">
-                                        <label for="Items">{{ 'item' | translate }}</label>
+                                        <label for="Items">Item _ المادة</label>
                                         <select required id="Items" class="form-control" name="code" formControlName="code">
                                             <option disabled selected value=""> {{state.selectOptionText}}</option>
                                             <option [value]="nameValuePair.value" *ngFor="let nameValuePair of itemList;">
@@ -148,17 +148,17 @@
 
 
                                     <div class="form-group ">
-                                        <label for="video">{{ 'video' | translate }}</label>
+                                        <label for="video">Video _ فيديو</label>
                                         <input name="videopublic" id="video" type="text" class="form-control" placeholder="http://Video Link" formControlName="video" />
                                     </div>
 
                                     <div class="form-group ">
-                                        <label for="passNumb"> {{ 'passportNumber' | translate }}</label>
+                                        <label for="passNumb"> Passport Number _ رقم الجواز</label>
                                         <input required id="passNumb" name="passortNumber" type="text" class="form-control" placeholder="ex. 12345" formControlName="passportNumber" />
                                     </div>
 
                                     <div class="form-group ">
-                                        <label for="passIssueDate">{{ 'passportIssueDate' | translate }}</label>
+                                        <label for="passIssueDate">Passport Issue Date _ تاريخ اصدار الجواز</label>
                                         <div>
                                             <p-calendar showIcon="true" formControlName="passportIssDate" name="passportIssueDate" dateFormat="dd/mm/yy"></p-calendar>
                                         </div>
@@ -166,12 +166,12 @@
 
 
                                     <div class="form-group ">
-                                        <label for="passPoIssue">{{ 'passportPlaceofIssue' | translate }}</label>
+                                        <label for="passPoIssue">passport Place of Issue  _ مكان اصدار الجواز</label>
                                         <input required name="passportPoIssue" type="text" class="form-control" placeholder="ex. Germany" formControlName="passportPOIssue" />
                                     </div>
 
                                     <div class="form-group ">
-                                        <label for="passExpiry">{{ 'passportExpiry' | translate }}</label>
+                                        <label for="passExpiry">Passport Expiry _ تاريخ انتهاء صلاحية الجواز</label>
                                         <div>
                                             <p-calendar showIcon="true" formControlName="passportExpDate" name="passportExpiry" dateFormat="dd/mm/yy"></p-calendar>
                                         </div>
@@ -180,12 +180,12 @@
 
 
                                     <div class="form-group ">
-                                        <label for="civilID"> {{ 'civilID' | translate }}</label>
+                                        <label for="civilID"> Civil ID _ رقم بطاقة الهوية</label>
                                         <input id="civilID" name="civilId" type="text" class="form-control" placeholder="ex. 1234" formControlName="civilId" />
                                     </div>
 
                                     <div class="form-group ">
-                                        <label for="hobbies">{{ 'hobbies' | translate }}</label>
+                                        <label for="hobbies">Hobbies _ الهوايات</label>
                                         <input name="hobbies" id="hobbies" type="text" class="form-control" formControlName="hobbies" />
                                     </div>
 
@@ -196,23 +196,23 @@
                                             <div class="form-group ">
                                                 <div class="box profile-box clearfix">
                                                     <div class="profile-main">
-                                                        <h3 class="h5">{{ 'experience' | translate }}</h3>
+                                                        <h3 class="h5">Experience _ الخبرة</h3>
                                                         <div class="datas">
                                                             <div class="form-group">
-                                                                <label [for]="'title'+i"> {{ 'title' | translate }}</label>
+                                                                <label [for]="'title'+i"> Title _ المسمى الوظيفي</label>
                                                                 <input [id]="'title'+i" name="title" type="text" class="form-control" formControlName="title">
                                                             </div>
                                                             <div class="form-group">
-                                                                <label [for]="'description'+i"> {{ 'description' | translate }}</label>
+                                                                <label [for]="'description'+i"> Description _ الوصف</label>
                                                                 <input [id]="'description'+i" name="title" type="text" class="form-control" formControlName="description">
                                                             </div>
                                                             <div class="form-group">
-                                                                <label [for]="'companyName'+i"> {{ 'company-name' | translate }}</label>
+                                                                <label [for]="'companyName'+i"> The Company's name _ اسم الشركة</label>
                                                                 <input [id]="'companyName'+i" name="title" type="text" class="form-control" formControlName="companyName">
                                                             </div>
 
                                                             <div class="form-group">
-                                                                <label [for]="'country' + i">{{ 'country' | translate }}</label>
+                                                                <label [for]="'country' + i">Country _ البلد</label>
                                                                 <select [id]="'country' + i" class="form-control" name="country" formControlName="country">
                                                                     <option disabled selected value=""> {{state.selectOptionText}}</option>
                                                                     <option [value]="nameValuePair.value" *ngFor="let nameValuePair of searchCriterias.country;">
@@ -222,18 +222,18 @@
                                                             </div>
 
                                                             <div class="form-group">
-                                                                <label [for]="'location'+i"> {{ 'location' | translate }}</label>
+                                                                <label [for]="'location'+i">Location _ الموقع</label>
                                                                 <input [id]="'location'+i" name="location" type="text" class="form-control" formControlName="location">
                                                             </div>
 
                                                             <div class="form-group ">
-                                                                <label for="startDate">{{ 'startDate' | translate }}</label>
+                                                                <label for="startDate">Start Date _ تاريخ البدء</label>
                                                                 <div>
                                                                     <p-calendar showIcon="true" name="startDate" dateFormat="dd/mm/yy" formControlName="startDate"></p-calendar>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label for="endDate">{{ 'endDate' | translate }}</label>
+                                                                <label for="endDate">End Date _ تاريخ الانتهاء</label>
                                                                 <div>
                                                                     <p-calendar showIcon="true" name="endDate" dateFormat="dd/mm/yy" formControlName="endDate"></p-calendar>
                                                                 </div>
@@ -254,7 +254,7 @@
 
                                     <!-- Add Upload Image -->
                                     <div class="form-group">
-                                        <label for="photoUpload">{{ 'photoUpload' | translate }}</label>
+                                        <label for="photoUpload">photo Upload _ تحميل الصورة</label>
                                         <p-fileUpload id="photoUpload" name="myfile[]" customUpload="true" multiple="false" (onSelect)="deleteServerFile('PHOTO')"
                                                       #photoUpload>
                                             <ng-template pTemplate="content">
@@ -280,7 +280,7 @@
 
                                     </div>
                                     <div class="form-group ">
-                                        <label for="passportUpload">{{ 'PassportUpload' | translate }}</label>
+                                        <label for="passportUpload">Passport Upload _ تحميل صورة الجواز</label>
                                         <p-fileUpload id="passportUpload" name="myfile2[]" customUpload="true" [multiple]="false" (onSelect)="deleteServerFile('PASSPORT')"
                                                       #passportUpload>
                                             <ng-template pTemplate="content">
@@ -305,7 +305,7 @@
                                         </p-fileUpload>
                                     </div>
                                     <div class="form-group ">
-                                        <label for="licenseUpload">{{ 'license' | translate }}</label>
+                                        <label for="licenseUpload">license _ الرخصه</label>
                                         <p-fileUpload id="licenseUpload" name="myfile3[]" customUpload="true" [multiple]="false" (onSelect)="deleteServerFile('LICENSE')"
                                                       #licenseUpload>
                                             <ng-template pTemplate="content">
@@ -328,12 +328,15 @@
                                                 </div>
                                             </ng-template>
                                         </p-fileUpload>
-                                    </div>
+                                        </div>
 
 
                                     <!-- Save and Delete Buttons -->
                                     <div class="form-group  text-right">
-                                        <button type="submit" class="btn btn-default" [disabled]="!addWorkerForm.valid || (isAddMode && !isFilesAttached())"> {{ isAddMode? 'save':'update' | translate }}</button>
+                                        <button type="submit" class="btn btn-default" [disabled]="!addWorkerForm.valid || (isAddMode && !isFilesAttached())"
+                                        *ngIf="isAddMode"> {{ 'save' | translate }}</button>
+                                        <button type="submit" class="btn btn-default" [disabled]="!addWorkerForm.valid || (isAddMode && !isFilesAttached())"
+                                        *ngIf="!isAddMode"> {{ 'update' | translate }}</button>
                                     </div>
                                 </form>
                                 <div class="form-group  text-right">
@@ -352,3 +355,4 @@
             </div>
         </div>
     </div>
+</div>

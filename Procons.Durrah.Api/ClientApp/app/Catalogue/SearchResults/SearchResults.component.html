@@ -6,7 +6,7 @@
             <p>الرجاء اختيار عامل واحد</p>
         </div>
     </div>
-    <div class="row">
+    <div class="row" style="direction: ltr">
         <div class="col-md-1"></div>
         <div class="col-md-10">
             <p-dialog header="{{ 'video' | translate }}" [(visible)]="showVideoModal">
@@ -26,22 +26,24 @@
                 <p-column field="name" header="{{ 'type'| translate }}"></p-column>
                 <p-column field="gender" header="{{'gender' | translate }}"></p-column>
                 <p-column field="nationality" header="{{ 'nationality'| translate }}"></p-column>
-                <p-column field="languages" header="{{ 'language' | translate }}">
+                <p-column field="languages" header="{{ 'language' | translate }}" >
                     <ng-template let-col let-languages="rowData" let-ri="rowIndex" pTemplate="body">
-                        <ul>
-                            <li *ngFor="let language of languages.languages">{{language.name}} </li>
-                        </ul>
+                        <!-- <ul> -->
+                            <span *ngFor="let language of languages.languages" value="language.value">{{language.name}} </span>
+                        <!-- </ul> -->
                     </ng-template>
                 </p-column>
                 <p-column field="education" header="{{ 'education' | translate }}"></p-column>
+                <p-column field="yearsOfExperience" header="{{ 'yearsOfExperience' | translate }}"></p-column>
                 <!-- Video -->
-                <p-column header="{{'video'| translate }}" [filter]="false">
+                <!--<p-column header="{{'video'| translate }}" [filter]="false">-->
                     <!-- [style]="{'text-align': 'center'}" -->
-                    <ng-template let-worker="rowData" pTemplate="body">
-                        <div (click)="openRequestedPopup(worker.video)" data-toggle="tab" [className]="'glyphicon glyphicon-play-circle icon-large'"></div>
+                    <!--<ng-template let-worker="rowData" pTemplate="body">-->
+                        <!--<div (click)="openRequestedPopup(worker.video)" data-toggle="tab" [className]="'glyphicon glyphicon-play-circle icon-large'"></div>-->
                         <!-- <iframe width="200" height="200"  [src]="sanitizer.bypassSecurityTrustResourceUrl(worker.video)"  frameborder="0" allowfullscreen></iframe> -->
-                    </ng-template>
-                </p-column>
+                    <!--</ng-template>-->
+                <!--</p-column>-->
+                <!-- Available -->
                 <!-- Available -->
                 <p-column header="{{'status'| translate }}" [filter]="false">
                     <ng-template let-worker="rowData" pTemplate="body">

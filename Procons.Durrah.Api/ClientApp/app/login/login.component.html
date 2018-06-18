@@ -55,8 +55,8 @@
                                             required="true" [(ngModel)]="newUser.UserName" #userName="ngModel" />
                                     </div>
                                     <div class="form-group required">
-                                        <input type="text" required class="form-control" id="regcivilid" name="regcivilid" placeholder="{{'login.civilNumbP' | translate }}"
-                                            required="true" minlength="12" maxlength="12" [(ngModel)]="newUser.CivilId" #civilId="ngModel"
+                                        <input type="text"  class="form-control" id="regcivilid" name="regcivilid" placeholder="{{'login.civilNumbP' | translate }}"
+                                            required="false" minlength="12" maxlength="12" [(ngModel)]="newUser.CivilId" #civilId="ngModel"
                                         />
                                         <span class="help-block" *ngIf="!civilId.valid && (civilId.dirty || civilId.touched)"> {{'login.invalidCivilId' | translate}}</span>
                                     </div>

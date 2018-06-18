@@ -363,25 +363,52 @@
 
                 query.Append(exp);
                 Trace.WriteLine($"[PR]{query.ToString()}");
-                var readerResult = dbHelper.ExecuteQuery(query.ToString());
+                //var readerResult = dbHelper.ExecuteQuery(query.ToString());
+
+
+                dbHelper.OpenConnection();
+                var readerResult = dbHelper.Execute(query.ToString());
+                List<string> codeList = new List<string>();
+                foreach (DataRow drow in readerResult.Rows)
+                {
+                    var code = MapField<string>(drow["Code"]);
+                    codeList.Add(code);
+                }
+                StringBuilder codeQueryStat = new StringBuilder();
+                for (int i = 0; i < codeList.Count; i++) //string item in codeList)
+                {
+                    if (i == codeList.Count - 1)
+                        codeQueryStat.Append("'" + codeList[i] + "'");
+                    else
+                        codeQueryStat.Append("'"+codeList[i] +"'"+ ',');
+                }
+                var langagesResult = dbHelper.Execute($@"SELECT ""Code"",""U_VALUE"",""U_NAME"",* FROM ""{databaseBame}"".""@WORKERLNGS"" WHERE ""Code"" in({codeQueryStat.ToString()})");
+                var experiencesResult = dbHelper.Execute($@"SELECT * FROM ""{databaseBame}"".""@EXPERIENCE"" WHERE ""Code"" in({codeQueryStat.ToString()})");
+
+
+
 
                 foreach (DataRow drow in readerResult.Rows)
                 {
                     var code = MapField<string>(drow["Code"]);
-                    var langagesResult = dbHelper.ExecuteQuery($@"SELECT ""U_VALUE"",""U_NAME"" FROM ""{databaseBame}"".""@WORKERLNGS"" WHERE ""Code""='{code}'");
+                    //var langagesResult = dbHelper.ExecuteQuery($@"SELECT ""U_VALUE"",""U_NAME"" FROM ""{databaseBame}"".""@WORKERLNGS"" WHERE ""Code""='{code}'");
+
+                    var langagesResult1 = langagesResult.AsEnumerable().Where(x => x.Field<string>("Code") == code);
                     List<LookupItem> languages = new List<LookupItem>();
 
-                    foreach (DataRow langaugeRow in langagesResult.Rows)
+                    foreach (DataRow langaugeRow in langagesResult1)
                     {
                         var name = MapField<string>(langaugeRow["U_NAME"]);
                         var value = MapField<string>(langaugeRow["U_VALUE"]);
                         languages.Add(new LookupItem(name, value));
                     }
 
-                    var experiencesResult = dbHelper.ExecuteQuery($@"SELECT * FROM ""{databaseBame}"".""@EXPERIENCE"" WHERE ""Code""='{code}'");
+                    //var experiencesResult = dbHelper.ExecuteQuery($@"SELECT * FROM ""{databaseBame}"".""@EXPERIENCE"" WHERE ""Code""='{code}'");
+
+                    var experiencesResult1 = experiencesResult.AsEnumerable().Where(x => x.Field<string>("Code") == code);
                     List<Experience> experiences = new List<Experience>();
 
-                    foreach (DataRow experienceRow in experiencesResult.Rows)
+                    foreach (DataRow experienceRow in experiencesResult1)
                     {
                         var workerId = MapField<string>(experienceRow["U_WorkerId"]);
                         var startDate = MapField<string>(experienceRow["U_StartDate"]);
@@ -439,6 +466,10 @@
             catch (Exception ex)
             {
                 Utilities.LogException(ex);
+            }
+            finally
+            {
+                dbHelper.CloseConnection();
             }
 
             return workersList;
@@ -666,25 +697,45 @@
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@RELIGION"" AS ""R"" ON ""A"".""U_Religion"" = ""R"".""Code""");
                 query.Append($@" INNER JOIN ""{databaseBame}"".""@EDUCATION"" AS ""E"" ON ""A"".""U_Education"" = ""E"".""Code""");
                 query.Append($@" WHERE ""U_Agent""='{agent}'");
+                dbHelper.OpenConnection();
+                var readerResult = dbHelper.Execute(query.ToString());
+                List<string> codeList = new List<string>();
+                foreach (DataRow drow in readerResult.Rows)
+                { 
+                    var code = MapField<string>(drow["Code"]);
+                    codeList.Add(code);
+                }
+                StringBuilder codeQueryStat = new StringBuilder();
+                for(int i=0; i<codeList.Count;i++) //string item in codeList)
+                {
+                    if (i == codeList.Count - 1)
+                        codeQueryStat.Append("'" + codeList[i] + "'");
+                    else
+                        codeQueryStat.Append("'" + codeList[i] + "'" + ',');
+                }
+                    var langagesResult = dbHelper.Execute($@"SELECT ""Code"",""U_VALUE"",""U_NAME"" FROM ""{databaseBame}"".""@WORKERLNGS"" WHERE ""Code""in({codeQueryStat.ToString()})");
+                     var experiencesResult = dbHelper.Execute($@"SELECT * FROM ""{databaseBame}"".""@EXPERIENCE"" WHERE ""Code""in({codeQueryStat.ToString()})");
 
-                var readerResult = dbHelper.ExecuteQuery(query.ToString());
                 foreach (DataRow drow in readerResult.Rows)
                 {
                     var code = MapField<string>(drow["Code"]);
-                    var langagesResult = dbHelper.ExecuteQuery($@"SELECT ""U_VALUE"",""U_NAME"" FROM ""{databaseBame}"".""@WORKERLNGS"" WHERE ""Code""='{code}'");
+                    //var langagesResult = dbHelper.Execute($@"SELECT ""U_VALUE"",""U_NAME"" FROM ""{databaseBame}"".""@WORKERLNGS"" WHERE ""Code""='{code}'");
+                    //var langagesResult1 = //langagesResult.Select(@"Code ="+ code);
+                   var langagesResult1 = langagesResult.AsEnumerable().Where(x => x.Field<string>("Code") == code) ;
                     List<LookupItem> languages = new List<LookupItem>();
 
-                    foreach (DataRow language in langagesResult.Rows)
+                    foreach (DataRow language in langagesResult1)
                     {
                         var name = MapField<string>(language["U_NAME"]);
                         var value = MapField<string>(language["U_VALUE"]);
                         languages.Add(new LookupItem(name, value));
                     }
+                    var experiencesResult1 = experiencesResult.AsEnumerable().Where(x => x.Field<string>("Code") == code) ;
 
-                    var experiencesResult = dbHelper.ExecuteQuery($@"SELECT * FROM ""{databaseBame}"".""@EXPERIENCE"" WHERE ""Code""='{code}'");
+                    //var experiencesResult = dbHelper.Execute($@"SELECT * FROM ""{databaseBame}"".""@EXPERIENCE"" WHERE ""Code""='{code}'"); 
                     List<Experience> experiences = new List<Experience>();
 
-                    foreach (DataRow experienceRow in experiencesResult.Rows)
+                    foreach (DataRow experienceRow in experiencesResult1)
                     {
                         var workerId = MapField<string>(experienceRow["U_WorkerId"]);
                         var startDate = MapField<string>(experienceRow["U_StartDate"]);
@@ -745,6 +796,11 @@
             {
                 Utilities.LogException(ex);
             }
+            finally
+            {
+                dbHelper.CloseConnection();
+            }
+            
             return workersList;
         }
 
@@ -988,6 +1044,84 @@
 
         }
 
+        //ServiceLayerProvider _serviceInstance; //= ServiceLayerProvider.GetInstance();
+        public ServiceLayerProvider GetServiceInstance()
+        {
+            return ServiceLayerProvider.GetInstance();
+        }
+        public List<LookupItem> GetLookupValues<T>(ServiceLayerProvider _serviceInstance)
+        {
+            //var _serviceInstance = ServiceLayerProvider.GetInstance();
+
+
+            if (typeof(T) == typeof(COUNTRIES))
+            {
+                var results = _serviceInstance.CurrentServicelayerInstance.COUNTRIESUDO.ToList();
+                return GetLookups<COUNTRIES>(results);
+            }
+            else if (typeof(T) == typeof(B1ServiceLayer.SAPB1.Country))
+            {
+                //var results = _serviceInstance.CurrentServicelayerInstance.Countries.ToList();
+                //return GetLookups<B1ServiceLayer.SAPB1.Country>(results);
+                var databaseBame = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.DatabaseName);
+
+                var result = dbHelper.ExecuteQuery($@"SELECT ""Code"", ""Name"" FROM ""{databaseBame}"".""OCRY""");
+                List<LookupItem> countries = new List<LookupItem>();
+
+                foreach (DataRow country in result.Rows)
+                {
+                    var name = MapField<string>(country["Name"]);
+                    var value = MapField<string>(country["Name"]);
+                    countries.Add(new LookupItem(name, value));
+                }
+                return countries;
+            }
+            else if (typeof(T) == typeof(LANGUAGES))
+            {
+                var results = _serviceInstance.CurrentServicelayerInstance.LANGUAGESUDO.ToList<LANGUAGES>();
+                return GetLookups<LANGUAGES>(results);
+            }
+            else if (typeof(T) == typeof(MARITALSTATUS))
+            {
+                var results = _serviceInstance.CurrentServicelayerInstance.MARITALSTATUSUDO.ToList<MARITALSTATUS>();
+                return GetLookups<MARITALSTATUS>(results);
+            }
+            else if (typeof(T) == typeof(Item))
+            {
+                var results = _serviceInstance.CurrentServicelayerInstance.WORKERTYPESUDO.ToList<WORKERTYPES>();
+                return GetLookups<WORKERTYPES>(results);
+            }
+            else if (typeof(T) == typeof(Item))
+            {
+                var results = _serviceInstance.CurrentServicelayerInstance.Items.Select(x => new LookupItem(x.ItemCode, x.ItemName)).ToList();
+                return results;
+            }
+            else if (typeof(T) == typeof(RELIGION))
+            {
+                var results = _serviceInstance.CurrentServicelayerInstance.RELIGION.ToList();
+                return GetLookups<RELIGION>(results);
+            }
+            else if (typeof(T) == typeof(EDUCATION))
+            {
+                var results = _serviceInstance.CurrentServicelayerInstance.EDUCATION.ToList();
+                return GetLookups<EDUCATION>(results);
+            }
+            else
+                return null;
+
+            List<LookupItem> GetLookups<Y>(List<Y> list)
+            {
+                var lookups = new List<LookupItem>();
+                foreach (dynamic r in list)
+                {
+                    if (Utilities.GetCurrentLanguage() == Languages.English.GetDescription())
+                        lookups.Add(new LookupItem(r.Name, r.Code));
+                    else
+                        lookups.Add(new LookupItem(r.U_NAME, r.Code));
+                }
+                return lookups;
+            }
+        }
         public List<LookupItem> GetLookupValues<T>()
         {
             var _serviceInstance = ServiceLayerProvider.GetInstance();
@@ -1412,13 +1546,19 @@
 
         private string CreateAttachment(string fileName)
         {
+            Debug.WriteLine($"[PR] {fileName}");
             SAPbobsCOM.Attachments2 oATT = base.B1Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oAttachments2) as SAPbobsCOM.Attachments2;
             string FileName = fileName;
             oATT.Lines.Add();
+            Debug.WriteLine($"[PR] oATT.Lines.Add()");
             oATT.Lines.FileName = System.IO.Path.GetFileNameWithoutExtension(FileName);
+            Debug.WriteLine($"[PR] oATT.Lines.FileName ");
             oATT.Lines.FileExtension = System.IO.Path.GetExtension(FileName).Substring(1);
+            Debug.WriteLine($"[PR] {System.IO.Path.GetExtension(FileName).Substring(1)} ");
             oATT.Lines.SourcePath = Path.GetDirectoryName(System.Web.Hosting.HostingEnvironment.MapPath(FileName));// System.IO.Path.GetDirectoryName(FileName);
+            Debug.WriteLine($"[PR] {Path.GetDirectoryName(System.Web.Hosting.HostingEnvironment.MapPath(FileName))} ");
             oATT.Lines.Override = SAPbobsCOM.BoYesNoEnum.tYES;
+       
             if (oATT.Add() == 0)
                 return System.IO.Path.GetFileName(fileName);
             else

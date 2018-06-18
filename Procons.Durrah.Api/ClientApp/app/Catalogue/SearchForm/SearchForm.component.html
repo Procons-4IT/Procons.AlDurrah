@@ -1,7 +1,7 @@
 ﻿<div role="tabpanel" class="tab-pane fade in active">
     <div class="row">
         <div class="col-sm-6 col-sm-offset-2">
-            <h3>
+            <h3 style="direction: rtl; float: right;">
                 <span class="fa fa-search fa-fw fa-2x"></span> البحث المتقدم
             </h3>
             <form action="#" (ngSubmit)="GotoResults(workTypeInput,ageInput ,genderInput ,nationalityInput ,martialStatusInput, countryInput)"
@@ -46,7 +46,9 @@
                         </option>
                     </select>
                 </div>
-                <p-multiSelect required name="lang" defaultLabel="اللغات المتحدث بها" [options]="scp.languages" [(ngModel)]="selectedLanguages">
+                <p-multiSelect required name="lang" defaultLabel="اللغات المتحدث بها" [options]="scp.languages"
+                 [(ngModel)]="selectedLanguages"  autoWidth="false" [style]="{'width':'100%','height':'34p','padding':'1px 13px',
+                 'border':'2px solid #ccc','border-radius':'0'}">
                 </p-multiSelect>
 
                 <div class="form-group ">
@@ -55,7 +57,7 @@
                 <div class="form-group ">
                     <input name="hobbies" id="hobbies" type="text" class="form-control" [(ngModel)]="hobbies" placeholder="{{'hobbies' | translate}}" />
                 </div>
-                <div class="form-group">
+                <div class="form-group ">    <!--ClassisNew-->    
                     <label for="isNew">{{'isNew' | translate}}</label>
                     <p-checkbox name="isNew" [(ngModel)]="isNew" binary="true"></p-checkbox>
                     <div *ngIf="!isNew">

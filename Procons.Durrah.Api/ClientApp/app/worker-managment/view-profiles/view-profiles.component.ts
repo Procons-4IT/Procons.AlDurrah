@@ -32,6 +32,7 @@ export class ViewProfilesComponent {
     }
 
     transformXptoArray(xp): Experience[] {
+        debugger;
         if (xp) {
             if (Array.isArray(xp))
                 return xp;

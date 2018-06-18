@@ -1,0 +1,56 @@
+.ui-multiselect .ui-multiselect-label ,.ui-state-default { 
+    background: #ecedf2 !IMPORTANT; 
+}
+.ui-multiselect-label-container label.ui-multiselect-label.ui-corner-all {
+    font-size: 15px;
+    color: #555555f2;
+    FONT-WEIGHT: normal;
+    font: inherit;
+    margin-bottom: 0px;
+}
+.ui-multiselect.ui-widget.ui-state-default.ui-corner-all{
+    margin-bottom: 15px;
+}
+.ui-multiselect-trigger.ui-state-default.ui-corner-right{
+    height: 99%;
+    margin-top: 0.3px;
+}
+.ui-multiselect-trigger.ui-state-default.ui-corner-right {
+    border: 0px;
+}
+/* body.navbar-is-fixed-top{
+direction: rtl;
+} */
+.ClassisNew label,.ClassisNew p-checkbox{
+    float: right;
+} 
+.tabpanel body.navbar-is-fixed-top {
+    direction: ltr;
+}
+form.ng-untouched.ng-pristine.ng-invalid,
+form.ng-invalid.ng-dirty.ng-touched,
+form.ng-dirty.ng-touched.ng-valid {
+    direction: ltr;
+}
+#loginForm input {
+    direction: rtl;
+}
+
+/*******************for multi select***********************/
+search-form .col-sm-6.col-sm-offset-2,form#searchForm {
+    direction: rtl;
+    }
+.ui-multiselect-panel .ui-multiselect-item {
+    text-align: right;
+}
+
+.ui-multiselect-header .ui-multiselect-close {
+    right: 97% !important;
+}
+.ui-multiselect-header .ui-multiselect-filter-container .fa { 
+    right: .125em;
+}
+.ui-multiselect-header { 
+    text-align: right;
+}
+/*************************************************************/

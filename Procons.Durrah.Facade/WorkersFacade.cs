@@ -52,7 +52,30 @@
         {
             return provider.GetEmailAddress(cardCode);
         }
-
+        public ServiceLayerProvider GetServiceInstance()
+        {
+          return  provider.GetServiceInstance();
+        }
+        public List<List<LookupItem>> GetAllLookupsForEmployeeDataSearch()
+        {
+            var _serviceInstance = GetServiceInstance();
+            List<List<LookupItem>> AllLookups = new List<List<LookupItem>>();
+            var LANGUAGESItem = provider.GetLookupValues<LANGUAGES>(_serviceInstance);
+            var COUNTRIESItem = provider.GetLookupValues<COUNTRIES>(_serviceInstance);
+            var RELIGIONItem = provider.GetLookupValues<RELIGION>(_serviceInstance);
+            var EDUCATIONItem = provider.GetLookupValues<EDUCATION>(_serviceInstance);
+            var MARITALSTATUSItem = provider.GetLookupValues<MARITALSTATUS>(_serviceInstance);
+            var WorkersTypesItem = provider.GetLookupValues<Item>(_serviceInstance);
+            var CountryItem = provider.GetLookupValues<Country>(_serviceInstance);
+            AllLookups.Add(LANGUAGESItem);
+            AllLookups.Add(COUNTRIESItem);
+            AllLookups.Add(RELIGIONItem);
+            AllLookups.Add(EDUCATIONItem);
+            AllLookups.Add(MARITALSTATUSItem);
+            AllLookups.Add(WorkersTypesItem);
+            AllLookups.Add(CountryItem);
+            return AllLookups;
+        }
         public List<LookupItem> GetLanguagesLookups()
         {
             return provider.GetLookupValues<LANGUAGES>();

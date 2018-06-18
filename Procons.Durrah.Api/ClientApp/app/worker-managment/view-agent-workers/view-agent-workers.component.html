@@ -35,14 +35,14 @@
                                                 </div>
                                             </div>
                                             <div class="profile-actions">
-                                                <button (click)="ShowEditWorker(worker,i)" [disabled]="state.workersServerData[i].status !== '1'" class="btn btn-link edit-style">Edit</button>
+                                                <button (click)="ShowEditWorker(worker,i)" [disabled]="state.workersServerData[i].status !== '1'" class="btn btn-link edit-style">{{'Edit' | translate }}</button>
                                                 <div class="checkbox-custom">
                                                     <label>
                                                         <input type="checkbox" class="form-control" checked="checked" />
                                                         <span class="icon icon-ed-check icon-fw"></span>
                                                     </label>
                                                 </div>
-                                                <a (click)="Delete(worker,i)">{{'Delete' | translate }}</a>
+                                                <button  class="btn btn-link edit-style" (click)="Delete(worker,i)">{{'Delete' | translate }}</button>
                                             </div>
                                         </div>
 

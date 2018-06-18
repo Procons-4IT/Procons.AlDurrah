@@ -34,15 +34,33 @@
         {
 
             Dictionary<string, List<LookupItem>> result = new Dictionary<string, List<LookupItem>>();
-            List<LookupItem> languages = workersFacade.GetLanguagesLookups();
+
+            //List<LookupItem> languages = workersFacade.GetLanguagesLookups();
+            //List<LookupItem> nationality = workersFacade.GetCountriesLookups();
+            //List<LookupItem> religion = workersFacade.GetReligionLookups();
+            //List<LookupItem> education = workersFacade.GetEducationLookups();
+            //List<LookupItem> maritalStatus = workersFacade.GetMaritalStatusLookups();
+            //List<LookupItem> workerTypes = workersFacade.GetWorkersTypesLookups();
+            //List<LookupItem> countries = workersFacade.GetAllCountriesLookups();
+
+            List<LookupItem> languages = new List<LookupItem>(), nationality = new List<LookupItem>(),
+                religion = new List<LookupItem>(), education = new List<LookupItem>(),
+                maritalStatus = new List<LookupItem>(), workerTypes = new List<LookupItem>(),
+                countries = new List<LookupItem>();
+
+            List<List<LookupItem>> AllLookups = workersFacade.GetAllLookupsForEmployeeDataSearch();
+            if (AllLookups.Count > 0)
+            {
+                languages = AllLookups[0];
+                nationality = AllLookups[1];
+                religion = AllLookups[2];
+                education = AllLookups[3];
+                maritalStatus = AllLookups[4];
+                workerTypes = AllLookups[5];
+                countries = AllLookups[6];
+            }
             List<LookupItem> age = new List<LookupItem>() { new LookupItem("21-25", "21-25"), new LookupItem("25-35", "25-35"), new LookupItem("35-45", "35-45"), new LookupItem("45-55", "45-55") };
-            List<LookupItem> nationality = workersFacade.GetCountriesLookups();
-            List<LookupItem> religion = workersFacade.GetReligionLookups();
-            List<LookupItem> education = workersFacade.GetEducationLookups();
-            List<LookupItem> gender = new List<LookupItem>() { new LookupItem(Utilities.GetResourceValue("M"), "M"), new LookupItem(Utilities.GetResourceValue("F"), "F") };
-            List<LookupItem> maritalStatus = workersFacade.GetMaritalStatusLookups();
-            List<LookupItem> workerTypes = workersFacade.GetWorkersTypesLookups();
-            List<LookupItem> countries = workersFacade.GetAllCountriesLookups();
+             List<LookupItem> gender = new List<LookupItem>() { new LookupItem(Utilities.GetResourceValue("M"), "M"), new LookupItem(Utilities.GetResourceValue("F"), "F") };
             result.Add("Languages", languages);
             result.Add("Age", age);
             result.Add("Education", education);
