@@ -19,7 +19,7 @@
             message.Body = identityMessage.Body;
             message.IsBodyHtml = true;
             SmtpServer.Timeout = 2000000;
-            SmtpServer.UseDefaultCredentials = true;
+            SmtpServer.UseDefaultCredentials = false;
             SmtpServer.Credentials = new System.Net.NetworkCredential(Utilities.GetConfigurationValue(Common.Constants.ConfigurationKeys.MailUid), Utilities.GetConfigurationValue(Common.Constants.ConfigurationKeys.MailPwd));
             SmtpServer.Host = Utilities.GetConfigurationValue(Common.Constants.ConfigurationKeys.MailServer);
             SmtpServer.Port =Convert.ToInt32( Utilities.GetConfigurationValue(Common.Constants.ConfigurationKeys.MailPort));
