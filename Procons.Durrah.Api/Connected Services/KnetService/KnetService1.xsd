@@ -19,6 +19,7 @@
       <xs:element minOccurs="0" name="UDF3" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="UDF4" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="UDF5" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="WorkerCode" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Transaction" nillable="true" type="tns:Transaction" />

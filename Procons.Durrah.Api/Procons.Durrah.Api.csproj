@@ -466,9 +466,6 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Connected Services\KnetService\" />
-  </ItemGroup>
-  <ItemGroup>
     <COMReference Include="e24PaymentPipeLib">
       <Guid>{78EEF9E1-38E9-11D5-9B13-00E0B8184571}</Guid>
       <VersionMajor>1</VersionMajor>
@@ -496,6 +493,9 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Resource.designer.cs</LastGenOutput>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\KnetService\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
