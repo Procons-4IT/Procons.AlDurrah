@@ -293,13 +293,12 @@
         <div class="modal-icon"><img src="/Assets/src/app/images/icon_lock.png" class="icon" /></div>
         <p><small> {{paymentModalText}}</small></p>
         <div *ngIf="!loadingPayment">
-          <p *ngIf="amount"><small> Amount: {{amount}}</small></p>
-          <p *ngIf="paymentParams.TranID"><small> Transaction ID: {{paymentParams.TranID}}</small></p>
-          <p *ngIf="paymentParams.Ref"><small> Reference ID: {{paymentParams.Ref}}</small></p>
-          <p *ngIf="paymentParams.PaymentID"><small> Payment ID: {{paymentParams.PaymentID}}</small></p>
-          <p *ngIf="paymentParams.TrackID"><small> Track ID: {{paymentParams.TrackID}}</small></p>
-
-
+            <p *ngIf="amount"><small> Amount: {{amount}}</small></p>
+            <p *ngIf="paymentParams.TranID"><small> Transaction ID: {{paymentParams.TranID}}</small></p>
+            <p *ngIf="paymentParams.Ref"><small> Reference ID: {{paymentParams.Ref}}</small></p>
+            <p *ngIf="paymentParams.PaymentID"><small> Payment ID: {{paymentParams.PaymentID}}</small></p>
+            <p *ngIf="paymentParams.TrackID"><small> Track ID: {{paymentParams.TrackID}}</small></p>
+            <p style="color:red"><small>{{'route.InfoMessage' | translate }}</small></p>
         </div>  
       </div>
     </div>

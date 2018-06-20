@@ -30,8 +30,8 @@
       "error": "Something Went Wrong!"
     },
     "error": "Error Page 404",
-    "cancel": "Transaction was cancelled"
-
+    "cancel": "Transaction was cancelled",
+    "InfoMessage":"Please contact Al Durra..."
 
   },
   "resetPassword": {

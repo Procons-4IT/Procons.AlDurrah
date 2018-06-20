@@ -201,6 +201,9 @@
     <Content Include="ClientApp\app\login\login.component.html" />
     <Content Include="ClientApp\app\worker-managment\add-profile\add-profile.component.css" />
     <Content Include="ClientApp\app\worker-managment\add-profile\add-profile.component.html" />
+    <Content Include="ClientApp\app\worker-managment\view-agent-workers\view-agent-workers.component.css" />
+    <Content Include="ClientApp\app\worker-managment\view-agent-workers\view-agent-workers.component.html" />
+    <Content Include="ClientApp\app\worker-managment\view-agent-workers\view-agent-workers.component.js" />
     <Content Include="ClientApp\app\worker-managment\view-profiles\view-profiles.component.css" />
     <Content Include="ClientApp\app\worker-managment\view-profiles\view-profiles.component.html" />
     <Content Include="ClientApp\app\worker-managment\worker-managment.component.css" />
@@ -327,6 +330,7 @@
     <Content Include="ClientApp\Assets\src\app\New folder\search.html" />
     <Content Include="ClientApp\Assets\src\app\New folder\searchresult.html" />
     <Content Include="ClientApp\favicon.ico" />
+    <Content Include="ClientApp\app\worker-managment\view-agent-workers\view-agent-workers.component.js.map" />
     <None Include="Connected Services\KnetService\KnetService.disco" />
     <None Include="Connected Services\KnetService\configuration91.svcinfo" />
     <None Include="Connected Services\KnetService\configuration.svcinfo" />
@@ -457,6 +461,7 @@
     <TypeScriptCompile Include="ClientApp\app\Services\UserService.ts" />
     <TypeScriptCompile Include="ClientApp\app\shared\ingredient.model.ts" />
     <TypeScriptCompile Include="ClientApp\app\worker-managment\add-profile\add-profile.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\worker-managment\view-agent-workers\view-agent-workers.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\worker-managment\view-profiles\view-profiles.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\worker-managment\worker-managment.component.ts" />
     <TypeScriptCompile Include="ClientApp\bootclient.ts" />
