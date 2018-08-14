@@ -1,11 +1,13 @@
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { MenuItem } from 'primeng/primeng';
 import { Worker,Experience } from '../../Models/Worker';
+import { ProconsModalSerivce } from '../../Services/ProconsModalService';
 
 @Component({
   selector: 'profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+  styleUrls: ['./profile.component.css'],
+  providers: [ProconsModalSerivce]
 })
 export class profileComponent implements OnInit {
 
@@ -13,7 +15,7 @@ export class profileComponent implements OnInit {
   @Output() onBook = new EventEmitter<Boolean>();
   @Output() onBack = new EventEmitter<any>();
 
-  constructor() { }
+  constructor(private myModal: ProconsModalSerivce) { }
 
   ngOnInit() {
     
@@ -24,7 +26,9 @@ export class profileComponent implements OnInit {
   }
 
   Book() {
-    this.onBook.emit(true);
+    this.myModal.showHTMLModal('<p><small>يرجى مراجعة المقر الرئيسي لشركة الدرة للعمالة&nbsp;لأختيار&nbsp;العامل / العاملة</small></p>'
+    +'<p><small>Please check the headquarters of Al-Durra for manpower Company to choose the worker / maid</small></p>');
+    //this.onBook.emit(true);
   }
   transformXptoArray(xp): Experience[] {
     if (xp) {
