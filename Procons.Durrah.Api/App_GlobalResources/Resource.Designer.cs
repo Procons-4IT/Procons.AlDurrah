@@ -133,12 +133,12 @@ namespace Resources {
         ///      &lt;/p&gt;
         ///		&lt;p&gt;
         ///		  A transaction has been successfully submitted with the following informaiton: 
+        ///		  &lt;div&gt;Customer Code : [[CustomerCode]] &lt;div&gt;
+        ///		  &lt;div&gt;Customer Name : [[CustomerName]] &lt;div&gt;
         ///		  &lt;div&gt;Item Code : [[ItemCode]] &lt;div&gt;
         ///		  &lt;div&gt;Amount: [[TransactionAmount]] KWD&lt;div&gt; 
         ///		  &lt;div&gt;Reference ID: [[ReferenceID]]&lt;div&gt; 
-        ///		  &lt;div&gt;Payment ID: [[PaymentID]] &lt;div&gt; 
-        ///		  &lt;div&gt;Merchant track ID: [[MerchantTrackID]] &lt;div&gt; 
-        ///&lt;div&gt;For help please contact:  [rest of string was truncated]&quot;;.
+        ///		  &lt;div&gt;Payment ID: [[PaymentI [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string KnetEmailConfirmation {
             get {

@@ -138,6 +138,7 @@ export class CatalogueComponent implements OnInit {
     }
     //TO-DO: REMOVE AMOUNT HERE!
     Book(onBook: Boolean) {
+        debugger;
         var selectedWorker = this.selectedWorker;
         
         var paymentInformation = { SerialNumber: selectedWorker.serialNumber, CardCode: selectedWorker.agent, Amount: "100", Code: selectedWorker.code, WorkerCode: selectedWorker.workerCode }
@@ -145,7 +146,10 @@ export class CatalogueComponent implements OnInit {
         this.loading = true;
         this.myApi.knetPaymentRedirectUrl(paymentInformation)
             .map(url => this.utility.redirectToUrl(url))
-            .subscribe(onSuccess => { }, onError => {
+            .subscribe(onSuccess => { 
+                debugger;
+                this.myModal.showSuccessModal("SuccessPayment");
+            }, onError => {
                 this.loading = false;
                 this.myModal.showErrorModal();
             });

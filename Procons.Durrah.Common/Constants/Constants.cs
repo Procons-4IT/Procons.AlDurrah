@@ -71,6 +71,8 @@
             public const string ReferenceID = "ReferenceID";
             public const string PaymentID = "PaymentID";
             public const string MerchantTrackID = "MerchantTrackID";
+            public const string CustomerCode = "CustomerCode";
+            public const string CustomerName = "CustomerName";
         }
 
         public struct EmailKeys

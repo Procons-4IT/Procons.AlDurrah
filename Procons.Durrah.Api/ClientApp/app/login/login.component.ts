@@ -133,7 +133,7 @@ export class LoginComponent implements OnInit {
     }
 
     CreateUser() {
-        if(this.newUser.Mobile.toString().length !== 8){
+        if(this.newUser.Mobile.toString().length < 8 || this.newUser.Mobile.toString().length > 9){
             this.myModal.showErrorModal("error.mobileLength",true);
             return;
         }

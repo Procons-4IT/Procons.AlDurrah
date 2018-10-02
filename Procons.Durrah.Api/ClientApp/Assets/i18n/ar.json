@@ -27,6 +27,7 @@
     "payment": {
       "loading": "Proccesing Payment Please Wait!",
       "complete": "Payment Complete!",
+      "SuccessPayment":"يرجى مراجعة أقرب فرع للشركة خلال 48 ساعة من تاريخ الدفع و في حالة عدم المراجعة خلال 48 ساعة سوف يتم إلغاء الطلب تلقائياً",
       "error": "Something Went Wrong!"
     },
     "error": "Error Page 404",
@@ -122,10 +123,10 @@
 
     "getSearchCriteria": "Something went wrong!",
     "bookWorker": "Something went wrong!",
-    "getWorkers": "Something went wrong!"
-
+    "getWorkers": "Something went wrong!",
+    "mobileLength":"Please check your mobile number. It must be 8 or 9 digits" 
   },
-  "experience": "الخبرة"
-
+  "experience": "الخبرة",
+  "SuccessPayment":"يرجى مراجعة أقرب فرع للشركة خلال 48 ساعة من تاريخ الدفع و في حالة عدم المراجعة خلال 48 ساعة سوف يتم إلغاء الطلب تلقائياً"
 
 }

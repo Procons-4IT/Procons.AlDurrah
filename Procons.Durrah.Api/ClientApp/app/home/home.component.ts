@@ -26,6 +26,7 @@ export class HomeComponent implements OnInit {
   isLoggedIn = false;
   logInType = '';
   IscomingSoon:boolean;
+  successPayment = false;
 
   public paymentModalText: string = "";
   public paymentParams: KnetPayment = {
@@ -115,6 +116,7 @@ export class HomeComponent implements OnInit {
         this.jqueryModalHelper("route.payment.complete", null, () => {
           this.loadingPayment = false;
           this.amount = x && x.Amount;
+          this.successPayment = true;
           this.resetAddressBarToHome();
         });
 

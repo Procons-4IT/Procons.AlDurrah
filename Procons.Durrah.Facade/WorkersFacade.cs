@@ -119,6 +119,11 @@
             return provider.GetItemCodeByPaymentId(PaymentId);
         }
 
+        public string GetCardNameByPaymentId(string PaymentId)
+        {
+            return provider.GetCardNameByPaymentId(PaymentId);
+        }
+
         public string GetAttachmentsPath()
         {
             return provider.GetAttachmentPath();

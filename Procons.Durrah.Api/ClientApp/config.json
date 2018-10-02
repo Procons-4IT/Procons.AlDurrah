@@ -1,6 +1,6 @@
 {
-  "baseUrl": "https://rdsh.proconscloud.com:4545",
-  "baseUrl1": "http://localhost:59822",
+  "baseUrl": "http://localhost:59822",
+  "baseUrl1": "https://rdsh.proconscloud.com:4545",
   "getSearchCriteriaUrl": "/api/Workers/GetSearchLookups",
   "getWorkersUrl": "/api/Workers/GetWorkers",
   "getAgentWorkerUrl":"/api/Workers/GetAgentWorkers",

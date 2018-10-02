@@ -148,6 +148,8 @@
       &lt;/p&gt;
 		&lt;p&gt;
 		  A transaction has been successfully submitted with the following informaiton: 
+		  &lt;div&gt;Customer Code : [[CustomerCode]] &lt;div&gt;
+		  &lt;div&gt;Customer Name : [[CustomerName]] &lt;div&gt;
 		  &lt;div&gt;Item Code : [[ItemCode]] &lt;div&gt;
 		  &lt;div&gt;Amount: [[TransactionAmount]] KWD&lt;div&gt; 
 		  &lt;div&gt;Reference ID: [[ReferenceID]]&lt;div&gt; 

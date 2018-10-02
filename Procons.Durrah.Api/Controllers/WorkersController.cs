@@ -144,6 +144,7 @@
         [HttpPost]
         public IHttpActionResult CreatePayment([FromBody]Transaction payment)
         {
+            var CardName = workersFacade.GetCardNameByPaymentId(payment.PaymentID);
             var paymentAmount = workersFacade.GetDownPaymentAmount().ToString();
             var isSalesOrderAvailable = workersFacade.CheckSalesOderAvailability(payment.PaymentID);
             var userEmail = workersFacade.GetEmailAddress(payment.CardCode);
@@ -162,7 +163,9 @@
                     tokens.Add(Constants.KNET.ReferenceID, payment.Ref);
                     tokens.Add(Constants.KNET.TransactionAmount, payment.Amount);
                     tokens.Add(Constants.KNET.ItemCode, itemCode);
-
+                    //customer name and customer code
+                    tokens.Add(Constants.KNET.CustomerCode, payment.CardCode);
+                    tokens.Add(Constants.KNET.CustomerName, CardName);
                     idMessage.Destination = userEmail;
                     idMessage.Subject = Utilities.GetResourceValue(Constants.Resources.Transaction_Completed);
                     var messageBody = Utilities.GetResourceValue(Constants.Resources.KnetEmailConfirmation).GetMessageBody(tokens);

@@ -1238,6 +1238,19 @@
             }
             return itemCode;
         }
+        public string GetCardNameByPaymentId(string paymentId)
+        {
+            string CardName = string.Empty;
+            try
+            {
+                CardName = GetSalesOrder(paymentId).CardName;
+            }
+            catch (Exception ex)
+            {
+                Utilities.LogException(ex);
+            }
+            return CardName;
+        }
 
         public string GetAttachmentPath()
         {

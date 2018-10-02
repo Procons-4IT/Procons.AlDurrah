@@ -75,7 +75,9 @@
                                     </div>
 
                                     <div class="form-group required">
-                                        <input required id="mobile" type="number" minlength="8" maxlength="9" class="form-control" name="mobile" placeholder="{{'mobile' | translate }}" [(ngModel)]="newUser.Mobile" #mobile="ngModel" />
+                                        <input required id="mobile" type="number" minlength="8" maxlength="9" class="form-control" 
+                                        name="mobile" placeholder="{{'mobile' | translate }}" [(ngModel)]="newUser.Mobile" #mobile="ngModel" />
+                                        <span class="help-block" *ngIf="((newUser.Mobile.toString().length < 8 ) || (newUser.Mobile.toString().length > 9 ))"> {{'error.mobileLength' | translate}}</span>
                                     </div>
 
                                     <div class="form-group">
@@ -84,7 +86,7 @@
 
                                     </div>
                                     <div class="form-group">
-                                        <input type="submit" value="{{'submit' | translate}}" [disabled]="!passwordMatch() || !createUserForm.valid || !recaptchaToken"
+                                        <input type="submit" value="{{'submit' | translate}}" [disabled]="!passwordMatch() || !createUserForm.valid  || !recaptchaToken"
                                             class="btn btn-primary" id="submitRegistrationForm" />
                                         <a href="#tabLogin" class="btn btn-primary" aria-controls="tabLogin" role="tab" data-toggle="tab" id="loginBack">Back</a>
                                     </div>
