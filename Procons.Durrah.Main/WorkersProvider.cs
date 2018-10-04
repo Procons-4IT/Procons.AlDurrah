@@ -825,9 +825,11 @@
                 salesOrder.DocDueDate = DateTime.Now;
 
                 salesOrderLine.ItemCode = trans.Code;
+
                 salesOrder.DocumentLines.Add(salesOrderLine);
 
                 instance.CurrentServicelayerInstance.AddToOrders(salesOrder);
+
                 var worker = instance.CurrentServicelayerInstance.WORKERSUDO.Where(x => x.U_Serial == trans.SerialNumber && x.U_ItemCode == trans.Code).FirstOrDefault();
                 worker.U_Status = "2";
                 instance.CurrentServicelayerInstance.UpdateObject(worker);
@@ -1013,7 +1015,27 @@
                 return null;
             }
         }
-
+        public bool CheckSalesOrder(string workerId)
+        {
+            bool isAvailable = false;
+            try
+            {
+                dbHelper.OpenConnection();
+                var result = dbHelper.Execute($@"SELECT COUNT(""U_WorkerID"") ""COUNT""  FROM ""{base.databaseName}"".""ORDR"" WHERE ""DocStatus"" = 'O' AND ""CANCELED"" = 'N' AND ""U_WorkerID"" = '{ workerId }'");
+                var count = int.Parse(result.Rows[0]["COUNT"].ToString());
+                if (count > 0)
+                    isAvailable = true;
+            }
+            catch (Exception ex)
+            {
+                Utilities.LogException(ex);
+            }
+            finally
+            {
+                dbHelper.CloseConnection();
+            }
+            return isAvailable;
+        }
         public bool CheckSalesOrderAvailability(string paymentId)
         {
             bool isAvailable = false;

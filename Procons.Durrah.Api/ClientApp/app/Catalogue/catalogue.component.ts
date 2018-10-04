@@ -26,6 +26,7 @@ import { ApiService } from '../Services/ApiService';
 import { UtilityService } from '../Services/UtilityService';
 
 import { ProconsModalSerivce } from '../Services/ProconsModalService';
+import { isNullOrUndefined } from 'util';
 
 @Component({
     selector: 'app-catalogue',
@@ -76,7 +77,7 @@ export class CatalogueComponent implements OnInit {
     GoToResults(workerFilter: Worker) { 
         this.loading = true;
         this.myApi.getAllWorkers(workerFilter).subscribe(workers => {
-             
+             debugger;
             this.loading = false
             this.workers = workers;
             workers.forEach(element => {
@@ -138,7 +139,6 @@ export class CatalogueComponent implements OnInit {
     }
     //TO-DO: REMOVE AMOUNT HERE!
     Book(onBook: Boolean) {
-        debugger;
         var selectedWorker = this.selectedWorker;
         
         var paymentInformation = { SerialNumber: selectedWorker.serialNumber, CardCode: selectedWorker.agent, Amount: "100", Code: selectedWorker.code, WorkerCode: selectedWorker.workerCode }
@@ -147,11 +147,12 @@ export class CatalogueComponent implements OnInit {
         this.myApi.knetPaymentRedirectUrl(paymentInformation)
             .map(url => this.utility.redirectToUrl(url))
             .subscribe(onSuccess => { 
-                debugger;
-                this.myModal.showSuccessModal("SuccessPayment");
             }, onError => {
                 this.loading = false;
-                this.myModal.showErrorModal();
+                if(!isNullOrUndefined(onError._body))
+                    this.myModal.showErrorModal(JSON.parse(onError._body).message);
+                else
+                    this.myModal.showErrorModal();
             });
     }
     ShowSearchResult() {

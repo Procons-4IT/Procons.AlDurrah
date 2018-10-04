@@ -253,6 +253,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to هذا العامل حجز مسبقا.
+        /// </summary>
+        internal static string WorkerBooked {
+            get {
+                return ResourceManager.GetString("WorkerBooked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to تمت الاضافة بنجاح !.
         /// </summary>
         internal static string WorkerCreatedSuccessfully {

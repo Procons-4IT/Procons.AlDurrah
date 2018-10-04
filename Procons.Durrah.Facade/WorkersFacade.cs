@@ -134,6 +134,11 @@
             return provider.CheckSalesOrderAvailability(paymentId);
         }
 
+        public bool CheckSalesOrder(string workerId)
+        {
+            return provider.CheckSalesOrder(workerId);
+        }
+
         public List<LookupItem> GetLanguagesById(string isonStringIds)
         {
             return provider.GetLanguagesById(isonStringIds);

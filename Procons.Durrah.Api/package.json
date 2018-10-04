@@ -2,7 +2,7 @@
   "name": "durrah",
   "version": "0.0.0",
   "scripts": {
-    "start": "ng serve",
+    "start": "ng serve --port 4300",
     "build": "ng build  --prod --output-hashing none",
     "test": "ng test"
   },

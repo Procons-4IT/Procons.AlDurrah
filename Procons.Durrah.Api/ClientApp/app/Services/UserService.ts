@@ -22,8 +22,8 @@ export class UserService {
         let header = this.GetAuthorizationHeader();
         header.append('Content-Type', 'application/json');
         let options = new RequestOptions({ headers: header });
-        return this.http.get("http://localhost:59822", options);
-        //return this.http.get("https://rdsh.proconscloud.com:4545", options);
+        return this.http.get("https://rdsh.proconscloud.com:4545", options);
+        //return this.http.get("http://localhost:59822", options);
         //https://rdsh.proconscloud.com:4545
         //http://localhost:59822/api/roles/GetCurrentRole
     }

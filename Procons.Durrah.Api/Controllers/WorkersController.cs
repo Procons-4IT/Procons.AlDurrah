@@ -89,7 +89,10 @@
             try
             {
 
-                IEnumerable<Claim> claims;
+                var isSalesOrderClosed = workersFacade.CheckSalesOrder(transaction.WorkerCode);
+                if (!isSalesOrderClosed)
+                {
+                    IEnumerable<Claim> claims;
                 var cardCode = string.Empty;
 
                 claims = ((ClaimsIdentity)User.Identity).Claims;
@@ -115,16 +118,20 @@
                 }
                 else
                 {
-                    transaction.PaymentID = returnedTrans.PaymentID;
-                    transaction.TrackID = returnedTrans.TrackID;
-                    transaction.TranID = returnedTrans.TranID;
-                    var result = workersFacade.CreateSalesOrder(transaction, cardCode);
+                        transaction.PaymentID = returnedTrans.PaymentID;
+                        transaction.TrackID = returnedTrans.TrackID;
+                        transaction.TranID = returnedTrans.TranID;
+                        var result = workersFacade.CreateSalesOrder(transaction, cardCode);
 
-                    if (result == double.MinValue)
-                        return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "/Error");
-                    else
-                        return Request.CreateResponse(HttpStatusCode.OK, returnedTrans.PaymentPage + "?PaymentID=" + returnedTrans.PaymentID);
+                        if (result == double.MinValue)
+                            return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "/Error");
+                        else
+                            return Request.CreateResponse(HttpStatusCode.OK, returnedTrans.PaymentPage + "?PaymentID=" + returnedTrans.PaymentID);
+                   }
                 }
+                else
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, Utilities.GetResourceValue(Constants.Resources.WorkerBooked));
+               
             }
             catch (Exception ex)
             {

@@ -12,7 +12,8 @@
             <p-dialog header="{{ 'video' | translate }}" [(visible)]="showVideoModal">
                 <iframe width="480" *ngIf="showVideoModal" height="270" [src]="videoUrl" frameborder="0"> </iframe>
             </p-dialog>
-            <p-dataTable [value]="workers" [paginator]="true" rows="15" [responsive]="true">
+            <p-dataTable [value]="workers" [paginator]="true" [responsive]="true"   [rows]='30'
+             [rowsPerPageOptions]='[10,20,30,50]'>
                 <p-column field="image" header="{{'image' | translate }}">
                     <ng-template let-worker="rowData" pTemplate="body">
                         <div (click)="GoToProfile(worker)" data-toggle="tab">

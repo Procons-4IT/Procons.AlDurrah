@@ -62,6 +62,7 @@
             public const string WorkerAreadyCreated = "WorkerAreadyCreated";
             public const string WorkerCreatedSuccessfully = "WorkerCreatedSuccessfully";
             public const string ErrorOccured = "ErrorOccured";
+            public const string WorkerBooked = "WorkerBooked";
         }
         public struct KNET
         {

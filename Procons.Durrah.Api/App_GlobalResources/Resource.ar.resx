@@ -218,6 +218,9 @@
   <data name="WorkerAreadyCreated" xml:space="preserve">
     <value>العامل الذي تحاول اضافته موجود !</value>
   </data>
+  <data name="WorkerBooked" xml:space="preserve">
+    <value>هذا العامل حجز مسبقا</value>
+  </data>
   <data name="WorkerCreatedSuccessfully" xml:space="preserve">
     <value>تمت الاضافة بنجاح !</value>
   </data>

@@ -139,6 +139,7 @@ export class LoginComponent implements OnInit {
         }
         this.loading = true;
         this.newUser["CaptchaCode"] = this.recaptchaToken;
+        debugger;
         this.myApi.createNewUser(this.newUser).subscribe(x => {
             this.loading = false;
             this.recaptchaToken = null;
