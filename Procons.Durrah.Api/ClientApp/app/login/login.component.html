@@ -85,8 +85,8 @@
                                         <span class="help-block" *ngIf="!recaptchaToken"> {{'login.invalidCaptcha' | translate }}</span>
 
                                     </div>
-                                    <div class="form-group"><!-- || !recaptchaToken -->
-                                        <input type="submit" value="{{'submit' | translate}}" [disabled]="!passwordMatch() || !createUserForm.valid  "
+                                    <div class="form-group">
+                                        <input type="submit" value="{{'submit' | translate}}" [disabled]="!passwordMatch() || !createUserForm.valid  || !recaptchaToken"
                                             class="btn btn-primary" id="submitRegistrationForm" />
                                         <a href="#tabLogin" class="btn btn-primary" aria-controls="tabLogin" role="tab" data-toggle="tab" id="loginBack">Back</a>
                                     </div>

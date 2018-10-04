@@ -27,11 +27,11 @@ direction: rtl;
 .tabpanel body.navbar-is-fixed-top {
     direction: ltr;
 }
-form.ng-untouched.ng-pristine.ng-invalid,
+/* form.ng-untouched.ng-pristine.ng-invalid,
 form.ng-invalid.ng-dirty.ng-touched,
 form.ng-dirty.ng-touched.ng-valid {
     direction: ltr;
-}
+} */
 #loginForm input {
     direction: rtl;
 }
