@@ -93,31 +93,31 @@
                 if (!isSalesOrderClosed)
                 {
                     IEnumerable<Claim> claims;
-                var cardCode = string.Empty;
+                    var cardCode = string.Empty;
 
-                claims = ((ClaimsIdentity)User.Identity).Claims;
-                cardCode = claims.Where(x => x.Type == Constants.ServiceLayer.CardCode).FirstOrDefault().Value;
-                transaction.CardCode = cardCode;
+                    claims = ((ClaimsIdentity)User.Identity).Claims;
+                    cardCode = claims.Where(x => x.Type == Constants.ServiceLayer.CardCode).FirstOrDefault().Value;
+                    transaction.CardCode = cardCode;
 
-                var knetSvc = new KnetService.KnetServiceClient();
-                transaction.Amount = workersFacade.GetDownPaymentAmount().ToString();
-                try
-                {
-                    returnedTrans = knetSvc.CallKnetGateway(transaction);
-                }
-                catch (Exception ex)
-                {
-                    Utilities.LogException(ex);
-                }
+                    var knetSvc = new KnetService.KnetServiceClient();
+                    transaction.Amount = workersFacade.GetDownPaymentAmount().ToString();
+                    try
+                    {
+                        returnedTrans = knetSvc.CallKnetGateway(transaction);
+                    }
+                    catch (Exception ex)
+                    {
+                        Utilities.LogException(ex);
+                    }
 
-                knetSvc.Close();
+                    knetSvc.Close();
 
-                if (returnedTrans == null)
-                {
-                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "/Error");
-                }
-                else
-                {
+                    if (returnedTrans == null)
+                    {
+                        return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "/Error");
+                    }
+                    else
+                    {
                         transaction.PaymentID = returnedTrans.PaymentID;
                         transaction.TrackID = returnedTrans.TrackID;
                         transaction.TranID = returnedTrans.TranID;
@@ -127,11 +127,11 @@
                             return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "/Error");
                         else
                             return Request.CreateResponse(HttpStatusCode.OK, returnedTrans.PaymentPage + "?PaymentID=" + returnedTrans.PaymentID);
-                   }
+                    }
                 }
                 else
                     return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, Utilities.GetResourceValue(Constants.Resources.WorkerBooked));
-               
+
             }
             catch (Exception ex)
             {
