@@ -26,7 +26,6 @@
     }
     public class WorkersController : BaseApiController, IRequiresSessionState
     {
-
         B1Facade b1Facade = new B1Facade();
         WorkersFacade workersFacade = new WorkersFacade();
 
@@ -60,7 +59,7 @@
                 countries = AllLookups[6];
             }
             List<LookupItem> age = new List<LookupItem>() { new LookupItem("21-25", "21-25"), new LookupItem("25-35", "25-35"), new LookupItem("35-45", "35-45"), new LookupItem("45-55", "45-55") };
-             List<LookupItem> gender = new List<LookupItem>() { new LookupItem(Utilities.GetResourceValue("M"), "M"), new LookupItem(Utilities.GetResourceValue("F"), "F") };
+            List<LookupItem> gender = new List<LookupItem>() { new LookupItem(Utilities.GetResourceValue("M"), "M"), new LookupItem(Utilities.GetResourceValue("F"), "F") };
             result.Add("Languages", languages);
             result.Add("Age", age);
             result.Add("Education", education);
@@ -88,36 +87,37 @@
             Transaction returnedTrans = null;
             try
             {
+                var isBooked = workersFacade.IsWorkerBooked(transaction.WorkerCode);
 
-                var isSalesOrderClosed = workersFacade.CheckSalesOrder(transaction.WorkerCode);
-                if (!isSalesOrderClosed)
+                if (isBooked)
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, Utilities.GetResourceValue(Constants.Resources.WorkerBooked));
+                
+                if (!workersFacade.CheckSalesOrder(transaction.WorkerCode))
                 {
-                    IEnumerable<Claim> claims;
-                var cardCode = string.Empty;
+                    var knetSvc = new KnetService.KnetServiceClient();
+                    IEnumerable<Claim> claims = ((ClaimsIdentity) User.Identity).Claims;
+                    string cardCode = claims.Where(x => x.Type == Constants.ServiceLayer.CardCode).FirstOrDefault().Value;
 
-                claims = ((ClaimsIdentity)User.Identity).Claims;
-                cardCode = claims.Where(x => x.Type == Constants.ServiceLayer.CardCode).FirstOrDefault().Value;
-                transaction.CardCode = cardCode;
+                    transaction.CardCode = cardCode;
+                    transaction.Amount = workersFacade.GetDownPaymentAmount().ToString();
 
-                var knetSvc = new KnetService.KnetServiceClient();
-                transaction.Amount = workersFacade.GetDownPaymentAmount().ToString();
-                try
-                {
-                    returnedTrans = knetSvc.CallKnetGateway(transaction);
-                }
-                catch (Exception ex)
-                {
-                    Utilities.LogException(ex);
-                }
+                    try
+                    {
+                        returnedTrans = knetSvc.CallKnetGateway(transaction);
+                    }
+                    catch (Exception ex)
+                    {
+                        Utilities.LogException(ex);
+                    }
 
-                knetSvc.Close();
+                    knetSvc.Close();
 
-                if (returnedTrans == null)
-                {
-                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "/Error");
-                }
-                else
-                {
+                    if (returnedTrans == null)
+                    {
+                        return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "/Error");
+                    }
+                    else
+                    {
                         transaction.PaymentID = returnedTrans.PaymentID;
                         transaction.TrackID = returnedTrans.TrackID;
                         transaction.TranID = returnedTrans.TranID;
@@ -127,18 +127,17 @@
                             return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "/Error");
                         else
                             return Request.CreateResponse(HttpStatusCode.OK, returnedTrans.PaymentPage + "?PaymentID=" + returnedTrans.PaymentID);
-                   }
+                    }
                 }
                 else
                     return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, Utilities.GetResourceValue(Constants.Resources.WorkerBooked));
-               
+
             }
             catch (Exception ex)
             {
                 Utilities.LogException(ex);
                 return Request.CreateResponse(HttpStatusCode.OK, returnedTrans.PaymentPage + "?PaymentID=" + returnedTrans.PaymentID);
             }
-
         }
 
         [Authorize]
@@ -163,16 +162,18 @@
 
                 try
                 {
+                    var tokens = new Dictionary<string, string>
+                    {
+                        { Constants.KNET.MerchantTrackID, payment.TrackID },
+                        { Constants.KNET.PaymentID, payment.PaymentID },
+                        { Constants.KNET.ReferenceID, payment.Ref },
+                        { Constants.KNET.TransactionAmount, payment.Amount },
+                        { Constants.KNET.ItemCode, itemCode },
+                        //customer name and customer code
+                        { Constants.KNET.CustomerCode, payment.CardCode },
+                        { Constants.KNET.CustomerName, CardName }
+                    };
 
-                    var tokens = new Dictionary<string, string>();
-                    tokens.Add(Constants.KNET.MerchantTrackID, payment.TrackID);
-                    tokens.Add(Constants.KNET.PaymentID, payment.PaymentID);
-                    tokens.Add(Constants.KNET.ReferenceID, payment.Ref);
-                    tokens.Add(Constants.KNET.TransactionAmount, payment.Amount);
-                    tokens.Add(Constants.KNET.ItemCode, itemCode);
-                    //customer name and customer code
-                    tokens.Add(Constants.KNET.CustomerCode, payment.CardCode);
-                    tokens.Add(Constants.KNET.CustomerName, CardName);
                     idMessage.Destination = userEmail;
                     idMessage.Subject = Utilities.GetResourceValue(Constants.Resources.Transaction_Completed);
                     var messageBody = Utilities.GetResourceValue(Constants.Resources.KnetEmailConfirmation).GetMessageBody(tokens);
@@ -191,7 +192,6 @@
                     payment.UDF1 = Utilities.GetResourceValue(Constants.Resources.Successfull_Transaction);
                     return Ok(payment);
                 }
-
                 else
                 {
                     payment.UDF1 = Utilities.GetResourceValue(Constants.Resources.Failed_Transaction);
@@ -225,15 +225,17 @@
                     workersFacade.CancelSalesOrder(payment);
                     try
                     {
-                        var tokens = new Dictionary<string, string>();
-                        tokens.Add(Constants.KNET.MerchantTrackID, payment.TrackID);
-                        tokens.Add(Constants.KNET.PaymentID, payment.PaymentID);
-
-                        tokens.Add(Constants.KNET.TransactionAmount, paymentAmount + payment.Amount);
-                        tokens.Add(Constants.KNET.ItemCode, payment.Code);
+                        var tokens = new Dictionary<string, string>
+                        {
+                            { Constants.KNET.MerchantTrackID, payment.TrackID },
+                            { Constants.KNET.PaymentID, payment.PaymentID },
+                            { Constants.KNET.TransactionAmount, paymentAmount + payment.Amount },
+                            { Constants.KNET.ItemCode, payment.Code }
+                        };
 
                         idMessage.Destination = userEmail;
                         string messageBody = string.Empty;
+
                         if (payment.Result == KnetResults.CANCELED.GetDescription())
                         {
                             idMessage.Subject = Utilities.GetResourceValue(Constants.Resources.Transaction_Cancelled);

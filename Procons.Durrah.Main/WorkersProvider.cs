@@ -1066,25 +1066,19 @@
 
         }
 
-        //ServiceLayerProvider _serviceInstance; //= ServiceLayerProvider.GetInstance();
         public ServiceLayerProvider GetServiceInstance()
         {
             return ServiceLayerProvider.GetInstance();
         }
         public List<LookupItem> GetLookupValues<T>(ServiceLayerProvider _serviceInstance)
         {
-            //var _serviceInstance = ServiceLayerProvider.GetInstance();
-
-
             if (typeof(T) == typeof(COUNTRIES))
             {
                 var results = _serviceInstance.CurrentServicelayerInstance.COUNTRIESUDO.ToList();
-                return GetLookups<COUNTRIES>(results);
+                return GetLookups(results);
             }
             else if (typeof(T) == typeof(B1ServiceLayer.SAPB1.Country))
             {
-                //var results = _serviceInstance.CurrentServicelayerInstance.Countries.ToList();
-                //return GetLookups<B1ServiceLayer.SAPB1.Country>(results);
                 var databaseBame = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.DatabaseName);
 
                 var result = dbHelper.ExecuteQuery($@"SELECT ""Code"", ""Name"" FROM ""{databaseBame}"".""OCRY""");
@@ -1100,18 +1094,18 @@
             }
             else if (typeof(T) == typeof(LANGUAGES))
             {
-                var results = _serviceInstance.CurrentServicelayerInstance.LANGUAGESUDO.ToList<LANGUAGES>();
-                return GetLookups<LANGUAGES>(results);
+                var results = _serviceInstance.CurrentServicelayerInstance.LANGUAGESUDO.ToList();
+                return GetLookups(results);
             }
             else if (typeof(T) == typeof(MARITALSTATUS))
             {
-                var results = _serviceInstance.CurrentServicelayerInstance.MARITALSTATUSUDO.ToList<MARITALSTATUS>();
-                return GetLookups<MARITALSTATUS>(results);
+                var results = _serviceInstance.CurrentServicelayerInstance.MARITALSTATUSUDO.ToList();
+                return GetLookups(results);
             }
             else if (typeof(T) == typeof(Item))
             {
-                var results = _serviceInstance.CurrentServicelayerInstance.WORKERTYPESUDO.ToList<WORKERTYPES>();
-                return GetLookups<WORKERTYPES>(results);
+                var results = _serviceInstance.CurrentServicelayerInstance.WORKERTYPESUDO.ToList();
+                return GetLookups(results);
             }
             else if (typeof(T) == typeof(Item))
             {
@@ -1121,12 +1115,12 @@
             else if (typeof(T) == typeof(RELIGION))
             {
                 var results = _serviceInstance.CurrentServicelayerInstance.RELIGION.ToList();
-                return GetLookups<RELIGION>(results);
+                return GetLookups(results);
             }
             else if (typeof(T) == typeof(EDUCATION))
             {
                 var results = _serviceInstance.CurrentServicelayerInstance.EDUCATION.ToList();
-                return GetLookups<EDUCATION>(results);
+                return GetLookups(results);
             }
             else
                 return null;
@@ -1148,11 +1142,10 @@
         {
             var _serviceInstance = ServiceLayerProvider.GetInstance();
 
-
             if (typeof(T) == typeof(COUNTRIES))
             {
                 var results = _serviceInstance.CurrentServicelayerInstance.COUNTRIESUDO.ToList();
-                return GetLookups<COUNTRIES>(results);
+                return GetLookups(results);
             }
             else if (typeof(T) == typeof(B1ServiceLayer.SAPB1.Country))
             {
@@ -1173,18 +1166,18 @@
             }
             else if (typeof(T) == typeof(LANGUAGES))
             {
-                var results = _serviceInstance.CurrentServicelayerInstance.LANGUAGESUDO.ToList<LANGUAGES>();
-                return GetLookups<LANGUAGES>(results);
+                var results = _serviceInstance.CurrentServicelayerInstance.LANGUAGESUDO.ToList();
+                return GetLookups(results);
             }
             else if (typeof(T) == typeof(MARITALSTATUS))
             {
-                var results = _serviceInstance.CurrentServicelayerInstance.MARITALSTATUSUDO.ToList<MARITALSTATUS>();
-                return GetLookups<MARITALSTATUS>(results);
+                var results = _serviceInstance.CurrentServicelayerInstance.MARITALSTATUSUDO.ToList();
+                return GetLookups(results);
             }
             else if (typeof(T) == typeof(Item))
             {
-                var results = _serviceInstance.CurrentServicelayerInstance.WORKERTYPESUDO.ToList<WORKERTYPES>();
-                return GetLookups<WORKERTYPES>(results);
+                var results = _serviceInstance.CurrentServicelayerInstance.WORKERTYPESUDO.ToList();
+                return GetLookups(results);
             }
             else if (typeof(T) == typeof(Item))
             {
@@ -1194,12 +1187,12 @@
             else if (typeof(T) == typeof(RELIGION))
             {
                 var results = _serviceInstance.CurrentServicelayerInstance.RELIGION.ToList();
-                return GetLookups<RELIGION>(results);
+                return GetLookups(results);
             }
             else if (typeof(T) == typeof(EDUCATION))
             {
                 var results = _serviceInstance.CurrentServicelayerInstance.EDUCATION.ToList();
-                return GetLookups<EDUCATION>(results);
+                return GetLookups(results);
             }
             else
                 return null;
@@ -1322,8 +1315,6 @@
             try
             {
                 var conn = Factory.DeclareClass<DatabaseHelper<HanaConnection>>();
-                var path = string.Empty;
-
                 StringBuilder query = new StringBuilder($@"SELECT ""Code"" FROM ""{base.databaseName}"".""@WORKERS"" WHERE ""Code""='{id}' ");
                 var result = conn.ExecuteQuery(query.ToString());
                 if (result.Rows.Count > 0)
@@ -1336,6 +1327,27 @@
                 Utilities.LogException(ex);
                 return false;
             }
+        }
+
+        public bool IsWorkerBooked(string workerId)
+        {
+            bool isBooked = false;
+            try
+            {
+                var conn = Factory.DeclareClass<DatabaseHelper<HanaConnection>>();
+                StringBuilder query = new StringBuilder($@"SELECT ""Code"" FROM ""{base.databaseName}"".""@WORKERS"" WHERE ""Code""='{workerId}' AND ""U_Status""='1' ");
+                var result = conn.ExecuteQuery(query.ToString());
+
+                if (result.Rows.Count > 0)
+                    isBooked = false;
+                else
+                    isBooked = true;
+            }
+            catch (Exception ex)
+            {
+                Utilities.LogException(ex);
+            }
+            return isBooked;
         }
 
         public List<LookupItem> GetLanguagesById(string jsonString)
