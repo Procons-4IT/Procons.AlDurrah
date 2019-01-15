@@ -139,6 +139,11 @@
             return provider.CheckSalesOrder(workerId);
         }
 
+        public bool IsWorkerBooked(string workerId)
+        {
+            return provider.IsWorkerBooked(workerId);
+        }
+
         public List<LookupItem> GetLanguagesById(string isonStringIds)
         {
             return provider.GetLanguagesById(isonStringIds);
