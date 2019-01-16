@@ -307,6 +307,7 @@
         {
             try
             {
+                
                 var cardCode = GetCurrentUserCardCode();
                 var worker = await SaveFile();
                 var result = workersFacade.CreateWorker(worker);
@@ -319,8 +320,7 @@
             catch (Exception ex)
             {
                 Utilities.LogException(ex);
-                //return InternalServerError(new Exception(Utilities.GetResourceValue(Constants.Resources.ErrorOccured)));
-                return Ok(Utilities.GetResourceValue(Constants.Resources.ErrorOccured));
+                return InternalServerError(new Exception(ex.Message + ex.StackTrace));
             }
         }
 
@@ -413,8 +413,6 @@
 
                  foreach (MultipartFileData item in provider.FileData)
                  {
-                     try
-                     {
                          string name = item.Headers.ContentDisposition.FileName.Replace("\"", "");
                          var nameWithoutExtention = Path.GetFileNameWithoutExtension(name);
                          string newFileName = $"{nameWithoutExtention}.{Guid.NewGuid()}{Path.GetExtension(name)}";
@@ -428,11 +426,7 @@
                              worker.Passport = fileRelativePath;
                          else
                              worker.License = fileRelativePath;
-                     }
-                     catch (Exception ex)
-                     {
-                         string message = ex.Message;
-                     }
+                    
                  }
 
                  PopulateWorker(provider, ref worker);

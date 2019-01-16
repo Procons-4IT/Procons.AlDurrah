@@ -123,6 +123,7 @@
     <Compile Include="ProviderBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServicesLayerProvider.cs" />
+    <Compile Include="UserDefinedObject.cs" />
     <Compile Include="WorkersProvider.cs" />
   </ItemGroup>
   <ItemGroup>

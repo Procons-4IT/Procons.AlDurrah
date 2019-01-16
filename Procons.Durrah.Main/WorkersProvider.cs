@@ -31,41 +31,11 @@
             var passportCopy = worker.Passport != null && worker.Passport != string.Empty ? CreateAttachment(worker.Passport) : worker.Passport;
             var photo = worker.Photo != null && worker.Photo != string.Empty ? CreateAttachment(worker.Photo) : worker.Photo;
             var license = worker.License != null && worker.License != string.Empty ? CreateAttachment(worker.License) : worker.License;
+          
 
             var sCmp = B1Company.GetCompanyService();
             var oGeneralService = sCmp.GetGeneralService("WORKERSUDO");
             var oGeneralData = oGeneralService.GetDataInterface(GeneralServiceDataInterfaces.gsGeneralData) as GeneralData;
-
-            var gDataCollection = oGeneralData.Child("WORKERLNGS");
-            if (worker.Languages != null)
-            {
-                foreach (var l in worker.Languages)
-                {
-                    var newLanguage = gDataCollection.Add();
-                    newLanguage.SetProperty("U_NAME", l.Name);
-                    newLanguage.SetProperty("U_VALUE", l.Value);
-                }
-            }
-
-
-            if (worker.Experiences != null)
-            {
-                var expDataCollection = oGeneralData.Child("EXPERIENCE");
-                foreach (var e in worker.Experiences)
-                {
-                    var newExperience = expDataCollection.Add();
-                    newExperience.SetProperty("U_WorkerID", worker.PassportNumber);
-                    if (e.StartDate != null)
-                        newExperience.SetProperty("U_StartDate", e.StartDate);
-                    if (e.EndDate != null)
-                        newExperience.SetProperty("U_EndDate", e.EndDate);
-                    newExperience.SetProperty("U_Title", e.Title);
-                    newExperience.SetProperty("U_Description", e.Description);
-                    newExperience.SetProperty("U_CompanyName", e.CompanyName);
-                    newExperience.SetProperty("U_Location", e.Location);
-                    newExperience.SetProperty("U_Country", e.Country);
-                }
-            }
 
             oGeneralData.SetProperty("Code", worker.PassportNumber);
             oGeneralData.SetProperty("U_WorkerName", worker.WorkerName);
@@ -103,6 +73,37 @@
             oGeneralData.SetProperty("U_IsNew", worker.IsNew);
             oGeneralData.SetProperty("U_Period", worker.Period);
 
+            var gDataCollection = oGeneralData.Child("WORKERLNGS");
+            if (worker.Languages != null)
+            {
+                foreach (var l in worker.Languages)
+                {
+                    var newLanguage = gDataCollection.Add();
+                    newLanguage.SetProperty("U_NAME", l.Name);
+                    newLanguage.SetProperty("U_VALUE", l.Value);
+                }
+            }
+
+
+            if (worker.Experiences != null)
+            {
+                var expDataCollection = oGeneralData.Child("EXPERIENCE");
+                foreach (var e in worker.Experiences)
+                {
+                    var newExperience = expDataCollection.Add();
+                    newExperience.SetProperty("U_WorkerID", worker.PassportNumber);
+                    if (e.StartDate != null)
+                        newExperience.SetProperty("U_StartDate", e.StartDate);
+                    if (e.EndDate != null)
+                        newExperience.SetProperty("U_EndDate", e.EndDate);
+                    newExperience.SetProperty("U_Title", e.Title);
+                    newExperience.SetProperty("U_Description", e.Description);
+                    newExperience.SetProperty("U_CompanyName", e.CompanyName);
+                    newExperience.SetProperty("U_Location", e.Location);
+                    newExperience.SetProperty("U_Country", e.Country);
+                }
+            }
+var xml = oGeneralData.ToXMLString();
             oGeneralService.Add(oGeneralData);
             created = true;
 

@@ -30,8 +30,8 @@
             int checkConnected = -1;
             string sapServer = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.SapServer);
             string companyDB = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.DatabaseName);
-            string dbUsername = "SYSTEM";
-            string dbPassword = "Pr0c0ns41t";
+            string dbUsername = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.dbUsername);// "SYSTEM";
+            string dbPassword = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.dbPassword);//"Pr0c0ns41t";
             string sapUsername = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.UserName);
             string sapPassword = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.Password);
             string sapLicense = Utilities.GetConfigurationValue(Constants.ConfigurationKeys.SLDServer);
@@ -57,6 +57,7 @@
                 if (checkConnected != 0)
                 {
                     var test = _oCompany.GetLastErrorDescription();
+                    throw new Exception(test);
                 }
             }
             return _oCompany;

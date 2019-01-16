@@ -20,6 +20,8 @@
             public const string Password = "Password";
             public const string DatabaseName = "DatabaseName";
             public const string ServiceLayer = "ServiceLayer";
+            public const string dbUsername = "dbUsername";
+            public const string dbPassword = "dbPassword";
             public const string ResponseUrl = "ResponseUrl";
             public const string ResultUrl = "ResultUrl";
             public const string ErrorUrl = "ErrorUrl";
